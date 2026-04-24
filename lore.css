@@ -132,7 +132,7 @@ nav a.active {
 .lore-hero-bg {
     position: absolute;
     inset: 0;
-    background: url('PATH_TO_RUNETERRA_MAP') center/cover no-repeat;
+    background: url('Runeterra Map.png') center/cover no-repeat;
     opacity: 0.35;
     z-index: 1;
 }
@@ -204,7 +204,8 @@ nav a.active {
 
 /* Butonların içinden geçtiği "pencere" */
 .region-nav-container {
-    width: 100%;
+    flex: 1 1 auto;
+    min-width: 0;
     overflow: hidden; /* Dışarı taşan butonları gizleyen kritik kısım */
 }
 
@@ -230,6 +231,11 @@ nav a.active {
     flex-direction: column;
     align-items: center;
     gap: 5px;
+}
+
+.region-btn-icon {
+    font-size: 22px;
+    line-height: 1;
 }
 
 .region-btn:hover, .region-btn.active {
@@ -273,6 +279,11 @@ nav a.active {
 .region-scroll-btn:hover {
     color: white;
     background: rgba(200, 155, 60, 0.2);
+}
+
+.region-scroll-btn:disabled {
+    opacity: 0.35;
+    cursor: default;
 }
 /* ===================== LORE MAIN ===================== */
 .lore-main {

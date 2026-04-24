@@ -1,1246 +1,854 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
-    <title>LoL Champions Hub</title>
-    <link rel="icon" type="image/x-icon" href="96px-Champie_Sona_profileicon.ico">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LoL Champions Hub</title>
-    <link rel="stylesheet" href="sampiyonlar.css">
+    <title>LOL Champions Hub - Lore</title>
+    <link rel="stylesheet" href="lore.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<header>
-    <div class="logo">
-        <h1>LOL CHAMPIONS</h1>
-        <span>HUB</span>
-    </div>
-    
-    <nav>
-        <ul>
-            <li><a href="index.html">HOME</a></li>
-            <li><a href="sampiyonlar.html" class="active">CHAMPIONS</a></li>
-            <li><a href="lore.html">LORE</a></li>
-            <li><a href="aboutus.html">ABOUT US</a></li>
-        </ul>
-    </nav>
-
-    <div class="search-bar">
-        <input type="text" placeholder="Search for your favorite Champion...">
-        <span style="color: #c8aa6e;">🔍</span>
-    </div>
-</header>
-
-<div class="container">
-    <div class="champion-grid">
-        <div class="champion-card" data-champion="Aatrox" data-title="the Darkin Blade" data-img="aatrox.avif" data-imgpos="center">
-            <img src="aatrox.avif" alt="Aatrox">
-            <div class="champion-info">
-                <span class="champion-name">Aatrox</span>
-                <span class="champion-title">the Darkin Blade</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Ahri" data-title="the Nine-Tailed Fox" data-img="ahri.avif" data-imgpos="center">
-            <img src="ahri.avif" alt="Ahri">
-            <div class="champion-info">
-                <span class="champion-name">Ahri</span>
-                <span class="champion-title">the Nine-Tailed Fox</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Zed" data-title="the Master of Shadows" data-img="zed.avif" data-imgpos="center">
-            <img src="zed.avif" alt="Zed">
-            <div class="champion-info">
-                <span class="champion-name">Zed</span>
-                <span class="champion-title">the Master of Shadows</span>
-            </div>
-        </div>
-
-       <div class="champion-card" data-champion="Sona" data-title="Maven of the Strings" data-img="Sona_0.jpg" data-imgpos="80% center">
-            <img src="Sona_0.jpg" alt="Sona" style="object-position: 80% center;">
-            <div class="champion-info">
-                <span class="champion-name">Sona</span>
-                <span class="champion-title">Maven of the Strings</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Lee Sin" data-title="the Blind Monk" data-img="LeeSin_0.jpg" data-imgpos="70% center">
-            <img src="LeeSin_0.jpg" alt="Lee Sin" style="object-position: 70% center;">
-            <div class="champion-info">
-                <span class="champion-name">Lee Sin</span>
-                <span class="champion-title">the Blind Monk</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Katarina" data-title="the Sinister Blade" data-img="Katarina_0.jpg" data-imgpos="65% center">
-            <img src="Katarina_0.jpg" alt="Katarina" style="object-position: 65% center;">
-            <div class="champion-info">
-                <span class="champion-name">Katarina</span>
-                <span class="champion-title">the Sinister Blade</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Thresh" data-title="the Chain Warden" data-img="Thresh_0.jpg" data-imgpos="75% center">
-            <img src="Thresh_0.jpg" alt="Thresh" style="object-position: 75% center;">
-            <div class="champion-info">
-                <span class="champion-name">Thresh</span>
-                <span class="champion-title">the Chain Warden</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Vayne" data-title="the Night Hunter" data-img="Vayne_0.jpg" data-imgpos="85% 15%">
-            <img src="Vayne_0.jpg" alt="Vayne" style="object-position: 85% 15%;">
-            <div class="champion-info">
-                <span class="champion-name">Vayne</span>
-                <span class="champion-title">the Night Hunter</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Darius" data-title="the Hand of Noxus" data-img="darius.avif" data-imgpos="center">
-            <img src="darius.avif" alt="Darius">
-            <div class="champion-info">
-                <span class="champion-name">Darius</span>
-                <span class="champion-title">the Hand of Noxus</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Leona" data-title="the Radiant Dawn" data-img="Leona_0.jpg" data-imgpos="80% center">
-            <img src="Leona_0.jpg" alt="Leona" style="object-position: 80% center;">    
-            <div class="champion-info">
-                <span class="champion-name">Leona</span>
-                <span class="champion-title">the Radiant Dawn</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Caitlyn" data-title="the Sheriff of Piltover" data-img="Caitlyn_0.jpg" data-imgpos="90% center">
-            <img src="Caitlyn_0.jpg" alt="Caitlyn" style="object-position: 90% center;">
-            <div class="champion-info">
-                <span class="champion-name">Caitlyn</span>
-                <span class="champion-title">the Sheriff of Piltover</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Morgana" data-title="the Fallen" data-img="morgana.jpg" data-imgpos="center">
-            <img src="morgana.jpg" alt="Morgana">
-            <div class="champion-info">
-                <span class="champion-name">Morgana</span>
-                <span class="champion-title">the Fallen</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Ezreal" data-title="the Prodigal Explorer" data-img="Ezreal_0.jpg" data-imgpos="70% center">
-            <img src="Ezreal_0.jpg" alt="Ezreal" style="object-position: 70% center;">
-            <div class="champion-info">
-                <span class="champion-name">Ezreal</span>
-                <span class="champion-title">the Prodigal Explorer</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Riven" data-title="the Exile" data-img="Riven_0.jpg" data-imgpos="80% center">
-            <img src="Riven_0.jpg" alt="Riven" style="object-position: 80% center;">
-            <div class="champion-info">
-                <span class="champion-name">Riven</span>
-                <span class="champion-title">the Exile</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Diana" data-title="Scorn of the Moon" data-img="Diana_0.jpg" data-imgpos="75% center">
-            <img src="Diana_0.jpg" alt="Diana" style="object-position: 75% center;">
-            <div class="champion-info">
-                <span class="champion-name">Diana</span>
-                <span class="champion-title">Scorn of the Moon</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Ekko" data-title="the Boy Who Shattered Time" data-img="Ekko_0.jpg" data-imgpos="80% center">
-            <img src="Ekko_0.jpg" alt="Ekko" style="object-position: 80% center;">
-            <div class="champion-info">
-                <span class="champion-name">Ekko</span>
-                <span class="champion-title">the Boy Who Shattered Time</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Miss Fortune" data-title="the Bounty Hunter" data-img="MissFortune_0.jpg" data-imgpos="85% center">
-            <img src="MissFortune_0.jpg" alt="Miss Fortune" style="object-position: 85% center;">
-            <div class="champion-info">
-                <span class="champion-name">Miss Fortune</span>
-                <span class="champion-title">the Bounty Hunter</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Viktor" data-title="the Machine Herald" data-img="Viktor_0.jpg" data-imgpos="center">
-            <img src="Viktor_0.jpg" alt="Viktor">
-            <div class="champion-info">
-                <span class="champion-name">Viktor</span>
-                <span class="champion-title">the Machine Herald</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Orianna" data-title="the Lady of Clockwork" data-img="Orianna_0.jpg" data-imgpos="80% center">
-            <img src="Orianna_0.jpg" alt="Orianna" style="object-position: 80% center;">
-            <div class="champion-info">
-                <span class="champion-name">Orianna</span>
-                <span class="champion-title">the Lady of Clockwork</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Jayce" data-title="the Defender of Tomorrow" data-img="Jayce_0.jpg" data-imgpos="75% center">
-            <img src="Jayce_0.jpg" alt="Jayce" style="object-position: 75% center;">
-            <div class="champion-info">
-                <span class="champion-name">Jayce</span>
-                <span class="champion-title">the Defender of Tomorrow</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Irelia" data-title="the Blade Dancer" data-img="Irelia_0.jpg" data-imgpos="center">
-            <img src="Irelia_0.jpg" alt="Irelia">
-            <div class="champion-info">
-                <span class="champion-name">Irelia</span>
-                <span class="champion-title">the Blade Dancer</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Pyke" data-title="the Bloodharbor Ripper" data-img="Pyke_0.jpg" data-imgpos="center">
-            <img src="Pyke_0.jpg" alt="Pyke">
-            <div class="champion-info">
-                <span class="champion-name">Pyke</span>
-                <span class="champion-title">the Bloodharbor Ripper</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Kai'Sa" data-title="Daughter of the Void" data-img="Kaisa_0.jpg" data-imgpos="center">
-            <img src="Kaisa_0.jpg" alt="Kai'Sa">
-            <div class="champion-info">
-                <span class="champion-name">Kai'Sa</span>
-                <span class="champion-title">Daughter of the Void</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Akali" data-title="the Rogue Assassin" data-img="Akali_0.jpg" data-imgpos="center">
-            <img src="Akali_0.jpg" alt="Akali">
-            <div class="champion-info">
-                <span class="champion-name">Akali</span>
-                <span class="champion-title">the Rogue Assassin</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Jinx" data-title="the Loose Cannon" data-img="Jinx_0.jpg" data-imgpos="85% center">
-            <img src="Jinx_0.jpg" alt="Jinx" style="object-position: 85% center;">
-            <div class="champion-info">
-                <span class="champion-name">Jinx</span>
-                <span class="champion-title">the Loose Cannon</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Vi" data-title="the Piltover Enforcer" data-img="Vi_0.jpg" data-imgpos="80% center">
-            <img src="Vi_0.jpg" alt="Vi" style="object-position: 80% center;">
-            <div class="champion-info">
-                <span class="champion-name">Vi</span>
-                <span class="champion-title">the Piltover Enforcer</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Swain" data-title="the Noxian Grand General" data-img="Swain_0.jpg" data-imgpos="75% center">
-            <img src="Swain_0.jpg" alt="Swain" style="object-position: 75% center;">
-            <div class="champion-info">
-                <span class="champion-name">Swain</span>
-                <span class="champion-title">the Noxian Grand General</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Pantheon" data-title="the Unbreakable Spear" data-img="Pantheon_0.jpg" data-imgpos="center">
-            <img src="Pantheon_0.jpg" alt="Pantheon">
-            <div class="champion-info">
-                <span class="champion-name">Pantheon</span>
-                <span class="champion-title">the Unbreakable Spear</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Samira" data-title="the Desert Rose" data-img="Samira_0.jpg" data-imgpos="60% center">
-            <img src="Samira_0.jpg" alt="Samira" style="object-position: 60% center;">
-            <div class="champion-info">
-                <span class="champion-name">Samira</span>
-                <span class="champion-title">the Desert Rose</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Volibear" data-title="the Relentless Storm" data-img="Volibear_0.jpg" data-imgpos="70% center">
-            <img src="Volibear_0.jpg" alt="Volibear" style="object-position: 70% center;">
-            <div class="champion-info">
-                <span class="champion-name">Volibear</span>
-                <span class="champion-title">the Relentless Storm</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Twitch" data-title="the Plague Rat" data-img="Twitch_0.jpg" data-imgpos="center">
-            <img src="Twitch_0.jpg" alt="Twitch">
-            <div class="champion-info">
-                <span class="champion-name">Twitch</span>
-                <span class="champion-title">the Plague Rat</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Malphite" data-title="Shard of the Monolith" data-img="Malphite_0.jpg" data-imgpos="75% center">
-            <img src="Malphite_0.jpg" alt="Malphite" style="object-position: 75% center;">
-            <div class="champion-info">
-                <span class="champion-name">Malphite</span>
-                <span class="champion-title">Shard of the Monolith</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Nautilus" data-title="the Titan of the Depths" data-img="Nautilus_0.jpg" data-imgpos="80% center">
-            <img src="Nautilus_0.jpg" alt="Nautilus" style="object-position: 80% center;">
-            <div class="champion-info">
-                <span class="champion-name">Nautilus</span>
-                <span class="champion-title">the Titan of the Depths</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Jax" data-title="Grandmaster at Arms" data-img="Jax_0.jpg" data-imgpos="70% center">
-            <img src="Jax_0.jpg" alt="Jax" style="object-position: 70% center;">
-            <div class="champion-info">
-                <span class="champion-name">Jax</span>
-                <span class="champion-title">Grandmaster at Arms</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Fiora" data-title="the Grand Duelist" data-img="Fiora_0.jpg" data-imgpos="80% center">
-            <img src="Fiora_0.jpg" alt="Fiora" style="object-position: 80% center;">
-            <div class="champion-info">
-                <span class="champion-name">Fiora</span>
-                <span class="champion-title">the Grand Duelist</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Garen" data-title="the Might of Demacia" data-img="Garen_0.jpg" data-imgpos="85% center">
-            <img src="Garen_0.jpg" alt="Garen" style="object-position: 85% center;">
-            <div class="champion-info">
-                <span class="champion-name">Garen</span>
-                <span class="champion-title">the Might of Demacia</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Kassadin" data-title="the Void Walker" data-img="Kassadin_0.jpg" data-imgpos="70% center">
-            <img src="Kassadin_0.jpg" alt="Kassadin" style="object-position: 70% center;">
-            <div class="champion-info">
-                <span class="champion-name">Kassadin</span>
-                <span class="champion-title">the Void Walker</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Malzahar" data-title="the Prophet of the Void" data-img="Malzahar_0.jpg" data-imgpos="75% center">
-            <img src="Malzahar_0.jpg" alt="Malzahar" style="object-position: 75% center;">
-            <div class="champion-info">
-                <span class="champion-name">Malzahar</span>
-                <span class="champion-title">the Prophet of the Void</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Kayn" data-title="the Shadow Reaper" data-img="Kayn_0.jpg" data-imgpos="center">
-            <img src="Kayn_0.jpg" alt="Kayn">
-            <div class="champion-info">
-                <span class="champion-name">Kayn</span>
-                <span class="champion-title">the Shadow Reaper</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Mordekaiser" data-title="the Iron Revenant" data-img="Mordekaiser_0.jpg" data-imgpos="center">
-            <img src="Mordekaiser_0.jpg" alt="Mordekaiser">
-            <div class="champion-info">
-                <span class="champion-name">Mordekaiser</span>
-                <span class="champion-title">the Iron Revenant</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Warwick" data-title="the Uncaged Wrath of Zaun" data-img="Warwick_0.jpg" data-imgpos="65% center">
-            <img src="Warwick_0.jpg" alt="Warwick" style="object-position: 65% center;">
-            <div class="champion-info">
-                <span class="champion-name">Warwick</span>
-                <span class="champion-title">the Uncaged Wrath of Zaun</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Xayah" data-title="the Rebel" data-img="1000px-Xayah_OriginalCentered.jpg" data-imgpos="center">
-            <img src="1000px-Xayah_OriginalCentered.jpg" alt="Xayah">
-            <div class="champion-info">
-                <span class="champion-name">Xayah</span>
-                <span class="champion-title">the Rebel</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Rakan" data-title="the Charmer" data-img="1000px-Rakan_OriginalCentered.jpg" data-imgpos="center">
-            <img src="1000px-Rakan_OriginalCentered.jpg" alt="Rakan">
-            <div class="champion-info">
-                <span class="champion-name">Rakan</span>
-                <span class="champion-title">the Charmer</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Seraphine" data-title="the Starry-Eyed Songstress" data-img="Seraphine_0.jpg" data-imgpos="center">
-            <img src="Seraphine_0.jpg" alt="Seraphine">
-            <div class="champion-info">
-                <span class="champion-name">Seraphine</span>
-                <span class="champion-title">the Starry-Eyed Songstress</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Yuumi" data-title="the Magical Cat" data-img="Yuumi_0.jpg" data-imgpos="center">
-            <img src="Yuumi_0.jpg" alt="Yuumi">
-            <div class="champion-info">
-                <span class="champion-name">Yuumi</span>
-                <span class="champion-title">the Magical Cat</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Blitzcrank" data-title="the Great Steam Golem" data-img="Blitzcrank_0.jpg" data-imgpos="80% center">
-            <img src="Blitzcrank_0.jpg" alt="Blitzcrank" style="object-position: 80% center;">
-            <div class="champion-info">
-                <span class="champion-name">Blitzcrank</span>
-                <span class="champion-title">the Great Steam Golem</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Draven" data-title="the Glorious Executioner" data-img="Draven_0.jpg" data-imgpos="80% center">
-            <img src="Draven_0.jpg" alt="Draven" style="object-position: 80% center;">
-            <div class="champion-info">
-                <span class="champion-name">Draven</span>
-                <span class="champion-title">the Glorious Executioner</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Cho'Gath" data-title="the Terror of the Void" data-img="Chogath_0.jpg" data-imgpos="70% center">
-            <img src="Chogath_0.jpg" alt="Cho'Gath" style="object-position: 70% center;">
-            <div class="champion-info">
-                <span class="champion-name">Cho'Gath</span>
-                <span class="champion-title">the Terror of the Void</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Kha'Zix" data-title="the Voidreaver" data-img="Khazix_0.jpg" data-imgpos="80% center">
-            <img src="Khazix_0.jpg" alt="Kha'Zix" style="object-position: 80% center;">
-            <div class="champion-info">
-                <span class="champion-name">Kha'Zix</span>
-                <span class="champion-title">the Voidreaver</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Rengar" data-title="the Pridestalker" data-img="Rengar_0.jpg" data-imgpos="80% center">
-            <img src="Rengar_0.jpg" alt="Rengar" style="object-position: 80% center;">
-            <div class="champion-info">
-                <span class="champion-name">Rengar</span>
-                <span class="champion-title">the Pridestalker</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Zoe" data-title="the Aspect of Twilight" data-img="Zoe_0.jpg" data-imgpos="center">
-            <img src="Zoe_0.jpg" alt="Zoe">
-            <div class="champion-info">
-                <span class="champion-name">Zoe</span>
-                <span class="champion-title">the Aspect of Twilight</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Vel'Koz" data-title="the Eye of the Void" data-img="Velkoz_0.jpg" data-imgpos="center">
-            <img src="Velkoz_0.jpg" alt="Vel'Koz">
-            <div class="champion-info">
-                <span class="champion-name">Vel'Koz</span>
-                <span class="champion-title">the Eye of the Void</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Teemo" data-title="the Swift Scout" data-img="Teemo_0.jpg" data-imgpos="center">
-            <img src="Teemo_0.jpg" alt="Teemo">
-            <div class="champion-info">
-                <span class="champion-name">Teemo</span>
-                <span class="champion-title">the Swift Scout</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Aurelion Sol" data-title="The Star Forger" data-img="AurelionSol_0.jpg" data-imgpos="center">
-            <img src="AurelionSol_0.jpg" alt="Aurelion Sol">
-            <div class="champion-info">
-                <span class="champion-name">Aurelion Sol</span>
-                <span class="champion-title">The Star Forger</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Azir" data-title="The Emperor of the Sands" data-img="Azir_0.jpg" data-imgpos="80% center">
-            <img src="Azir_0.jpg" alt="Azir" style="object-position: 80% center;">
-            <div class="champion-info">
-                <span class="champion-name">Azir</span>
-                <span class="champion-title">The Emperor of the Sands</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Bard" data-title="The Wandering Caretaker" data-img="Bard_0.jpg" data-imgpos="60% center">
-            <img src="Bard_0.jpg" alt="Bard" style="object-position: 60% center;">
-            <div class="champion-info">
-                <span class="champion-name">Bard</span>
-                <span class="champion-title">The Wandering Caretaker</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Camille" data-title="The Steel Shadow" data-img="Camille_0.jpg" data-imgpos="90% center">
-            <img src="Camille_0.jpg" alt="Camille" style="object-position: 90% center;">
-            <div class="champion-info">
-                <span class="champion-name">Camille</span>
-                <span class="champion-title">The Steel Shadow</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Fiddlesticks" data-title="The Ancient Fear" data-img="Fiddlesticks_0.jpg" data-imgpos="70% center">
-            <img src="Fiddlesticks_0.jpg" alt="Fiddlesticks" style="object-position: 70% center;">
-            <div class="champion-info">
-                <span class="champion-name">Fiddlesticks</span>
-                <span class="champion-title">The Ancient Fear</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Galio" data-title="The Colossus" data-img="Galio_0.jpg" data-imgpos="center">
-            <img src="Galio_0.jpg" alt="Galio">
-            <div class="champion-info">
-                <span class="champion-name">Galio</span>
-                <span class="champion-title">The Colossus</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Gangplank" data-title="The Saltwater Scourge" data-img="Gangplank_0.jpg" data-imgpos="80% center">
-            <img src="Gangplank_0.jpg" alt="Gangplank" style="object-position: 80% center;">
-            <div class="champion-info">
-                <span class="champion-name">Gangplank</span>
-                <span class="champion-title">The Saltwater Scourge</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Gwen" data-title="The Hallowed Seamstress" data-img="Gwen_0.jpg" data-imgpos="center">
-            <img src="Gwen_0.jpg" alt="Gwen">
-            <div class="champion-info">
-                <span class="champion-name">Gwen</span>
-                <span class="champion-title">The Hallowed Seamstress</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Hecarim" data-title="The Shadow of War" data-img="Hecarim_0.jpg" data-imgpos="80% center">
-            <img src="Hecarim_0.jpg" alt="Hecarim" style="object-position: 80% center;">
-            <div class="champion-info">
-                <span class="champion-name">Hecarim</span>
-                <span class="champion-title">The Shadow of War</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Illaoi" data-title="The Kraken Priestess" data-img="Illaoi_0.jpg" data-imgpos="80% center">
-            <img src="Illaoi_0.jpg" alt="Illaoi" style="object-position: 80% center;">
-            <div class="champion-info">
-                <span class="champion-name">Illaoi</span>
-                <span class="champion-title">The Kraken Priestess</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Jarvan IV" data-title="The Exemplar of Demacia" data-img="JarvanIV_0.jpg" data-imgpos="80% center">
-            <img src="JarvanIV_0.jpg" alt="Jarvan IV" style="object-position: 80% center;">
-            <div class="champion-info">
-                <span class="champion-name">Jarvan IV</span>
-                <span class="champion-title">The Exemplar of Demacia</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Karthus" data-title="The Deathsinger" data-img="Karthus_0.jpg" data-imgpos="80% center">
-            <img src="Karthus_0.jpg" alt="Karthus" style="object-position: 80% center;">
-            <div class="champion-info">
-                <span class="champion-name">Karthus</span>
-                <span class="champion-title">The Deathsinger</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Kled" data-title="The Cantankerous Cavalier" data-img="Kled_0.jpg" data-imgpos="80% center">
-            <img src="Kled_0.jpg" alt="Kled" style="object-position: 80% center;">
-            <div class="champion-info">
-                <span class="champion-name">Kled</span>
-                <span class="champion-title">The Cantankerous Cavalier</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Lulu" data-title="The Fae Sorceress" data-img="Lulu_0.jpg" data-imgpos="80% center">
-            <img src="Lulu_0.jpg" alt="Lulu" style="object-position: 80% center;">
-            <div class="champion-info">
-                <span class="champion-name">Lulu</span>
-                <span class="champion-title">The Fae Sorceress</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Nasus" data-title="The Curator of the Sands" data-img="Nasus_0.jpg" data-imgpos="70% center">
-            <img src="Nasus_0.jpg" alt="Nasus" style="object-position: 70% center;">
-            <div class="champion-info">
-                <span class="champion-name">Nasus</span>
-                <span class="champion-title">The Curator of the Sands</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Neeko" data-title="The Curious Chameleon" data-img="Neeko_0.jpg" data-imgpos="center">
-            <img src="Neeko_0.jpg" alt="Neeko">
-            <div class="champion-info">
-                <span class="champion-name">Neeko</span>
-                <span class="champion-title">The Curious Chameleon</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Nidalee" data-title="The Bestial Huntress" data-img="Nidalee_0.jpg" data-imgpos="80% center">
-            <img src="Nidalee_0.jpg" alt="Nidalee" style="object-position: 80% center;">
-            <div class="champion-info">
-                <span class="champion-name">Nidalee</span>
-                <span class="champion-title">The Bestial Huntress</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Nocturne" data-title="The Eternal Nightmare" data-img="Nocturne_0.jpg" data-imgpos="70% center">
-            <img src="Nocturne_0.jpg" alt="Nocturne" style="object-position: 70% center;">
-            <div class="champion-info">
-                <span class="champion-name">Nocturne</span>
-                <span class="champion-title">The Eternal Nightmare</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Olaf" data-title="The Berserker" data-img="Olaf_0.jpg" data-imgpos="70% center">
-            <img src="Olaf_0.jpg" alt="Olaf" style="object-position: 70% center;">
-            <div class="champion-info">
-                <span class="champion-name">Olaf</span>
-                <span class="champion-title">The Berserker</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Poppy" data-title="Keeper of the Hammer" data-img="Poppy_0.jpg" data-imgpos="70% center">
-            <img src="Poppy_0.jpg" alt="Poppy" style="object-position: 70% center;">
-            <div class="champion-info">
-                <span class="champion-name">Poppy</span>
-                <span class="champion-title">Keeper of the Hammer</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Qiyana" data-title="Empress of the Elements" data-img="Qiyana_0.jpg" data-imgpos="center">
-            <img src="Qiyana_0.jpg" alt="Qiyana">
-            <div class="champion-info">
-                <span class="champion-name">Qiyana</span>
-                <span class="champion-title">Empress of the Elements</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Renekton" data-title="The Butcher of the Sands" data-img="Renekton_0.jpg" data-imgpos="70% center">
-            <img src="Renekton_0.jpg" alt="Renekton" style="object-position: 70% center;">
-            <div class="champion-info">
-                <span class="champion-name">Renekton</span>
-                <span class="champion-title">The Butcher of the Sands</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Senna" data-title="The Redeemer" data-img="Senna_0.jpg" data-imgpos="center">
-            <img src="Senna_0.jpg" alt="Senna">
-            <div class="champion-info">
-                <span class="champion-name">Senna</span>
-                <span class="champion-title">The Redeemer</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Shen" data-title="The Eye of Twilight" data-img="Shen_0.jpg" data-imgpos="80% center">
-            <img src="Shen_0.jpg" alt="Shen" style="object-position: 80% center;">
-            <div class="champion-info">
-                <span class="champion-name">Shen</span>
-                <span class="champion-title">The Eye of Twilight</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Shyvana" data-title="The Half-Dragon" data-img="Shyvana_0.jpg" data-imgpos="center">
-            <img src="Shyvana_0.jpg" alt="Shyvana">
-            <div class="champion-info">
-                <span class="champion-name">Shyvana</span>
-                <span class="champion-title">The Half-Dragon</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Talon" data-title="The Blade's Shadow" data-img="Talon_0.jpg" data-imgpos="70% center">
-            <img src="Talon_0.jpg" alt="Talon" style="object-position: 70% center;">
-            <div class="champion-info">
-                <span class="champion-name">Talon</span>
-                <span class="champion-title">The Blade's Shadow</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Tryndamere" data-title="The Barbarian King" data-img="Tryndamere_0.jpg" data-imgpos="70% center">
-            <img src="Tryndamere_0.jpg" alt="Tryndamere" style="object-position: 70% center;">
-            <div class="champion-info">
-                <span class="champion-name">Tryndamere</span>
-                <span class="champion-title">The Barbarian King</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Viego" data-title="The Ruined King" data-img="Viego_0.jpg" data-imgpos="80% center">
-            <img src="Viego_0.jpg" alt="Viego" style="object-position: 80% center;">
-            <div class="champion-info">
-                <span class="champion-name">Viego</span>
-                <span class="champion-title">The Ruined King</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Zyra" data-title="Rise of the Thorns" data-img="Zyra_0.jpg" data-imgpos="80% center">
-            <img src="Zyra_0.jpg" alt="Zyra" style="object-position: 80% center;">
-            <div class="champion-info">
-                <span class="champion-name">Zyra</span>
-                <span class="champion-title">Rise of the Thorns</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Aphelios" data-title="the Weapon of the Faithful" data-img="Aphelios_0.jpg" data-imgpos="center">
-            <img src="Aphelios_0.jpg" alt="Aphelios">
-            <div class="champion-info">
-                <span class="champion-name">Aphelios</span>
-                <span class="champion-title">the Weapon of the Faithful</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Syndra" data-title="the Dark Sovereign" data-img="Syndra_0.jpg" data-imgpos="center">
-            <img src="Syndra_0.jpg" alt="Syndra">
-            <div class="champion-info">
-                <span class="champion-name">Syndra</span>
-                <span class="champion-title">the Dark Sovereign</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Ashe" data-title="the Frost Archer" data-img="ASHE.avif" data-imgpos="center">
-            <img src="ASHE.avif" alt="Ashe">
-            <div class="champion-info">
-                <span class="champion-name">Ashe</span>
-                <span class="champion-title">the Frost Archer</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Sett" data-title="the Boss" data-img="Sett_0.jpg" data-imgpos="center">
-            <img src="Sett_0.jpg" alt="Sett">
-            <div class="champion-info">
-                <span class="champion-name">Sett</span>
-                <span class="champion-title">the Boss</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Yone" data-title="the Unforgotten" data-img="Yone_0.jpg" data-imgpos="center">
-            <img src="Yone_0.jpg" alt="Yone">
-            <div class="champion-info">
-                <span class="champion-name">Yone</span>
-                <span class="champion-title">the Unforgotten</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Kindred" data-title="The Eternal Hunters" data-img="Kindred_0.jpg" data-imgpos="80% center">
-            <img src="Kindred_0.jpg" alt="Kindred" style="object-position: 80% center;">
-            <div class="champion-info">
-                <span class="champion-name">Kindred</span>
-                <span class="champion-title">The Eternal Hunters</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Veigar" data-title="the Tiny Master of Evil" data-img="Veigar_0.jpg" data-imgpos="80% center">
-            <img src="Veigar_0.jpg" alt="Veigar" style="object-position: 80% center;">
-            <div class="champion-info">
-                <span class="champion-name">Veigar</span>
-                <span class="champion-title">the Tiny Master of Evil</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Lillia" data-title="the Bashful Bloom" data-img="Lillia_0.jpg" data-imgpos="center">
-            <img src="Lillia_0.jpg" alt="Lillia">
-            <div class="champion-info">
-                <span class="champion-name">Lillia</span>
-                <span class="champion-title">the Bashful Bloom</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Evelynn" data-title="Agony's Embrace" data-img="Evelynn_0.jpg" data-imgpos="center">
-            <img src="Evelynn_0.jpg" alt="Evelynn">
-            <div class="champion-info">
-                <span class="champion-name">Evelynn</span>
-                <span class="champion-title">Agony's Embrace</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Yasuo" data-title="the Unforgiven" data-img="Yasuo_0.jpg" data-imgpos="85% center">
-            <img src="Yasuo_0.jpg" alt="Yasuo" style="object-position: 85% center;">
-            <div class="champion-info">
-                <span class="champion-name">Yasuo</span>
-                <span class="champion-title">the Unforgiven</span>
-            </div>
-        </div>
-
-        <div class="champion-card" data-champion="Lux" data-title="the Lady of Luminosity" data-img="Lux_0.jpg" data-imgpos="70% center">
-            <img src="Lux_0.jpg" alt="Lux" style="object-position: 70% center;">
-            <div class="champion-info">
-                <span class="champion-name">Lux</span>
-                <span class="champion-title">the Lady of Luminosity</span>
+    <!-- HEADER -->
+    <header>
+        <div class="header-content">
+            <a href="index.html" class="logo">
+                <div class="logo-text">LOL</div>
+                <div class="logo-main">CHAMPIONS</div>
+                <div class="logo-sub">HUB</div>
+            </a>
+            <nav>
+                <a href="index.html">HOME</a>
+                <a href="sampiyonlar.html">CHAMPIONS</a>
+                <a href="lore.html" class="active">LORE</a>
+                <a href="aboutus.html">ABOUT US</a>
+            </nav>
+            
+        </div>
+    </header>
+
+    <!-- LORE HERO -->
+    <section class="lore-hero">
+        <div class="lore-hero-bg"></div>
+        <div class="lore-hero-overlay"></div>
+        <div class="lore-hero-content">
+            <div class="lore-hero-label">WORLD OF RUNETERRA</div>
+            <h1 class="lore-hero-title">THE LORE</h1>
+            <p class="lore-hero-subtitle">Explore the regions, stories and legends that shape the world of League of Legends</p>
+        </div>
+    </section>
+
+    <!-- REGION SELECTOR -->
+    <section class="region-selector">
+        <div class="region-selector-wrapper">
+            <button class="region-scroll-btn left" id="scrollLeft" type="button" aria-label="Scroll regions left">&#8249;</button>
+            <div class="region-nav-container">
+            <div class="region-nav-list" id="regionNavList">
+            <button class="region-btn active" data-region="demacia" type="button">
+                <div class="region-btn-icon">⚔️</div>
+                <div class="region-btn-name">DEMACIA</div>
+                <div class="region-btn-sub">Kingdom of Justice</div>
+            </button>
+            <button class="region-btn" data-region="shurima" type="button">
+                <div class="region-btn-icon">☀️</div>
+                <div class="region-btn-name">SHURIMA</div>
+                <div class="region-btn-sub">Empire of the Sun</div>
+            </button>
+            <button class="region-btn" data-region="piltover" type="button">
+                <div class="region-btn-icon">⚙️</div>
+                <div class="region-btn-name">PILTOVER</div>
+                <div class="region-btn-sub">City of Progress</div>
+            </button>
+            <button class="region-btn" data-region="noxus" type="button">
+                <div class="region-btn-icon">🗡️</div>
+                <div class="region-btn-name">NOXUS</div>
+                <div class="region-btn-sub">Empire of Strength</div>
+            </button>
+            <button class="region-btn" data-region="ionia" type="button">
+                <div class="region-btn-icon">🌸</div>
+                <div class="region-btn-name">IONIA</div>
+                <div class="region-btn-sub">The First Lands</div>
+            </button>
+            <button class="region-btn" data-region="freljord" type="button">
+                <div class="region-btn-icon">❄️</div>
+                <div class="region-btn-name">THE FRELJORD</div>
+                <div class="region-btn-sub">Land of Ice</div>
+            </button>
+            <button class="region-btn" data-region="bilgewater" type="button">
+                <div class="region-btn-icon">⚓</div>
+                <div class="region-btn-name">BILGEWATER</div>
+                <div class="region-btn-sub">City of Iron & Glass</div>
+            </button>
+            <button class="region-btn" data-region="shadow-isles" type="button">
+                <div class="region-btn-icon">💀</div>
+                <div class="region-btn-name">SHADOW ISLES</div>
+                <div class="region-btn-sub">Land of the Dead</div>
+            </button>
+            <button class="region-btn" data-region="targon" type="button">
+                <div class="region-btn-icon">🌟</div>
+                <div class="region-btn-name">TARGON</div>
+                <div class="region-btn-sub">Peak of Celestials</div>
+            </button>
+            <button class="region-btn" data-region="void" type="button">
+                <div class="region-btn-icon">🕳️</div>
+                <div class="region-btn-name">THE VOID</div>
+                <div class="region-btn-sub">Realm of Nothing</div>
+            </button>
+            <button class="region-btn" data-region="zaun" type="button">
+                <div class="region-btn-icon">🧪</div>
+                <div class="region-btn-name">ZAUN</div>
+                <div class="region-btn-sub">The Undercity</div>
+            </button>
+            <button class="region-btn" data-region="ixtal" type="button">
+                <div class="region-btn-icon">🌿</div>
+                <div class="region-btn-name">IXTAL</div>
+                <div class="region-btn-sub">Hidden Jungle</div>
+            </button>
+            <button class="region-btn" data-region="bandle-city" type="button">
+                <div class="region-btn-icon">🎪</div>
+                <div class="region-btn-name">BANDLE CITY</div>
+                <div class="region-btn-sub">Realm of Yordles</div>
+            </button>
+            </div>
             </div>
+            <button class="region-scroll-btn right" id="scrollRight" type="button" aria-label="Scroll regions right">&#8250;</button>
         </div>
-    </div>
-</div>
-
-
-<!-- Overlay + Detail Panel -->
-<div class="panel-overlay" id="panelOverlay"></div>
-
-<div class="detail-panel" id="detailPanel">
-
-    <!-- KAPAT BUTONU -->
-    <button class="panel-close" id="panelClose" aria-label="Close">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-        </svg>
-    </button>
+    </section>
 
-    <!-- SOL KOLON: Video + Yetenekler -->
-    <div class="panel-left">
-        <div class="panel-left-inner">
+    <!-- LORE CONTENT -->
+    <main class="lore-main">
 
-            <!-- VİDEO BÖLÜMÜ -->
-            <div class="panel-video-section">
-                <div class="panel-section-label">CHAMPION VIDEO</div>
-                <div class="panel-video-wrapper" id="panelVideoWrapper">
-                    <div class="panel-video-loading" id="panelVideoLoading">
-                        <span class="video-spinner"></span>
-                        <span>Loading video...</span>
+        <!-- DEMACIA -->
+        <div class="region-content active" id="demacia">
+            <div class="region-layout">
+                <div class="region-side-images left">
+                    <div class="side-img" style="background-image: url('Garen_0.jpg'); background-position: 80% center;" >
+                        <div class="side-img-label">Garen — The Might of Demacia</div>
                     </div>
-                    <iframe
-                        id="panelVideoFrame"
-                        src=""
-                        title="Champion Video"
-                        frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowfullscreen
-                        style="display:none;"
-                    ></iframe>
-                    <div class="panel-video-error" id="panelVideoError" style="display:none;">
-                        <span>🎬</span>
-                        <span>Embedded video unavailable</span>
+                    <div class="side-img" style="background-image: url('Demacia_Hall_Of_Valor.jpg');">
+                        <div class="side-img-label">The Great City</div>
+                    </div>
+                    <div class="side-img" style="background-image: url('Lux_0.jpg');background-position: 70% center;">
+                        <div class="side-img-label">Lux — The Lady of Luminosity</div>
                     </div>
                 </div>
-                <a id="panelVideoLink" class="panel-video-link" href="#" target="_blank" rel="noopener noreferrer" style="display:none;">Find latest spotlight on YouTube</a>
-            </div>
 
-            <div class="panel-divider">
-                <span class="divider-line"></span>
-                <span class="divider-icon">⚔</span>
-                <span class="divider-line"></span>
-            </div>
+                <div class="region-text">
+                    <div class="region-header">
+                        <div class="region-emblem">⚔️</div>
+                        <h2 class="region-title">DEMACIA</h2>
+                        <div class="region-tagline">Kingdom of Justice & Honor</div>
+                        <div class="region-divider"></div>
+                    </div>
+                    <div class="region-body">
+                        <p>Demacia is a powerful, lawful kingdom with a strict moral code and a long history of military excellence. Founded in the aftermath of the Rune Wars, its citizens long ago learned to be wary of magic, viewing it with fear and suspicion.</p>
+                        <p>Surrounded by towering mountains and dense forests, Demacia grew as an isolated kingdom that valued its independence from outside influences. Its people are known for their stoic discipline, self-reliance, and strong sense of civic duty — virtues that have allowed the kingdom to survive and thrive for centuries.</p>
+                        <p>The kingdom is ruled by a proud and noble royal family, supported by an elite fighting force known as the Demacian military. These soldiers train from youth, forging themselves into warriors capable of defending their homeland against any threat — be it the armies of Noxus, the creatures of the Void, or the dangers of wild magic.</p>
+                        <p>Yet beneath the gleaming white stone walls and golden banners, a silent tension grows. Magic has never truly been absent from Demacia — it has only been hidden. Those born with magical abilities face a grim choice: suppress their gifts or face imprisonment in the Mageseekers' dark facilities. As more mages begin to resist, the foundations of Demacian society are tested like never before.</p>
+                        <blockquote>"Demacia stands not because of magic, but in spite of it. Our walls are built with courage, our laws with sacrifice."</blockquote>
+                    </div>
+                    <div class="region-champions">
+                        <div class="region-champions-title">NOTABLE CHAMPIONS</div>
+                        <div class="champion-tags">
+                            <span class="champion-tag">Garen</span>
+                            <span class="champion-tag">Lux</span>
+                            <span class="champion-tag">Jarvan IV</span>
+                            <span class="champion-tag">Fiora</span>
+                            <span class="champion-tag">Poppy</span>
+                            <span class="champion-tag">Sylas</span>
+                        </div>
+                    </div>
+                </div>
 
-            <!-- YETENEKLer BÖLÜMÜ -->
-            <div class="panel-abilities-section">
-                <div class="panel-section-label">ABILITIES</div>
-                <div class="abilities-grid" id="panelAbilities">
-                    <div class="ability-loading">
-                        <span class="ability-spinner"></span>
-                        <span>Loading abilities...</span>
+                <div class="region-side-images right">
+                    <div class="side-img" style="background-image: url('JarvanIV_0.jpg'); background-position: 70%;">
+                        <div class="side-img-label">Jarvan IV — The Exemplar</div>
+                    </div>
+                    <div class="side-img" style="background-image: url('demacian-army.jpg');">
+                        <div class="side-img-label">Demacian Army</div>
+                    </div>
+                    <div class="side-img" style="background-image: url('Sylas_0.jpg');">
+                        <div class="side-img-label">Sylas — The Unshackled</div>
                     </div>
                 </div>
             </div>
-
-        </div>
-    </div>
-
-    <!-- SAĞ KOLON: Görsel + Hikaye -->
-    <div class="panel-right">
-
-        <div class="panel-hero">
-            <img id="panelImg" src="" alt="" />
-            <div class="panel-hero-gradient"></div>
-            <div class="panel-hero-text">
-                <div class="panel-tag">CHAMPION</div>
-                <h1 id="panelName"></h1>
-                <p id="panelTitle"></p>
-            </div>
         </div>
 
-        <div class="panel-lore-section">
-            <h3 class="panel-lore-heading">LORE</h3>
-            <p id="panelLore" class="panel-lore-text"></p>
-        </div>
-
-    </div>
-
-</div>
-
-<script>
-const championLore = {
-  "Aatrox": "Aatrox was once a noble Ascended warrior of Shurima, but he became a corrupted Darkin after the wars against the Void. Humanity trapped his essence inside his own sword, leaving him in a soul-crushing darkness for centuries. Now, he manifests by possessing the bodies of those foolish enough to wield his blade, though their flesh quickly withers under his power. Driven by agony and madness, he seeks to destroy all of existence in hopes of finally ending his own immortal suffering. Once a world protector, he is now the World Ender, a living weapon of pure destruction..",
-  "Ahri": "Ahri is a vastaya from Ionia who was born with a natural connection to the spirit realm. She originally survived by consuming the life essence and memories of mortals to feel more human. However, this left her deeply conflicted and haunted by the lives she had taken. She eventually chose to control her hunger to seek out her lost heritage and her ancestors, the Vesani. Now, she travels the world seeking balance between her predatory nature and her quest for identity. As a nine-tailed fox, she uses her charms and spirit fire to protect her path.",
-  "Zed": "Zed was once a member of the Kinkou Order, but he broke their traditions by embracing forbidden shadow magic. Driven by a desire to protect Ionia from invaders at any cost, he formed the Order of Shadow. He eventually killed his own master to seize the box containing the darkest secrets of his craft. Now, he leads an army of ninjas who use lethal shadows to strike down anyone he deems a threat to his homeland. His path is one of ruthless efficiency, believing that balance is a lie that only leads to weakness.",
-  "Sona": "Sona is a world-renowned virtuoso who communicates only through her elegant chords and vibrant melodies. Abandoned as a baby with her mysterious instrument, the etwahl, she was later adopted by a noble Demacian family. While her music heals and inspires allies, it can also emit lethal vibrations that slice through armor and bone.Because magic is forbidden in Demacia, she must hide her true nature to protect herself and her loved ones. She travels the world, using her performances to soothe the suffering and fight for a more tolerant future. Her music is more than art; it is a powerful weapon and a voice for the voiceless.",
-  "Lee Sin": "Lee Sin is a master of Ionia’s ancient martial arts who channeled the essence of the dragon spirit to defend his homeland against Noxian invaders. In a moment of desperation, he unleashed the dragon's power to defeat his enemies, but the resulting blast cost him his sight and devastated the surrounding land. Seeking atonement for his pride and the destruction he caused, he became a monk and dedicated his life to protecting the balance of Ionia. Despite his blindness, his heightened senses and mastery over his internal energy allow him to strike with unparalleled precision and speed. He now wanders as a legendary warrior-monk, using his powerful kicks and spiritual discipline to fight for justice. He remains a symbol of redemption, proving that even the greatest mistakes can be transformed into a force for good.",
-  "Katarina": "Katarina is a high-born Noxian assassin whose lethal efficiency is legendary within the empire. As the eldest daughter of the famed General Du Couteau, she was raised from birth to be a weapon, mastering the art of the blade with ruthless precision. However, her fiery temperament once led her to disobey a direct order, resulting in a failed mission and a heavy personal cost to her family's reputation. To redeem herself, she now carries out the most dangerous assignments with cold determination, moving through shadows like a whirlwind of steel. Despite the internal politics of Noxus, her loyalty to the empire remains absolute as she strikes down its enemies before they even realize she is there. She is a master of the Shunpo, appearing and disappearing in the blink of an eye to deliver a fatal flourish. Her life is a constant dance between her duty to her nation and her desire to prove her worth as the deadliest blade in Runeterra.",
-  "Thresh": "Thresh was once a custodian of a secret vault beneath the Blessed Isles, tasked with guarding ancient and dangerous magical artifacts. Over centuries, the isolation and the dark energies of the items he watched over twisted his mind, fueling a hidden streak of cruelty. When the Ruination occurred, he did not perish but was instead transformed into a malevolent wraith that feeds on the agony of others. He wanders Runeterra as a sadistic collector, using his ghostly lantern to tear souls from their bodies and imprison them in eternal torture. Thresh takes particular delight in breaking the strongest wills, savoring the slow descent of his victims into despair. Unlike many undead who seek only to destroy, he finds purpose in the prolonged suffering of the living and the dead alike. He remains one of the most feared entities of the Shadow Isles, a master of psychological and physical chains.",
-  "Vayne": "Vayne is a relentless monster hunter who dedicated her life to purging darkness after a demon murdered her family. Armed with a heavy crossbow and silver bolts, she hunts supernatural threats across Runeterra with cold, lethal precision. She views all magic as a corruption and acts as a vigilante, showing no mercy to those tainted by the arcane. Her only goal is vengeance, finding peace only in the destruction of the creatures that haunt the shadows. Vayne remains a solitary predator, driven by an unshakable resolve to cleanse the world of evil. She moves through the night as a silent shadow, ensuring that no monster can ever escape her sights. Her heart is as cold as the steel she carries, hardened by years of solitary warfare against the supernatural.",
-  "Darius": "Darius is the ultimate symbol of Noxian might, rising from humble beginnings to lead the empire's armies with his feared black axe. He believes that strength is the only virtue and that only those with the will to seize power deserve to hold it. On the battlefield, he is a terrifying force of nature, executing enemies of the state with brutal efficiency to inspire his own troops. Unlike many nobles, he values merit over bloodline, forging a nation where anyone can rise if they are strong enough to survive. He serves as the Hand of Noxus, ensuring that the empire remains united and continues its relentless expansion across Runeterra. His loyalty to his homeland is absolute, and he will crush any internal or external threat without a moment of hesitation. Even in the heat of combat, he maintains a tactical mind, knowing exactly when to deliver the final, decapitating blow. He stands as a pillar of the Trifarix, embodying the raw power that defines the heart of Noxus.",
-  "Leona": "Leona is a holy warrior of the Solari who defends Mount Targon with her zenith blade and the shield of daybreak. As the chosen avatar of the Aspect of the Sun, she is imbued with the celestial power of a star, capable of calling down beams of scorching light. She was raised in the harsh martial tradition of the Rakkor, but her path changed forever when she climbed the mountain and was transformed by its divine energy. Now, she serves as a beacon of hope and protection for her people, believing that the sun’s light is the only thing standing against the creeping shadows. Her skin shimmers with golden radiance, and her presence alone is enough to inspire allies or blind those who seek to do harm. Though she deeply misses her childhood friend Diana, she is bound by her duty to uphold the sacred tenets of the Solari faith. She remains a steadfast guardian, unyielding in her mission to illuminate the world and purge the darkness from the mountain's slopes. Every strike she makes is guided by a celestial will, ensuring that the sun never sets on the justice she provides.",
-  "Caitlyn": "Caitlyn is the Sheriff of Piltover and the city's finest sharpshooter, dedicated to maintaining order with her custom hextech rifle. After her parents were kidnapped by a mysterious figure, she used her tracking skills to rescue them and dedicated her life to justice. Known for her sharp intellect, she works alongside her partner Vi to protect the City of Progress from the chaotic undercity. She is currently obsessed with finding a criminal mastermind known as C who is tied to her family's past. Caitlyn believes that every crime leaves a trail and that no one can outrun her incredible range. Her commitment to the law is absolute, making her a symbol of safety for all Piltovans. Even in the face of political corruption, she remains a steady hand and a keen eye for the truth.",
-  "Morgana": "Morgana is a celestial being of Demacia who bound her wings with iron chains to embrace her humanity and the earth below. Born as a twin to the Aspect of Justice, she rejected her sister Kayle’s cold, absolute laws in favor of mercy and the complexity of mortal emotions. She believes that suffering and atonement are necessary for true growth, choosing to live among the people rather than ascending to the heavens. Her dark, soul-binding magic is used to punish the wicked and protect the outcasts who have been judged too harshly by society. Hidden in the shadows of Demacia’s forests, she remains a mysterious guardian who values the truth of the heart over the rigidity of the law. She endured great personal pain during the conflict with her sister, yet she refuses to abandon her belief in redemption. To Morgana, true justice is not found in a golden sword, but in the empathy shown to those who have stumbled.",
-  "Ezreal": "Ezreal is an adventurous explorer from Piltover who possesses a natural talent for the arcane. He discovered a powerful ancient gauntlet during an expedition to the tombs of Shurima, which allows him to fire bolts of pure mystical energy. Unlike most mages who spend years studying, Ezreal relies on his quick wits and the raw power of his artifact to get out of trouble. He travels across Runeterra seeking lost treasures and fame, often finding himself in dangerous situations that he narrowly escapes with a smirk. While he can be arrogant and reckless, his bravery in the face of ancient evils is undeniable. He continues to search for his missing parents, hoping that his legendary exploits will one day lead him back to them. ",
-  "Riven": "Riven was once a poster child for Noxian ideals, wielding a heavy runeblade with unmatched conviction on the battlefield. However, during the invasion of Ionia, she witnessed her own empire use horrific chemical weapons that destroyed both friend and foe alike. This betrayal shattered her faith, leading her to break her sword and go into self-imposed exile to atone for her past. She now wanders the land as a broken warrior seeking redemption, carrying the fragments of her blade as a reminder of her burden. Though Noxus still hunts her as a deserter, she remains committed to finding her own path of honor. Her strength comes not from the empire she served, but from the spirit she rediscovered in the aftermath of war. ",
-  "Diana": "Diana is a warrior of the Lunari who wields her crescent moonblade as the living embodiment of the silver moon's power. Born among the Solari on Mount Targon, she always felt a strange pull toward the night sky that her elders strictly forbade. After discovering a hidden temple and the ancient secrets of the moon, she was branded a heretic and forced to flee her home. She now fights to protect the remnants of her people while struggling with the cold, vengeful celestial essence within her. Despite being hunted by her former sun-worshipping kin, she remains dedicated to finding a truth that unites both the light and the dark. Her path is a lonely one, defined by the silver radiance that guides her through the deepest shadows. ",
-  "Ekko": "Ekko is a brilliant young inventor from the rough streets of Zaun who can manipulate time itself. Using his own invention, the Zero Drive, he shatters moments to rewrite the past and turn every mistake into a strategic advantage. Although he lives in a world of poverty and danger, he uses his genius to protect his friends and the neighborhood he calls home. He values the freedom and spirit of the undercity, refusing to abandon it for the luxury of Piltover. Even though he can replay any moment, he knows that some consequences are permanent and carries the weight of those lessons. He is a symbol of hope and resilience, proving that even a kid from the streets can change the future. ",
-  "Miss Fortune": "Miss Fortune, also known as Sarah Fortune, is a legendary Bilgewater captain whose beauty is only matched by her ruthlessness. After witnessing the brutal murder of her parents by the pirate king Gangplank, she dedicated her life to a cold and calculated revenge. She spent years building her reputation and a loyal crew, eventually reclaiming Bilgewater and seemingly destroying her nemesis. Now, she rules the port city with a mix of charm and overwhelming firepower to keep the chaotic pirate gangs in line. Though she is a master of the dual pistols, her greatest weapon is her sharp strategic mind. She remains ever-vigilant, knowing that in a place like Bilgewater, someone is always waiting to take her throne. Her goal is to transform the city into a true power, free from the cruelty of its past. ",
-  "Viktor": "Viktor is a visionary inventor from Zaun who believes that humanity's flaws can only be cured through the Glorious Evolution of technology. Once a brilliant scientist in Piltover, his altruistic ideas were stolen and dismissed, driving him back to the undercity to continue his work in isolation. He replaced much of his own failing flesh with superior hextech augmentations, becoming a powerful cyborg driven by cold, mechanical logic. While he appears monstrous to some, his goal remains the salvation of mankind from its own physical and emotional weaknesses. He operates in a gray area of morality, viewing his controversial experiments as the only way to ensure human survival in a harsh world. Viktor remains a lonely architect of the future, waiting for the world to realize that metal is stronger than bone. ",
-  "Orianna": " Orianna is a clockwork automaton created by a brilliant inventor to be his daughter. After a tragic accident that left the real Orianna gravely injured, her father transferred her consciousness into a mechanical body to save her life. Now, she moves with graceful precision, using her ball as both a weapon and a tool to protect those she cares about. Despite her artificial form, she retains the warmth and curiosity of her human heart, seeking connection in a world that often fears what it does not understand. Her existence raises questions about the nature of humanity and the soul, as she continues to explore her identity while defending others from harm. ",
-  "Jayce": "Jayce is a brilliant inventor who has dedicated his life to the defense of Piltover and the pursuit of scientific progress. Armed with his transforming Hextech Capacitor Hammer, he serves as the city’s shining protector and a symbol of its technological superiority. While he was once a solitary and arrogant genius, the threat of Viktor’s Glorious Evolution forced him to step into the role of a hero. He balances his time between tinkering in his lab and fighting on the front lines to ensure the safety of his home. Jayce believes that technology should be a tool for the betterment of all, not a means of subjugation. He remains a charismatic yet burdened leader, carrying the weight of Piltover’s future on his armored shoulders.     ",
-  "Irelia": "Irelia is the defiant symbol of Ionia's resistance, having mastered the ancient silk dances of her province to command a lethal array of floating blades. During the Noxian invasion, she witnessed the slaughter of her family and, in a moment of desperate power, shattered the invaders' Great Admiral’s blade with her own spirit. She transformed her grief into a rhythmic, deadly martial art, leading her people as a reluctant general against the occupation. Despite being hailed as a hero, she carries the heavy burden of the lives lost under her command and the peace that was stolen from her homeland. Irelia fights not for glory, but for the preservation of Ionian culture and the safety of those who remain. Her blades move as an extension of her soul, cutting down any who dare threaten the balance of the First Lands. ",
-  "Pyke": "Pyke was once a renowned harpooner in Bilgewater who was abandoned by his crew to be swallowed by a massive jaull-fish. Instead of dying, he was transformed by the deep-sea magic into a vengeful phantom known as the Bloodharbor Ripper. He now stalks the docks of his former home, hunting down those he believes betrayed him and crossing their names off an infinite, supernatural list. To Pyke, everyone in Bilgewater looks like a traitor, and he executes them with a rusted harpoon before dragging them into the cold depths. Driven by a distorted sense of justice, he remains a terrifying legend of the sea, ensuring that no one stays safe from the tides of his wrath. He is the living embodiment of the city's cruelty, turned back upon itself. ",
-  "Kai'Sa": "Kai'Sa was a normal girl until she was swallowed by the earth and trapped in the lightless depths of the Void. To survive the predatory horrors below, she bonded with a living Void-creature that became her second skin and a powerful biological weapon. Now, she has returned to the surface as a lethal hunter, standing as a lone bulwark between Runeterra and the hunger of the abyss. Though she is often feared and shunned by those she protects because of her monstrous appearance, she remains dedicated to her humanity and the survival of her world. She is a survivor of two worlds, belonging to neither but fighting for the one that remains. Her every breath is a testament to the will to endure against impossible odds. ",
-  "Akali": "Akali is a rogue assassin who left the Kinkou Order to protect Ionia on her own terms, believing that the Eye of Twilight was too slow to act. Trained from birth by her mother to be the Fist of Shadow, she eventually rejected the balance of her masters in favor of direct, lethal intervention. She strikes from the veil of her twilight shroud, using her kama and kunai to eliminate those she deems a threat to her homeland. Akali doesn't rely on magic or celestial power, but on her own skill, agility, and a sharp sense of duty that the temples could no longer contain. She moves like a ghost through the night, proving that even without a title, she is a force to be feared ",
-  "Jinx": " Jinx is a manic and impulsive criminal from Zaun who lives to wreak havoc without a thought for the consequences. Armed with an arsenal of lethal toys like her rocket launcher Fishbones and her minigun Pow-Pow, she turns the streets of Piltover into her own personal playground of explosions. Once an innocent girl, a series of tragic events shattered her mind, leaving her with a twisted sense of humor and a love for colorful chaos. She shares a complicated, bitter history with her sister Vi, often targeting the Enforcers just to get her attention. Jinx doesn't care about power or wealth; she only wants to see the world burn in a spectacular display of fire and smoke. To her, every day is a blank canvas waiting to be painted with the bright sparks of a detonator",
-  "Vi": " Vi is the hot-tempered Enforcer of Piltover who uses her massive hextech gauntlets to punch through any problem—and any criminal. Growing up as a street-tough orphan in the lawless districts of Zaun, she learned to survive by her wits and her fists before turning her back on her gang life. Now, she works alongside Sheriff Caitlyn to maintain order, though her methods are often much more destructive than the law usually allows. Despite her rough exterior and penchant for structural damage, she possesses a fierce sense of loyalty and a desire to protect the innocent. She is haunted by her past and her fractured relationship with her sister, Jinx, which remains her greatest unsolved mystery. Vi represents the grit of the undercity combined with the power of Piltover's progress.",
-  "Swain": "Jericho Swain is the visionary ruler of Noxus, having seized control of the empire by deposing a corrupt king and claiming a dark, demonic power. During the invasion of Ionia, he was crippled and left for dead, but he struck a bargain with a crow-like demon of secrets to regain his strength and see what others cannot. Now, he uses his demonic eye to peer into the souls of his enemies and anticipate threats long before they manifest on the horizon. He believes that Noxus must be strong and united to survive a coming darkness that only he truly understands. Unlike other leaders, he rules through strategy and cold calculation rather than simple brutality or birthright. He remains the Grand General of the Trifarix, a man who sacrificed his own humanity to ensure his nation's survival. ",
-  "Pantheon": " Atreus was once a mortal who climbed Mount Targon to seek the power of the Aspect of War, only to have his body completely taken over by the celestial spirit. When the Aspect was killed in battle by Aatrox, the god died, but the mortal Atreus survived and rediscovered the strength in his own human will. He now wields the celestial spear and shield, fueled by the very scars of his defeat and his defiance against the divine. He fights for humanity, believing that mortals do not need the guidance or the whims of fickle gods to determine their own fate. Though he possesses the power of a star, he remains a man at heart, proving that perseverance is greater than any immortal title. To Pantheon, every fall is an opportunity to stand up stronger and strike back at the heavens.",
-  "Samira": " Samira is a desert-born thrill-seeker who found her true calling in the Noxian military, performing death-defying feats that others find impossible. After her home was destroyed, she moved to Noxus and built a reputation as a peerless mercenary who accepts only the most dangerous and stylish assignments. Armed with dual pistols and a custom-crafted blade, she treats every battle as a high-stakes performance to be executed with flair. She thrives on the edge of a blade, seeking out challenges that push her to the absolute limit of her skill and reflexes. Samira doesn't fight for a cause or a crown, but for the rush of adrenaline and the glory of a perfect execution. She is a whirlwind of lead and steel, leaving a trail of defeated foes and awe-struck witnesses in her wake.",
-  "Volibear": " Volibear is the ancient, primal god of the storm and the roar of the wild, representing the untamed power of the Freljord. He views the rise of civilization and stone walls as a weakness that has softened the hearts of mortals and severed their connection to the old ways. Clad in armor of eternal ice and wielding the lightning of the first clouds, he seeks to tear down the cities of man and return the world to a state of savage purity. He is a relentless force of nature, followed by the fanatical Ursine who have sacrificed their humanity to embrace their animalistic fury. Volibear does not care for laws or mercy; he only recognizes the strength required to survive the frozen wastes. His thunder is a warning to all who have forgotten the true masters of the north. He remains a towering titan of war, waiting for the final battle that will wash the world clean in a torrent of blood and snow.",
-  "Twitch": " Twitch is a plague-crazed Sump-rat from the depths of Zaun who has evolved into a paranoid, crossbow-wielding monster. Born from the chemical runoff of the undercity, he developed a sharp—albeit twisted—intellect and a deep obsession with filth and trash treasures. He strikes from the shadows using his invisibility, raining down poisoned bolts on unsuspecting victims before disappearing back into the sewers. Twitch dreams of a world where everything is covered in the glorious grime of the Sump, viewing cleanliness as a personal insult. He is a twitchy, unpredictable predator who finds joy in the spread of disease and the chaos of a perfect ambush. To him, the world is just one big pile of rot waiting to be claimed.",
-  "Malphite": "Malphite is an enormous elemental creature made of living stone, a shard of an ancient, soaring fortress known as the Monolith. He was created to maintain cosmic order and defend the world against the encroaching chaos of the Void, but he became stranded on Runeterra when his parent structure was destroyed. Now, he wanders the world as a literal mountain of granite, often mistaken for a natural landmark until he rouses himself to crush those who threaten the balance of the land. Though he feels the heavy loneliness of being the last of his kind, he remains steadfast in his duty, seeking to find a new purpose in a world that feels fragile compared to his eternal form. When he strikes, he does so with the unstoppable force of an earthquake, proving that nothing can withstand the will of the earth itself. ",
-  "Nautilus": " Nautilus was once a man of flesh and blood, a diver for the Bilgewater salvage crews who was betrayed and left to drown in the oily, black depths of the Guardian's Sea. Dragged down by a mysterious darkness and abandoned by his greedy companions, he did not die; instead, he was transformed into a hulking, iron-clad titan fused with his heavy diving suit. Now, he wanders the sunless seafloor, emerging from the tides to drag the treacherous and the greedy down into the crushing pressure of the abyss. Armed with a massive rusted anchor, he serves as a grim reminder that no debt goes unpaid in the deep. He is a silent, inexorable force of nature, driven by a fractured memory of betrayal and a vow to ensure that everyone eventually sinks.",
-  "Jax": "Jax is the last known master-at-arms of Icathia, a warrior who has lived for centuries since the Void consumed his homeland. Unlike others who rely on magical artifacts or complex technology, Jax prides himself on his pure martial skill, famously choosing to fight with a simple brass lamppost instead of a real weapon to give his opponents a fair chance. He wanders Runeterra as a wandering duelist, searching for warriors strong enough to stand alongside him when the Void inevitably returns. Despite his casual and sometimes cocky demeanor, he carries the heavy burden of being a survivor of an apocalypse, fueled by a determination to never let another land suffer Icathia's fate. Beneath his many-eyed mask lies a warrior of unmatched discipline, waiting for the day he can finally put down his lantern and pick up a true blade. ",
-  "Fiora": "Fiora is the most feared duelist in all of Demacia, known for her sharp wit and even sharper rapier. As the head of House Laurent, she took command after a scandal involving her father threatened to destroy their family's reputation; she challenged him to a duel to the death to reclaim their honor. She values perfection above all else, seeking out the greatest blade-masters across the continent to prove her clinical precision and peerless technique. In a kingdom that prizes heavy armor and brute strength, Fiora relies on speed, grace, and the ability to strike a vital point before her opponent even realizes the fight has begun. She is a woman of high standards and zero tolerance for mediocrity, fighting not just for victory, but for the absolute supremacy of her name. ",
-  "Garen": "Garen is the quintessential warrior of Demacia, a high-ranking commander of the Dauntless Vanguard who embodies the kingdom’s ideals of valor, duty, and honor. Born into the prestigious Crownguard family, he is sworn to protect the throne and the walls of Demacia with his life. Clad in heavy magic-resistant plate armor and wielding a massive broadsword, he is a whirlwind of steel on the battlefield, famously known for his unwavering resolve and his Judgment spin. Despite his rigid adherence to Demacian law—which strictly forbids magic—he carries a secret internal conflict regarding his sister Lux and his own perceptions of justice. To Garen, the safety of his people is paramount, and he will face any foe, from Noxian generals to ancient monsters, to ensure the light of Demacia never flickers. ",
-  "Kassadin": "Kassadin was once a renowned guide and adventurer who navigated the harshest deserts of Shurima, but his life was shattered when the Void consumed his village, taking his wife and daughter. Driven by a burning need for vengeance and the desperate hope that his daughter might still be alive, he sought out the most forbidden artifacts in Runeterra to arm himself for a journey into the abyss. He sacrificed his own humanity, grafting magical technology and ancient relics to his body to survive the Void’s corrupting influence. Now, he stands as a grim, lonely sentinel, using the very power of the enemy to hunt their prophets and prevent the world from being swallowed by nothingness. Though he is becoming less human with every step, his resolve to kill the Great Prophet Malzahar remains unshaken. ",
-  "Malzahar": "Malzahar was once a gifted seer in Shurima, haunted by visions of a world consumed by an inevitable, silent hunger. Driven by these whispers, he traveled to the ruins of Icathia, where he was forced to look into the heart of the Void. The experience shattered his mind and replaced his humanity with a fanatical devotion to the coming end. Now, as the Prophet of the Void, he believes that the only way to save the world from its suffering is to allow the abyss to consume everything, bringing a final, cold peace. He commands swarms of Voidlings and uses his dark magic to tear open rifts, spreading the corruption he once feared. To Malzahar, he is not a villain, but a savior leading Runeterra toward its inevitable, quiet evolution. ",
-  "Kayn": "Shieda Kayn is a peerless practitioner of lethal shadow magic, trained by the Order of Shadow to become the ultimate living weapon. He seeks to one day lead the order into a new era of Ionian supremacy, but he has taken a dangerous shortcut by claiming a sentient Darkin scythe known as Rhaast. Now, a constant and brutal war of wills rages within him: either Kayn will master the weapon and become the Shadow Assassin, or the scythe will consume his soul and unleash the Darkin onto Runeterra. He is a master of infiltration, walking through walls and striking from the darkness with a confidence that borders on arrogance. Every battle he fights is a gamble for his own existence, as he dances on the edge of godhood and total annihilation. ",
-  "Mordekaiser": " Mordekaiser is a twice-slain warlord from a forgotten era who refused to fade into the nothingness of the afterlife. Upon his first death, he found only a cold, empty wasteland instead of the hall of heroes he expected; fueled by pure spite and ambition, he learned the secret language of the dead to bind his soul to a suit of colossal iron armor. He returned to the mortal realm to conquer it, turning the souls of his enemies into the very bricks of his Immortal Bastion. Though he was eventually defeated by a treacherous alliance, Mordekaiser saw it as part of his grand design—he now rules the Death Realm, forging an army of spirits to one day return and claim Runeterra for eternity. He is the Iron Revenant, a king who proved that even death can be conquered with enough hatred and iron will.",
-  "Warwick": " Warwick is a monster who hunts through the gray alleys of Zaun. Transformed by agonizing experiments at the hands of Singed, his body is fused with a complex system of chambers and pumps that fill his veins with alchemical rage. Though he tries to remember the man he used to be—a reformed criminal who had put down his blades—the scent of blood now triggers a primal frenzy that he cannot control. He targets the criminals who plague the city's underbelly, but in the heat of the hunt, his beastly nature often blurs the line between the hunter and the predator. With metal claws and a howl that chills the bone, Warwick is a living reminder of the consequences of Zaun's unchecked science.",
-  "Xayah": " Xayah is a Vastayan revolutionary from the Lhotlan tribe, fighting a deadly war to save her people’s fading magic. In an Ionia that has become increasingly human-centric, she sees the construction of temples and the taming of wild magic as a slow execution for her kind. She is sharp, cynical, and exceptionally lethal, using her magically infused plumage like daggers to shred anyone who stands in her way. Though she prefers to work alone, her path became inseparable from the charming rebel Rakan, whose flair for distraction perfectly complements her clinical precision. Together, they strike at the heart of human expansion, aiming to restore the wild, chaotic beauty of the First Lands. To Xayah, freedom is not a gift—it is something that must be carved out with blood and feathers.",
-  "Rakan": "Rakan is the most legendary showman of the Lhotlan tribe and the most dangerous battle-dancer in Ionian history. To the humans of the highlands, his name has long been synonymous with wild festivals, unruly parties, and chaotic music—but for those who threaten the Vastaya, he is a blur of feathers and lethal charm. He acts as the ultimate distraction, drawing every eye and every blade toward himself with his dazzling choreography, allowing his partner Xayah to finish the job. Despite his seemingly frivolous nature, Rakan’s devotion to Xayah is absolute; he fights not for a grand political ideal, but to ensure the woman he loves can live in a world where her magic doesn't have to hide. He is the heartbeat of the rebellion, proving that the most effective weapon is often the one you can’t stop watching. ",
-  "Seraphine": " A pop star from Piltover who can hear the souls of others through music. She uses her Hextech stage to harmonize the divided citizens of Piltover and Zaun, believing that song can bridge any gap.",
-  "Neeko": "A shape-shifting Vastaya from a long-lost tribe who can mimic the appearance and emotions of anyone. She wanders the world with a curious heart, looking for sho'ma (souls) that glow with color and kindness. ", 
-  "Nidalee" : "A fierce tracker raised by a family of pumas in the deepest jungles of the Kumungu. She protects her territory with a spear and her ability to transform into a feline predator, wary of any civilized intruders. ",
-  "Nocturne": " A living nightmare that manifested from the collective terror of sentient minds. He stalks the shadow realm, feeding on the fear of those he traps in eternal darkness, making sure no one feels safe even in their sleep.",
-  "Olaf": " A berserker from the Freljord who received a prophecy that he would die a peaceful, quiet death—the ultimate insult to a warrior. He now seeks out the most dangerous monsters and battles, hoping to find a glorious end.",
-  "Poppy": "A humble Yordle wielding a legendary hammer meant for the Hero of Demacia. Unaware that she herself embodies the strength and courage of that hero, she travels the kingdom looking for a worthy owner for the weapon. ",
-  "Qiyana": "The elemental prodigy and youngest princess of Ixaocan. Driven by ruthless ambition and supreme confidence, she seeks to seize the throne of her hidden jungle empire by mastering the elements of earth, grass, and water. ",
-  "Renekton": " Once a noble Ascended warrior of Shurima, he was driven mad by centuries trapped in darkness with Xerath. Now, he is a Butcher of the Sands, consumed by a bloodthirsty rage and a misplaced desire to kill his brother, Nasus.",
-  "Senna": "A Sentinel of Light who was cursed by the Black Mist and trapped inside Thresh’s lantern for years. Having learned to command the shadows from within, she returned to life to hunt the Ruined King and end the Harrowing. ",
-  "Shen": "The Eye of Twilight and leader of the Kinkou Order. He walks the thin line between the spirit and material realms, setting aside his own emotions to maintain the cosmic balance, regardless of the human cost. ",
-  "Shyvana": " A half-dragon warrior with a heart of fire who struggles to find her place in a world that fears her kind. She serves Demacia and Prince Jarvan IV, using her draconic strength to protect the kingdom that granted her sanctuary.",
-  "Talon": "A cold-blooded assassin raised on the brutal streets of Noxus. After being adopted by the noble General Du Couteau, he became a master of the blade, living only to serve the General's will and eliminate his enemies without a trace. ",
-  "Tryndamere": "A barbarian king fueled by unyielding rage that literally keeps him from dying. After his tribe was slaughtered by a dark entity, he rose to lead his people and united with Ashe to ensure the survival of his clan. ",
-  "Viego": "The Ruined King of a long-lost empire, he unleashed the Black Mist upon the world in a desperate, mad attempt to resurrect his dead queen, Isolde. He will destroy anything and anyone to reclaim his lost love. ",
-  "Zyra": "An ancient, sentient plant that took on human form to survive and spread her deadly seeds. She views all other living things as mere nutrients for her garden, reclaiming the land for the wild and thorns. ",
-  "Aphelios": "A silent Lunari assassin who drinks a poisonous essence to communicate with his sister, Alune. While she provides him with an arsenal of celestial weapons from a distant fortress, he acts as the physical blade of her will. ",
-  "Syndra": " A terrifyingly powerful mage from Ionia who was feared and restrained by her mentors. She broke free of her shackles, lifting her entire fortress into the sky to live in isolation and master her limitless dark potential.",
-  "Ashe": "The Iceborn Warmother of the Avarosan tribe. Wielding a bow of True Ice, she seeks to unite the fractured Freljord not through conquest, but by fulfilling the ancient prophecy of Queen Avarosa. ",
-  "Sett": "The 'Boss' of Ionia’s criminal underworld, he rose from a shunned half-beast pit fighter to the ruler of the fighting arenas. He fights for wealth, respect, and above all, to provide for his beloved mother. ",
-  "Yone": " Yasuo’s older brother, who was killed by him in a duel and returned from the spirit realm. Now masked and wielding a second blade taken from an azakana, he hunts the demons that feed on human negative emotions.",
-  "Kindred": "The twin essences of death: Lamb, who offers a swift end for those who accept their fate, and Wolf, who hunts those who run from it. Together, they represent the inescapable end for every living thing in Runeterra. ",
-  "Veigar": " A Yordle sorcerer who was imprisoned by Mordekaiser, which twisted his mind toward darkness. He now seeks to be the greatest villain the world has ever seen, though his evil deeds often accidentally help people.",
-  "Lillia": "A shy fawn-spirit from Ionia who wanders the world to collect the dreams of mortals. She hopes that by sharing these dreams, she can help heal the world and bloom the Dream Tree of her forest home. ",
-  "Evelynn": "A demonic predator who lures victims with the guise of a beautiful woman. Once they are ensnared by desire, she reveals her true form and feeds on their agonizing pain to feel alive. ",
-  "Yasuo": "An agile swordsman accused of a crime he didn't commit. Forced to kill his own brother in self-defense, he now wanders the world with nothing but the wind as his guide, seeking redemption for his haunted past. ",
-  "Lux": "A bright mage from Demacia who must hide her light-bending powers in a kingdom that hates magic. She secretly works to change the world for the better, hoping for a day when mages can live without fear. "
-};
-
-const panel = document.getElementById('detailPanel');
-const overlay = document.getElementById('panelOverlay');
-const closeBtn = document.getElementById('panelClose');
-const panelImg = document.getElementById('panelImg');
-const panelName = document.getElementById('panelName');
-const panelTitle = document.getElementById('panelTitle');
-const panelLore = document.getElementById('panelLore');
-
-function localizeStaticText() {
-    document.documentElement.lang = 'en';
-
-    if (closeBtn) {
-        closeBtn.setAttribute('aria-label', 'Close');
-    }
-
-    const videoLabel = document.querySelector('.panel-video-section .panel-section-label');
-    const videoLoadingText = document.querySelector('#panelVideoLoading span:last-child');
-    const videoErrorText = document.querySelector('#panelVideoError span:last-child');
-    const abilitiesLabel = document.querySelector('.panel-abilities-section .panel-section-label');
-    const abilityLoadingText = document.querySelector('#panelAbilities .ability-loading span:last-child');
-    const panelTag = document.querySelector('.panel-tag');
-    const loreHeading = document.querySelector('.panel-lore-heading');
-
-    if (videoLabel) videoLabel.textContent = 'CHAMPION VIDEO';
-    if (videoLoadingText) videoLoadingText.textContent = 'Loading video...';
-    if (videoErrorText) videoErrorText.textContent = 'Embedded video unavailable';
-    if (abilitiesLabel) abilitiesLabel.textContent = 'ABILITIES';
-    if (abilityLoadingText) abilityLoadingText.textContent = 'Loading abilities...';
-    if (panelTag) panelTag.textContent = 'CHAMPION';
-    if (loreHeading) loreHeading.textContent = 'LORE';
-}
-
-// Riot Data Dragon sürümü (güncel)
-const DDragon_VERSION = '15.10.1';
-const DDragon_BASE = `https://ddragon.leagueoflegends.com/cdn/${DDragon_VERSION}`;
-
-// Şampiyon adını Data Dragon key'ine çeviren map (özel isimlendirmeler)
-const championKeyMap = {
-  "Aatrox": "Aatrox", "Ahri": "Ahri", "Zed": "Zed", "Sona": "Sona",
-  "Lee Sin": "LeeSin", "Katarina": "Katarina", "Thresh": "Thresh",
-  "Vayne": "Vayne", "Darius": "Darius", "Leona": "Leona",
-  "Caitlyn": "Caitlyn", "Morgana": "Morgana", "Ezreal": "Ezreal",
-  "Riven": "Riven", "Diana": "Diana", "Ekko": "Ekko",
-  "Miss Fortune": "MissFortune", "Viktor": "Viktor", "Orianna": "Orianna",
-  "Jayce": "Jayce", "Irelia": "Irelia", "Pyke": "Pyke",
-  "Kai'Sa": "Kaisa", "Akali": "Akali", "Jinx": "Jinx", "Vi": "Vi",
-  "Swain": "Swain", "Pantheon": "Pantheon", "Samira": "Samira",
-  "Volibear": "Volibear", "Twitch": "Twitch", "Malphite": "Malphite",
-  "Nautilus": "Nautilus", "Jax": "Jax", "Fiora": "Fiora", "Garen": "Garen",
-  "Kassadin": "Kassadin", "Malzahar": "Malzahar", "Kayn": "Kayn",
-  "Mordekaiser": "Mordekaiser", "Warwick": "Warwick", "Xayah": "Xayah",
-  "Rakan": "Rakan", "Seraphine": "Seraphine", "Yuumi": "Yuumi",
-  "Blitzcrank": "Blitzcrank", "Draven": "Draven", "Cho'Gath": "Chogath",
-  "Kha'Zix": "Khazix", "Rengar": "Rengar", "Zoe": "Zoe",
-  "Vel'Koz": "Velkoz", "Teemo": "Teemo", "Aurelion Sol": "AurelionSol",
-  "Azir": "Azir", "Bard": "Bard", "Camille": "Camille",
-  "Fiddlesticks": "Fiddlesticks", "Galio": "Galio", "Gangplank": "Gangplank",
-  "Gwen": "Gwen", "Hecarim": "Hecarim", "Illaoi": "Illaoi",
-  "Jarvan IV": "JarvanIV", "Karthus": "Karthus", "Kled": "Kled",
-  "Lulu": "Lulu", "Nasus": "Nasus", "Neeko": "Neeko", "Nidalee": "Nidalee",
-  "Nocturne": "Nocturne", "Olaf": "Olaf", "Poppy": "Poppy", "Qiyana": "Qiyana",
-  "Renekton": "Renekton", "Senna": "Senna", "Shen": "Shen",
-  "Shyvana": "Shyvana", "Talon": "Talon", "Tryndamere": "Tryndamere",
-  "Viego": "Viego", "Zyra": "Zyra", "Aphelios": "Aphelios", "Syndra": "Syndra",
-  "Ashe": "Ashe", "Sett": "Sett", "Yone": "Yone", "Kindred": "Kindred",
-  "Veigar": "Veigar", "Lillia": "Lillia", "Evelynn": "Evelynn",
-  "Yasuo": "Yasuo", "Lux": "Lux"
-};
-
-// Şampiyon YouTube video ID map
-const championVideoIds = {
-  "Aatrox": "mNlgCZ85rJU", "Ahri": "qwyXMLwrtrE", "Zed": "5itYsy1EOnQ",
-  "Sona": "BSsW1xkU1yU", "Lee Sin": "uGWeKV80jZo", "Katarina": "0pPV2Ehdhks",
-  "Thresh": "52nII6q_OXM", "Vayne": "em1hzfw2cTY", "Darius": "3Fgq1ylnNxQ",
-  "Leona": "yokpl6ReG1Y", "Caitlyn": "muYLs3wXpG4", "Morgana": "uYDyx8v4g4U",
-  "Ezreal": "WSapOkwg3ck", "Riven": "iux0KbkIHOE","Diana": "fhTzWAGeK1M",
-  "Ekko": "YiYAGR06U2I", "Miss Fortune": "x0DwKnIgBgs", "Viktor": "eWZIW77zMm4",
-  "Orianna": "Ov8MWMThSPs", "Jayce": "250V-xRh6dk", "Irelia": "pu8z9zJFHVg",
-  "Pyke": "TXFfghY7kpM", "Kai'Sa": "PqlTxVd6FPI", "Akali": "01jlCIyLitQ",
-  "Jinx": "", "Vi": "", "Swain": "",
-  "Pantheon": "", "Samira": "", "Volibear": "",
-  "Twitch": "", "Malphite": "", "Nautilus": "",
-  "Jax": "", "Fiora": "", "Garen": "",
-  "Kassadin": "", "Malzahar": "", "Kayn": "",
-  "Mordekaiser": "", "Warwick": "", "Xayah": "",
-  "Rakan": "", "Seraphine": "", "Yuumi": "",
-  "Blitzcrank": "", "Draven": "", "Cho'Gath": "",
-  "Kha'Zix": "", "Rengar": "", "Zoe": "",
-  "Vel'Koz": "", "Teemo": "", "Aurelion Sol": "",
-  "Azir": "", "Bard": "", "Camille": "",
-  "Fiddlesticks": "", "Galio": "", "Gangplank": "",
-  "Gwen": "", "Hecarim": "", "Illaoi": "",
-  "Jarvan IV": "", "Karthus": "", "Kled": "",
-  "Lulu": "", "Nasus": "", "Neeko": "",
-  "Nidalee": "", "Nocturne": "", "Olaf": "",
-  "Poppy": "", "Qiyana": "", "Renekton": "",
-  "Senna": "", "Shen": "", "Shyvana": "",
-  "Talon": "", "Tryndamere": "", "Viego": "",
-  "Zyra": "", "Aphelios": "", "Syndra": "",
-  "Ashe": "", "Sett": "", "Yone": "",
-  "Kindred": "", "Veigar": "", "Lillia": "",
-  "Evelynn": "", "Yasuo": "", "Lux": ""
-};
-
-const abilityKeys = ['P', 'Q', 'W', 'E', 'R'];
-
-async function loadChampionAbilitiesEnglish(championName) {
-    const key = championKeyMap[championName] || championName.replace(/[^a-zA-Z]/g, '');
-    const abilitiesContainer = document.getElementById('panelAbilities');
-
-    abilitiesContainer.innerHTML = `<div class="ability-loading"><span class="ability-spinner"></span><span>Loading abilities...</span></div>`;
-
-    try {
-        const res = await fetch(`${DDragon_BASE}/data/en_US/champion/${key}.json`);
-        if (!res.ok) throw new Error('Fetch failed');
-        const data = await res.json();
-        const champ = data.data[key];
-
-        const allAbilities = [
-            { key: 'P', name: champ.passive.name, description: champ.passive.description, img: `${DDragon_BASE}/img/passive/${champ.passive.image.full}` },
-            ...champ.spells.map((spell, i) => ({
-                key: abilityKeys[i + 1],
-                name: spell.name,
-                description: spell.description.replace(/<[^>]+>/g, ''),
-                img: `${DDragon_BASE}/img/spell/${spell.id}.png`
-            }))
-        ];
-
-        abilitiesContainer.innerHTML = allAbilities.map(ab => `
-            <div class="ability-card" data-ability="${ab.key}">
-                <div class="ability-header">
-                    <div class="ability-icon-wrap">
-                        <img class="ability-icon" src="${ab.img}" alt="${ab.name}" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/img/champion/loading/${key}_0.jpg'">
-                        <span class="ability-key-badge">${ab.key}</span>
+        <!-- SHURIMA -->
+        <div class="region-content" id="shurima">
+            <div class="region-layout">
+                <div class="region-side-images left">
+                    <div class="side-img" style="background-image: url('Azir_0.jpg'); background-position: 90% ;">
+                        <div class="side-img-label">Azir — Emperor of the Sands</div>
                     </div>
-                    <div class="ability-title-block">
-                        <span class="ability-name">${ab.name}</span>
+                    <div class="side-img" style="background-image: url('500px-Shurima_Risen_From_The_Sands_02.jpg');">
+                        <div class="side-img-label">The Great Pyramid</div>
+                    </div>
+                    <div class="side-img" style="background-image: url('Nasus_0.jpg'); background-position: 70%;">
+                        <div class="side-img-label">Nasus — The Curator</div>
                     </div>
                 </div>
-                <div class="ability-desc">${ab.description}</div>
-            </div>
-        `).join('');
-    } catch (e) {
-        abilitiesContainer.innerHTML = `<div class="ability-loading" style="color:#c8aa6e88">Ability data could not be loaded.</div>`;
-    }
-}
 
-async function loadChampionAbilities(championName) {
-    return loadChampionAbilitiesEnglish(championName);
-    const key = championKeyMap[championName] || championName.replace(/[^a-zA-Z]/g, '');
-    const abilitiesContainer = document.getElementById('panelAbilities');
-    
-    abilitiesContainer.innerHTML = `<div class="ability-loading"><span class="ability-spinner"></span><span>Loading abilities...</span></div>`;
-    
-    try {
-        const res = await fetch(`${DDragon_BASE}/data/en_US/champion/${key}.json`);
-        if (!res.ok) throw new Error('Fetch failed');
-        const data = await res.json();
-        const champ = data.data[key];
-        
-        // Passive + 4 spells = 5 total
-        const allAbilities = [
-            { key: 'P', name: champ.passive.name, description: champ.passive.description, img: `${DDragon_BASE}/img/passive/${champ.passive.image.full}` },
-            ...champ.spells.map((spell, i) => ({
-                key: abilityKeys[i + 1],
-                name: spell.name,
-                description: spell.description.replace(/<[^>]+>/g, ''),
-                img: `${DDragon_BASE}/img/spell/${spell.id}.png`
-            }))
-        ];
-
-        abilitiesContainer.innerHTML = allAbilities.map(ab => `
-            <div class="ability-card" data-ability="${ab.key}">
-                <div class="ability-header">
-                    <div class="ability-icon-wrap">
-                        <img class="ability-icon" src="${ab.img}" alt="${ab.name}" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/img/champion/loading/${key}_0.jpg'">
-                        <span class="ability-key-badge">${ab.key}</span>
+                <div class="region-text">
+                    <div class="region-header">
+                        <div class="region-emblem">☀️</div>
+                        <h2 class="region-title">SHURIMA</h2>
+                        <div class="region-tagline">Empire of the Eternal Sun</div>
+                        <div class="region-divider"></div>
                     </div>
-                    <div class="ability-title-block">
-                        <span class="ability-name">${ab.name}</span>
+                    <div class="region-body">
+                        <p>Shurima is a vast continent and a former empire of immense power, now largely a desert wasteland dotted with ruins that speak of its ancient glory. Once the greatest civilization the world had ever seen, Shurima fell thousands of years ago in a cataclysmic event that shattered its empire and scattered its people.</p>
+                        <p>At its height, the Shuriman Empire stretched across much of the known world, its cities gleaming with golden towers and its armies led by legendary Ascended warriors — god-warriors empowered by the light of the sun itself. The empire's scholars and mages pushed the boundaries of knowledge, creating wonders that still baffle modern understanding.</p>
+                        <p>But pride and betrayal brought ruin. When Emperor Azir attempted the Ascension ritual for himself rather than the champion Xerath, the Ascension went catastrophically wrong. Xerath, long imprisoned by Azir's family, seized the moment — shattering the sun disc, killing the emperor, and reducing the magnificent capital to dust in an instant.</p>
+                        <p>Today, the desert hides ancient tombs, lost treasures, and slumbering horrors. Wandering tribes survive in the harsh wastes, while treasure hunters brave the ruins. And in those ruins, something ancient stirs once more — Azir has returned, and with him, the dream of a reborn empire.</p>
+                        <blockquote>"Shurima! Your emperor has returned!" — Azir</blockquote>
+                    </div>
+                    <div class="region-champions">
+                        <div class="region-champions-title">NOTABLE CHAMPIONS</div>
+                        <div class="champion-tags">
+                            <span class="champion-tag">Azir</span>
+                            <span class="champion-tag">Nasus</span>
+                            <span class="champion-tag">Renekton</span>
+                            <span class="champion-tag">Xerath</span>
+                            <span class="champion-tag">Sivir</span>
+                            <span class="champion-tag">Taliyah</span>
+                        </div>
                     </div>
                 </div>
-                <div class="ability-desc">${ab.description}</div>
+
+                <div class="region-side-images right">
+                    <div class="side-img" style="background-image: url('Renekton_0.jpg'); background-position: 70%;">
+                        <div class="side-img-label">Renekton — Butcher of the Sands</div>
+                    </div>
+                    <div class="side-img" style="background-image: url('desert-ruins.jpg');">
+                        <div class="side-img-label">Desert Ruins</div>
+                    </div>
+                    <div class="side-img" style="background-image: url('Xerath_0.jpg');">
+                        <div class="side-img-label">Xerath — The Magus Ascendant</div>
+                    </div>
+                </div>
             </div>
-        `).join('');
+        </div>
 
-    } catch(e) {
-        abilitiesContainer.innerHTML = `<div class="ability-loading" style="color:#c8aa6e88">Ability data could not be loaded.</div>`;
-    }
-}
+        <!-- PILTOVER -->
+        <div class="region-content" id="piltover">
+            <div class="region-layout">
+                <div class="region-side-images left">
+                    <div class="side-img" style="background-image: url('Jinx_0.jpg'); background-position: 80%;">
+                        <div class="side-img-label">Jinx — Loose Cannon</div>
+                    </div>
+                    <div class="side-img" style="background-image: url('Zaun_Arcane_01.jpg');">
+                        <div class="side-img-label">The Undercity Zaun</div>
+                    </div>
+                    <div class="side-img" style="background-image: url('Vi_0.jpg'); background-position: 80%;">
+                        <div class="side-img-label">Vi — The Piltover Enforcer</div>
+                    </div>
+                </div>
 
-function loadChampionVideo(championName) {
-    const videoId = championVideoIds[championName];
-    const frame = document.getElementById('panelVideoFrame');
-    const loading = document.getElementById('panelVideoLoading');
-    const error = document.getElementById('panelVideoError');
-    const videoLink = document.getElementById('panelVideoLink');
-    const searchUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(`League of Legends ${championName} Champion Spotlight Riot Games`)}`;
+                <div class="region-text">
+                    <div class="region-header">
+                        <div class="region-emblem">⚙️</div>
+                        <h2 class="region-title">PILTOVER</h2>
+                        <div class="region-tagline">City of Progress & Innovation</div>
+                        <div class="region-divider"></div>
+                    </div>
+                    <div class="region-body">
+                        <p>Piltover is a shining city of industry, innovation, and ingenuity. Perched atop massive locks that control the flow of the river Pilt, it has grown from a modest port into one of the most powerful cities in the known world, driven by the discovery and harnessing of a mysterious energy called Hextech.</p>
+                        <p>The city is governed by a council of powerful merchant clans — old families who have shaped Piltover's growth and jealously guard their influence. These clans fund academies and workshops, competing to produce the next great Hextech breakthrough that might revolutionize industry, medicine, or warfare.</p>
+                        <p>But beneath the gleaming spires of Piltover lies Zaun — the undercity. Once a separate settlement, Zaun has grown in Piltover's shadow, a place of gray skies, chemical smog, and people struggling to survive. The chem-barons of Zaun rule through fear and bribery, while enforcers from above maintain an uneasy order.</p>
+                        <p>The tension between Piltover's progress and Zaun's poverty defines the region. Hextech, the miraculous technology that powers Piltover's rise, remains out of reach for most Zaunites — a reminder that progress, without justice, only deepens division.</p>
+                        <blockquote>"In Piltover, they say that hextech can solve any problem. In Zaun, we say they just haven't met our problems."</blockquote>
+                    </div>
+                    <div class="region-champions">
+                        <div class="region-champions-title">NOTABLE CHAMPIONS</div>
+                        <div class="champion-tags">
+                            <span class="champion-tag">Jinx</span>
+                            <span class="champion-tag">Vi</span>
+                            <span class="champion-tag">Jayce</span>
+                            <span class="champion-tag">Caitlyn</span>
+                            <span class="champion-tag">Ekko</span>
+                            <span class="champion-tag">Viktor</span>
+                        </div>
+                    </div>
+                </div>
 
-    frame.style.display = 'none';
-    loading.style.display = 'flex';
-    error.style.display = 'none';
-    if (videoLink) {
-        videoLink.style.display = 'none';
-        videoLink.href = searchUrl;
-        videoLink.textContent = 'Find latest spotlight on YouTube';
-    }
+                <div class="region-side-images right">
+                    <div class="side-img" style="background-image: url('Jayce_0.jpg'); background-position: 80%;">
+                        <div class="side-img-label">Jayce — The Defender of Tomorrow</div>
+                    </div>
+                    <div class="side-img" style="background-image: url('hextech.jpg');">
+                        <div class="side-img-label">Hextech Crystals</div>
+                    </div>
+                    <div class="side-img" style="background-image: url('Caitlyn_0.jpg'); background-position: 80%;">
+                        <div class="side-img-label">Caitlyn — The Sheriff</div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    if (!videoId) {
-        loading.style.display = 'none';
-        error.style.display = 'flex';
-        if (videoLink) {
-            videoLink.style.display = 'inline-flex';
-        }
-        return;
-    }
+        <!-- NOXUS -->
+        <div class="region-content" id="noxus">
+            <div class="region-layout">
+                <div class="region-side-images left">
+                    <div class="side-img" style="background-image: url('Darius_0.jpg');">
+                        <div class="side-img-label">Darius — Hand of Noxus</div>
+                    </div>
+                    <div class="side-img" style="background-image: url('Noxus_The_Immortal_Bastion_01.jpg');">
+                        <div class="side-img-label">The Immortal Bastion</div>
+                    </div>
+                    <div class="side-img" style="background-image: url('Draven_0.jpg'); background-position: 80%;">
+                        <div class="side-img-label">Draven — The Glorious Executioner</div>
+                    </div>
+                </div>
 
-    frame.src = '';
-    frame.onload = null;
-    frame.onerror = null;
+                <div class="region-text">
+                    <div class="region-header">
+                        <div class="region-emblem">🗡️</div>
+                        <h2 class="region-title">NOXUS</h2>
+                        <div class="region-tagline">Empire of Strength & Conquest</div>
+                        <div class="region-divider"></div>
+                    </div>
+                    <div class="region-body">
+                        <p>Noxus is a brutal and powerful empire that has conquered a vast portion of the known world through military might and cunning strategy. Unlike the rigid hierarchies of other kingdoms, Noxus values strength above all else — strength of body, mind, or will. Anyone who proves their worth can rise to power, regardless of birth.</p>
+                        <p>The empire is built upon a foundation of relentless expansion. Noxian generals are expected to push borders outward, to bring more peoples and resources under the empire's banner. Those who resist face total subjugation; those who submit are absorbed into the empire, their cultures slowly reshaped to serve Noxian ideals.</p>
+                        <p>At the heart of Noxus stands the Immortal Bastion, a fortress-city of dark stone and iron, where the ruling Trifarix council governs the empire. Three thrones represent three principles of Noxian leadership — vision, might, and guile — and the council must balance all three to rule effectively.</p>
+                        <p>But the empire's greatest weapon may also be its greatest weakness. A culture that worships power breeds endless ambition — and ambitious men do not always aim outward. Internal rivalries, assassinations, and sudden coups have reshaped Noxian leadership many times, and the chaos of ambition may one day consume the empire from within.</p>
+                        <blockquote>"Noxus does not conquer to destroy. Noxus conquers to make stronger." — Darius</blockquote>
+                    </div>
+                    <div class="region-champions">
+                        <div class="region-champions-title">NOTABLE CHAMPIONS</div>
+                        <div class="champion-tags">
+                            <span class="champion-tag">Darius</span>
+                            <span class="champion-tag">Draven</span>
+                            <span class="champion-tag">Katarina</span>
+                            <span class="champion-tag">Swain</span>
+                            <span class="champion-tag">Cassiopeia</span>
+                            <span class="champion-tag">Vladimir</span>
+                        </div>
+                    </div>
+                </div>
 
-    const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=0&rel=0&modestbranding=1&playsinline=1`;
+                <div class="region-side-images right">
+                    <div class="side-img" style="background-image: url('Katarina_0.jpg'); background-position: 80%;">
+                        <div class="side-img-label">Katarina — The Sinister Blade</div>
+                    </div>
+                    <div class="side-img" style="background-image: url('noxian-legion.png'); background-position: 40%;">
+                        <div class="side-img-label">Noxian Legion</div>
+                    </div>
+                    <div class="side-img" style="background-image: url('Swain_0.jpg'); background-position: 80%;">
+                        <div class="side-img-label">Swain — The Noxian Grand General</div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    frame.src = embedUrl;
-    frame.style.display = 'block';
-    loading.style.display = 'none';
+        <!-- IONIA -->
+        <div class="region-content" id="ionia">
+            <div class="region-layout">
+                <div class="region-side-images left">
+                    <div class="side-img" style="background-image: url('Yasuo_0.jpg'); background-position: 90%;">
+                        <div class="side-img-label">Yasuo — The Unforgiven</div>
+                    </div>
+                    <div class="side-img" style="background-image: url('498px-2025_Season_2_Promo_01.png');background-position: 40% center;">
+                        <div class="side-img-label">Spirit Blossom Festival</div>
+                    </div>
+                    <div class="side-img" style="background-image: url('ahri.avif');">
+                        <div class="side-img-label">Ahri — The Nine-Tailed Fox</div>
+                    </div>
+                </div>
 
-    if (videoLink) {
-        videoLink.href = searchUrl;
-        videoLink.style.display = 'inline-flex';
-    }
-}
+                <div class="region-text">
+                    <div class="region-header">
+                        <div class="region-emblem">🌸</div>
+                        <h2 class="region-title">IONIA</h2>
+                        <div class="region-tagline">The First Lands — Where Magic Breathes</div>
+                        <div class="region-divider"></div>
+                    </div>
+                    <div class="region-body">
+                        <p>Ionia is an archipelago of incredible natural beauty, steeped in ancient spiritual tradition and a deep connection to the magical world known as the Spirit Realm. Its people have long believed that all living things are part of a great spiritual balance — and that maintaining that balance is the highest calling a person can have.</p>
+                        <p>Unlike most regions, Ionia has no unified government or standing army. Instead, it is organized around a loose confederation of provinces, each led by elders and spiritual guides. Its warriors are monks, wandering swordsmen, and nature spirits — not professional soldiers. For centuries, this was enough, because Ionia was protected by its isolation and its formidable spiritual defenses.</p>
+                        <p>That changed when Noxus invaded. The Noxian conquest was brutal and swift, shattering Ionian society and forcing its peaceful people to confront a terrible question: how do you preserve your values when survival demands you abandon them? The resistance that grew from this conflict produced some of the greatest warriors in the world — and some of the most broken souls.</p>
+                        <p>Today, Ionia struggles to heal. Some provinces lie in ruins, others have been rebuilt, and the spiritual balance that once made the land seem magical has been deeply disturbed. Ancient spirits grow restless, and a dark power known as the Void creeps at the edges of reality. Yet in this broken land, hope endures — carried by warriors who fight not for conquest, but for something they believe is worth protecting.</p>
+                        <blockquote>"The sword that cuts without purpose is as dangerous as the fist that strikes in anger." — Master Yi</blockquote>
+                    </div>
+                    <div class="region-champions">
+                        <div class="region-champions-title">NOTABLE CHAMPIONS</div>
+                        <div class="champion-tags">
+                            <span class="champion-tag">Yasuo</span>
+                            <span class="champion-tag">Ahri</span>
+                            <span class="champion-tag">Master Yi</span>
+                            <span class="champion-tag">Irelia</span>
+                            <span class="champion-tag">Zed</span>
+                            <span class="champion-tag">Karma</span>
+                        </div>
+                    </div>
+                </div>
 
-function openPanel(card) {
-    const name = card.dataset.champion;
-    const title = card.dataset.title;
-    const img = card.dataset.img;
-    const imgpos = card.dataset.imgpos || 'center';
+                <div class="region-side-images right">
+                    <div class="side-img" style="background-image: url('Irelia_0.jpg');">
+                        <div class="side-img-label">Irelia — Blade Dancer</div>
+                    </div>
+                    <div class="side-img" style="background-image: url('ancient-temple.jpg');">
+                        <div class="side-img-label">Ancient Temples</div>
+                    </div>
+                    <div class="side-img" style="background-image: url('zed.avif');">
+                        <div class="side-img-label">Zed — Master of Shadows</div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    panelImg.src = img;
-    panelImg.alt = name;
-    panelImg.style.objectPosition = imgpos;
-    panelName.textContent = name;
-    panelTitle.textContent = title;
-    if (!championLore[name]) {
-        panelLore.textContent = "This champion's story will be added soon.";
-    }
-    panelLore.textContent = championLore[name] || "This champion's story will be added soon.";
+        <!-- FRELJORD -->
+        <div class="region-content" id="freljord">
+            <div class="region-layout">
+                <div class="region-side-images left">
+                    <div class="side-img" style="background-image: url('ASHE.avif');">
+                        <div class="side-img-label">Ashe — The Frost Archer</div>
+                    </div>
+                    <div class="side-img" style="background-image: url('Freljord_Pilgrim_Site_Of_Rakelstake.jpg'); background-position: 80%;">
+                        <div class="side-img-label">The Frozen Tundra</div>
+                    </div>
+                    <div class="side-img" style="background-image: url('Sejuani_0.jpg');">
+                        <div class="side-img-label">Sejuani — Fury of the North</div>
+                    </div>
+                </div>
 
-    // Reset animation
-    panelLore.style.animation = 'none';
-    const heroText = panelName.closest('.panel-hero-text');
-    if (heroText) heroText.style.animation = 'none';
+                <div class="region-text">
+                    <div class="region-header">
+                        <div class="region-emblem">❄️</div>
+                        <h2 class="region-title">THE FRELJORD</h2>
+                        <div class="region-tagline">Land of Ice, Fury & Ancient Powers</div>
+                        <div class="region-divider"></div>
+                    </div>
+                    <div class="region-body">
+                        <p>The Freljord is a vast, frozen tundra in the far north of Runeterra, a brutal land of howling blizzards, endless ice fields, and ancient mysteries buried beneath the permafrost. Life here is defined by survival — every tribe, every warrior, every child learns early that the Freljord does not forgive weakness.</p>
+                        <p>The land is divided among three major tribes, each led by a powerful warmother with her own vision for the Freljord's future. Ashe of the Avarosan seeks to unite the tribes through diplomacy and shared purpose. Sejuani of the Winter's Claw believes only strength and conquest can bring unity. And Lissandra, the oldest and most mysterious of the three, pursues her own ancient agenda in the shadows.</p>
+                        <p>Beneath the politics of the three tribes lies a far older conflict. The Freljord holds secrets from before recorded history — a time when demigods called the Iceborn walked the land, and a great evil known as the Watchers threatened to consume all of reality. That darkness was defeated and sealed beneath the ice, but the seals grow thin, and the cold deepens with each passing year.</p>
+                        <p>Warriors of the Freljord are among the toughest in the world — hardened by cold, shaped by struggle, and guided by ancient traditions that blend battle, spirituality, and a fierce respect for the natural world. To survive the Freljord is to be forged like iron: tested until only the strongest remains.</p>
+                        <blockquote>"The Freljord does not care about your past. Only your survival." — Sejuani</blockquote>
+                    </div>
+                    <div class="region-champions">
+                        <div class="region-champions-title">NOTABLE CHAMPIONS</div>
+                        <div class="champion-tags">
+                            <span class="champion-tag">Ashe</span>
+                            <span class="champion-tag">Sejuani</span>
+                            <span class="champion-tag">Lissandra</span>
+                            <span class="champion-tag">Tryndamere</span>
+                            <span class="champion-tag">Braum</span>
+                            <span class="champion-tag">Volibear</span>
+                        </div>
+                    </div>
+                </div>
 
-    // Load video + abilities
-    loadChampionVideo(name);
-    loadChampionAbilities(name);
-    if (!championLore[name]) {
-        panelLore.textContent = "This champion's story will be added soon.";
-    }
-    
-    overlay.classList.add('active');
-    panel.classList.add('active');
-    document.body.style.overflow = 'hidden';
+                <div class="region-side-images right">
+                    <div class="side-img" style="background-image: url('Lissandra_0.jpg'); background-position: 80%;">
+                        <div class="side-img-label">Lissandra — The Ice Witch</div>
+                    </div>
+                    <div class="side-img" style="background-image: url('Howling_Abyss_Landscape.png');">
+                        <div class="side-img-label">Ancient Ice Ruins</div>
+                    </div>
+                    <div class="side-img" style="background-image: url('Braum_0.jpg'); background-position: 80%;">
+                        <div class="side-img-label">Braum — Heart of the Freljord</div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    // Trigger animations
-    requestAnimationFrame(() => {
-        panelLore.style.animation = '';
-        const heroText = panelName.closest('.panel-hero-text');
-        if (heroText) heroText.style.animation = '';
-    });
-}
 
-function closePanel() {
-    panel.classList.remove('active');
-    overlay.classList.remove('active');
-    document.body.style.overflow = '';
-    // Video'yu durdur
-    const frame = document.getElementById('panelVideoFrame');
-    if (frame) frame.src = '';
-}
+        <!-- BILGEWATER -->
+        <div class="region-content" id="bilgewater">
+            <div class="region-layout">
+                <div class="region-side-images left">
+                    <div class="side-img" style="background-image: url('MissFortune_0.jpg'); background-position: 80% center;">
+                        <div class="side-img-label">Miss Fortune — The Bounty Hunter</div>
+                    </div>
+                    <div class="side-img" style="background-image: url('Bilgewater_A_New_Beginning.jpg');">
+                        <div class="side-img-label">The Port of Bilgewater</div>
+                    </div>
+                    <div class="side-img" style="background-image: url('Gangplank_0.jpg');">
+                        <div class="side-img-label">Gangplank — The Saltwater Scourge</div>
+                    </div>
+                </div>
+                <div class="region-text">
+                    <div class="region-header">
+                        <div class="region-emblem">⚓</div>
+                        <h2 class="region-title">BILGEWATER</h2>
+                        <div class="region-tagline">City of Iron, Salt & Lawless Ambition</div>
+                        <div class="region-divider"></div>
+                    </div>
+                    <div class="region-body">
+                        <p>Bilgewater is a port city unlike any other — a lawless, dangerous, and utterly alive metropolis built on the bones of ships, monsters, and broken dreams. Clinging to the Blue Flame Isles in the middle of the sea, it is the crossroads of the known world, where merchants, pirates, bounty hunters, and monsters meet on equal and equally dangerous footing.</p>
+                        <p>There is no formal government in Bilgewater. Power belongs to whoever can hold it. For years, that man was Gangplank — the Saltwater Scourge, whose iron grip and brutal reputation kept the port's many factions in check. His fall shattered the fragile balance of power, unleashing a violent scramble among the city's chem-lords, pirate captains, and criminal guilds.</p>
+                        <p>The seas around Bilgewater are treacherous beyond measure. Massive creatures known as the Beasts of the Deep patrol the waters, and the mist that drifts from the nearby Shadow Isles carries dangers more terrifying than any sea monster. Yet fortunes are made here that cannot be made anywhere else — and so the ships keep coming.</p>
+                        <p>Bilgewater has its own mythology, born of salt and blood. Shamans commune with the dead. Hunters pursue leviathans for sport. And somewhere in the depths below the city, ancient things sleep and dream of rising. This is not a place for the faint of heart — but for those with nerve, it is a place where anything is possible.</p>
+                        <blockquote>"In Bilgewater, every man is worth exactly what he can take — and no more." — Gangplank</blockquote>
+                    </div>
+                    <div class="region-champions">
+                        <div class="region-champions-title">NOTABLE CHAMPIONS</div>
+                        <div class="champion-tags">
+                            <span class="champion-tag">Miss Fortune</span>
+                            <span class="champion-tag">Gangplank</span>
+                            <span class="champion-tag">Nautilus</span>
+                            <span class="champion-tag">Fizz</span>
+                            <span class="champion-tag">Graves</span>
+                            <span class="champion-tag">Twisted Fate</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="region-side-images right">
+                    <div class="side-img" style="background-image: url('Nautilus_0.jpg');">
+                        <div class="side-img-label">Nautilus — Titan of the Depths</div>
+                    </div>
+                    <div class="side-img" style="background-image: url('Bilgewater_A_New_Beginning.jpg'); background-position: right center;">
+                        <div class="side-img-label">The Slaughter Docks</div>
+                    </div>
+                    <div class="side-img" style="background-image: url('Graves_0.jpg'); background-position: 80%;">
+                        <div class="side-img-label">Graves — The Outlaw</div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-const championGrid = document.querySelector('.champion-grid');
+        <!-- SHADOW ISLES -->
+        <div class="region-content" id="shadow-isles">
+            <div class="region-layout">
+                <div class="region-side-images left">
+                    <div class="side-img" style="background-image: url('Thresh_0.jpg'); background-position: 80%;">
+                        <div class="side-img-label">Thresh — The Chain Warden</div>
+                    </div>
+                    <div class="side-img" style="background-image: url('black-mist.jpg');">
+                        <div class="side-img-label">The Black Mist</div>
+                    </div>
+                    <div class="side-img" style="background-image: url('Karthus_0.jpg');">
+                        <div class="side-img-label">Karthus — The Deathsinger</div>
+                    </div>
+                </div>
+                <div class="region-text">
+                    <div class="region-header">
+                        <div class="region-emblem">💀</div>
+                        <h2 class="region-title">SHADOW ISLES</h2>
+                        <div class="region-tagline">Land of the Undying Dead</div>
+                        <div class="region-divider"></div>
+                    </div>
+                    <div class="region-body">
+                        <p>The Shadow Isles were once a beautiful archipelago known as the Blessed Isles — a place of extraordinary magical power and harmony, where scholars came from across the world to study the secrets of life and death. Today, they are among the most terrifying places in all of Runeterra, shrouded in the Black Mist and haunted by the restless dead.</p>
+                        <p>The catastrophe that destroyed the Blessed Isles is known as the Ruination. A Noxian king named Viego, consumed by grief over the death of his queen Isolde, brought her body to the Isles to be resurrected using their legendary healing waters. When the ritual went wrong, a wave of corrupting death magic — the Black Mist — erupted from the isles, killing everything and trapping their souls in a state of eternal undeath.</p>
+                        <p>Now the Shadow Isles exist in a twilight between life and death. Every year, the Black Mist reaches further across the sea, dragging the living into its cold embrace. The spirits that dwell within it are not simply dead — they are tortured, driven mad by their inability to pass on, and consumed by hungers they can never satisfy.</p>
+                        <p>Beneath the Mist, ancient architecture stands preserved in eerie silence. The spirits of great scholars, warriors, and mages wander the ruins, reliving their deaths in endless loops. Only the most powerful of the undead — entities like Thresh, Hecarim, and the Ruined King himself — retain enough will to act with purpose in this wretched domain.</p>
+                        <blockquote>"Death is not the end. On the Shadow Isles, it is only the beginning of suffering." — Thresh</blockquote>
+                    </div>
+                    <div class="region-champions">
+                        <div class="region-champions-title">NOTABLE CHAMPIONS</div>
+                        <div class="champion-tags">
+                            <span class="champion-tag">Thresh</span>
+                            <span class="champion-tag">Karthus</span>
+                            <span class="champion-tag">Hecarim</span>
+                            <span class="champion-tag">Yorick</span>
+                            <span class="champion-tag">Mordekaiser</span>
+                            <span class="champion-tag">Viego</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="region-side-images right">
+                    <div class="side-img" style="background-image: url('Hecarim_0.jpg');">
+                        <div class="side-img-label">Hecarim — Shadow of War</div>
+                    </div>
+                    <div class="side-img" style="background-image: url('ruined-temple.jpg');">
+                        <div class="side-img-label">Ruined Temple</div>
+                    </div>
+                    <div class="side-img" style="background-image: url('Viego_0.jpg'); background-position: 80%;">
+                        <div class="side-img-label">Viego — The Ruined King</div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-localizeStaticText();
+        <!-- TARGON -->
+        <div class="region-content" id="targon">
+            <div class="region-layout">
+                <div class="region-side-images left">
+                    <div class="side-img" style="background-image: url('Leona_0.jpg'); background-position: 80%;">
+                        <div class="side-img-label">Leona — The Radiant Dawn</div>
+                    </div>
+                    <div class="side-img" style="background-image: url('targon-mount.jpg');">
+                        <div class="side-img-label">Mount Targon's Peak</div>
+                    </div>
+                    <div class="side-img" style="background-image: url('Diana_0.jpg');">
+                        <div class="side-img-label">Diana — Scorn of the Moon</div>
+                    </div>
+                </div>
+                <div class="region-text">
+                    <div class="region-header">
+                        <div class="region-emblem">🌟</div>
+                        <h2 class="region-title">TARGON</h2>
+                        <div class="region-tagline">Where Mortals Touch the Sky</div>
+                        <div class="region-divider"></div>
+                    </div>
+                    <div class="region-body">
+                        <p>Mount Targon is the tallest peak in the known world — a place where the boundary between the mortal realm and the realm of the celestials grows impossibly thin. Those who attempt to climb it are testing themselves against something far greater than physical endurance. The mountain itself seems to judge those who dare its slopes, and only a handful in all of history have ever reached the summit.</p>
+                        <p>At the base of the mountain, a warrior culture has grown up around the idea of the Ascent — the legendary journey to the peak. The Rakkor people are fierce, disciplined warriors who believe that fighting and dying in battle is the highest honor. Among them, elite warriors called the Solari worship the sun, while a secret order of Lunari worship the moon in hiding.</p>
+                        <p>Those who reach the summit do not return unchanged. Powerful celestial beings called Aspects sometimes choose to inhabit the bodies of worthy climbers, lending their immense cosmic power to a mortal host. To be Aspect-Touched is to become something between a god and a person — blessed with power beyond imagining, but fundamentally altered, often losing pieces of the self they once were.</p>
+                        <p>Above even the Aspects, ancient cosmic entities watch over reality itself. The Targon region sits at the crossroads of celestial politics that span millennia — and what happens on that sacred peak has consequences far beyond the mortal world.</p>
+                        <blockquote>"The peak does not reward the strong. It rewards those who are willing to become something more." — Leona</blockquote>
+                    </div>
+                    <div class="region-champions">
+                        <div class="region-champions-title">NOTABLE CHAMPIONS</div>
+                        <div class="champion-tags">
+                            <span class="champion-tag">Leona</span>
+                            <span class="champion-tag">Diana</span>
+                            <span class="champion-tag">Pantheon</span>
+                            <span class="champion-tag">Taric</span>
+                            <span class="champion-tag">Aurelion Sol</span>
+                            <span class="champion-tag">Zoe</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="region-side-images right">
+                    <div class="side-img" style="background-image: url('Pantheon_0.jpg'); background-position: 80%;">
+                        <div class="side-img-label">Pantheon — The Unbreakable Spear</div>
+                    </div>
+                    <div class="side-img" style="background-image: url('celestial-realm.jpg');">
+                        <div class="side-img-label">The Celestial Realm</div>
+                    </div>
+                    <div class="side-img" style="background-image: url('AurelionSol_0.jpg');">
+                        <div class="side-img-label">Aurelion Sol — Star Forger</div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-if (championGrid) {
-    championGrid.addEventListener('click', (event) => {
-        const card = event.target.closest('.champion-card[data-champion]');
-        if (!card) return;
-        openPanel(card);
-    });
-}
+        <!-- THE VOID -->
+        <div class="region-content" id="void">
+            <div class="region-layout">
+                <div class="region-side-images left">
+                    <div class="side-img" style="background-image: url('Kassadin_0.jpg'); background-position: 80%;">
+                        <div class="side-img-label">Kassadin — The Void Walker</div>
+                    </div>
+                    <div class="side-img" style="background-image: url('the-void.jpg');">
+                        <div class="side-img-label">The Void Rift</div>
+                    </div>
+                    <div class="side-img" style="background-image: url('kog-maw.jpg');">
+                        <div class="side-img-label">Kog'Maw — The Mouth of the Abyss</div>
+                    </div>
+                </div>
+                <div class="region-text">
+                    <div class="region-header">
+                        <div class="region-emblem">🕳️</div>
+                        <h2 class="region-title">THE VOID</h2>
+                        <div class="region-tagline">The End of All Things</div>
+                        <div class="region-divider"></div>
+                    </div>
+                    <div class="region-body">
+                        <p>The Void is not truly a place — it is the absence of everything. An incomprehensible dimension beyond the physical universe, it exists in contrast to all of creation: where Runeterra has life, form, and meaning, the Void has only hunger. And that hunger is directed, always, at the world of the living.</p>
+                        <p>Long ago, ancient mages discovered the Void as a source of incredible power. They tore open rifts to harness it, not understanding that on the other side, incomprehensible entities were waiting. Those rifts allowed Void creatures to seep into Runeterra, corrupting the land of Icathia into a wasteland and beginning a war that nearly ended the world.</p>
+                        <p>Today, the Void bleeds into Runeterra through cracks in the fabric of reality — places where the barrier between dimensions has grown thin. Void creatures range from mindless, ravenous beasts to vast, ancient intelligences with agendas mortals cannot begin to comprehend. The largest and most dangerous of these are known as Watchers, colossal entities of immense power that have long sought to unmake all that exists.</p>
+                        <p>Against this threat stand unlikely defenders — Kassadin, a man who sacrificed his humanity to fight the Void from within; his daughter Kai'Sa, who survived years inside a Void-consumed territory; and the strange, yearning entity known as Kai'Sa who has learned to love the world the Void seeks to devour.</p>
+                        <blockquote>"There is no 'after' the Void. There is only the Void, and what it has not yet consumed." — Kassadin</blockquote>
+                    </div>
+                    <div class="region-champions">
+                        <div class="region-champions-title">NOTABLE CHAMPIONS</div>
+                        <div class="champion-tags">
+                            <span class="champion-tag">Kassadin</span>
+                            <span class="champion-tag">Kai'Sa</span>
+                            <span class="champion-tag">Kog'Maw</span>
+                            <span class="champion-tag">Vel'Koz</span>
+                            <span class="champion-tag">Cho'Gath</span>
+                            <span class="champion-tag">Bel'Veth</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="region-side-images right">
+                    <div class="side-img" style="background-image: url('KaiSa_0.jpg'); background-position: 80%;">
+                        <div class="side-img-label">Kai'Sa — Daughter of the Void</div>
+                    </div>
+                    <div class="side-img" style="background-image: url('ruins-icathşa.jpg');">
+                        <div class="side-img-label">Ruins of Icathia</div>
+                    </div>
+                    <div class="side-img" style="background-image: url('VelKoz_0.jpg');">
+                        <div class="side-img-label">Vel'Koz — Eye of the Void</div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-if (closeBtn) {
-    closeBtn.addEventListener('click', closePanel);
-}
+        <!-- ZAUN -->
+        <div class="region-content" id="zaun">
+            <div class="region-layout">
+                <div class="region-side-images left">
+                    <div class="side-img" style="background-image: url('Jinx_0.jpg'); background-position: 80%;">
+                        <div class="side-img-label">Jinx — The Loose Cannon</div>
+                    </div>
+                    <div class="side-img" style="background-image: url('Zaun_Arcane_01.jpg');">
+                        <div class="side-img-label">Zaun — The Undercity</div>
+                    </div>
+                    <div class="side-img" style="background-image: url('Singed_0.jpg');">
+                        <div class="side-img-label">Singed — The Mad Chemist</div>
+                    </div>
+                </div>
+                <div class="region-text">
+                    <div class="region-header">
+                        <div class="region-emblem">🧪</div>
+                        <h2 class="region-title">ZAUN</h2>
+                        <div class="region-tagline">The Gray — City Beneath the City</div>
+                        <div class="region-divider"></div>
+                    </div>
+                    <div class="region-body">
+                        <p>Zaun lies beneath Piltover, a city of perpetual twilight where sunlight barely penetrates through the bridges and platforms of the city above. The air is thick with chemical smog called the Gray — a toxic haze that coats everything and slowly poisons those who breathe it. Yet Zaun is alive in a way Piltover's gleaming streets are not: raw, desperate, creative, and fiercely proud.</p>
+                        <p>Where Piltover innovates for profit, Zaun innovates for survival. Chemtech — a rougher, cheaper cousin of hextech — powers everything from crude prosthetics to illegal combat enhancements. The undercity's engineers, called chem-techs, work miracles with salvage and refuse, building remarkable machines from what Piltover throws away.</p>
+                        <p>Power in Zaun belongs to the chem-barons — crime lords who control entire districts through a combination of chemical supply, hired muscle, and dark charisma. Their rule is brutal and arbitrary. Yet in the absence of Piltover's Enforcers, the chem-barons are the only law the undercity has, and some of them are no worse — and occasionally better — than the merchant councils above.</p>
+                        <p>Zaunites possess a resilience and dark humor that outsiders often mistake for resignation. They are not broken people — they are people who have learned to build beauty in the dark. Their art, their music, their food, and their loyalty to one another create a culture that, in its own grimed and gaslit way, shines.</p>
+                        <blockquote>"They say we live in the gutter. They forget that gutters are what carry away the things that would drown the city above." — Ekko</blockquote>
+                    </div>
+                    <div class="region-champions">
+                        <div class="region-champions-title">NOTABLE CHAMPIONS</div>
+                        <div class="champion-tags">
+                            <span class="champion-tag">Ekko</span>
+                            <span class="champion-tag">Jinx</span>
+                            <span class="champion-tag">Singed</span>
+                            <span class="champion-tag">Warwick</span>
+                            <span class="champion-tag">Urgot</span>
+                            <span class="champion-tag">Twitch</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="region-side-images right">
+                    <div class="side-img" style="background-image: url('Ekko_0.jpg'); background-position: 80%;">
+                        <div class="side-img-label">Ekko — The Boy Who Shattered Time</div>
+                    </div>
+                    <div class="side-img" style="background-image: url('zaun-arcane-undercity.png');">
+                        <div class="side-img-label">Zaun's Neon Streets</div>
+                    </div>
+                    <div class="side-img" style="background-image: url('Warwick_0.jpg');">
+                        <div class="side-img-label">Warwick — The Uncaged Wrath</div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-if (overlay) {
-    overlay.addEventListener('click', closePanel);
-}
+        <!-- IXTAL -->
+        <div class="region-content" id="ixtal">
+            <div class="region-layout">
+                <div class="region-side-images left">
+                    <div class="side-img" style="background-image: url('Qiyana_0.jpg'); background-position: 80%;">
+                        <div class="side-img-label">Qiyana — Empress of the Elements</div>
+                    </div>
+                    <div class="side-img" style="background-image: url('ixtal-jungle.jpg');">
+                        <div class="side-img-label">The Ixtal Rainforest</div>
+                    </div>
+                    <div class="side-img" style="background-image: url('Nidalee_0.jpg');">
+                        <div class="side-img-label">Nidalee — The Bestial Huntress</div>
+                    </div>
+                </div>
+                <div class="region-text">
+                    <div class="region-header">
+                        <div class="region-emblem">🌿</div>
+                        <h2 class="region-title">IXTAL</h2>
+                        <div class="region-tagline">The Hidden Jungle Civilization</div>
+                        <div class="region-divider"></div>
+                    </div>
+                    <div class="region-body">
+                        <p>Ixtal is one of Runeterra's greatest secrets — an ancient civilization that has spent centuries hiding from the outside world deep within the vast jungles of the continent's southern interior. While other kingdoms rise and fall, wage wars, and reshape the world, Ixtal watches from the shadows of its canopy, certain that isolation is the only path to survival.</p>
+                        <p>The Ixtali are masters of elemental magic — specifically the manipulation of nature's fundamental forces: earth, water, fire, and air. Their magic is old, precise, and extraordinarily powerful, developed over thousands of years in perfect isolation. The ruling class of Ixtal, the Yun Tal, are elemental mages of supreme ability who control every aspect of Ixtali society.</p>
+                        <p>This isolation was born from hard experience. Ixtal was once part of the Shuriman Empire, and the Ruination that swept the continent left deep scars. The Ixtali withdrew, sealed their borders, and began the long project of protecting themselves — first from the outside world, then from the monsters of the jungle, and finally from their own internal divisions.</p>
+                        <p>Today, younger Ixtali are beginning to question whether isolation is truly protection or merely a comfortable illusion. The world is changing — the Void grows, ancient evils stir, and the jungles themselves seem to be responding to some unseen disturbance. Whatever Ixtal's future holds, it can no longer be kept entirely hidden.</p>
+                        <blockquote>"The jungle provides everything we need. The question is whether we are brave enough to ask for only what we need." — Zyra</blockquote>
+                    </div>
+                    <div class="region-champions">
+                        <div class="region-champions-title">NOTABLE CHAMPIONS</div>
+                        <div class="champion-tags">
+                            <span class="champion-tag">Qiyana</span>
+                            <span class="champion-tag">Nidalee</span>
+                            <span class="champion-tag">Zyra</span>
+                            <span class="champion-tag">Rengar</span>
+                            <span class="champion-tag">Malphite</span>
+                            <span class="champion-tag">Neeko</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="region-side-images right">
+                    <div class="side-img" style="background-image: url('Zyra_0.jpg'); background-position: 80%;">
+                        <div class="side-img-label">Zyra — Rise of the Thorns</div>
+                    </div>
+                    <div class="side-img" style="background-image: url('ixtal-ruins.jpg');">
+                        <div class="side-img-label">Ancient Ixtal Ruins</div>
+                    </div>
+                    <div class="side-img" style="background-image: url('Rengar_0.jpg');">
+                        <div class="side-img-label">Rengar — The Pridestalker</div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closePanel();
-});
-</script>
+        <!-- BANDLE CITY -->
+        <div class="region-content" id="bandle-city">
+            <div class="region-layout">
+                <div class="region-side-images left">
+                    <div class="side-img" style="background-image: url('Teemo_0.jpg'); background-position: 80%;">
+                        <div class="side-img-label">Teemo — The Swift Scout</div>
+                    </div>
+                    <div class="side-img" style="background-image: url('bandle-city,.png');">
+                        <div class="side-img-label">Bandle City — Realm of Yordles</div>
+                    </div>
+                    <div class="side-img" style="background-image: url('Lulu_0.jpg');">
+                        <div class="side-img-label">Lulu — The Fae Sorceress</div>
+                    </div>
+                </div>
+                <div class="region-text">
+                    <div class="region-header">
+                        <div class="region-emblem">🎪</div>
+                        <h2 class="region-title">BANDLE CITY</h2>
+                        <div class="region-tagline">Where Magic Lives Between the Worlds</div>
+                        <div class="region-divider"></div>
+                    </div>
+                    <div class="region-body">
+                        <p>Bandle City is not quite a place — or rather, it is too many places at once. The home of the yordles exists in a magical dimension that overlaps with the physical world but is not quite part of it. A yordle walking through a Bandle City doorway might emerge in a forest outside Demacia, a market in Piltover, or nowhere in particular, depending on the will of the city itself.</p>
+                        <p>Yordles are small, fuzzy, and almost maddeningly cheerful creatures who are, at their core, beings of pure magic. They live in Bandle City not because they are trapped there but because they choose to return — the city reflects their emotional landscape, shifting and changing as yordle moods shift and change. It is simultaneously the safest place in the world and the most bewildering.</p>
+                        <p>Despite their harmless appearance, yordles are neither weak nor naive. Many of them wander into the human world out of curiosity, and their experiences there range from delightful to traumatic. A yordle separated from Bandle City for too long will begin to change — growing stranger, more serious, sometimes darker — as the magic that defines them slowly fades.</p>
+                        <p>The yordle relationship with the physical world has produced some of the most peculiar warriors, inventors, and mages in Runeterra. Whether firing toxic darts in Demacia, playing tricks in Noxus, or building improbable machines in Piltover, yordles carry a piece of Bandle City with them — a spark of pure, impossible magic that refuses to be extinguished.</p>
+                        <blockquote>"We do not come from this world. We merely visit it — and we always bring a little magic with us." — Lulu</blockquote>
+                    </div>
+                    <div class="region-champions">
+                        <div class="region-champions-title">NOTABLE CHAMPIONS</div>
+                        <div class="champion-tags">
+                            <span class="champion-tag">Teemo</span>
+                            <span class="champion-tag">Lulu</span>
+                            <span class="champion-tag">Tristana</span>
+                            <span class="champion-tag">Rumble</span>
+                            <span class="champion-tag">Corki</span>
+                            <span class="champion-tag">Heimerdinger</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="region-side-images right">
+                    <div class="side-img" style="background-image: url('Tristana_0.jpg'); background-position: 80%;">
+                        <div class="side-img-label">Tristana — The Yordle Gunner</div>
+                    </div>
+                    <div class="side-img" style="background-image: url('the-yordle-realm.jpg');">
+                        <div class="side-img-label">The Yordle Realm</div>
+                    </div>
+                    <div class="side-img" style="background-image: url('Heimerdinger_0.jpg');">
+                        <div class="side-img-label">Heimerdinger — Revered Inventor</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-links">
+                    <a href="https://www.riotgames.com/tr/?utm_medium=card1%2Bsupport.riotgames.com&utm_source=riotbar" target="_self" class="footer-link">About ▼</a>
+                    <a href="https://support.riotgames.com/hc/tr" class="footer-link" target="_self">Support ▼</a>
+            </div>
+            <div class="footer-bottom">
+                <div>Riot Games © 2024. All rights reserved.</div>
+
+            </div>
+        </div>
+    </footer>
+
+    <script src="lore.js"></script>
 </body>
 </html>
