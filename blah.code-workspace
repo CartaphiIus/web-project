@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "../web projem"
+		},
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "zart zurt"
+	}
+}

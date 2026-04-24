@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LOL Champions Hub - Updates</title>
+    <link rel="icon" type="image/x-icon" href="9.ico">
+    <link rel="stylesheet" href="updates.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a href="index.html" class="logo">
+                <div class="logo-text">LOL</div>
+                <div class="logo-main">CHAMPIONS</div>
+                <div class="logo-sub">HUB</div>
+            </a>
+            <nav>
+                <a href="index.html">HOME</a>
+                <a href="sampiyonlar.html">CHAMPIONS</a>
+                <a href="lore.html">LORE</a>
+                <a href="aboutus.html">ABOUT US</a>
+                <a href="updates.html" class="active">UPDATES</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="updates-hero">
+            <div class="updates-hero-backdrop"></div>
+            <div class="updates-hero-overlay"></div>
+            <div class="updates-hero-content">
+                <p class="hero-eyebrow">LIVE FROM RUNETERRA</p>
+                <h1>UPDATES & PATCH NOTES</h1>
+                <p class="hero-copy">
+                    Home sayfasındaki kısa duyuruların tamamı burada devam ediyor. Haber kartına tıkladığında
+                    detay ekranı açılır, tüm içerik görünür ve patch notlarını ya da duyuruları tam boy okuyabilirsin.
+                </p>
+                <div class="hero-stats">
+                    <div class="hero-stat">
+                        <span class="hero-stat-value" id="heroNewsCount">0</span>
+                        <span class="hero-stat-label">Toplam Haber</span>
+                    </div>
+                    <div class="hero-stat">
+                        <span class="hero-stat-value" id="heroPageCount">0</span>
+                        <span class="hero-stat-label">Toplam Sayfa</span>
+                    </div>
+                    <div class="hero-stat">
+                        <span class="hero-stat-value">LoL</span>
+                        <span class="hero-stat-label">Tema Dili</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="home-links-section">
+            <div class="section-shell">
+                <div class="section-heading">
+                    <p class="section-kicker">HOME CONNECTION</p>
+                    <h2>Home Updates'tan gelen spotlight başlıkları</h2>
+                </div>
+                <div class="home-links" id="homeLinks"></div>
+            </div>
+        </section>
+
+        <section class="news-section">
+            <div class="section-shell">
+                <div class="section-heading section-heading-wide">
+                    <div>
+                        <p class="section-kicker">NEWS GRID</p>
+                        <h2>Runeterra gündemi</h2>
+                    </div>
+                    <div class="page-indicator" id="pageIndicator">1 / 1</div>
+                </div>
+
+                <div class="news-grid" id="newsGrid"></div>
+
+                <div class="pagination-bar">
+                    <button type="button" class="page-btn" id="prevPage">Prev</button>
+                    <div class="pagination-numbers" id="paginationNumbers"></div>
+                    <button type="button" class="page-btn" id="nextPage">Next</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="news-modal" id="newsModal" aria-hidden="true">
+        <div class="news-modal-backdrop" data-close-modal></div>
+        <article class="news-modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+            <button type="button" class="modal-close" id="closeModal" aria-label="Haberi kapat">&times;</button>
+            <div class="modal-media" id="modalMedia"></div>
+            <div class="modal-body">
+                <div class="modal-meta">
+                    <span id="modalCategory"></span>
+                    <span class="meta-divider"></span>
+                    <span id="modalDate"></span>
+                </div>
+                <h3 id="modalTitle"></h3>
+                <p class="modal-subtitle" id="modalSubtitle"></p>
+                <div class="modal-content" id="modalContent"></div>
+            </div>
+        </article>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="https://www.riotgames.com/tr/?utm_medium=card1%2Bsupport.riotgames.com&utm_source=riotbar" target="_self" class="footer-link">About</a>
+                <a href="https://support.riotgames.com/hc/tr" class="footer-link" target="_self">Support</a>
+            </div>
+            <div class="footer-bottom">
+                <div>Riot Games &copy; 2026. All rights reserved.</div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="updates.js"></script>
+</body>
+</html>

@@ -1,0 +1,576 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-color: #0a1428;
+    --secondary-color: #1a2f3f;
+    --accent-color: #c89b3c;
+    --accent-light: #d4af37;
+    --text-primary: #ffffff;
+    --text-secondary: #b8b8b8;
+    --border-color: #2a4a5f;
+}
+
+body {
+    background-color: #0a1428;
+    color: var(--text-primary);
+    font-family: 'Crimson Text', Georgia, serif;
+    overflow-x: hidden;
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('Runeterra\ Map.png') center/cover;
+    opacity: 0.25;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* ===================== HEADER ===================== */
+header {
+    background-color: rgba(10, 20, 40, 0.97);
+    border-bottom: 2px solid var(--border-color);
+    padding: 0 40px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 15px 0;
+}
+
+.logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: var(--accent-light);
+    font-family: 'Cinzel', serif;
+}
+
+.logo-text  { font-size: 14px; font-weight: bold; letter-spacing: 2px; }
+.logo-main  { font-size: 20px; font-weight: bold; letter-spacing: 1px; }
+.logo-sub   { font-size: 10px; letter-spacing: 1px; color: var(--accent-color); }
+
+nav {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+}
+
+nav a {
+    color: var(--text-primary);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    transition: color 0.3s;
+    letter-spacing: 0.5px;
+    font-family: 'Cinzel', serif;
+}
+
+nav a:hover,
+nav a.active {
+    color: var(--accent-color);
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    background-color: rgba(30, 50, 80, 0.8);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 8px 15px;
+    gap: 10px;
+}
+
+.search-box input {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 12px;
+    outline: none;
+    width: 200px;
+}
+
+.search-box input::placeholder { color: var(--text-secondary); }
+
+.search-box button {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 16px;
+}
+
+/* ===================== LORE HERO ===================== */
+.lore-hero {
+    position: relative;
+    height: 320px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.lore-hero-bg {
+    position: absolute;
+    inset: 0;
+    background: url('PATH_TO_RUNETERRA_MAP') center/cover no-repeat;
+    opacity: 0.35;
+    z-index: 1;
+}
+
+.lore-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom,
+        rgba(10, 20, 40, 0.4) 0%,
+        rgba(10, 20, 40, 0.2) 50%,
+        rgba(10, 20, 40, 0.95) 100%);
+    z-index: 2;
+}
+
+.lore-hero-content {
+    position: relative;
+    z-index: 3;
+    text-align: center;
+}
+
+.lore-hero-label {
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    letter-spacing: 6px;
+    color: var(--accent-color);
+    margin-bottom: 15px;
+    text-transform: uppercase;
+}
+
+.lore-hero-title {
+    font-family: 'Cinzel', serif;
+    font-size: 72px;
+    font-weight: 900;
+    letter-spacing: 10px;
+    color: var(--text-primary);
+    text-shadow: 0 0 60px rgba(200, 155, 60, 0.4), 0 4px 20px rgba(0,0,0,0.8);
+    margin-bottom: 20px;
+}
+
+.lore-hero-subtitle {
+    font-family: 'Crimson Text', serif;
+    font-size: 18px;
+    color: var(--text-secondary);
+    font-style: italic;
+    max-width: 500px;
+    line-height: 1.6;
+}
+
+/* ===================== REGION SELECTOR ===================== */
+/* ===================== REGION SELECTOR (YENİLENMİŞ) ===================== */
+.region-selector {
+    background: rgba(10, 20, 40, 0.95);
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+    position: sticky;
+    top: 80px; /* Header yüksekliğine göre gerekirse ayarla */
+    z-index: 999;
+}
+
+/* Okları ve listeyi içine alan ana taşıyıcı */
+.region-selector-wrapper {
+    display: flex;
+    align-items: center;
+    max-width: 1400px;
+    margin: 0 auto;
+    position: relative;
+    padding: 0 10px;
+}
+
+/* Butonların içinden geçtiği "pencere" */
+.region-nav-container {
+    width: 100%;
+    overflow: hidden; /* Dışarı taşan butonları gizleyen kritik kısım */
+}
+
+/* Yan yana dizilen butonların gerçek uzun listesi */
+.region-nav-list {
+    display: flex;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform;
+}
+
+/* Her bir butonun ayarı */
+.region-btn {
+    flex: 0 0 20%; /* Ekranda her zaman tam 5 tane (100/5) görünmesini sağlar */
+    min-width: 20%;
+    background: transparent;
+    border: none;
+    border-right: 1px solid var(--border-color);
+    padding: 15px 5px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.region-btn:hover, .region-btn.active {
+    background: rgba(200, 155, 60, 0.1);
+}
+
+.region-btn.active {
+    border-bottom: 3px solid var(--accent-color);
+}
+
+.region-btn-name {
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 1px;
+    color: var(--accent-color);
+}
+
+.region-btn-sub {
+    font-size: 10px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+}
+
+/* Kaydırma Okları */
+.region-scroll-btn {
+    background: rgba(10, 20, 40, 0.9);
+    border: none;
+    color: var(--accent-color);
+    font-size: 30px;
+    width: 60px;
+    height: 100%;
+    cursor: pointer;
+    z-index: 10;
+    transition: 0.3s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.region-scroll-btn:hover {
+    color: white;
+    background: rgba(200, 155, 60, 0.2);
+}
+/* ===================== LORE MAIN ===================== */
+.lore-main {
+    position: relative;
+    z-index: 1;
+    min-height: 600px;
+}
+
+/* Region content panels */
+.region-content {
+    display: none;
+    animation: fadeInUp 0.5s ease;
+}
+
+.region-content.active {
+    display: block;
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Layout: left images | text | right images */
+.region-layout {
+    display: grid;
+    grid-template-columns: 180px 1fr 180px;
+    gap: 0;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 60px 40px;
+    align-items: start;
+}
+
+/* ===================== SIDE IMAGES ===================== */
+.region-side-images {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: sticky;
+    top: 100px;
+}
+
+.region-side-images.left { padding-right: 20px; }
+.region-side-images.right { padding-left: 20px; }
+
+.side-img {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 3/4;
+    background-size: cover;
+    background-position: center;
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    transition: all 0.3s;
+    background-color: rgba(26, 47, 63, 0.6);
+}
+
+.side-img:hover {
+    border-color: var(--accent-color);
+    transform: scale(1.03);
+}
+
+.side-img-label {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 20px 8px 8px;
+    background: linear-gradient(to top, rgba(10,20,40,0.95), transparent);
+    font-size: 10px;
+    color: var(--text-secondary);
+    font-style: italic;
+    font-family: 'Crimson Text', serif;
+    text-align: center;
+}
+
+/* ===================== REGION TEXT ===================== */
+.region-text {
+    padding: 0 40px;
+    border-left: 1px solid rgba(42, 74, 95, 0.5);
+    border-right: 1px solid rgba(42, 74, 95, 0.5);
+}
+
+.region-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.region-emblem {
+    font-size: 48px;
+    margin-bottom: 12px;
+    display: block;
+    filter: drop-shadow(0 0 20px rgba(200, 155, 60, 0.5));
+}
+
+.region-title {
+    font-family: 'Cinzel', serif;
+    font-size: 52px;
+    font-weight: 900;
+    letter-spacing: 8px;
+    color: var(--text-primary);
+    text-shadow: 0 0 40px rgba(200, 155, 60, 0.3);
+    margin-bottom: 8px;
+}
+
+.region-tagline {
+    font-family: 'Crimson Text', serif;
+    font-size: 16px;
+    color: var(--accent-color);
+    font-style: italic;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+}
+
+.region-divider {
+    width: 120px;
+    height: 2px;
+    background: linear-gradient(to right, transparent, var(--accent-color), transparent);
+    margin: 0 auto;
+}
+
+.region-body {
+    margin-bottom: 40px;
+}
+
+.region-body p {
+    font-size: 17px;
+    line-height: 1.9;
+    color: rgba(255, 255, 255, 0.82);
+    margin-bottom: 20px;
+    text-align: justify;
+}
+
+.region-body blockquote {
+    border-left: 3px solid var(--accent-color);
+    padding: 15px 20px;
+    margin: 30px 0;
+    background: rgba(200, 155, 60, 0.06);
+    border-radius: 0 4px 4px 0;
+    font-size: 18px;
+    font-style: italic;
+    color: var(--accent-light);
+    line-height: 1.6;
+}
+
+/* ===================== CHAMPION TAGS ===================== */
+.region-champions {
+    border-top: 1px solid var(--border-color);
+    padding-top: 30px;
+}
+
+.region-champions-title {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--text-secondary);
+    margin-bottom: 15px;
+}
+
+.champion-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.champion-tag {
+    background: rgba(200, 155, 60, 0.1);
+    border: 1px solid rgba(200, 155, 60, 0.3);
+    color: var(--accent-light);
+    padding: 6px 16px;
+    border-radius: 2px;
+    font-size: 13px;
+    font-family: 'Cinzel', serif;
+    letter-spacing: 1px;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.champion-tag:hover {
+    background: rgba(200, 155, 60, 0.25);
+    border-color: var(--accent-color);
+    transform: translateY(-2px);
+}
+
+/* ===================== FOOTER ===================== */
+footer {
+    background-color: rgba(10, 20, 40, 0.95);
+    border-top: 1px solid var(--border-color);
+    padding: 40px 40px 20px;
+    margin-top: 60px;
+    position: relative;
+    z-index: 2;
+}
+
+.footer-content {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.footer-links {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+.footer-link {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 12px;
+    transition: color 0.3s;
+}
+
+.footer-link:hover { color: var(--accent-color); }
+
+.footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+    font-size: 11px;
+    color: var(--text-secondary);
+}
+
+.social-links {
+    display: flex;
+    gap: 20px;
+}
+
+.social-links a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 16px;
+    transition: color 0.3s;
+}
+
+.social-links a:hover { color: var(--accent-color); }
+
+/* ===================== RESPONSIVE ===================== */
+@media (max-width: 1100px) {
+    .region-layout {
+        grid-template-columns: 140px 1fr 140px;
+        padding: 40px 20px;
+    }
+}
+
+@media (max-width: 900px) {
+    .region-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .region-side-images {
+        flex-direction: row;
+        position: static;
+        overflow-x: auto;
+        gap: 10px;
+    }
+
+    .region-side-images.left,
+    .region-side-images.right {
+        padding: 0;
+    }
+
+    .side-img {
+        min-width: 120px;
+        aspect-ratio: 3/4;
+    }
+
+    .region-text {
+        padding: 0;
+        border: none;
+    }
+
+   
+
+    .region-btn {
+        border-bottom: none;
+    }
+
+    .lore-hero-title {
+        font-size: 48px;
+    }
+}
+
+@media (max-width: 600px) {
+    
+
+    .region-btn {
+        flex: 0 0 130px;
+        min-width: 130px;
+    }
+
+    .region-title {
+        font-size: 36px;
+    }
+
+    header { padding: 0 20px; }
+    nav { display: none; }
+}
