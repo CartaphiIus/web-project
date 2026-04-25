@@ -1,7 +1,7 @@
-    <!DOCTYPE html>
-    <html lang="tr">
+﻿<!DOCTYPE html>
+    <html lang="en">
     <head>
-        <title>LoL Champions Hub</title>
+
     <link rel="icon" type="image/x-icon" href="9.ico">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -59,6 +59,9 @@
             .dropdown-item:hover { background:rgba(200,155,60,.09); color:#f0e6d2; padding-left:22px; }
             .dropdown-item.red { color:rgba(221,85,85,.55); }
             .dropdown-item.red:hover { color:#e55; background:rgba(221,85,85,.07); padding-left:22px; }
+            /* guest trigger */
+            .guest-trigger { cursor:pointer; }
+            .guest-avatar { display:flex; align-items:center; justify-content:center; font-size:16px; background:rgba(200,155,60,.07); }
         </style>
     </head>
     <body>
@@ -79,15 +82,30 @@
                     
                 </nav>
 
-                <!-- PROFILE WIDGET -->
-                <div class="profile-widget" id="profileWidget">
-                    <div class="profile-trigger" onclick="toggleDropdown()">
+                <!-- PROFILE WIDGET — always visible -->
+                <div class="profile-widget" id="profileWidget" style="display:block;">
+
+                    <!-- GUEST STATE -->
+                    <div id="guestTrigger" class="profile-trigger guest-trigger" onclick="window.location.href='auth.html'">
+                        <div class="profile-avatar-sm guest-avatar">
+                            <span>👤</span>
+                        </div>
+                        <div style="display:flex;flex-direction:column;gap:1px;">
+                            <span class="profile-username-sm" style="color:rgba(200,155,60,.55);font-size:11px;">Guest</span>
+                            <span style="font-size:10px;color:rgba(200,155,60,.4);letter-spacing:.5px;">Sign In &rarr;</span>
+                        </div>
+                    </div>
+
+                    <!-- LOGGED-IN STATE -->
+                    <div id="loggedTrigger" class="profile-trigger" style="display:none;" onclick="toggleDropdown()">
                         <div class="profile-avatar-sm" id="navAvatarWrap">
-                            <img id="navAvatar" src="" alt="" style="display:block;">
+                            <img id="navAvatar" src="" alt="" style="width:100%;height:100%;object-fit:cover;display:block;">
                         </div>
                         <span class="profile-username-sm" id="navUsername">Summoner</span>
                         <span class="profile-caret">▼</span>
                     </div>
+
+                    <!-- DROPDOWN (logged in only) -->
                     <div class="profile-dropdown" id="profileDropdown">
                         <div class="dropdown-header">
                             <div class="dropdown-avatar-lg">
@@ -95,12 +113,12 @@
                             </div>
                             <div>
                                 <div class="dropdown-name" id="dropName">Summoner</div>
-                                <div class="dropdown-rank" id="dropRank">Rank belirlenmedi</div>
+                                <div class="dropdown-rank" id="dropRank">Rank not set</div>
                             </div>
                         </div>
-                        <a href="profile.html" class="dropdown-item">✦ Profili Düzenle</a>
-                        <a href="sampiyonlar.html" class="dropdown-item">⚡ Şampiyonlar</a>
-                        <button class="dropdown-item red" onclick="logout()">⬡ Çıkış Yap</button>
+                        <a href="profile.html" class="dropdown-item">✦ Edit Profile</a>
+                        <a href="sampiyonlar.html" class="dropdown-item">⚡ Champions</a>
+                        <button class="dropdown-item red" onclick="logout()">Sign Out</button>
                     </div>
                 </div>
             </div>
@@ -166,7 +184,7 @@
                     </div>
                     <div class="champion-card">
                         <a href="sampiyonlar.html" target = "_self">
-                            <img src="aatrox-featured.jpg" alt="Aatrox" class="champion-image">
+                            <img src="aatrox-featured.jpg" alt="Ashe" class="champion-image">
                         <div class="champion-info">
                             <div class="champion-name">AATROX</div>
                             <div class="champion-role">Fighter</div>
@@ -208,7 +226,7 @@
                     </div>
                     <div style="text-align: center;">
                         <div class="champion-avatar">
-                           <a href="sampiyonlar.html" target="_self"> <img src="aurora.avif" alt="Adc">
+                           <a href="sampiyonlar.html" target="_self"> <img src="aurora.avif" alt="Aurora">
                         </div>
                         <div class="champion-avatar-name">Aurora</div> </a>
                     </div>
@@ -232,7 +250,7 @@
                     </div>
                     <div style="text-align: center;">
                         <div class="champion-avatar">
-                           <a href="sampiyonlar.html" target="_self"> <img src="akshan.jpg" alt="Droin">
+                           <a href="sampiyonlar.html" target="_self"> <img src="akshan.jpg" alt="Akshan">
                         </div>
                         <div class="champion-avatar-name">Akshan</div></a>
                     </div>
@@ -244,7 +262,7 @@
                     </div>
                     <div style="text-align: center;">
                         <div class="champion-avatar">
-                            <a href="sampiyonlar.html" target="_self"><img src="ASHE.avif" alt="Aatrox">
+                            <a href="sampiyonlar.html" target="_self"><img src="ASHE.avif" alt="Ashe">
                         </div>
                         <div class="champion-avatar-name">Ashe</div> </a>
                     </div>
@@ -314,8 +332,8 @@
             <div class="footer-content">
                 <div class="footer-links">
                 
-                    <a href="https://www.riotgames.com/tr/?utm_medium=card1%2Bsupport.riotgames.com&utm_source=riotbar" target="_self" class="footer-link">About ▼</a>
-                    <a href="https://support.riotgames.com/hc/tr" class="footer-link" target="_self">Support ▼</a>
+                    <a href="https://www.riotgames.com/tr/?utm_medium=card1%2Bsupport.riotgames.com&utm_source=riotbar" target="_self" class="footer-link">About</a>
+                    <a href="https://support.riotgames.com/hc/tr" class="footer-link" target="_self">Support</a>
                 </div>
                 <div class="footer-bottom">
                     <div>Riot Games © 2024. All rights reserved.</div>
@@ -328,33 +346,32 @@
             /* ── PROFILE WIDGET ── */
             function initProfileWidget() {
                 const user = JSON.parse(localStorage.getItem('lol_current') || 'null');
-                const widget = document.getElementById('profileWidget');
                 const ctaBtn = document.getElementById('ctaBtn');
+                const guestTrigger  = document.getElementById('guestTrigger');
+                const loggedTrigger = document.getElementById('loggedTrigger');
 
                 if (user) {
-                    // Show widget, hide CTA
-                    widget.style.display = 'block';
+                    guestTrigger.style.display  = 'none';
+                    loggedTrigger.style.display = 'flex';
                     if (ctaBtn) ctaBtn.style.display = 'none';
 
                     const profile = JSON.parse(localStorage.getItem('lol_profile_' + user.email) || '{}');
-                    const name = profile.username || user.username || 'Summoner';
+                    const name   = profile.username || user.username || 'Summoner';
                     const avatar = profile.avatar || '';
-                    const rank = profile.rank ? '⚔ ' + profile.rank : '⚔ Rank belirlenmedi';
+                    const rank   = profile.rank ? 'Rank: ' + profile.rank : 'Rank not set';
 
-                    // Nav avatar
                     const navImg = document.getElementById('navAvatar');
-                    if (avatar) { navImg.src = avatar; navImg.style.display = 'block'; }
-                    else { navImg.style.display = 'none'; document.getElementById('navAvatarWrap').textContent = '⚔'; }
+                    if (avatar) { navImg.src = avatar; }
+                    else { document.getElementById('navAvatarWrap').innerHTML = '<span style="font-size:18px;display:flex;align-items:center;justify-content:center;width:100%;height:100%;">⚔</span>'; }
 
                     document.getElementById('navUsername').textContent = name;
-
-                    // Dropdown
                     const dropImg = document.getElementById('dropAvatar');
-                    if (avatar) { dropImg.src = avatar; }
+                    if (avatar) dropImg.src = avatar;
                     document.getElementById('dropName').textContent = name;
                     document.getElementById('dropRank').textContent = rank;
                 } else {
-                    widget.style.display = 'none';
+                    guestTrigger.style.display  = 'flex';
+                    loggedTrigger.style.display = 'none';
                     if (ctaBtn) ctaBtn.style.display = 'inline';
                 }
             }

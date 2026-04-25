@@ -1,9 +1,9 @@
-<!DOCTYPE html>
-<html lang="tr">
+﻿<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LOL Champions Hub — Profil</title>
+    <title>LOL Champions Hub - Profile</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -449,7 +449,7 @@
             <div class="t2">CHAMPIONS</div>
             <div class="t3">HUB</div>
         </a>
-        <a href="index.html" class="back-btn">← Ana Sayfaya Dön</a>
+        <a href="index.html" class="back-btn">&larr; Back to Home</a>
     </div>
 </header>
 
@@ -457,7 +457,7 @@
     <!-- Page title -->
     <div class="page-header">
         <div class="page-diamond"></div>
-        <div class="page-title">PROFİL YÖNETİMİ</div>
+        <div class="page-title">PROFILE SETTINGS</div>
         <div class="page-header-line"></div>
     </div>
 
@@ -468,7 +468,7 @@
 
             <!-- Avatar Panel -->
             <div class="panel avatar-panel">
-                <div class="panel-title">SUMMONER GÖRSELİ</div>
+                <div class="panel-title">SUMMONER AVATAR</div>
 
                 <div class="avatar-ring" onclick="document.getElementById('avatarFileInput').click()">
                     <img class="avatar-img" id="mainAvatar" src="" alt="Avatar">
@@ -479,7 +479,7 @@
                 </div>
                 <input type="file" id="avatarFileInput" accept="image/*" onchange="handleAvatarUpload(this)">
 
-                <div class="avatar-picker-title">HAZIR GÖRSELLER</div>
+                <div class="avatar-picker-title">PRESET AVATARS</div>
                 <div class="avatar-grid" id="avatarGrid">
                     <!-- filled by JS -->
                 </div>
@@ -499,7 +499,7 @@
 
             <!-- Lane Panel -->
             <div class="panel">
-                <div class="panel-title">TERCÜMAN LANE</div>
+                <div class="panel-title">PREFERRED LANE</div>
                 <div class="lane-grid" id="laneGrid">
                     <!-- filled by JS -->
                 </div>
@@ -508,69 +508,69 @@
 
         <!-- ── RIGHT: INFO FORM ── -->
         <div class="panel">
-            <div class="panel-title">KİŞİSEL BİLGİLER</div>
+            <div class="panel-title">PERSONAL INFORMATION</div>
 
             <div class="field">
-                <label>SUMMONER ADI</label>
+                <label>SUMMONER NAME</label>
                 <input type="text" id="pUsername" placeholder="LegendaryVayne" maxlength="20">
             </div>
 
             <div class="field-row">
                 <div class="field">
-                    <label>AD</label>
+                    <label>FIRST NAME</label>
                     <input type="text" id="pFirstName" placeholder="Yasuo">
                 </div>
                 <div class="field">
-                    <label>SOYAD</label>
+                    <label>LAST NAME</label>
                     <input type="text" id="pLastName" placeholder="Rüzgar">
                 </div>
             </div>
 
             <div class="field-row">
                 <div class="field">
-                    <label>YAŞ</label>
+                    <label>AGE</label>
                     <input type="number" id="pAge" placeholder="18" min="10" max="99">
                 </div>
                 <div class="field">
-                    <label>ÜLKE</label>
-                    <input type="text" id="pCountry" placeholder="Türkiye">
+                    <label>COUNTRY</label>
+                    <input type="text" id="pCountry" placeholder="Turkey">
                 </div>
             </div>
 
             <div class="field">
-                <label>CİNSİYET</label>
+                <label>GENDER</label>
                 <div class="gender-row">
-                    <button class="gender-btn" data-val="Erkek" onclick="selectGender(this)">♂ Erkek</button>
-                    <button class="gender-btn" data-val="Kadın" onclick="selectGender(this)">♀ Kadın</button>
-                    <button class="gender-btn" data-val="Belirtmek İstemiyorum" onclick="selectGender(this)">— Diğer</button>
+                    <button class="gender-btn" data-val="Male" onclick="selectGender(this)">Male</button>
+                    <button class="gender-btn" data-val="Female" onclick="selectGender(this)">Female</button>
+                    <button class="gender-btn" data-val="Prefer not to say" onclick="selectGender(this)">Other</button>
                 </div>
             </div>
 
             <div class="section-sep"></div>
 
             <div class="field">
-                <label>E-POSTA</label>
+                <label>EMAIL</label>
                 <input type="email" id="pEmail" placeholder="summoner@lol.com">
             </div>
 
             <div class="field">
-                <label>BİYOGRAFİ</label>
-                <input type="text" id="pBio" placeholder="Rifteki en iyi Zed oynuyorum..." maxlength="80">
+                <label>BIO</label>
+                <input type="text" id="pBio" placeholder="I main Zed and love outplays..." maxlength="80">
             </div>
 
             <div class="field">
-                <label>FAVORİ ŞAMPIYON</label>
+                <label>FAVORITE CHAMPION</label>
                 <input type="text" id="pChampion" placeholder="Zed, Yasuo, Jinx...">
             </div>
 
             <button class="save-btn" onclick="saveProfile()">
-                ⚔ PROFİLİ KAYDET
+                Save Profile
             </button>
 
             <div class="danger-zone">
-                <div class="danger-title">TEHLİKELİ BÖLGE</div>
+                <div class="danger-title">DANGER ZONE</div>
                 <button class="logout-btn" onclick="logout()">
-                    ÇIKIŞ YAP (LOGOUT)
+                    SIGN OUT
                 </button>
             </div>
         </div>
@@ -794,7 +794,7 @@
             localStorage.setItem('lol_current', JSON.stringify(updated));
         }
 
-        showToast('✦ Profil başarıyla kaydedildi!');
+        showToast('Profile saved successfully.');
     }
 
     /* ── Logout ── */

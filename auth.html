@@ -1,9 +1,9 @@
-<!DOCTYPE html>
-<html lang="tr">
+﻿<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LOL Champions Hub — Giriş / Kayıt</title>
+    <title>LOL Champions Hub - Sign In / Register</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -521,8 +521,8 @@
 
         <!-- Tabs -->
         <div class="tab-row">
-            <button class="tab-btn active" id="tabLogin" onclick="switchTab('login')">GİRİŞ YAP</button>
-            <button class="tab-btn" id="tabRegister" onclick="switchTab('register')">KAYIT OL</button>
+            <button class="tab-btn active" id="tabLogin" onclick="switchTab('login')">SIGN IN</button>
+            <button class="tab-btn" id="tabRegister" onclick="switchTab('register')">REGISTER</button>
         </div>
 
         <!-- ── LOGIN PANEL ── -->
@@ -530,38 +530,38 @@
             <form id="loginForm" novalidate onsubmit="handleLogin(event)">
 
                 <div class="field">
-                    <label for="loginEmail">E-POSTA / KULLANICI ADI</label>
+                    <label for="loginEmail">EMAIL / USERNAME</label>
                     <div class="field-wrap">
                         <span class="icon">⚔</span>
                         <input type="text" id="loginEmail" placeholder="summoner@lol.com">
                     </div>
-                    <div class="field-error" id="loginEmailErr">Kullanıcı adı veya e-posta gerekli.</div>
+                    <div class="field-error" id="loginEmailErr">Username or email is required.</div>
                 </div>
 
                 <div class="field">
-                    <label for="loginPass">ŞİFRE</label>
+                    <label for="loginPass">PASSWORD</label>
                     <div class="field-wrap">
                         <span class="icon">🛡</span>
                         <input type="password" id="loginPass" placeholder="••••••••">
-                        <button type="button" class="toggle-pass" onclick="togglePass('loginPass', this)">👁</button>
+                        <button type="button" class="toggle-pass" onclick="togglePass('loginPass', this)">Show</button>
                     </div>
-                    <div class="field-error" id="loginPassErr">Şifre gerekli.</div>
+                    <div class="field-error" id="loginPassErr">Password is required.</div>
                 </div>
 
-                <a href="#" class="forgot-link">Şifremi unuttum →</a>
+                <a href="#" class="forgot-link">Forgot password?</a>
 
                 <div class="checkbox-row">
                     <input type="checkbox" class="custom-check" id="rememberMe">
-                    <label for="rememberMe">Beni hatırla</label>
+                    <label for="rememberMe">Remember me</label>
                 </div>
 
                 <button type="submit" class="submit-btn" id="loginBtn">
-                    RIFTTE SAVAŞA GİR
+                    ENTER THE RIFT
                 </button>
 
                 <div class="divider">
                     <div class="divider-line"></div>
-                    <span>VEYA</span>
+                    <span>OR</span>
                     <div class="divider-line"></div>
                 </div>
 
@@ -578,7 +578,7 @@
             </form>
 
             <div class="switch-text">
-                Hesabın yok mu? <a href="#" onclick="switchTab('register'); return false;">Kayıt ol →</a>
+                Don't have an account? <a href="#" onclick="switchTab('register'); return false;">Register</a>
             </div>
         </div>
 
@@ -587,29 +587,29 @@
             <form id="registerForm" novalidate onsubmit="handleRegister(event)">
 
                 <div class="field">
-                    <label for="regUsername">SUMMONER ADI</label>
+                    <label for="regUsername">SUMMONER NAME</label>
                     <div class="field-wrap">
                         <span class="icon">⚡</span>
                         <input type="text" id="regUsername" placeholder="LegendaryVayne" maxlength="20">
                     </div>
-                    <div class="field-error" id="regUsernameErr">En az 3 karakter girin.</div>
+                    <div class="field-error" id="regUsernameErr">Enter at least 3 characters.</div>
                 </div>
 
                 <div class="field">
-                    <label for="regEmail">E-POSTA</label>
+                    <label for="regEmail">EMAIL</label>
                     <div class="field-wrap">
                         <span class="icon">✉</span>
                         <input type="email" id="regEmail" placeholder="summoner@lol.com">
                     </div>
-                    <div class="field-error" id="regEmailErr">Geçerli bir e-posta girin.</div>
+                    <div class="field-error" id="regEmailErr">Enter a valid email address.</div>
                 </div>
 
                 <div class="field">
-                    <label for="regPass">ŞİFRE</label>
+                    <label for="regPass">PASSWORD</label>
                     <div class="field-wrap">
                         <span class="icon">🛡</span>
                         <input type="password" id="regPass" placeholder="••••••••" oninput="updateStrength(this.value)">
-                        <button type="button" class="toggle-pass" onclick="togglePass('regPass', this)">👁</button>
+                        <button type="button" class="toggle-pass" onclick="togglePass('regPass', this)">Show</button>
                     </div>
                     <div class="strength-bar">
                         <div class="strength-seg" id="seg1"></div>
@@ -617,34 +617,34 @@
                         <div class="strength-seg" id="seg3"></div>
                         <div class="strength-seg" id="seg4"></div>
                     </div>
-                    <div class="field-error" id="regPassErr">En az 6 karakter ve 1 rakam içermeli.</div>
+                    <div class="field-error" id="regPassErr">Must be at least 6 characters and include 1 number.</div>
                 </div>
 
                 <div class="field">
-                    <label for="regPass2">ŞİFRE TEKRAR</label>
+                    <label for="regPass2">CONFIRM PASSWORD</label>
                     <div class="field-wrap">
                         <span class="icon">🔑</span>
                         <input type="password" id="regPass2" placeholder="••••••••">
-                        <button type="button" class="toggle-pass" onclick="togglePass('regPass2', this)">👁</button>
+                        <button type="button" class="toggle-pass" onclick="togglePass('regPass2', this)">Show</button>
                     </div>
-                    <div class="field-error" id="regPass2Err">Şifreler eşleşmiyor.</div>
+                    <div class="field-error" id="regPass2Err">Passwords do not match.</div>
                 </div>
 
                 <div class="checkbox-row">
                     <input type="checkbox" class="custom-check" id="agreeTerms">
                     <label for="agreeTerms">
-                        <a href="#">Kullanım Koşulları</a>'nı ve <a href="#">Gizlilik Politikası</a>'nı kabul ediyorum.
+                        I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.
                     </label>
                 </div>
-                <div class="field-error" id="agreeErr" style="margin-top:-14px;margin-bottom:16px;">Devam etmek için kabul etmelisiniz.</div>
+                <div class="field-error" id="agreeErr" style="margin-top:-14px;margin-bottom:16px;">You must accept to continue.</div>
 
                 <button type="submit" class="submit-btn" id="registerBtn">
-                    MACERAYA BAŞLA
+                    START THE JOURNEY
                 </button>
 
                 <div class="divider">
                     <div class="divider-line"></div>
-                    <span>VEYA</span>
+                    <span>OR</span>
                     <div class="divider-line"></div>
                 </div>
 
@@ -663,20 +663,20 @@
             <!-- Success screen -->
             <div class="success-screen" id="successScreen">
                 <div class="success-icon">⚔</div>
-                <div class="success-title">HOŞ GELDİN, SUMMONER!</div>
+                <div class="success-title">WELCOME, SUMMONER!</div>
                 <div class="success-sub">
-                    Hesabın başarıyla oluşturuldu.<br>
-                    Rifteki maceraya başlamaya hazırsın.
+                    Your account has been created successfully.<br>
+                    You are ready to begin your journey on the Rift.
                 </div>
-                <button class="submit-btn" onclick="goHome()">ANA SAYFAYA DÖN</button>
+                <button class="submit-btn" onclick="goHome()">RETURN HOME</button>
             </div>
 
             <div class="switch-text" id="switchToLogin">
-                Zaten hesabın var mı? <a href="#" onclick="switchTab('login'); return false;">Giriş yap →</a>
+                Already have an account? <a href="#" onclick="switchTab('login'); return false;">Sign in</a>
             </div>
         </div>
 
-        <a href="index.html" class="back-link">← Ana sayfaya dön</a>
+        <a href="index.html" class="back-link">&larr; Back to home</a>
     </div>
 </div>
 
@@ -715,7 +715,7 @@
     function togglePass(id, btn) {
         const inp = document.getElementById(id);
         inp.type = inp.type === 'password' ? 'text' : 'password';
-        btn.textContent = inp.type === 'password' ? '👁' : '🙈';
+        btn.textContent = inp.type === 'password' ? 'Show' : 'Hide';
     }
 
     /* ── Password strength ── */
@@ -781,12 +781,12 @@
         hideErr('loginEmailErr'); hideErr('loginPassErr');
         markInput('loginEmail', false); markInput('loginPass', false);
 
-        if (!emailVal) { showErr('loginEmailErr', 'Kullanıcı adı veya e-posta gerekli.'); markInput('loginEmail', true); valid = false; }
-        if (!passVal)  { showErr('loginPassErr', 'Şifre gerekli.'); markInput('loginPass', true); valid = false; }
+        if (!emailVal) { showErr('loginEmailErr', 'Username or email is required.'); markInput('loginEmail', true); valid = false; }
+        if (!passVal)  { showErr('loginPassErr', 'Password is required.'); markInput('loginPass', true); valid = false; }
         if (!valid) return;
 
         const btn = document.getElementById('loginBtn');
-        btn.textContent = 'GİRİŞ YAPILIYOR...';
+        btn.textContent = 'SIGN INILIYOR...';
         btn.classList.add('loading');
 
         setTimeout(() => {
@@ -794,15 +794,15 @@
             const user = users.find(u =>
                 (u.email === emailVal || u.username === emailVal) && u.password === passVal
             );
-            btn.textContent = 'RIFTTE SAVAŞA GİR';
+            btn.textContent = 'ENTER THE RIFT';
             btn.classList.remove('loading');
 
             if (user) {
                 setLoggedIn(user);
-                showToast(`⚔ Hoş geldin, ${user.username}! Rift seni bekliyor.`);
+                showToast(`Welcome back, ${user.username}! The Rift awaits.`);
                 setTimeout(() => { window.location.href = 'index.html'; }, 1800);
             } else {
-                showErr('loginEmailErr', 'Kullanıcı adı/e-posta veya şifre hatalı.');
+                showErr('loginEmailErr', 'Incorrect username, email, or password.');
                 markInput('loginEmail', true);
                 markInput('loginPass', true);
             }
@@ -824,39 +824,39 @@
         ['regUsername','regEmail','regPass','regPass2'].forEach(id => markInput(id, false));
 
         if (username.length < 3) {
-            showErr('regUsernameErr', 'En az 3 karakter girin.');
+            showErr('regUsernameErr', 'Enter at least 3 characters.');
             markInput('regUsername', true); valid = false;
         }
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-            showErr('regEmailErr', 'Geçerli bir e-posta girin.');
+            showErr('regEmailErr', 'Enter a valid email address.');
             markInput('regEmail', true); valid = false;
         }
         if (pass.length < 6 || !/\d/.test(pass)) {
-            showErr('regPassErr', 'En az 6 karakter ve 1 rakam içermeli.');
+            showErr('regPassErr', 'Must be at least 6 characters and include 1 number.');
             markInput('regPass', true); valid = false;
         }
         if (pass !== pass2) {
-            showErr('regPass2Err', 'Şifreler eşleşmiyor.');
+            showErr('regPass2Err', 'Passwords do not match.');
             markInput('regPass2', true); valid = false;
         }
         if (!agreed) {
-            showErr('agreeErr', 'Devam etmek için kabul etmelisiniz.');
+            showErr('agreeErr', 'You must accept to continue.');
             valid = false;
         }
         if (!valid) return;
 
         const users = getUsers();
         if (users.find(u => u.email === email)) {
-            showErr('regEmailErr', 'Bu e-posta zaten kayıtlı.');
+            showErr('regEmailErr', 'This email is already registered.');
             markInput('regEmail', true); return;
         }
         if (users.find(u => u.username === username)) {
-            showErr('regUsernameErr', 'Bu kullanıcı adı alınmış.');
+            showErr('regUsernameErr', 'This username is already taken.');
             markInput('regUsername', true); return;
         }
 
         const btn = document.getElementById('registerBtn');
-        btn.textContent = 'KAYIT YAPILIYOR...';
+        btn.textContent = 'CREATING ACCOUNT...';
         btn.classList.add('loading');
 
         setTimeout(() => {
@@ -877,7 +877,7 @@
 
     /* ── Social login stub ── */
     function socialLogin(provider) {
-        showToast(`${provider} ile giriş yakında aktif olacak ✦`);
+        showToast(`${provider} sign-in will be available soon.`);
     }
 
     /* ── Input real-time clear on type ── */
