@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
     <html lang="tr">
     <head>
         <title>LoL Champions Hub</title>
@@ -7,7 +7,59 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>LOL Champions Hub</title>
         <link rel="stylesheet" href="styles.css">
-        
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap');
+            .profile-widget { position:relative; display:none; }
+            .profile-trigger {
+                display:flex; align-items:center; gap:9px; cursor:pointer;
+                padding:5px 12px 5px 6px;
+                border:1px solid rgba(200,155,60,.3);
+                background:rgba(200,155,60,.07);
+                transition:all .3s;
+                clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%);
+            }
+            .profile-trigger:hover { border-color:rgba(200,155,60,.55); background:rgba(200,155,60,.13); }
+            .profile-avatar-sm {
+                width:32px; height:32px; border-radius:50%;
+                border:2px solid rgba(200,155,60,.45);
+                background:#1a2f3f; overflow:hidden; flex-shrink:0;
+            }
+            .profile-avatar-sm img { width:100%; height:100%; object-fit:cover; display:block; }
+            .profile-username-sm { font-size:12px; font-weight:700; color:#f0e6d2; letter-spacing:.5px; max-width:90px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+            .profile-caret { font-size:9px; color:rgba(200,155,60,.5); transition:transform .3s; }
+            .profile-widget.open .profile-caret { transform:rotate(180deg); }
+            .profile-dropdown {
+                position:absolute; top:calc(100% + 10px); right:0;
+                min-width:210px;
+                background:rgba(10,20,40,.98);
+                border:1px solid rgba(200,155,60,.3);
+                opacity:0; pointer-events:none;
+                transform:translateY(-8px);
+                transition:all .25s; z-index:999;
+                clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px));
+            }
+            .profile-widget.open .profile-dropdown { opacity:1; pointer-events:all; transform:translateY(0); }
+            .dropdown-header {
+                padding:16px 18px 12px;
+                border-bottom:1px solid rgba(200,155,60,.12);
+                display:flex; align-items:center; gap:12px;
+            }
+            .dropdown-avatar-lg { width:44px; height:44px; border-radius:50%; border:2px solid rgba(200,155,60,.4); background:#1a2f3f; overflow:hidden; flex-shrink:0; }
+            .dropdown-avatar-lg img { width:100%; height:100%; object-fit:cover; }
+            .dropdown-name { font-size:14px; font-weight:700; color:#f0e6d2; }
+            .dropdown-rank { font-size:11px; color:rgba(200,155,60,.6); margin-top:2px; }
+            .dropdown-item {
+                display:block; width:100%; padding:11px 18px;
+                background:none; border:none; border-bottom:1px solid rgba(200,155,60,.06);
+                color:rgba(240,230,210,.6); font-size:12px; font-weight:600;
+                text-align:left; cursor:pointer; text-decoration:none;
+                transition:all .2s; letter-spacing:.5px;
+            }
+            .dropdown-item:last-child { border-bottom:none; }
+            .dropdown-item:hover { background:rgba(200,155,60,.09); color:#f0e6d2; padding-left:22px; }
+            .dropdown-item.red { color:rgba(221,85,85,.55); }
+            .dropdown-item.red:hover { color:#e55; background:rgba(221,85,85,.07); padding-left:22px; }
+        </style>
     </head>
     <body>
         <!-- HEADER -->
@@ -26,7 +78,31 @@
                     <a href="updates.html" target="_self">UPDATES</a>
                     
                 </nav>
-                
+
+                <!-- PROFILE WIDGET -->
+                <div class="profile-widget" id="profileWidget">
+                    <div class="profile-trigger" onclick="toggleDropdown()">
+                        <div class="profile-avatar-sm" id="navAvatarWrap">
+                            <img id="navAvatar" src="" alt="" style="display:block;">
+                        </div>
+                        <span class="profile-username-sm" id="navUsername">Summoner</span>
+                        <span class="profile-caret">▼</span>
+                    </div>
+                    <div class="profile-dropdown" id="profileDropdown">
+                        <div class="dropdown-header">
+                            <div class="dropdown-avatar-lg">
+                                <img id="dropAvatar" src="" alt="">
+                            </div>
+                            <div>
+                                <div class="dropdown-name" id="dropName">Summoner</div>
+                                <div class="dropdown-rank" id="dropRank">Rank belirlenmedi</div>
+                            </div>
+                        </div>
+                        <a href="profile.html" class="dropdown-item">✦ Profili Düzenle</a>
+                        <a href="sampiyonlar.html" class="dropdown-item">⚡ Şampiyonlar</a>
+                        <button class="dropdown-item red" onclick="logout()">⬡ Çıkış Yap</button>
+                    </div>
+                </div>
             </div>
         </header>
 
@@ -45,7 +121,7 @@
             <div class="hero-content">
                 <h1 class="hero-title">MASTER THE RIFT:</h1>
                 <div class="hero-subtitle">EXPLORE THE ADVENTURE !</div>
-                <a href="auth.html" target="_self"><button class="cta-button">JOIN THE STORY</button></a>
+                <a href="auth.html" target="_self" id="ctaBtn"><button class="cta-button">JOIN THE STORY</button></a>
             </div>
             <div class="carousel-controls">
                 <div class="carousel-dot active"></div>
@@ -248,5 +324,57 @@
         </footer>
 
         <script src="script.js"></script>
+        <script>
+            /* ── PROFILE WIDGET ── */
+            function initProfileWidget() {
+                const user = JSON.parse(localStorage.getItem('lol_current') || 'null');
+                const widget = document.getElementById('profileWidget');
+                const ctaBtn = document.getElementById('ctaBtn');
+
+                if (user) {
+                    // Show widget, hide CTA
+                    widget.style.display = 'block';
+                    if (ctaBtn) ctaBtn.style.display = 'none';
+
+                    const profile = JSON.parse(localStorage.getItem('lol_profile_' + user.email) || '{}');
+                    const name = profile.username || user.username || 'Summoner';
+                    const avatar = profile.avatar || '';
+                    const rank = profile.rank ? '⚔ ' + profile.rank : '⚔ Rank belirlenmedi';
+
+                    // Nav avatar
+                    const navImg = document.getElementById('navAvatar');
+                    if (avatar) { navImg.src = avatar; navImg.style.display = 'block'; }
+                    else { navImg.style.display = 'none'; document.getElementById('navAvatarWrap').textContent = '⚔'; }
+
+                    document.getElementById('navUsername').textContent = name;
+
+                    // Dropdown
+                    const dropImg = document.getElementById('dropAvatar');
+                    if (avatar) { dropImg.src = avatar; }
+                    document.getElementById('dropName').textContent = name;
+                    document.getElementById('dropRank').textContent = rank;
+                } else {
+                    widget.style.display = 'none';
+                    if (ctaBtn) ctaBtn.style.display = 'inline';
+                }
+            }
+
+            function toggleDropdown() {
+                document.getElementById('profileWidget').classList.toggle('open');
+            }
+
+            // Close dropdown on outside click
+            document.addEventListener('click', function(e) {
+                const w = document.getElementById('profileWidget');
+                if (!w.contains(e.target)) w.classList.remove('open');
+            });
+
+            function logout() {
+                localStorage.removeItem('lol_current');
+                location.reload();
+            }
+
+            initProfileWidget();
+        </script>
     </body>
     </html>
