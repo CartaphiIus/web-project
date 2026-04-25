@@ -161,8 +161,8 @@ main {
     position: absolute;
     inset: 0;
     background:
-        linear-gradient(90deg, rgba(8, 17, 31, 0.92) 0%, rgba(8, 17, 31, 0.58) 46%, rgba(8, 17, 31, 0.88) 100%),
-        url('updates-background.jpgl') center 25%/cover no-repeat;
+        linear-gradient(90deg, rgba(8, 17, 31, 0.92) 0%, rgba(8, 17, 31, 0.58) 50%, rgba(8, 17, 31, 0.88) 100%),
+        url('updates-background.jpg') center 25%/cover no-repeat;
     transform: scale(1.03);
 }
 

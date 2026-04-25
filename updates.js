@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
             category: 'New Costume',
             date: '14 April 2026',
             image: 'update-ahri.jpg',
+            imagePosition: 'center 90%',
             teaser: 'Home sayfasındaki kostüm duyurusunu burada genişletilmiş haber halinde gösteriyoruz. Kart küçük görünür, açıldığında tüm detaylar ekrana gelir.',
             subtitle: 'The spotlight bundle arrives with themed VFX, event missions and a prestige showcase made for the home teaser.',
             featuredOnHome: true,
@@ -90,6 +91,9 @@ document.addEventListener('DOMContentLoaded', () => {
             featuredOnHome: false,
             content: [
                 'Geçici mod haberlerinde genelde hızlı okunabilir özetler daha iyi çalışır. Bu yüzden kart metni kısa tutuldu, detay metni ise açılır pencerede sunuldu.',
+                'Senin ekleyeceğin her yeni haber aynı şablonu kullanacağı için sayfa görsel bütünlüğünü kaybetmez.',
+                'Senin ekleyeceğin her yeni haber aynı şablonu kullanacağı için sayfa görsel bütünlüğünü kaybetmez.',
+                'Senin ekleyeceğin her yeni haber aynı şablonu kullanacağı için sayfa görsel bütünlüğünü kaybetmez.',
                 'Senin ekleyeceğin her yeni haber aynı şablonu kullanacağı için sayfa görsel bütünlüğünü kaybetmez.'
             ]
         },
