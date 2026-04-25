@@ -1159,7 +1159,883 @@ const CHAMPIONS = [
       Malphite:{score:14,reason:'Ult protect during Groundslam engage'},
     }
   },
+  // ── NEW CHAMPIONS ──
+  {
+    id:'Aatrox', name:'Aatrox', title:'The Darkin Blade',
+    roles:['top','jungle'], type:'melee', class:'fighter',
+    damage:{phys:78,magic:12,true:10},
+    cc:['knockup','slow'],
+    engage:8, peel:3, tankiness:7, utility:4, carry:9, waveclear:7, split:8, mobile:5,
+    tags:['carry','engage','sustain','juggernaut'],
+    synergies:{
+      Hecarim:{score:16,reason:'Dual frontline dive forces enemies to peel both threats'},
+      Vi:{score:15,reason:'Hard engage into Aatrox World Ender chain'},
+      Orianna:{score:14,reason:'Ball on Aatrox dive into Shockwave combo'},
+    }
+  },
+  {
+    id:'Akali', name:'Akali', title:'The Rogue Assassin',
+    roles:['mid','top'], type:'melee', class:'assassin',
+    damage:{phys:20,magic:75,true:5},
+    cc:['slow'],
+    engage:8, peel:1, tankiness:2, utility:3, carry:9, waveclear:6, split:6, mobile:9,
+    tags:['assassin','carry','mobile','stealth'],
+    synergies:{
+      Amumu:{score:20,reason:'Mass stun enables safe Akali dive without interrupt'},
+      Malphite:{score:18,reason:'Ult engage → free Five Point Strike chain'},
+      Leona:{score:16,reason:'Hard lockdown lets Akali burst without being peeled'},
+      Orianna:{score:15,reason:'Shockwave + Akali burst = instant kill combo'},
+    }
+  },
+  {
+    id:'Aphelios', name:'Aphelios', title:'The Weapon of the Faithful',
+    roles:['bot'], type:'ranged', class:'marksman',
+    damage:{phys:82,magic:13,true:5},
+    cc:['slow','knockup'],
+    engage:3, peel:3, tankiness:1, utility:5, carry:9, waveclear:7, split:2, mobile:2,
+    tags:['carry','hypercarry','poke','burst'],
+    synergies:{
+      Leona:{score:20,reason:'Sunlight proc enables Aphelios ult burst at max range'},
+      Nautilus:{score:18,reason:'Hook + ult lockdown = safe Aphelios positioning'},
+      Lulu:{score:18,reason:'Wild Growth + shield lets Aphelios hypercarry safely'},
+      Thresh:{score:15,reason:'Hook + flay chain into Infernum AoE'},
+    }
+  },
+  {
+    id:'AurelionSol', name:'Aurelion Sol', title:'The Star Forger',
+    roles:['mid'], type:'ranged', class:'mage',
+    damage:{phys:8,magic:88,true:4},
+    cc:['stun','slow','knockup'],
+    engage:6, peel:4, tankiness:2, utility:7, carry:8, waveclear:8, split:2, mobile:3,
+    tags:['poke','aoe','roam','scaling'],
+    synergies:{
+      Hecarim:{score:16,reason:'Black Hole + Hecarim engage = death zone'},
+      Vi:{score:15,reason:'Dual engage stardust control'},
+      Nautilus:{score:16,reason:'Hook into Stardust burst finisher'},
+    }
+  },
+  {
+    id:'Azir', name:'Azir', title:'The Emperor of the Sands',
+    roles:['mid'], type:'ranged', class:'mage',
+    damage:{phys:15,magic:80,true:5},
+    cc:['knockback','slow','knockup'],
+    engage:6, peel:8, tankiness:2, utility:8, carry:8, waveclear:8, split:2, mobile:5,
+    tags:['aoe','poke','utility','peel','carry'],
+    synergies:{
+      Yasuo:{score:22,reason:'Emperor\'s Divide wall → Last Breath airborne setup'},
+      Vi:{score:16,reason:'Shurima Shuffle wall cuts off escape routes'},
+      Orianna:{score:17,reason:'Emperor\'s Divide + ball control zone denial'},
+      Leesin:{score:18,reason:'Insec into Shurima Shuffle wall trap'},
+    }
+  },
+  {
+    id:'Bard', name:'Bard', title:'The Wandering Caretaker',
+    roles:['support'], type:'ranged', class:'support',
+    damage:{phys:28,magic:62,true:10},
+    cc:['stun','slow'],
+    engage:6, peel:7, tankiness:2, utility:10, carry:3, waveclear:3, split:1, mobile:6,
+    tags:['utility','roam','pick','global'],
+    synergies:{
+      Orianna:{score:16,reason:'Magical Journey + ball delivery for perfect engage'},
+      MissFortune:{score:15,reason:'Tempered Fate stun into Bullet Time'},
+      Jhin:{score:14,reason:'Tempered Fate = free Curtain Call channel'},
+      Karthus:{score:18,reason:'Tempered Fate freezes enemies for Requiem global ult'},
+    }
+  },
+  {
+    id:'Camille', name:'Camille', title:'The Steel Shadow',
+    roles:['top','jungle'], type:'melee', class:'fighter',
+    damage:{phys:80,magic:10,true:10},
+    cc:['stun','slow','knockback'],
+    engage:8, peel:3, tankiness:5, utility:5, carry:8, waveclear:6, split:9, mobile:8,
+    tags:['split','engage','carry','mobile','anti-tank'],
+    synergies:{
+      Orianna:{score:17,reason:'Hextech Ultimatum traps enemy in ball zone'},
+      Vi:{score:16,reason:'Dual engage — Hextech cage + Assault and Battery'},
+      Jinx:{score:14,reason:'Cage lockdown enables Get Excited chain'},
+      TwistedFate:{score:15,reason:'Global gate + Camille split = 2-front pressure'},
+    }
+  },
+  {
+    id:'Chogath', name:"Cho'Gath", title:'The Terror of the Void',
+    roles:['top','jungle','support'], type:'melee', class:'tank',
+    damage:{phys:22,magic:58,true:20},
+    cc:['knockup','silence','slow'],
+    engage:7, peel:4, tankiness:10, utility:6, carry:4, waveclear:6, split:3, mobile:2,
+    tags:['tank','engage','true-damage','execute'],
+    synergies:{
+      MissFortune:{score:18,reason:'Rupture knockup into Bullet Time AoE'},
+      Orianna:{score:16,reason:'Rupture ball delivery → Shockwave'},
+      Yasuo:{score:16,reason:'Rupture airborne → Last Breath'},
+      Amumu:{score:15,reason:'Dual mass CC engage guarantees kills'},
+    }
+  },
+  {
+    id:'Diana', name:'Diana', title:'Scorn of the Moon',
+    roles:['mid','jungle'], type:'melee', class:'assassin',
+    damage:{phys:15,magic:80,true:5},
+    cc:['knockup','slow'],
+    engage:8, peel:2, tankiness:4, utility:4, carry:9, waveclear:7, split:5, mobile:8,
+    tags:['assassin','carry','mobile','aoe','engage'],
+    synergies:{
+      Yasuo:{score:18,reason:'Lunar Rush knockup into Last Breath chain'},
+      Yone:{score:16,reason:'Mass Moonfall airborne → Soul Unbound ult'},
+      Orianna:{score:15,reason:'Moonfall grouping + Shockwave AoE combo'},
+      Amumu:{score:16,reason:'Dual mass engage — unstoppable teamfight'},
+    }
+  },
+  {
+    id:'Draven', name:'Draven', title:'The Glorious Executioner',
+    roles:['bot'], type:'ranged', class:'marksman',
+    damage:{phys:92,magic:3,true:5},
+    cc:['slow','knockback'],
+    engage:4, peel:3, tankiness:1, utility:3, carry:10, waveclear:5, split:3, mobile:2,
+    tags:['carry','early-game','snowball','burst'],
+    synergies:{
+      Thresh:{score:18,reason:'Hook sets up Spinning Axe high-value catches'},
+      Leona:{score:20,reason:'Eclipse stun into Draven burst — early kill pressure'},
+      Blitzcrank:{score:18,reason:'Rocket Grab into point-blank Spinning Axes'},
+      Nautilus:{score:18,reason:'Hook + ult into Whirling Death finisher'},
+    }
+  },
+  {
+    id:'Evelynn', name:'Evelynn', title:"Agony's Embrace",
+    roles:['jungle'], type:'melee', class:'assassin',
+    damage:{phys:15,magic:80,true:5},
+    cc:['charm','slow'],
+    engage:8, peel:1, tankiness:2, utility:4, carry:9, waveclear:7, split:5, mobile:8,
+    tags:['assassin','carry','stealth','mobile'],
+    synergies:{
+      Ahri:{score:15,reason:'Dual charm set-up for guaranteed burst'},
+      Orianna:{score:14,reason:'Camouflage approach + Shockwave combo'},
+      TwistedFate:{score:14,reason:'Double roaming invisibility pressure'},
+    }
+  },
+  {
+    id:'Ezreal', name:'Ezreal', title:'The Prodigal Explorer',
+    roles:['bot','mid'], type:'ranged', class:'marksman',
+    damage:{phys:55,magic:40,true:5},
+    cc:['slow'],
+    engage:3, peel:4, tankiness:1, utility:5, carry:8, waveclear:6, split:3, mobile:8,
+    tags:['poke','carry','mobile','long-range'],
+    synergies:{
+      Lux:{score:16,reason:'Snare into Mystic Shot poke combo'},
+      Orianna:{score:15,reason:'Ball delivery into long-range finisher'},
+      Senna:{score:16,reason:'Dual global ults provide cross-map pressure'},
+      Hecarim:{score:14,reason:'Engage into Ezreal follow-up burst poke'},
+    }
+  },
+  {
+    id:'Fiddlesticks', name:'Fiddlesticks', title:'The Ancient Fear',
+    roles:['jungle','support'], type:'ranged', class:'mage',
+    damage:{phys:8,magic:87,true:5},
+    cc:['fear','silence','slow'],
+    engage:9, peel:4, tankiness:2, utility:6, carry:7, waveclear:9, split:1, mobile:3,
+    tags:['aoe','engage','carry','stealth'],
+    synergies:{
+      MissFortune:{score:22,reason:'Crowstorm AoE + Bullet Time mass kill zone'},
+      Katarina:{score:20,reason:'Fear removes all interrupts on Death Lotus'},
+      Amumu:{score:18,reason:'Dual mass AoE engages — unstoppable teamfight'},
+      Orianna:{score:17,reason:'Crowstorm ball delivery + Shockwave follow-up'},
+    }
+  },
+  {
+    id:'Galio', name:'Galio', title:'The Colossus',
+    roles:['mid','support','top'], type:'melee', class:'tank',
+    damage:{phys:20,magic:75,true:5},
+    cc:['knockup','taunt','slow'],
+    engage:8, peel:7, tankiness:8, utility:8, carry:4, waveclear:7, split:2, mobile:4,
+    tags:['engage','tank','peel','global','anti-magic'],
+    synergies:{
+      MissFortune:{score:20,reason:'Hero\'s Entrance knockup into Bullet Time'},
+      Yasuo:{score:22,reason:'Hero\'s Entrance mass knockup → Last Breath'},
+      Yone:{score:20,reason:'Mass knockup → Soul Unbound airborne chain'},
+      Orianna:{score:18,reason:'Global engage delivers ball → Shockwave combo'},
+      Jinx:{score:16,reason:'Global knockup engage → Get Excited'},
+    }
+  },
+  {
+    id:'Gangplank', name:'Gangplank', title:'The Saltwater Scourge',
+    roles:['top'], type:'ranged', class:'fighter',
+    damage:{phys:62,magic:18,true:20},
+    cc:['slow'],
+    engage:5, peel:5, tankiness:5, utility:7, carry:8, waveclear:7, split:8, mobile:3,
+    tags:['carry','split','true-damage','global','poke'],
+    synergies:{
+      TwistedFate:{score:14,reason:'Dual global ultimates for cross-map play'},
+      Karthus:{score:14,reason:'Cannon Barrage + Requiem simultaneous global pressure'},
+      Shen:{score:13,reason:'Double global — split push coverage'},
+    }
+  },
+  {
+    id:'Gwen', name:'Gwen', title:'The Hallowed Seamstress',
+    roles:['top','jungle'], type:'melee', class:'fighter',
+    damage:{phys:30,magic:60,true:10},
+    cc:['slow'],
+    engage:5, peel:3, tankiness:6, utility:3, carry:8, waveclear:7, split:7, mobile:5,
+    tags:['carry','anti-tank','true-damage','duelist'],
+    synergies:{
+      Lulu:{score:18,reason:'Wild Growth + Whimsy enable safe Gwen all-in'},
+      Hecarim:{score:15,reason:'Dual frontline — enemy forced to peel both'},
+      Vi:{score:14,reason:'Dive coordination — Vi leads, Gwen finishes'},
+    }
+  },
+  {
+    id:'Hecarim', name:'Hecarim', title:'The Shadow of War',
+    roles:['jungle'], type:'melee', class:'fighter',
+    damage:{phys:75,magic:20,true:5},
+    cc:['knockback','fear','slow'],
+    engage:9, peel:3, tankiness:6, utility:5, carry:7, waveclear:7, split:4, mobile:9,
+    tags:['engage','carry','mobile','aoe'],
+    synergies:{
+      Orianna:{score:20,reason:'Onslaught of Shadows delivers ball → Shockwave'},
+      MissFortune:{score:18,reason:'Fear lockdown into Bullet Time AoE'},
+      Yasuo:{score:18,reason:'Onslaught knockback → Last Breath'},
+      Yone:{score:17,reason:'Fear chain into Soul Unbound ult follow-up'},
+      Fiddlesticks:{score:16,reason:'Double stealth engage — Hecarim + Fiddle burst'},
+    }
+  },
+  {
+    id:'Illaoi', name:'Illaoi', title:'The Kraken Priestess',
+    roles:['top'], type:'melee', class:'fighter',
+    damage:{phys:70,magic:20,true:10},
+    cc:['slow'],
+    engage:6, peel:2, tankiness:7, utility:3, carry:8, waveclear:7, split:8, mobile:2,
+    tags:['carry','anti-engage','split','sustain'],
+    synergies:{
+      Amumu:{score:18,reason:'Mass stun into Illaoi tentacles = AoE delete'},
+      Galio:{score:16,reason:'Hero\'s Entrance grounds enemies in Kraken zone'},
+      Malphite:{score:16,reason:'Groundslam groups enemies for Tentacle spam'},
+    }
+  },
+  {
+    id:'Irelia', name:'Irelia', title:'The Blade Dancer',
+    roles:['top','mid'], type:'melee', class:'fighter',
+    damage:{phys:72,magic:18,true:10},
+    cc:['stun','slow'],
+    engage:8, peel:2, tankiness:5, utility:4, carry:9, waveclear:7, split:8, mobile:9,
+    tags:['carry','mobile','engage','reset'],
+    synergies:{
+      Orianna:{score:16,reason:'Blade surge repositions into ball + Shockwave'},
+      Yasuo:{score:15,reason:'Vanguard\'s Edge stun wall → Last Breath'},
+      Leesin:{score:15,reason:'Dual mobile dive jungle+top'},
+      Amumu:{score:16,reason:'Mass stun enables Bladesurge resets freely'},
+    }
+  },
+  {
+    id:'JarvanIV', name:'Jarvan IV', title:'The Exemplar of Demacia',
+    roles:['jungle','top','support'], type:'melee', class:'fighter',
+    damage:{phys:72,magic:20,true:8},
+    cc:['knockup','slow'],
+    engage:8, peel:4, tankiness:7, utility:7, carry:5, waveclear:6, split:3, mobile:6,
+    tags:['engage','tank','trap','aoe'],
+    synergies:{
+      Yasuo:{score:18,reason:'Cataclysm knockup → Last Breath auto-trigger'},
+      MissFortune:{score:18,reason:'Cataclysm box traps for free Bullet Time'},
+      Orianna:{score:18,reason:'Cataclysm ball delivery → Shockwave'},
+      Katarina:{score:18,reason:'Cataclysm box = uninterrupted Death Lotus'},
+      Leesin:{score:16,reason:'Insec into Cataclysm box trap'},
+    }
+  },
+  {
+    id:'KaiSa', name:"Kai'Sa", title:'Daughter of the Void',
+    roles:['bot'], type:'ranged', class:'marksman',
+    damage:{phys:55,magic:40,true:5},
+    cc:['slow'],
+    engage:5, peel:3, tankiness:1, utility:4, carry:9, waveclear:6, split:3, mobile:8,
+    tags:['carry','mobile','hypercarry','hybrid'],
+    synergies:{
+      Nautilus:{score:22,reason:'Hook → Void Seeker guaranteed charge + Second Skin proc'},
+      Leona:{score:20,reason:'Immobilize triggers Kai\'Sa Killer Instinct dash'},
+      Thresh:{score:18,reason:'Hook into Void Seeker charge + burst'},
+      Rell:{score:18,reason:'Ult lockdown enables guaranteed Void Seeker stacks'},
+    }
+  },
+  {
+    id:'Karthus', name:'Karthus', title:'The Deathsinger',
+    roles:['jungle','mid','support'], type:'ranged', class:'mage',
+    damage:{phys:5,magic:92,true:3},
+    cc:['slow'],
+    engage:3, peel:3, tankiness:1, utility:6, carry:8, waveclear:9, split:1, mobile:1,
+    tags:['aoe','global','carry','poke'],
+    synergies:{
+      Amumu:{score:22,reason:'Mass stun into Requiem — cannot escape death'},
+      Bard:{score:18,reason:'Tempered Fate + Requiem = combo global delete'},
+      Gangplank:{score:14,reason:'Cannon Barrage + Requiem dual globals'},
+      MissFortune:{score:16,reason:'Bullet Time weakens, Requiem finishes survivors'},
+    }
+  },
+  {
+    id:'Kayn', name:'Kayn', title:'The Shadow Reaper',
+    roles:['jungle'], type:'melee', class:'assassin',
+    damage:{phys:80,magic:15,true:5},
+    cc:['stun','slow'],
+    engage:8, peel:2, tankiness:5, utility:3, carry:8, waveclear:7, split:5, mobile:9,
+    tags:['assassin','carry','mobile','engage','wall-walk'],
+    synergies:{
+      Orianna:{score:15,reason:'Shadow Step flank into ball Shockwave'},
+      Vi:{score:14,reason:'Dual jungle dive — Vi front, Kayn flank'},
+      Syndra:{score:15,reason:'Stun + burst combo for instant picks'},
+    }
+  },
+  {
+    id:'KhaZix', name:"Kha'Zix", title:'The Voidreaver',
+    roles:['jungle'], type:'melee', class:'assassin',
+    damage:{phys:85,magic:10,true:5},
+    cc:['slow'],
+    engage:7, peel:1, tankiness:2, utility:3, carry:9, waveclear:6, split:7, mobile:8,
+    tags:['assassin','carry','mobile','isolated-target'],
+    synergies:{
+      Zed:{score:16,reason:'Double assassin isolation hunt — Kha front, Zed flank'},
+      Rengar:{score:14,reason:'Dual stealth jungle predator pressure'},
+      Twisted_Fate:{score:15,reason:'Stun card isolates targets for Void Spike burst'},
+    }
+  },
+  {
+    id:'Kindred', name:'Kindred', title:'The Eternal Hunters',
+    roles:['jungle'], type:'ranged', class:'marksman',
+    damage:{phys:82,magic:13,true:5},
+    cc:['slow'],
+    engage:5, peel:4, tankiness:2, utility:7, carry:8, waveclear:6, split:4, mobile:6,
+    tags:['carry','utility','anti-execute','global'],
+    synergies:{
+      Karthus:{score:18,reason:'Lamb\'s Respite negates Requiem — use it for your team'},
+      Darius:{score:16,reason:'Respite enables Darius to dive recklessly'},
+      Fiora:{score:15,reason:'Respite ensures Fiora survives all-in duels'},
+      Aatrox:{score:15,reason:'Respite prevents World Ender from being cancelled'},
+    }
+  },
+  {
+    id:'Kled', name:'Kled', title:'The Cantankerous Cavalier',
+    roles:['top','jungle'], type:'melee', class:'fighter',
+    damage:{phys:75,magic:18,true:7},
+    cc:['knockup','slow','stun'],
+    engage:9, peel:2, tankiness:6, utility:5, carry:7, waveclear:5, split:7, mobile:7,
+    tags:['engage','carry','tank','split'],
+    synergies:{
+      MissFortune:{score:18,reason:'Chaaaaarge engage into point-blank Bullet Time'},
+      Orianna:{score:17,reason:'Chaaaaarge ball delivery → Shockwave'},
+      Vi:{score:15,reason:'Dual engage — Kled front, Vi locks single target'},
+      Yasuo:{score:16,reason:'Jousting knockup → Last Breath'},
+    }
+  },
+  {
+    id:'Lillia', name:'Lillia', title:'The Bashful Bloom',
+    roles:['jungle','mid'], type:'ranged', class:'mage',
+    damage:{phys:12,magic:83,true:5},
+    cc:['slow','sleep'],
+    engage:6, peel:5, tankiness:2, utility:8, carry:7, waveclear:7, split:2, mobile:7,
+    tags:['aoe','utility','engage','sleep'],
+    synergies:{
+      Orianna:{score:16,reason:'Lilting Lullaby mass sleep + Shockwave wakeup burst'},
+      Zed:{score:16,reason:'Sleep sets up free Death Mark detonation'},
+      Katarina:{score:18,reason:'Mass sleep = uninterrupted Death Lotus'},
+      Yasuo:{score:16,reason:'Lilting Lullaby sleep → Last Breath on wakeup'},
+      MissFortune:{score:18,reason:'Mass sleep into Bullet Time — cannot dodge'},
+    }
+  },
+  {
+    id:'Lulu', name:'Lulu', title:'The Fae Sorceress',
+    roles:['support','mid'], type:'ranged', class:'enchanter',
+    damage:{phys:12,magic:63,true:5},
+    cc:['polymorph','slow','knockup'],
+    engage:4, peel:10, tankiness:2, utility:10, carry:3, waveclear:4, split:1, mobile:2,
+    tags:['enchanter','peel','utility','hypercarry-enabler'],
+    synergies:{
+      Vayne:{score:18,reason:'Polymorph + Wild Growth — maximum hypercarry protection'},
+      Jinx:{score:18,reason:'Wild Growth on Jinx = unstoppable fed carry'},
+      KaiSa:{score:17,reason:'Wild Growth engage + shields enable dive-carry'},
+      Draven:{score:16,reason:'Polymorph peels divers off of Draven'},
+      Kog_Maw:{score:20,reason:'Wild Growth extends Kog\'Maw\'s Bio-Arcane Barrage'},
+    }
+  },
+  {
+    id:'Malzahar', name:'Malzahar', title:'The Prophet of the Void',
+    roles:['mid','support'], type:'ranged', class:'mage',
+    damage:{phys:8,magic:87,true:5},
+    cc:['suppress','slow'],
+    engage:6, peel:5, tankiness:1, utility:7, carry:7, waveclear:9, split:1, mobile:1,
+    tags:['carry','pick','suppress','anti-mobile'],
+    synergies:{
+      MissFortune:{score:22,reason:'Nether Grasp suppress → Bullet Time — victim cannot move'},
+      Caitlyn:{score:18,reason:'Suppress into headshot + Ace in the Hole delete'},
+      Nautilus:{score:16,reason:'Hook into suppress chain — target is dead'},
+      Pyke:{score:16,reason:'Suppress + execute gold combo'},
+    }
+  },
+  {
+    id:'Mordekaiser', name:'Mordekaiser', title:'The Iron Revenant',
+    roles:['top','jungle'], type:'melee', class:'fighter',
+    damage:{phys:15,magic:80,true:5},
+    cc:['slow','knockback','pull'],
+    engage:7, peel:2, tankiness:8, utility:5, carry:8, waveclear:6, split:8, mobile:2,
+    tags:['carry','tank','juggernaut','anti-mobility','death-realm'],
+    synergies:{
+      Hecarim:{score:15,reason:'Engage to isolate target for Realm of Death'},
+      Orianna:{score:14,reason:'Realm of Death + ball = guaranteed Shockwave on re-entry'},
+      Karthus:{score:16,reason:'Realm of Death + Requiem global = double execution'},
+    }
+  },
+  {
+    id:'Nasus', name:'Nasus', title:'The Curator of the Sands',
+    roles:['top','jungle'], type:'melee', class:'fighter',
+    damage:{phys:68,magic:12,true:20},
+    cc:['slow','wither'],
+    engage:5, peel:3, tankiness:8, utility:4, carry:7, waveclear:5, split:8, mobile:2,
+    tags:['carry','tank','split','juggernaut','scaling'],
+    synergies:{
+      TwistedFate:{score:14,reason:'Global gate enables roam while Nasus split-pushes'},
+      Shen:{score:14,reason:'Stand United protects Nasus during tower dives'},
+      Karthus:{score:14,reason:'Wither + Requiem = cannot escape global damage'},
+    }
+  },
+  {
+    id:'Neeko', name:'Neeko', title:'The Curious Chameleon',
+    roles:['mid','support'], type:'ranged', class:'mage',
+    damage:{phys:10,magic:85,true:5},
+    cc:['knockup','stun','slow'],
+    engage:7, peel:4, tankiness:2, utility:7, carry:7, waveclear:7, split:2, mobile:3,
+    tags:['aoe','engage','deceive','burst'],
+    synergies:{
+      Yasuo:{score:20,reason:'Here Comes Neeko knockup → Last Breath auto'},
+      Yone:{score:18,reason:'Mass knockup → Soul Unbound ult chain'},
+      MissFortune:{score:18,reason:'Mass root/knockup into Bullet Time'},
+      Orianna:{score:16,reason:'Here Comes Neeko ball delivery + Shockwave'},
+    }
+  },
+  {
+    id:'Nidalee', name:'Nidalee', title:'The Bestial Huntress',
+    roles:['jungle','mid'], type:'ranged', class:'assassin',
+    damage:{phys:40,magic:55,true:5},
+    cc:['slow'],
+    engage:5, peel:3, tankiness:2, utility:6, carry:7, waveclear:7, split:4, mobile:8,
+    tags:['poke','mobile','carry','burst'],
+    synergies:{
+      Zed:{score:14,reason:'Javelin spear into Zed assassination follow-up'},
+      Vi:{score:15,reason:'Poke down, Vi engages when enemy is low'},
+      Orianna:{score:14,reason:'Long-range poke synergy sets up ball combo'},
+    }
+  },
+  {
+    id:'Nocturne', name:'Nocturne', title:'The Eternal Nightmare',
+    roles:['jungle','top','mid'], type:'melee', class:'assassin',
+    damage:{phys:80,magic:15,true:5},
+    cc:['fear','slow'],
+    engage:9, peel:2, tankiness:4, utility:4, carry:8, waveclear:6, split:6, mobile:7,
+    tags:['assassin','engage','carry','global','anti-vision'],
+    synergies:{
+      MissFortune:{score:20,reason:'Paranoia darkness + Bullet Time — enemies cannot react'},
+      Katarina:{score:18,reason:'Fear removes interrupts during Death Lotus'},
+      Orianna:{score:16,reason:'Paranoia engage delivers ball → Shockwave'},
+      TwistedFate:{score:15,reason:'Dual global engages create unpredictable pressure'},
+    }
+  },
+  {
+    id:'Olaf', name:'Olaf', title:'The Berserker',
+    roles:['jungle','top'], type:'melee', class:'fighter',
+    damage:{phys:82,magic:10,true:8},
+    cc:['slow'],
+    engage:7, peel:2, tankiness:6, utility:3, carry:7, waveclear:6, split:6, mobile:5,
+    tags:['carry','tank','anti-cc','dive'],
+    synergies:{
+      MissFortune:{score:16,reason:'Ragnarok dive into Bullet Time window'},
+      Orianna:{score:14,reason:'Unstoppable dive delivers ball → Shockwave'},
+      Caitlyn:{score:15,reason:'Ragnarok dive takes all CC — Caitlyn frees to position'},
+    }
+  },
+  {
+    id:'Pantheon', name:'Pantheon', title:'The Unbreakable Spear',
+    roles:['support','top','jungle','mid'], type:'melee', class:'fighter',
+    damage:{phys:75,magic:15,true:10},
+    cc:['stun','slow'],
+    engage:8, peel:6, tankiness:6, utility:7, carry:5, waveclear:5, split:4, mobile:6,
+    tags:['engage','peel','global','burst'],
+    synergies:{
+      MissFortune:{score:20,reason:'Grand Starfall + Bullet Time global burst combo'},
+      Yasuo:{score:16,reason:'Grand Starfall airborne → Last Breath'},
+      Orianna:{score:16,reason:'Grand Starfall ball delivery → Shockwave'},
+      Draven:{score:15,reason:'Stun into Draven Spinning Axe burst'},
+    }
+  },
+  {
+    id:'Poppy', name:'Poppy', title:'Keeper of the Hammer',
+    roles:['top','jungle','support'], type:'melee', class:'tank',
+    damage:{phys:55,magic:35,true:10},
+    cc:['stun','knockback','slow'],
+    engage:7, peel:8, tankiness:8, utility:7, carry:3, waveclear:5, split:4, mobile:4,
+    tags:['tank','peel','engage','anti-mobility'],
+    synergies:{
+      Jinx:{score:16,reason:'Buckler toss stun + peel for safe hypercarry'},
+      Vayne:{score:16,reason:'Heroic Charge pins Vayne\'s divers to wall'},
+      Caitlyn:{score:14,reason:'Peel + anti-dash zone for safe positioning'},
+      MissFortune:{score:15,reason:'Keeper\'s Verdict knockup into Bullet Time'},
+    }
+  },
+  {
+    id:'Qiyana', name:'Qiyana', title:'Empress of the Elements',
+    roles:['mid','jungle'], type:'melee', class:'assassin',
+    damage:{phys:82,magic:13,true:5},
+    cc:['knockback','stun','slow'],
+    engage:8, peel:2, tankiness:2, utility:4, carry:9, waveclear:6, split:6, mobile:8,
+    tags:['assassin','carry','mobile','aoe'],
+    synergies:{
+      Yasuo:{score:18,reason:'Supreme Display knockup → Last Breath chain'},
+      Yone:{score:16,reason:'Mass ult stun + Yone airborne follow-up'},
+      Orianna:{score:16,reason:'Ult stun into ball → Shockwave delete'},
+      Vi:{score:14,reason:'Vi engage into Qiyana ult flank'},
+    }
+  },
+  {
+    id:'Rakan', name:'Rakan', title:'The Charmer',
+    roles:['support'], type:'melee', class:'enchanter',
+    damage:{phys:15,magic:70,true:5},
+    cc:['knockup','charm','stun','slow'],
+    engage:10, peel:7, tankiness:4, utility:9, carry:2, waveclear:2, split:1, mobile:7,
+    tags:['engage','enchanter','peel','utility','aoe'],
+    synergies:{
+      Xayah:{score:28,reason:'Feathers + Battle Dance repositioning = perfect dual ult combo'},
+      Yasuo:{score:22,reason:'The Quickness mass charm → Last Breath'},
+      Yone:{score:20,reason:'Grand Entrance knockup + charm → Soul Unbound ult'},
+      MissFortune:{score:20,reason:'Mass charm into Bullet Time delete'},
+      Orianna:{score:16,reason:'Battle Dance ball delivery + Shockwave'},
+    }
+  },
+  {
+    id:'Renekton', name:'Renekton', title:'The Butcher of the Sands',
+    roles:['top'], type:'melee', class:'fighter',
+    damage:{phys:78,magic:12,true:10},
+    cc:['stun','slow'],
+    engage:7, peel:2, tankiness:7, utility:3, carry:7, waveclear:6, split:7, mobile:6,
+    tags:['carry','tank','early-game','anti-jugger'],
+    synergies:{
+      Leona:{score:16,reason:'Dual stun chain lane dominance'},
+      Vi:{score:15,reason:'Early dive combo — Renekton leads, Vi follows'},
+      Orianna:{score:14,reason:'Slice engage delivers ball position'},
+    }
+  },
+  {
+    id:'Rengar', name:'Rengar', title:'The Pridestalker',
+    roles:['jungle','top'], type:'melee', class:'assassin',
+    damage:{phys:85,magic:10,true:5},
+    cc:['slow','snare'],
+    engage:8, peel:1, tankiness:3, utility:3, carry:9, waveclear:6, split:6, mobile:8,
+    tags:['assassin','carry','stealth','mobile','snowball'],
+    synergies:{
+      KhaZix:{score:14,reason:'Dual stealth jungle predator — double threat'},
+      Orianna:{score:14,reason:'Leap burst into ball Shockwave'},
+      Zed:{score:15,reason:'Double assassin dive — Rengar jumps, Zed shadows'},
+    }
+  },
+  {
+    id:'Riven', name:'Riven', title:'The Exile',
+    roles:['top'], type:'melee', class:'fighter',
+    damage:{phys:80,magic:10,true:10},
+    cc:['knockup','stun','slow'],
+    engage:8, peel:2, tankiness:5, utility:3, carry:9, waveclear:6, split:8, mobile:8,
+    tags:['carry','mobile','engage','snowball'],
+    synergies:{
+      Orianna:{score:14,reason:'Broken Wings knockup into ball + Shockwave'},
+      Vi:{score:15,reason:'Dual dive combo — fast and lethal'},
+      Hecarim:{score:15,reason:'Dual mobile dive top+jungle'},
+      Yasuo:{score:16,reason:'Ki Shout stun/knockup → Last Breath'},
+    }
+  },
+  {
+    id:'Samira', name:'Samira', title:'The Desert Rose',
+    roles:['bot'], type:'ranged', class:'marksman',
+    damage:{phys:80,magic:12,true:8},
+    cc:['knockup'],
+    engage:6, peel:3, tankiness:2, utility:4, carry:9, waveclear:6, split:3, mobile:7,
+    tags:['carry','mobile','reset','aoe','style'],
+    synergies:{
+      Amumu:{score:22,reason:'Mass CC lets Samira freely S-rank Inferno Trigger'},
+      Leona:{score:20,reason:'Hard CC into Inferno Trigger = unstoppable'},
+      Nautilus:{score:20,reason:'Chain CC enables full Inferno Trigger'},
+      Thresh:{score:18,reason:'Hook + flay builds Samira style gauge instantly'},
+      Rakan:{score:18,reason:'Mass charm into Inferno Trigger chain'},
+    }
+  },
+  {
+    id:'Senna', name:'Senna', title:'The Redeemer',
+    roles:['support','bot'], type:'ranged', class:'enchanter',
+    damage:{phys:42,magic:42,true:16},
+    cc:['snare','slow'],
+    engage:4, peel:7, tankiness:2, utility:8, carry:6, waveclear:4, split:2, mobile:3,
+    tags:['enchanter','poke','global','sustain'],
+    synergies:{
+      Lucian:{score:18,reason:'Lucian in the Mist + Senna snare = lane dominance'},
+      Karthus:{score:16,reason:'Dawning Shadow + Requiem global pressure'},
+      Ezreal:{score:16,reason:'Dual global poke pressure'},
+      Thresh:{score:15,reason:'Hook + snare chain CC in lane'},
+    }
+  },
+  {
+    id:'Seraphine', name:'Seraphine', title:'The Starry-Eyed Songstress',
+    roles:['support','mid'], type:'ranged', class:'enchanter',
+    damage:{phys:8,magic:82,true:10},
+    cc:['stun','charm','slow'],
+    engage:5, peel:8, tankiness:1, utility:10, carry:6, waveclear:7, split:1, mobile:2,
+    tags:['enchanter','aoe','utility','poke'],
+    synergies:{
+      MissFortune:{score:18,reason:'Encore mass charm into Bullet Time'},
+      Yasuo:{score:18,reason:'Encore knockup → Last Breath'},
+      Yone:{score:16,reason:'Mass charm + airborne → Soul Unbound'},
+      Orianna:{score:15,reason:'Encore + Shockwave AoE zone lockdown'},
+      Lulu:{score:16,reason:'Dual enchanter peel — hypercarry protected from all angles'},
+    }
+  },
+  {
+    id:'Sett', name:'Sett', title:'The Boss',
+    roles:['top','support','jungle'], type:'melee', class:'fighter',
+    damage:{phys:70,magic:10,true:20},
+    cc:['stun','slow','knockup'],
+    engage:8, peel:5, tankiness:8, utility:6, carry:7, waveclear:5, split:6, mobile:4,
+    tags:['carry','tank','engage','true-damage'],
+    synergies:{
+      Yasuo:{score:22,reason:'The Show Stopper slam knockup → Last Breath'},
+      Yone:{score:20,reason:'Show Stopper delivers airborne → Soul Unbound'},
+      Orianna:{score:18,reason:'Show Stopper slam ball delivery → Shockwave'},
+      MissFortune:{score:18,reason:'Slam lockdown into Bullet Time AoE'},
+      Jinx:{score:15,reason:'Show Stopper engage → Get Excited chain'},
+    }
+  },
+  {
+    id:'Shen', name:'Shen', title:'The Eye of Twilight',
+    roles:['top','support'], type:'melee', class:'tank',
+    damage:{phys:45,magic:45,true:10},
+    cc:['taunt','slow'],
+    engage:6, peel:8, tankiness:8, utility:8, carry:3, waveclear:5, split:7, mobile:5,
+    tags:['tank','peel','global','split'],
+    synergies:{
+      Fiora:{score:16,reason:'Stand United teleport during split push — never 1v1'},
+      Vayne:{score:15,reason:'Stand United saves Vayne at low HP'},
+      Jinx:{score:15,reason:'Global shield onto hypercarry during teamfight'},
+      Darius:{score:14,reason:'Stand United enables deep dive combo'},
+      Kayle:{score:15,reason:'Double global protection layer'},
+    }
+  },
+  {
+    id:'Shyvana', name:'Shyvana', title:'The Half-Dragon',
+    roles:['jungle'], type:'melee', class:'fighter',
+    damage:{phys:45,magic:50,true:5},
+    cc:['knockback','slow'],
+    engage:7, peel:2, tankiness:7, utility:4, carry:7, waveclear:8, split:5, mobile:6,
+    tags:['carry','tank','aoe','dragon'],
+    synergies:{
+      Orianna:{score:15,reason:'Dragon\'s Descent ball delivery + Shockwave'},
+      MissFortune:{score:16,reason:'Knockback into Bullet Time AoE'},
+      Amumu:{score:15,reason:'Dual frontline AoE engage'},
+    }
+  },
+  {
+    id:'Sona', name:'Sona', title:'Maven of the Strings',
+    roles:['support'], type:'ranged', class:'enchanter',
+    damage:{phys:10,magic:70,true:5},
+    cc:['stun','slow'],
+    engage:5, peel:9, tankiness:1, utility:10, carry:4, waveclear:3, split:1, mobile:2,
+    tags:['enchanter','utility','poke','sustain','aoe'],
+    synergies:{
+      MissFortune:{score:22,reason:'Crescendo mass stun into Bullet Time AoE'},
+      Katarina:{score:20,reason:'Crescendo prevents Death Lotus interrupts'},
+      Yasuo:{score:18,reason:'Crescendo stun → Last Breath'},
+      Yone:{score:16,reason:'Mass stun enables Soul Unbound ult chain'},
+      Jinx:{score:16,reason:'Crescendo engage into Get Excited'},
+    }
+  },
+  {
+    id:'Swain', name:'Swain', title:'The Noxian Grand General',
+    roles:['support','mid'], type:'ranged', class:'mage',
+    damage:{phys:12,magic:83,true:5},
+    cc:['pull','slow','stun'],
+    engage:7, peel:5, tankiness:5, utility:7, carry:7, waveclear:7, split:2, mobile:2,
+    tags:['engage','sustain','carry','drain'],
+    synergies:{
+      MissFortune:{score:18,reason:'Death\'s Hand pull into Bullet Time'},
+      Jinx:{score:16,reason:'Pull engage triggers Get Excited chain'},
+      Caitlyn:{score:15,reason:'Pull lockdown into headshot burst'},
+      Draven:{score:16,reason:'Ravenous Flock pull into Draven Spinning Axe burst'},
+    }
+  },
+  {
+    id:'Talon', name:'Talon', title:"The Blade's Shadow",
+    roles:['mid','jungle'], type:'melee', class:'assassin',
+    damage:{phys:90,magic:5,true:5},
+    cc:['slow'],
+    engage:7, peel:1, tankiness:2, utility:2, carry:9, waveclear:6, split:7, mobile:8,
+    tags:['assassin','carry','mobile','roam'],
+    synergies:{
+      Zed:{score:16,reason:'Double assassin roaming pressure from mid'},
+      TwistedFate:{score:14,reason:'Stun card into Talon burst assassination'},
+      Vi:{score:14,reason:'Vi engages, Talon flanks from wall-jump'},
+    }
+  },
+  {
+    id:'Teemo', name:'Teemo', title:'The Swift Scout',
+    roles:['top'], type:'ranged', class:'marksman',
+    damage:{phys:25,magic:70,true:5},
+    cc:['blind','slow'],
+    engage:4, peel:4, tankiness:2, utility:7, carry:6, waveclear:5, split:6, mobile:4,
+    tags:['poke','stealth','utility','anti-melee'],
+    synergies:{
+      Karthus:{score:14,reason:'Blind + Requiem slowed enemy = guaranteed global'},
+      Orianna:{score:13,reason:'Mushroom zone control + ball threat'},
+    }
+  },
+  {
+    id:'Tryndamere', name:'Tryndamere', title:'The Barbarian King',
+    roles:['top','jungle'], type:'melee', class:'fighter',
+    damage:{phys:85,magic:5,true:10},
+    cc:['slow'],
+    engage:6, peel:2, tankiness:5, utility:2, carry:9, waveclear:5, split:10, mobile:7,
+    tags:['carry','split','anti-execute','duelist'],
+    synergies:{
+      Shen:{score:16,reason:'Stand United during Undying Rage = double invincibility'},
+      Kayle:{score:18,reason:'Double invincibility overlap — Tryndamere during dive'},
+      Karthus:{score:15,reason:'Undying Rage survives Requiem, allies die'},
+    }
+  },
+  {
+    id:'Veigar', name:'Veigar', title:'The Tiny Master of Evil',
+    roles:['mid','support'], type:'ranged', class:'mage',
+    damage:{phys:5,magic:92,true:3},
+    cc:['stun','slow'],
+    engage:4, peel:5, tankiness:1, utility:6, carry:8, waveclear:6, split:1, mobile:2,
+    tags:['burst','carry','poke','scaling','one-shot'],
+    synergies:{
+      Lux:{score:16,reason:'Snare inside Event Horizon cage for guaranteed burst'},
+      Nautilus:{score:16,reason:'Hook into cage stun → Primordial Burst delete'},
+      Leona:{score:16,reason:'Stun inside cage → Primordial Burst one-shot'},
+      Malzahar:{score:18,reason:'Suppress + cage = target cannot escape burst'},
+    }
+  },
+  {
+    id:'VelKoz', name:"Vel'Koz", title:'The Eye of the Void',
+    roles:['support','mid'], type:'ranged', class:'mage',
+    damage:{phys:5,magic:85,true:10},
+    cc:['knockup','slow','stun'],
+    engage:4, peel:4, tankiness:1, utility:7, carry:7, waveclear:7, split:1, mobile:1,
+    tags:['poke','burst','true-damage','long-range'],
+    synergies:{
+      Nautilus:{score:16,reason:'Hook lockdown enables full Research stack burst'},
+      Blitzcrank:{score:15,reason:'Grab into full Void Rift chain'},
+      MissFortune:{score:16,reason:'Lifeform Disintegration Ray + Bullet Time AoE'},
+      Lux:{score:15,reason:'Dual long-range artillery poke lane'},
+    }
+  },
+  {
+    id:'Viego', name:'Viego', title:'The Ruined King',
+    roles:['jungle'], type:'melee', class:'assassin',
+    damage:{phys:70,magic:25,true:5},
+    cc:['slow','stun'],
+    engage:7, peel:2, tankiness:4, utility:5, carry:8, waveclear:7, split:5, mobile:7,
+    tags:['assassin','carry','mobile','possession'],
+    synergies:{
+      Orianna:{score:14,reason:'Possession enables stolen abilities + Shockwave'},
+      Vi:{score:15,reason:'Vi pins, Viego possesses fallen target\'s body'},
+      Amumu:{score:16,reason:'Mass stun enables safe Viego dive and possession'},
+    }
+  },
+  {
+    id:'Viktor', name:'Viktor', title:'The Machine Herald',
+    roles:['mid'], type:'ranged', class:'mage',
+    damage:{phys:5,magic:92,true:3},
+    cc:['slow','stun'],
+    engage:5, peel:5, tankiness:1, utility:7, carry:8, waveclear:9, split:1, mobile:2,
+    tags:['carry','poke','aoe','scaling'],
+    synergies:{
+      Leona:{score:16,reason:'Gravity Field stun into full Death Ray burst'},
+      Orianna:{score:15,reason:'Chaos Storm ball delivery → Shockwave'},
+      Nautilus:{score:15,reason:'Hook into Gravity Field stun + burst'},
+      Hecarim:{score:14,reason:'Engage into Viktor AoE follow-up'},
+    }
+  },
+  {
+    id:'Volibear', name:'Volibear', title:'The Relentless Storm',
+    roles:['top','jungle','support'], type:'melee', class:'fighter',
+    damage:{phys:65,magic:30,true:5},
+    cc:['knockup','stun','slow'],
+    engage:8, peel:4, tankiness:8, utility:6, carry:6, waveclear:6, split:5, mobile:5,
+    tags:['engage','tank','carry','anti-tower'],
+    synergies:{
+      Yasuo:{score:18,reason:'Stormbringer knockup → Last Breath'},
+      MissFortune:{score:17,reason:'Stormbringer engage into Bullet Time'},
+      Orianna:{score:16,reason:'Stormbringer ball delivery + Shockwave'},
+      Yone:{score:16,reason:'Knockup chain → Soul Unbound ult'},
+    }
+  },
+  {
+    id:'Warwick', name:'Warwick', title:'The Uncaged Wrath of Zaun',
+    roles:['jungle','top'], type:'melee', class:'fighter',
+    damage:{phys:65,magic:28,true:7},
+    cc:['suppress','slow'],
+    engage:8, peel:3, tankiness:7, utility:5, carry:6, waveclear:5, split:5, mobile:6,
+    tags:['engage','tank','sustain','anti-execute'],
+    synergies:{
+      MissFortune:{score:18,reason:'Infinite Duress suppress into Bullet Time'},
+      Caitlyn:{score:16,reason:'Suppress into Ace in the Hole delete'},
+      Orianna:{score:15,reason:'Suppress deliver ball + Shockwave'},
+      Jinx:{score:15,reason:'Suppress engage → Get Excited'},
+    }
+  },
+  {
+    id:'Xayah', name:'Xayah', title:'The Rebel',
+    roles:['bot'], type:'ranged', class:'marksman',
+    damage:{phys:85,magic:10,true:5},
+    cc:['snare','slow'],
+    engage:4, peel:5, tankiness:2, utility:5, carry:9, waveclear:7, split:3, mobile:5,
+    tags:['carry','peel','feathers','combo'],
+    synergies:{
+      Rakan:{score:28,reason:'Lover\'s Leap + Battle Dance + dual ult = perfect combo'},
+      Yasuo:{score:16,reason:'Clean Cuts feathers + Last Breath airborne'},
+      Orianna:{score:14,reason:'Ball delivery into Bladecaller snare burst'},
+      Leona:{score:15,reason:'Lockdown into Bladecaller feather pull'},
+    }
+  },
+  {
+    id:'Yuumi', name:'Yuumi', title:'The Magical Cat',
+    roles:['support'], type:'ranged', class:'enchanter',
+    damage:{phys:5,magic:60,true:10},
+    cc:['slow','stun'],
+    engage:3, peel:9, tankiness:1, utility:10, carry:2, waveclear:2, split:1, mobile:10,
+    tags:['enchanter','peel','utility','hypercarry-enabler','untargetable'],
+    synergies:{
+      Jinx:{score:20,reason:'Yuumi attached = Jinx hypercarries untouchable'},
+      Vayne:{score:20,reason:'Zoomies + Final Chapter while attached enables hyper-vayne'},
+      KaiSa:{score:18,reason:'Yuumi attached + dive enables safe burst combo'},
+      Draven:{score:18,reason:'Zoomies attack speed amplifies Spinning Axes value'},
+      Samira:{score:18,reason:'Yuumi attached = Samira never dies during Inferno Trigger'},
+    }
+  },
+  {
+    id:'Zoe', name:'Zoe', title:'The Aspect of Twilight',
+    roles:['mid','support'], type:'ranged', class:'mage',
+    damage:{phys:8,magic:88,true:4},
+    cc:['sleep','slow'],
+    engage:5, peel:3, tankiness:1, utility:5, carry:8, waveclear:5, split:2, mobile:5,
+    tags:['burst','poke','carry','pick'],
+    synergies:{
+      Zed:{score:16,reason:'Sleep into Death Mark detonation — cannot wake up in time'},
+      Yasuo:{score:14,reason:'Sleepy Trouble Bubble + knockup Last Breath'},
+      Orianna:{score:14,reason:'Sleep + ball zone = cannot escape burst'},
+      Leona:{score:15,reason:'Immobilize into Zoe sleep + burst combo'},
+    }
+  },
+  {
+    id:'Zyra', name:'Zyra', title:'Rise of the Thorns',
+    roles:['support','mid'], type:'ranged', class:'mage',
+    damage:{phys:8,magic:87,true:5},
+    cc:['knockup','snare','slow'],
+    engage:6, peel:5, tankiness:1, utility:7, carry:6, waveclear:7, split:1, mobile:2,
+    tags:['aoe','poke','peel','engage'],
+    synergies:{
+      MissFortune:{score:18,reason:'Stranglethorns knockup into Bullet Time'},
+      Yasuo:{score:18,reason:'Stranglethorns mass knockup → Last Breath'},
+      Caitlyn:{score:14,reason:'Snare into headshot burst combo'},
+      Jhin:{score:15,reason:'Snare into 4th shot + Curtain Call'},
+    }
+  },
 ];
+
 
 /* ═══════════════════════════════════════════════
    DRAFT STATE
