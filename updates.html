@@ -87,16 +87,20 @@
         <div class="news-modal-backdrop" data-close-modal></div>
         <article class="news-modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
             <button type="button" class="modal-close" id="closeModal" aria-label="Haberi kapat">&times;</button>
-            <div class="modal-media" id="modalMedia"></div>
-            <div class="modal-body">
-                <div class="modal-meta">
-                    <span id="modalCategory"></span>
-                    <span class="meta-divider"></span>
-                    <span id="modalDate"></span>
+            <div class="news-modal-shell">
+                <div class="modal-media" id="modalMedia"></div>
+                <div class="modal-scroll-area" id="modalScrollArea">
+                    <div class="modal-body">
+                        <div class="modal-meta">
+                            <span id="modalCategory"></span>
+                            <span class="meta-divider"></span>
+                            <span id="modalDate"></span>
+                        </div>
+                        <h3 id="modalTitle"></h3>
+                        <p class="modal-subtitle" id="modalSubtitle"></p>
+                        <div class="modal-content" id="modalContent"></div>
+                    </div>
                 </div>
-                <h3 id="modalTitle"></h3>
-                <p class="modal-subtitle" id="modalSubtitle"></p>
-                <div class="modal-content" id="modalContent"></div>
             </div>
         </article>
     </div>
