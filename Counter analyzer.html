@@ -1229,34 +1229,34 @@ function renderThreatCombos(team){
 
 /* ── Per-champion individual threat & weakness profiles ── */
 const CHAMP_PROFILES = {
-  Malphite:  { threats:['⚡ Ult (Unstoppable Force) anlık 5 kişilik knockup yapabilir','🪨 Yüksek tank olduğu için öldürmek uzun sürer','🔮 Magic damage yüksek, fiziksel hasarınızı bloklar'], weaknesses:['💨 Neredeyse hiç mobility yok, kite edilmesi kolay','🌊 Waveclear çok zayıf, side lane baskısına açık','🗡️ Erken oyunda çok pasif, invade yapılabilir'] },
-  Yasuo:     { threats:['🌀 Son Nefes ile airborne → vurur','💨 Çok yüksek mobility, yakalamak zor','🛡️ Wind Wall önemli skillshot\'ları engelleyebilir'], weaknesses:['💀 Erken oyunda mana yok, push edilirse zorlanır','⚔️ Zırh itemlerine karşı ciddi hasar kaybı','🎯 CC\'ye çok açık, bask yapamazsa işe yaramaz'] },
-  Yone:      { threats:['🌪️ Ult ile büyük AoE knockup + fear kombinasyonu','🔮 Fiziksel + magic hasar yapar, tek resist yetersiz','💨 Yüksek mobility, kaçması çok kolay'], weaknesses:['⚡ E/Ult sonrası geri dönerken savunmasız kalır','🔴 Passive olmadan duelling gücü düşer','💔 Late game öncesi yüksek düşme riski'] },
-  Ahri:      { threats:['💕 Charm ile birini oyundan çıkarır','💨 Ult ile üç ayrı dash, yakalanmak neredeyse imkânsız','💥 Ani burst potansiyeli çok yüksek'], weaknesses:['🎯 Charm özledikten sonra hasar düşer','🔮 Banshee ile charm engellenebilir','📍 Ult CD\'de kalakalırsa taş gibi duruyor'] },
-  Lux:       { threats:['🌟 AoE ult çok hızlı CD\'ye döner, sürekli basınç','🔗 Snare + slow kombinasyonu pick fırsatı yaratır','💥 Tam bir burst combo ile birini anında eritir'], weaknesses:['💀 Neredeyse sıfır mobility, flash dışında kaçamaz','🎯 Dodge edilirse hasar sıfırlanır','🗡️ Fiziksel hasar gelenler için ölümcül derecede kâğıt gibi'] },
-  Jinx:      { threats:['🚀 Get Excited! ile snowball takip potansiyeli dev','💥 Ult global range, bitirmek için kullanır','🌊 Waveclear çok güçlü, tower baskısı aşırı'], weaknesses:['💀 Mobility sıfır, engage compa karşı çok açık','🎯 Erken oyun önüne geçilirse dev kaybeder','⚔️ All-in dive ile kolayca öldürülür'] },
-  MissFortune:{ threats:['🔴 Bullet Time ile teamfight\'ı tek başına kazanabilir','🐌 Double Up slow + Strut ile kite perfomansı yüksek','💥 Erken bully potansiyeli bot lane\'de çok güçlü'], weaknesses:['💀 Sıfır kaçma potansiyeli, dash yok','🎯 Engage compa karşı ult kanallanırken durmak ölümcül','⚔️ 1v1 duelling gücü düşük, izolatif çalışmaz'] },
-  Thresh:    { threats:['🎣 Hook açısı çok geniş, duvardan da vurur','🔮 Lantern ile takım arkadaşını kurtarabilir','🔗 Flay + Box kombinasyonu tam CC hapsi oluşturur'], weaknesses:['🐌 Lantern olmadan engage başarısız olabilir','🎯 Hook özlediğinde koruyuculuk rolü sıfırlanır','💀 Hasarı düşük, tek başına fight kazanamaz'] },
-  Leona:     { threats:['💥 Daybreak + Solar Flare ile 3 ayrı CC katmanı','🛡️ Yüksek tankiness ile engage sonrası hayatta kalır','⚡ Dive potansiyeli bot lane\'de devasa'], weaknesses:['💀 Peel kapasitesi neredeyse yok, carry\'yi koruyamaz','🌊 Waveclear zayıf, erken lane pressure düşük','🔮 Engage dışında utility az'] },
-  Vi:        { threats:['🎯 Ult ile birini hedefler, duvardan geçer, kaçmak imkânsız','👊 Vault Breaker uzun range engage imkânı sağlar','⚡ Çok hızlı jungle clear, erken gank baskısı'], weaknesses:['🎯 Ult CD\'de olduğunda engage kapasitesi sınırlı','🔮 QSS ile ult atlatılabilir','📍 Sabit dövüşçü, kite edilirse kapasitesi düşer'] },
-  Leesin:    { threats:['💀 Insec ile birini takımın içine fırlatır','💨 En yüksek mobility\'e sahip junglerlardan biri','⚡ Erken invade ve gank potansiyeli çok güçlü'], weaknesses:['📉 Late game\'de ölçeklenme çok zayıf','🎯 Büyük bölümü skillshot\'a dayalı, özlemek ölüm','💔 Blind Monk hayatta kalma kapasitesi düşük'] },
-  Amumu:     { threats:['🌐 Ult geniş AoE stun, teamfight\'ı alt üst eder','🔴 Bandage Toss + Ult combo single target ezelemek','🛡️ Aşırı dayanıklı, fight başlatıp hayatta kalır'], weaknesses:['🎯 Q özlerse approach tamamen kesilir','💨 Mobility yok, kite compa çaresizdir','📍 Tek engage var, CD\'de kalan Amumu çaresiz'] },
-  Zed:       { threats:['💀 Death Mark – execute seviyesinde tek atış burst','💨 Living Shadow ile üç konumda baskı','🗡️ Poke + dive kombinasyonu ADC\'yi anında bitirir'], weaknesses:['🔮 Zhonya\'s ile Death Mark tamamen boşa gider','🛡️ Armor heavy build Zed\'i işe yaramaz kılar','💀 CC yüklü compa karşı hiç hayat hakkı yok'] },
-  Katarina:  { threats:['🔴 Reset mekanizması ile teamfight\'ta silindir gibi geçer','💥 Shunpo + Ult kombosundan kaçmak çok zor','🌊 Waveclear ve roam kapasitesi çok yüksek'], weaknesses:['🎯 Herhangi bir CC Death Lotus\'u anında keser','🎣 Erken lanede zorlu matchup\'larda baskılanabilir','📍 Blade sıfırlanmazsa kayda değer hasar yapamaz'] },
-  Darius:    { threats:['⚔️ Noxian Guillotine ile sonsuz reset execute','🩸 Hemorrhage stack ile zırh ignore edecek seviyede hasar','💥 Pull + slow ile fight\'tan kaçmak imkânsız'], weaknesses:['💨 Mobility yok, kite eden compa karşı çaresiz','🌊 Waveclear zayıf, side lane\'de yavaş','📍 Guillotine CD\'deyken hasar potansiyeli yarıya düşer'] },
-  Garen:     { threats:['⚔️ Judgment spin sürekli hasar verip silence ekler','💥 Demacian Justice ile low HP execute','🛡️ Pasif regen ile geri dönme kapasitesi yüksek'], weaknesses:['💀 CC yok, sadece silence var','💨 Mobility son derece düşük, kite çok kolay','🔮 Magic damage compa karşı Conqueror değersizleşir'] },
-  Syndra:    { threats:['💥 Scatter the Weak → stun + Unleashed Power burst kombinasyonu','🌟 Max stack Ult tek atışta ADC eritir','🎯 Yüksek range ile güvenden poke yapabilir'], weaknesses:['💀 Mobility yok, engage compa çok açık','🎯 Force of Will skillshot, özlerse hasar düşer','📉 Erken game topları yönetmek karmaşık, hata yapar'] },
-  Orianna:   { threats:['⚡ Ball delivery + Shockwave ile 5 kişilik AoE hasar','🛡️ Speed shield ile takım arkadaşlarını sürekli destekler','🌊 Ball pozisyonu ile alan kontrolü çok güçlü'], weaknesses:['📍 Ball kaybedilirse utility sıfırlanır','💀 Self-peel kapasitesi çok zayıf','🎯 Shockwave kolay dodge edilebilir'] },
-  Caitlyn:   { threats:['🎯 En yüksek erken game range, hasar güvenlidir','🔴 Ace in the Hole ile low HP tek atış','🪤 Trap + Net ile sezgisel engage keser'], weaknesses:['💀 Engage ve dive compa karşı çok zayıf','🐌 Mobility yok, flash + net dışında kaçış yok','📍 Headshot olmadan DPS düşer'] },
-  Nautilus:  { threats:['🎣 Hook + Reaped Knell + Depth Charge üç ayrı CC katmanı','💀 Hedefini stun üstüne stun ile yok eder','🛡️ Yüksek base tank stats, dive sonrası hayatta kalır'], weaknesses:['💀 Tek hedef focus dışında hasar yok','💨 Mobility son derece düşük','🎯 Hook özlerse engage sona erer'] },
-  Ashe:      { threats:['🏹 Crystal Arrow global stun, her yerden engage başlatır','🐌 Sürekli slow ile kite performansı üst düzey','🌐 Volley + Hawkshot ile map kontrolü sağlar'], weaknesses:['💀 Mobility neredeyse sıfır, dash yok','⚔️ Dive compa karşı savunmasız','📉 Late game güçlü ama erken game kırılgan'] },
-  Blitzcrank:{ threats:['🎣 Rocket Grab – tek hook oyun değiştirir','⚡ Static Field anlık silence + AoE hasar','🏃 Powerfist knock up anında CC chain başlatır'], weaknesses:['🎯 Hook özlerse tamamen pasif kalır','💀 Hasar çok düşük, hook dışında utility az','📍 Predictable engage pattern, tecrübeli oyuncu takımı'] },
-  TwistedFate:{ threats:['🌐 Destiny ile haritanın her yerine TP, global pressure','🃏 Gold Card ile anlık stun pick fırsatı','🌊 Yüksek waveclear ile roam serbestliği'], weaknesses:['💀 Mobility çok zayıf, assassin compa açık','📉 Lategame duelling gücü düşük','🎯 Gold Card skillshot, özlerse hasar sıfır'] },
-  Vayne:     { threats:['🩸 Silver Bolts true damage – tanka karşı devasa hasar','💨 Condemn ile duvara pining, stun fırsatı','👑 Full build Vayne 1v5 kapasitesine ulaşabilir'], weaknesses:['📉 Erken oyun çok zayıf, bully edilirse yetersiz','🐌 Düşük range, kısa mesafede risk alır','🎯 Engage compa karşı Condemn duvarsız işe yaramaz'] },
-  Kayle:     { threats:['⚡ Intervention ult – birini tamamen immun yapar','👑 Late game 16. seviyede neredeyse yenilmez','🌊 Waveclear ve range artar, kite kapasitesi devasa'], weaknesses:['📉 1-11. seviye arası çok zayıf, kolayca baskılanır','💀 Ult CD\'deyken peel kapasitesi sıfırlanır','🐌 Erken game mobility yok'] },
-  Shen:      { threats:['🌐 Stand United global ult – takım arkadaşını her yerden kurtarır','🛡️ Ki Barrier ile hasar emilimi çok güçlü','⚡ Taunt + Twilight Assault ile tank fight başlatır'], weaknesses:['📉 Solo carry kapasitesi çok düşük','🌊 Erken game waveclear zayıf','💀 Taunt dışında hard CC yok'] },
-  Fiora:     { threats:['🩺 Grand Challenge – tüm vital\'ları vurursa takımını heal eder','💀 Lunge dash ile engage + disengage çok hızlı','⚔️ Riposte – en güçlü CC\'yi parry ile etkisizleştirir'], weaknesses:['💀 Teamfight\'ta bireysel hedef, AoE compa açık','📍 Side lane dışında etki alanı çok sınırlı','🎯 Vital pozisyonları bilinince kite edilebilir'] },
-  Jhin:      { threats:['🎯 Curtain Call global 4-atış ult ile serbest hasar','💥 4. mermi crit ile dev burst','🌸 Deadly Flourish + Lotus Trap combo ile anında root'], weaknesses:['🐌 Mobility neredeyse yok, Jhin\'i dodge etmek kolay','📉 Reload süresi – 4 mermi sonra savunmasız','💀 Engage compa karşı çaresiz kalır'] },
+  Malphite:  { threats:['⚡ Unstoppable Force can instantly knock up an entire team','🪨 Extremely tanky and slow to take down','🔮 High magic damage punishes armor-heavy itemization'], weaknesses:['💨 Almost no mobility, so he is easy to kite','🌊 Very weak waveclear and vulnerable to side-lane pressure','🗡️ Passive early game that can be punished with invades'] },
+  Yasuo:     { threats:['🌀 Last Breath heavily punishes any airborne target','💨 Extremely mobile and hard to lock down','🛡️ Wind Wall can block key skillshots'], weaknesses:['💀 Can struggle early if he gets shoved in','⚔️ Loses a lot of damage into armor stacking','🎯 Very vulnerable to crowd control if he cannot snowball'] },
+  Yone:      { threats:['🌪️ His ultimate can start huge AoE knockup fights','🔮 Mixed physical and magic damage makes itemization awkward','💨 High mobility makes him slippery in skirmishes'], weaknesses:['⚡ Vulnerable when snapping back after E or ult','🔴 Much weaker in duels without passive uptime','💔 Can be punished hard before late game comes online'] },
+  Ahri:      { threats:['💕 Charm can instantly remove one target from the fight','💨 Triple dash from ult makes her very hard to catch','💥 Very high burst damage when she lands her combo'], weaknesses:['🎯 Her damage drops a lot if Charm misses','🔮 Banshee\'s Veil can deny her key pick tool','📍 If ult is down, she becomes much easier to punish'] },
+  Lux:       { threats:['🌟 Her AoE ult comes back quickly and keeps pressure high','🔗 Snare plus slow can create easy pick windows','💥 Full combo burst can erase a squishy target instantly'], weaknesses:['💀 Almost no mobility outside Flash','🎯 Her threat drops hard if skillshots are dodged','🗡️ Very fragile against physical dive and burst'] },
+  Jinx:      { threats:['🚀 Get Excited! lets her chase and snowball teamfights','💥 Her global ult is lethal on low-health targets','🌊 Strong waveclear creates heavy tower pressure'], weaknesses:['💀 No real mobility and very exposed to engage comps','🎯 Falls behind hard if denied early game tempo','⚔️ Can be killed easily by committed all-ins and dives'] },
+  MissFortune:{ threats:['🔴 Bullet Time can win an entire teamfight by itself','🐌 Double Up poke and Strut make her kiting strong','💥 Very oppressive early bot-lane trading power'], weaknesses:['💀 No dash and almost no escape tools','🎯 Channeling ult into hard engage is very risky','⚔️ Limited 1v1 dueling strength when isolated'] },
+  Thresh:    { threats:['🎣 Hook angles are wide and dangerous even through terrain','🔮 Lantern can completely save an ally from danger','🔗 Flay plus The Box can lock targets in a full CC trap'], weaknesses:['🐌 Failed engages feel bad if Lantern cannot bail him out','🎯 Missing hook removes much of his immediate pressure','💀 Low personal damage means he rarely wins fights alone'] },
+  Leona:     { threats:['💥 Daybreak and Solar Flare layer multiple hard CC tools','🛡️ High tankiness lets her survive after engaging','⚡ Massive dive threat, especially in bot lane'], weaknesses:['💀 Very limited peel for protecting carries','🌊 Weak waveclear and low lane pressure on her own','🔮 Outside engage, her utility is fairly limited'] },
+  Vi:        { threats:['🎯 Her ultimate guarantees access to a priority target','👊 Vault Breaker gives her long-range engage reach','⚡ Fast jungle clear enables strong early gank pressure'], weaknesses:['🎯 Her engage is much less threatening when ult is down','🔮 QSS can neutralize her point-and-click lockdown','📍 Easy to kite once she is committed forward'] },
+  Leesin:    { threats:['💀 Insec kicks can throw a target straight into his team','💨 One of the most mobile junglers in the game','⚡ Extremely strong early invade and gank pressure'], weaknesses:['📉 Scales poorly into late game compared to many junglers','🎯 Relies heavily on skillshots, and misses are costly','💔 Lower durability if he cannot snowball the game'] },
+  Amumu:     { threats:['🌐 His ultimate can flip an entire teamfight with AoE lockdown','🔴 Bandage Toss into ult can crush a single target','🛡️ Very durable when starting long fights'], weaknesses:['🎯 Missing Q cuts off most of his approach','💨 No mobility means kite comps punish him hard','📍 If his engage tools are on cooldown, he feels helpless'] },
+  Zed:       { threats:['💀 Death Mark gives him lethal execute-level burst','💨 Living Shadow creates pressure from multiple angles','🗡️ Poke plus dive can instantly delete an ADC'], weaknesses:['🔮 Zhonya\'s Hourglass can completely nullify Death Mark','🛡️ Heavy armor itemization can make him ineffective','💀 CC-heavy comps can deny him any room to play'] },
+  Katarina:  { threats:['🔴 Her reset mechanic can completely take over teamfights','💥 Shunpo into ult is very hard to escape cleanly','🌊 Strong waveclear and roaming pressure'], weaknesses:['🎯 Any crowd control instantly stops Death Lotus','🎣 Can be bullied in difficult early lane matchups','📍 Her damage drops hard if dagger resets are denied'] },
+  Darius:    { threats:['⚔️ Noxian Guillotine can chain executes through resets','🩸 Hemorrhage stacks deal brutal sustained damage','💥 Pull plus slow makes disengaging very difficult'], weaknesses:['💨 No mobility and very vulnerable to kiting','🌊 Weak waveclear and slow side-lane rotations','📍 Much less threatening when Guillotine is unavailable'] },
+  Garen:     { threats:['⚔️ Judgment deals steady damage and adds silence pressure','💥 Demacian Justice can execute low-health targets','🛡️ Passive regen gives him strong reset potential'], weaknesses:['💀 Very limited CC outside silence','💨 Extremely low mobility makes kiting easy','🔮 Magic-heavy comps reduce the value of his usual pattern'] },
+  Syndra:    { threats:['💥 Scatter the Weak into burst can instantly punish mistakes','🌟 A stacked ult can one-shot a carry','🎯 High range lets her poke from relative safety'], weaknesses:['💀 No mobility leaves her exposed to engage','🎯 Missing Force of Will lowers her threat considerably','📉 Early orb management can be punishing if misplayed'] },
+  Orianna:   { threats:['⚡ Ball delivery plus Shockwave creates huge AoE impact','🛡️ Shields and speed buffs strongly support her team','🌊 Her ball gives excellent zone control'], weaknesses:['📍 Misplacing the ball removes much of her utility','💀 Weak self-peel when pressured directly','🎯 Shockwave can be dodged if telegraphed'] },
+  Caitlyn:   { threats:['🎯 Her early-game range makes her lane damage very safe','🔴 Ace in the Hole can finish low-health targets','🪤 Traps and Net can shut down predictable engages'], weaknesses:['💀 Struggles badly into hard engage and dive comps','🐌 Very limited mobility outside Flash and Net','📍 Her sustained DPS drops if she cannot proc Headshot'] },
+  Nautilus:  { threats:['🎣 Hook plus Depth Charge layers multiple CC tools','💀 Can delete one target through repeated lockdown','🛡️ High base tank stats help him survive after diving'], weaknesses:['💀 Offers little damage outside single-target setup','💨 Extremely low mobility when disengaging','🎯 Missing hook usually ends the engage attempt'] },
+  Ashe:      { threats:['🏹 Crystal Arrow gives her global engage potential','🐌 Constant slows make her kiting elite','🌐 Volley and Hawkshot provide strong map control'], weaknesses:['💀 Almost no mobility and no real dash','⚔️ Very vulnerable to dive compositions','📉 Strong late game but fragile in early skirmishes'] },
+  Blitzcrank:{ threats:['🎣 One Rocket Grab can completely change a fight','⚡ Static Field adds instant silence and AoE damage','🏃 Power Fist starts immediate CC chains'], weaknesses:['🎯 Missing hook makes him far less threatening','💀 Low damage and limited utility outside hook setups','📍 Experienced teams can read his engage pattern'] },
+  TwistedFate:{ threats:['🌐 Destiny creates global pressure anywhere on the map','🃏 Gold Card gives reliable instant pick threat','🌊 Strong waveclear frees him to roam often'], weaknesses:['💀 Very low mobility against assassin pressure','📉 Weak late-game dueling compared to many carries','🎯 If Gold Card is denied, much of his threat disappears'] },
+  Vayne:     { threats:['🩸 Silver Bolts melts tanks with true damage','💨 Condemn can create deadly wall stuns','👑 Full-build Vayne can completely take over fights'], weaknesses:['📉 Very weak early game if bullied properly','🐌 Low range forces her to take close-range risks','🎯 Condemn is much weaker without wall angles'] },
+  Kayle:     { threats:['⚡ Intervention can make one ally fully untouchable','👑 Level 16 late game is nearly unstoppable','🌊 Extra range and waveclear make her kiting oppressive'], weaknesses:['📉 Levels 1-11 are very punishable','💀 Her peel drops sharply when ult is on cooldown','🐌 Very little mobility in the early game'] },
+  Shen:      { threats:['🌐 Stand United can save an ally from anywhere on the map','🛡️ Ki Barrier gives him strong damage absorption','⚡ Taunt plus Twilight Assault starts fights reliably'], weaknesses:['📉 Very limited solo carry potential','🌊 Weak early waveclear slows his side-lane pressure','💀 Almost no hard CC outside taunt'] },
+  Fiora:     { threats:['🩺 Grand Challenge can heal her team if she procs all vitals','💀 Lunge makes her engage and disengage very fast','⚔️ Riposte can completely deny the strongest CC tool'], weaknesses:['💀 Less effective in full teamfights than in side lanes','📍 Her impact is much narrower away from side-lane play','🎯 Can be kited if vital positioning is managed well'] },
+  Jhin:      { threats:['🎯 Curtain Call adds long-range fight pressure','💥 Fourth-shot crit gives him massive burst','🌸 Deadly Flourish plus traps can root targets quickly'], weaknesses:['🐌 Very low mobility makes him easy to pressure','📉 Reload windows leave him exposed after four shots','💀 Hard engage comps can leave him with no space to play'] },
 };
 
 /* Per-champion default (unknown champion) */
@@ -1264,20 +1264,20 @@ function getChampProfile(ch){
   if(CHAMP_PROFILES[ch.id]) return CHAMP_PROFILES[ch.id];
   // Generate generic profile from stats
   const t=[], w=[];
-  if(ch.engage>=8) t.push('⚡ Çok güçlü engage kapasitesi, fight başlatabilir');
-  if(ch.carry>=8) t.push('💥 Yüksek carry potansiyeli, snowball yapabilir');
-  if(ch.mobile>=8) t.push('💨 Çok yüksek mobility, yakalamak zor');
-  if(ch.tankiness>=8) t.push('🛡️ Çok dayanıklı, uzun süre hayatta kalır');
-  if(ch.cc && ch.cc.some(c=>['stun','knockup','suppress'].includes(c))) t.push('🔗 Güçlü hard CC, teamfight\'ı dönüştürebilir');
-  if(ch.utility>=8) t.push('🌟 Yüksek utility, takımını güçlü şekilde destekler');
-  if(ch.split>=8) t.push('🗺️ Güçlü split push, seni eve zorlar');
-  if(ch.mobile<=2) w.push('🐌 Mobility çok düşük, hook ve CC\'ye açık');
-  if(ch.tankiness<=2) w.push('💀 Çok az HP, burst ile ani öldürme mümkün');
-  if(ch.peel<=2) w.push('🏃 Peel kapasitesi zayıf, carry\'si korumasız');
-  if(ch.waveclear<=2) w.push('🌊 Waveclear zayıf, side lane baskısına açık');
-  if(ch.engage<=2) w.push('📍 Engage initiation çok sınırlı, reactif comp');
-  if(ch.split<=2) w.push('🗺️ Split push yapamaz, 5v5 forced');
-  return {threats: t.length ? t : ['⚠️ Bu şampiyonun tehditleri değerlendiriliyor...'], weaknesses: w.length ? w : ['✅ Belirgin bir zayıflık tespit edilemedi']};
+  if(ch.engage>=8) t.push('⚡ Very strong engage threat that can start fights reliably');
+  if(ch.carry>=8) t.push('💥 High carry potential and strong snowball threat');
+  if(ch.mobile>=8) t.push('💨 Extremely mobile and difficult to lock down');
+  if(ch.tankiness>=8) t.push('🛡️ Very durable and hard to remove from fights');
+  if(ch.cc && ch.cc.some(c=>['stun','knockup','suppress'].includes(c))) t.push('🔗 Strong hard CC that can swing teamfights');
+  if(ch.utility>=8) t.push('🌟 High utility that strongly supports the team');
+  if(ch.split>=8) t.push('🗺️ Strong split-push threat that pulls pressure side lane');
+  if(ch.mobile<=2) w.push('🐌 Very low mobility, making them vulnerable to hooks and CC');
+  if(ch.tankiness<=2) w.push('💀 Low durability, so burst can remove them quickly');
+  if(ch.peel<=2) w.push('🏃 Weak peel, leaving their carry exposed');
+  if(ch.waveclear<=2) w.push('🌊 Weak waveclear and vulnerable to side-lane pressure');
+  if(ch.engage<=2) w.push('📍 Limited engage options and mostly reactive play');
+  if(ch.split<=2) w.push('🗺️ Poor split-push threat, forcing more 5v5 play');
+  return {threats: t.length ? t : ['⚠️ This champion\'s threats are still being evaluated...'], weaknesses: w.length ? w : ['✅ No clear weakness detected']};
 }
 
 function calcAnalysis(team, ratings, phys, magic, trueD, hasCC){
@@ -1290,53 +1290,53 @@ function calcAnalysis(team, ratings, phys, magic, trueD, hasCC){
     const prof = getChampProfile(ch);
     // Individual threats → go to strengths
     prof.threats.slice(0,3).forEach(t => {
-      strengths.push({type: ch.carry>=8||ch.engage>=8 ? 'crit':'warn', icon:'⚔️', title:`${ch.name} Tehdidi`, desc: t});
+      strengths.push({type: ch.carry>=8||ch.engage>=8 ? 'crit':'warn', icon:'⚔️', title:`${ch.name} Threat`, desc: t});
     });
     // Individual weaknesses → go to weaknesses
     prof.weaknesses.slice(0,2).forEach(w => {
-      weaknesses.push({type:'ok', icon:'🎯', title:`${ch.name} Zayıf Noktası`, desc: w});
+      weaknesses.push({type:'ok', icon:'🎯', title:`${ch.name} Weakness`, desc: w});
     });
   });
 
   /* ── TEAM-WIDE analysis (from n>=2) ── */
   if(n>=2){
     if(ratings['Tankiness']<3)
-      weaknesses.push({type:'ok',icon:'💥',title:'Frontline Yok — Saldır!',desc:'Düşman takımında gerçek bir tank yok. Dive comp\'lar rahatlıkla içlerinden geçebilir.'});
+      weaknesses.push({type:'ok',icon:'💥',title:'No Frontline - Punish It',desc:'The enemy team has no true tank. Dive compositions can cut through them much more easily.'});
     if(ratings['Mobility']<3)
-      weaknesses.push({type:'ok',icon:'🎯',title:'Düşük Mobility — Cezalandır!',desc:'Yavaş bir comp. CC zincirleri ve hooklar kolay pick fırsatı yaratır.'});
+      weaknesses.push({type:'ok',icon:'🎯',title:'Low Mobility - Punish It',desc:'This is a slow composition. CC chains and hooks can create easy pick opportunities.'});
     if(ratings['Waveclear']<3)
-      weaknesses.push({type:'ok',icon:'🌊',title:'Zayıf Waveclear',desc:'Dalga temizleyemiyorlar. Side lane baskısı uygula ve agresif split push yap.'});
+      weaknesses.push({type:'ok',icon:'🌊',title:'Weak Waveclear',desc:'They cannot clear waves well. Apply side-lane pressure and split push aggressively.'});
     if(!classes.some(c=>['support','enchanter'].includes(c)))
-      weaknesses.push({type:'ok',icon:'💊',title:'Heal/Shield Yok',desc:'Compta koruyucu support bulunmuyor. Daha agresif fight\'lara zorla.'});
+      weaknesses.push({type:'ok',icon:'💊',title:'No Heal/Shield Support',desc:'Their composition lacks a protective support, so you can force more aggressive fights.'});
     if(ratings['Peel']<3)
-      weaknesses.push({type:'ok',icon:'🏃',title:'Zayıf Peel',desc:'Carry\'lerini koruyamıyorlar. Backline\'a erişim çok daha kolay.'});
+      weaknesses.push({type:'ok',icon:'🏃',title:'Weak Peel',desc:'They struggle to protect their carries, so reaching the backline is much easier.'});
     if(phys>=80)
-      weaknesses.push({type:'ok',icon:'🛡️',title:'Neredeyse Tam Fiziksel Hasar',desc:`%${phys} fiziksel hasar yapıyorlar. Thornmail ve Frozen Heart gibi zırh itemleri çok güçlü.`});
+      weaknesses.push({type:'ok',icon:'🛡️',title:'Almost Full Physical Damage',desc:`They deal ${phys}% physical damage. Armor items like Thornmail and Frozen Heart become extremely valuable.`});
     if(magic>=80)
-      weaknesses.push({type:'ok',icon:'🔮',title:'Neredeyse Tam Büyü Hasarı',desc:`%${magic} büyü hasarı yapıyorlar. Banshee's Veil ve Force of Nature ideal yanıtlardır.`});
+      weaknesses.push({type:'ok',icon:'🔮',title:'Almost Full Magic Damage',desc:`They deal ${magic}% magic damage. Banshee's Veil and Force of Nature are excellent answers.`});
     if(!hasCC['stun'] && !hasCC['knockup'] && !hasCC['snare'])
-      weaknesses.push({type:'ok',icon:'🕊️',title:'Düşük Hard CC',desc:'Comp\'ta güvenilir hard CC yok. Daha agresif oynayabilirsin.'});
+      weaknesses.push({type:'ok',icon:'🕊️',title:'Low Hard CC',desc:'This composition lacks reliable hard crowd control, so you can play more aggressively.'});
 
     if(ratings['Engage']>=8)
-      strengths.push({type:'crit',icon:'💥',title:'Çok Güçlü Takım Engage',desc:'Takım fight\'ı çok hızlı ve sert başlatabilirler. Vision kontrolü ve pozisyon kritik.'});
+      strengths.push({type:'crit',icon:'💥',title:'Extremely Strong Team Engage',desc:'They can start fights quickly and decisively. Vision control and positioning are critical.'});
     if(ratings['Carry']>=8)
-      strengths.push({type:'crit',icon:'💰',title:'Yüksek Hasarlı Carry\'ler',desc:'Düşman carry\'leri fight\'ı devralabilir. Snowball yapmadan önce baskıla.'});
+      strengths.push({type:'crit',icon:'💰',title:'High-Damage Carries',desc:'Their carries can take over fights. Pressure them before they start snowballing.'});
     if(ratings['Tankiness']>=8)
-      strengths.push({type:'warn',icon:'🏰',title:'Sağlam Frontline',desc:'Güçlü bir ön saf var. BotRK veya LDR gibi anti-tank itemleri atlamayın.'});
+      strengths.push({type:'warn',icon:'🏰',title:'Durable Frontline',desc:'They have a strong frontline. Do not skip anti-tank items like Blade of the Ruined King or Lord Dominik\'s Regards.'});
     if(hasCC['suppress'])
-      strengths.push({type:'crit',icon:'🔴',title:'Suppress Tehlikesi!',desc:'Düşmanda suppress var (Malzahar, Warwick gibi). QSS en güvenli yanıttır.'});
+      strengths.push({type:'crit',icon:'🔴',title:'Suppress Threat!',desc:'The enemy has suppress effects such as Malzahar or Warwick. QSS is the safest answer.'});
     if((hasCC['knockup']||hasCC['stun']) && ratings['Engage']>=7)
-      strengths.push({type:'crit',icon:'⚠️',title:'Ağır Crowd Control',desc:'Güçlü engage ile hard CC kombinasyonu kullanıyorlar. Tenacity ve Mercury Treads çok değerli.'});
+      strengths.push({type:'crit',icon:'⚠️',title:'Heavy Crowd Control',desc:'They combine strong engage with hard CC. Tenacity and Mercury\'s Treads are very valuable.'});
     if(ratings['Mobility']>=7)
-      strengths.push({type:'warn',icon:'💨',title:'Çok Hareketli Takım',desc:'Bu comp hızlı hareket edip pozisyon değiştiriyor. Slowlar ve point-click lockdown çok önemli.'});
+      strengths.push({type:'warn',icon:'💨',title:'Highly Mobile Team',desc:'This composition repositions quickly. Slows and point-and-click lockdown are especially important.'});
     if(trueD>=15)
-      strengths.push({type:'warn',icon:'💛',title:'True Damage Var',desc:`%${trueD} true damage yapıyorlar. Zırh ve MR bu kısmı azaltmıyor.`});
+      strengths.push({type:'warn',icon:'💛',title:'True Damage Threat',desc:`They deal ${trueD}% true damage. Armor and MR will not reduce that portion.`});
     if(team.filter(c=>c.tags&&c.tags.includes('hypercarry')).length>=1)
-      strengths.push({type:'crit',icon:'👑',title:'Hypercarry Tehdidi',desc:'Bu draftta hypercarry var. Erken baskıla yoksa geç oyunda fight\'ı tek başına kazanır.'});
+      strengths.push({type:'crit',icon:'👑',title:'Hypercarry Threat',desc:'This draft includes a hypercarry. Pressure them early or they can solo-win late fights.'});
     if(ratings['Split Push']>=7)
-      strengths.push({type:'warn',icon:'🗺️',title:'Güçlü Split Push',desc:'Güçlü bir side laner var. TP ile cevap ver ve sürekli vision koru.'});
+      strengths.push({type:'warn',icon:'🗺️',title:'Strong Split Push',desc:'They have a dangerous side laner. Answer with teleport pressure and keep vision up.'});
     if(ratings['Utility']>=8)
-      strengths.push({type:'warn',icon:'🌟',title:'Yüksek Utility Comp',desc:'Utility çok yüksek. Engage açılmadan fight\'a girme, önce doğru hedefi belirle.'});
+      strengths.push({type:'warn',icon:'🌟',title:'High-Utility Composition',desc:'Their utility is very high. Do not force fights blindly; identify the right target first.'});
   }
 
   return {weaknesses, strengths};
