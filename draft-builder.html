@@ -272,7 +272,9 @@ header{
 .champ-grid{
   flex:1;overflow-y:auto;
   display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(76px,1fr));
+  grid-template-columns:repeat(auto-fill,76px);
+  justify-content:flex-start;
+  align-content:flex-start;
   gap:8px;
   padding-right:4px;
   scrollbar-width:thin;scrollbar-color:var(--gold-dim) transparent;
@@ -533,6 +535,180 @@ header{
 .warning-item.ok .warning-title{color:var(--green-ok);}
 .warning-desc{color:var(--text-dim);font-size:.72rem;letter-spacing:.3px;}
 
+/* SAVE & SHARE */
+.share-section{
+  padding:20px 24px 24px;
+}
+.share-actions{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+  margin-top:14px;
+}
+.share-btn{
+  border:1px solid var(--border);
+  background:rgba(9,20,40,.82);
+  color:var(--text);
+  font-family:'Rajdhani',sans-serif;
+  font-size:.78rem;
+  letter-spacing:1.5px;
+  font-weight:700;
+  text-transform:uppercase;
+  padding:11px 12px;
+  cursor:pointer;
+  transition:all .25s ease;
+}
+.share-btn:hover:not(:disabled){
+  border-color:var(--gold);
+  color:var(--gold-light);
+  transform:translateY(-1px);
+}
+.share-btn:disabled{
+  opacity:.45;
+  cursor:not-allowed;
+}
+.share-btn.primary{
+  background:linear-gradient(135deg,rgba(200,170,110,.2),rgba(74,158,255,.16));
+}
+.share-status{
+  min-height:18px;
+  margin-top:10px;
+  font-size:.68rem;
+  color:var(--text-dim);
+  letter-spacing:.4px;
+}
+.share-preview{
+  margin-top:14px;
+  border:1px solid var(--border);
+  background:linear-gradient(180deg,rgba(9,20,40,.96),rgba(7,15,30,.92));
+  border-radius:6px;
+  overflow:hidden;
+}
+.share-preview.hidden{
+  display:none;
+}
+.share-preview-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+  padding:14px 16px 10px;
+  border-bottom:1px solid rgba(200,170,110,.12);
+}
+.share-preview-title{
+  font-family:'Cinzel',serif;
+  font-size:.8rem;
+  letter-spacing:2px;
+  color:var(--gold);
+  text-transform:uppercase;
+}
+.share-preview-time{
+  font-size:.64rem;
+  color:var(--text-dim);
+  text-align:right;
+  line-height:1.4;
+}
+.share-preview-body{
+  padding:14px 16px 16px;
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+.share-champ-list{
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:8px;
+}
+.share-champ-card{
+  border:1px solid rgba(200,170,110,.14);
+  background:rgba(255,255,255,.02);
+  overflow:hidden;
+}
+.share-champ-card img{
+  width:100%;
+  height:58px;
+  object-fit:cover;
+  display:block;
+}
+.share-champ-lane,
+.share-champ-name{
+  display:block;
+  text-align:center;
+  padding:5px 6px;
+}
+.share-champ-lane{
+  font-size:.56rem;
+  letter-spacing:1.6px;
+  color:var(--gold);
+  text-transform:uppercase;
+}
+.share-champ-name{
+  font-size:.68rem;
+  color:var(--text);
+  font-weight:700;
+  line-height:1.2;
+  padding-top:0;
+}
+.share-meta-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:8px;
+}
+.share-meta-item{
+  border:1px solid rgba(200,170,110,.12);
+  background:rgba(255,255,255,.02);
+  padding:10px 12px;
+}
+.share-meta-label{
+  display:block;
+  font-size:.58rem;
+  color:var(--text-dim);
+  letter-spacing:1.6px;
+  text-transform:uppercase;
+  margin-bottom:4px;
+}
+.share-meta-value{
+  display:block;
+  font-size:.84rem;
+  color:var(--gold-light);
+  font-weight:700;
+  line-height:1.3;
+}
+.share-block-title{
+  font-size:.62rem;
+  color:var(--gold);
+  letter-spacing:2px;
+  text-transform:uppercase;
+  margin-bottom:8px;
+}
+.share-line-list{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+.share-line-item{
+  font-size:.71rem;
+  color:var(--text);
+  line-height:1.45;
+}
+.share-line-item span{
+  color:var(--gold-light);
+  font-weight:700;
+}
+.share-summary-box{
+  width:100%;
+  min-height:170px;
+  resize:vertical;
+  border:1px solid rgba(200,170,110,.14);
+  background:rgba(5,11,22,.94);
+  color:var(--text);
+  font-family:'Share Tech Mono',monospace;
+  font-size:.7rem;
+  line-height:1.5;
+  padding:12px;
+  outline:none;
+}
+
 /* Animations */
 @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
 .anim{animation:fadeUp .4s ease both;}
@@ -556,6 +732,8 @@ header{
   .main-wrap{grid-template-columns:1fr;grid-template-rows:auto auto;}
   .right-panel{border-top:1px solid var(--border);}
   .draft-slots{grid-template-columns:repeat(5,1fr);}
+  .share-champ-list{grid-template-columns:repeat(3,minmax(0,1fr));}
+  .share-meta-grid{grid-template-columns:1fr;}
 }
 </style>
 </head>
@@ -572,6 +750,7 @@ header{
     <a href="lore.html" class="nav-btn">Lore</a>
     <a href="aboutus.html" class="nav-btn">About Us</a>
     <a href="updates.html" class="nav-btn">Updates</a>
+    <a href="Counter analyzer.html" class="nav-btn">Counter Analyzer</a>
     <button class="nav-btn active" type="button">Draft Builder</button>
     <button class="nav-btn" id="resetBtn">↺ Reset</button>
   </nav>
@@ -713,6 +892,37 @@ header{
       <div class="sec-label">Strengths & Weaknesses</div>
       <div class="warning-list" id="warningList">
         <div class="empty-state">Select champions to see analysis</div>
+      </div>
+    </div>
+
+    <div class="share-section">
+      <div class="sec-label">Save & Share Draft</div>
+      <div class="share-actions">
+        <button class="share-btn" id="saveDraftBtn" disabled>Save Draft</button>
+        <button class="share-btn primary" id="shareDraftBtn" disabled>Share Draft</button>
+      </div>
+      <div class="share-status" id="shareStatus">Build a draft to generate a full share summary.</div>
+      <div class="share-preview hidden" id="sharePreview">
+        <div class="share-preview-head">
+          <div class="share-preview-title">Draft Summary</div>
+          <div class="share-preview-time" id="sharePreviewTime"></div>
+        </div>
+        <div class="share-preview-body">
+          <div class="share-champ-list" id="shareChampList"></div>
+          <div class="share-meta-grid" id="shareMetaGrid"></div>
+          <div>
+            <div class="share-block-title">Best Synergy Combos</div>
+            <div class="share-line-list" id="shareComboLines"></div>
+          </div>
+          <div>
+            <div class="share-block-title">Strengths & Weaknesses Snapshot</div>
+            <div class="share-line-list" id="shareWarningLines"></div>
+          </div>
+          <div>
+            <div class="share-block-title">Share Text</div>
+            <textarea class="share-summary-box" id="shareSummaryBox" readonly></textarea>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -2050,6 +2260,8 @@ let activeSlot = null; // which slot we're filling (if clicking slot first)
 let filterRole = 'all';
 let filterType = 'all';
 let filterClass = 'all';
+let latestAnalysisSnapshot = null;
+const SAVED_DRAFT_KEY = 'lol_draftbuilder_saved_draft';
 
 /* ═══════════════════════════════════════════════
    INIT
@@ -2060,6 +2272,10 @@ function init(){
   setupFilters();
   document.getElementById('resetBtn').addEventListener('click',resetDraft);
   document.getElementById('searchInput').addEventListener('input',applyFilters);
+  document.getElementById('saveDraftBtn').addEventListener('click',saveCurrentDraft);
+  document.getElementById('shareDraftBtn').addEventListener('click',shareCurrentDraft);
+  loadSavedDraftPreview();
+  updateShareButtons();
 }
 
 /* ─── Build draft slots ─── */
@@ -2266,6 +2482,18 @@ function updateAnalysis(){
   /* ── Warnings ── */
   const warnings = generateWarnings(selected, ratings, avgPhys, avgMagic, avgTrue, allCC);
 
+  latestAnalysisSnapshot = buildAnalysisSnapshot(
+    selected,
+    combos,
+    synScore,
+    avgPhys,
+    avgMagic,
+    avgTrue,
+    ratings,
+    warnings,
+    allCC
+  );
+
   /* ── Render ── */
   renderScore(synScore, combos.length);
   renderCombos(combos);
@@ -2273,6 +2501,7 @@ function updateAnalysis(){
   renderCC(hasCC, ALL_CC);
   renderRatings(ratings);
   renderWarnings(warnings);
+  updateShareButtons();
 }
 
 function avg(arr, key){ return arr.reduce((s,c)=>s+(c[key]||0),0)/arr.length; }
@@ -2470,7 +2699,477 @@ function renderWarnings(warnings){
   `).join('');
 }
 
+function getScoreTier(score){
+  if(score >= 85) return { grade:'S TIER', summary:'Exceptional synergy. This comp has a clear, powerful game plan.' };
+  if(score >= 70) return { grade:'A TIER', summary:'Strong composition with good synergies and minimal gaps.' };
+  if(score >= 55) return { grade:'B TIER', summary:'Decent composition. Some synergies present, room to improve.' };
+  if(score >= 40) return { grade:'C TIER', summary:'Weak synergy. Champions work somewhat independently.' };
+  return { grade:'D TIER', summary:'Poor composition. Critical gaps or conflicting playstyles detected.' };
+}
+
+function buildAnalysisSnapshot(selected, combos, score, phys, magic, trueD, ratings, warnings, allCC){
+  const tier = getScoreTier(score);
+  return {
+    savedAt: new Date().toISOString(),
+    champions: draft.map((champId, index)=>{
+      const champ = champId ? getChamp(champId) : null;
+      return champ ? {
+        lane: SLOT_ROLES[index],
+        id: champ.id,
+        name: champ.name,
+        class: champ.class,
+        type: champ.type,
+      } : null;
+    }).filter(Boolean),
+    score,
+    grade: tier.grade,
+    summary: tier.summary,
+    comboCount: combos.length,
+    damage: { phys, magic, trueD },
+    ratings: Object.fromEntries(Object.entries(ratings).map(([key,val])=>[key, Number(val.toFixed(1))])),
+    ccTypes: [...allCC],
+    combos: combos.slice(0,6).map(combo=>({
+      pair: `${combo.a.name} + ${combo.b.name}`,
+      score: combo.score,
+      reason: combo.reason,
+    })),
+    warnings: warnings.slice(0,8).map(item=>({
+      type: item.type,
+      title: item.title,
+      desc: item.desc,
+    }))
+  };
+}
+
+function formatShareTimestamp(isoString){
+  const date = new Date(isoString);
+  if(Number.isNaN(date.getTime())) return '';
+  return date.toLocaleString('en-GB', {
+    year:'numeric',
+    month:'short',
+    day:'2-digit',
+    hour:'2-digit',
+    minute:'2-digit'
+  });
+}
+
+function buildShareText(snapshot){
+  const championLines = snapshot.champions
+    .map(champ=>`- ${champ.lane}: ${champ.name} (${champ.class}, ${champ.type})`)
+    .join('\n');
+  const ratingLines = Object.entries(snapshot.ratings)
+    .map(([key,val])=>`- ${key}: ${val}/10`)
+    .join('\n');
+  const comboLines = snapshot.combos.length
+    ? snapshot.combos.map(combo=>`- ${combo.pair}: ${combo.reason} (+${combo.score})`).join('\n')
+    : '- No standout combos detected yet';
+  const warningLines = snapshot.warnings.length
+    ? snapshot.warnings.map(item=>`- [${item.type.toUpperCase()}] ${item.title}: ${item.desc}`).join('\n')
+    : '- No warnings generated';
+
+  return [
+    'League of Legends Draft Builder',
+    `Saved: ${formatShareTimestamp(snapshot.savedAt)}`,
+    '',
+    `Synergy Score: ${snapshot.score}/100 (${snapshot.grade})`,
+    snapshot.summary,
+    '',
+    'Champions:',
+    championLines,
+    '',
+    `Damage Mix: ${snapshot.damage.phys}% Physical / ${snapshot.damage.magic}% Magic / ${snapshot.damage.trueD}% True`,
+    `CC Coverage: ${snapshot.ccTypes.length ? snapshot.ccTypes.join(', ') : 'None'}`,
+    '',
+    'Team Ratings:',
+    ratingLines,
+    '',
+    'Best Synergy Combos:',
+    comboLines,
+    '',
+    'Strengths & Weaknesses:',
+    warningLines
+  ].join('\n');
+}
+
+function renderSharePreview(snapshot, sourceLabel){
+  const preview = document.getElementById('sharePreview');
+  const timeEl = document.getElementById('sharePreviewTime');
+  const champList = document.getElementById('shareChampList');
+  const metaGrid = document.getElementById('shareMetaGrid');
+  const comboLines = document.getElementById('shareComboLines');
+  const warningLines = document.getElementById('shareWarningLines');
+  const summaryBox = document.getElementById('shareSummaryBox');
+
+  preview.classList.remove('hidden');
+  timeEl.textContent = `${sourceLabel}\n${formatShareTimestamp(snapshot.savedAt)}`;
+
+  champList.innerHTML = snapshot.champions.map(champ=>`
+    <div class="share-champ-card">
+      <img src="https://ddragon.leagueoflegends.com/cdn/14.24.1/img/champion/${champ.id}.png" alt="${champ.name}">
+      <span class="share-champ-lane">${champ.lane}</span>
+      <span class="share-champ-name">${champ.name}</span>
+    </div>
+  `).join('');
+
+  metaGrid.innerHTML = [
+    { label:'Synergy Score', value:`${snapshot.score}/100` },
+    { label:'Tier', value:snapshot.grade },
+    { label:'Damage Mix', value:`${snapshot.damage.phys}% / ${snapshot.damage.magic}% / ${snapshot.damage.trueD}%` },
+    { label:'CC Types', value:snapshot.ccTypes.length ? snapshot.ccTypes.join(', ') : 'None' },
+    { label:'Team Ratings', value:Object.entries(snapshot.ratings).map(([key,val])=>`${key} ${val}`).join(' | ') },
+    { label:'Summary', value:snapshot.summary }
+  ].map(item=>`
+    <div class="share-meta-item">
+      <span class="share-meta-label">${item.label}</span>
+      <span class="share-meta-value">${item.value}</span>
+    </div>
+  `).join('');
+
+  comboLines.innerHTML = snapshot.combos.length
+    ? snapshot.combos.map(combo=>`
+        <div class="share-line-item"><span>${combo.pair}</span> ${combo.reason} (+${combo.score})</div>
+      `).join('')
+    : '<div class="share-line-item">No standout combos detected yet.</div>';
+
+  warningLines.innerHTML = snapshot.warnings.length
+    ? snapshot.warnings.map(item=>`
+        <div class="share-line-item"><span>[${item.type.toUpperCase()}] ${item.title}</span> ${item.desc}</div>
+      `).join('')
+    : '<div class="share-line-item">No warnings generated.</div>';
+
+  summaryBox.value = buildShareText(snapshot);
+}
+
+function buildDraftFilename(snapshot){
+  const names = snapshot.champions.map(champ=>champ.name.toLowerCase().replace(/[^a-z0-9]+/g,'-'));
+  return `lol-draft-${names.join('_') || 'team'}.png`;
+}
+
+function loadImageForCanvas(src){
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = () => resolve(img);
+    img.onerror = () => resolve(null);
+    img.src = src;
+  });
+}
+
+function roundRectPath(ctx, x, y, width, height, radius){
+  const r = Math.min(radius, width / 2, height / 2);
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + width, y, x + width, y + height, r);
+  ctx.arcTo(x + width, y + height, x, y + height, r);
+  ctx.arcTo(x, y + height, x, y, r);
+  ctx.arcTo(x, y, x + width, y, r);
+  ctx.closePath();
+}
+
+function fillRoundRect(ctx, x, y, width, height, radius, fillStyle, strokeStyle){
+  roundRectPath(ctx, x, y, width, height, radius);
+  ctx.fillStyle = fillStyle;
+  ctx.fill();
+  if(strokeStyle){
+    ctx.strokeStyle = strokeStyle;
+    ctx.stroke();
+  }
+}
+
+function wrapCanvasText(ctx, text, maxWidth){
+  const words = String(text || '').split(/\s+/).filter(Boolean);
+  const lines = [];
+  let current = '';
+
+  words.forEach(word => {
+    const next = current ? `${current} ${word}` : word;
+    if(ctx.measureText(next).width <= maxWidth){
+      current = next;
+    }else{
+      if(current) lines.push(current);
+      current = word;
+    }
+  });
+
+  if(current) lines.push(current);
+  return lines.length ? lines : [''];
+}
+
+async function generateDraftShareImage(snapshot){
+  const canvas = document.createElement('canvas');
+  canvas.width = 1600;
+  canvas.height = 1900;
+  const ctx = canvas.getContext('2d');
+  const padding = 64;
+  const gold = '#c8aa6e';
+  const text = '#f0e6d2';
+  const dim = '#a09b8c';
+  const red = '#e05050';
+  const blue = '#4a9eff';
+  const green = '#3dba6a';
+
+  const bg = ctx.createLinearGradient(0, 0, 0, canvas.height);
+  bg.addColorStop(0, '#091428');
+  bg.addColorStop(0.6, '#0d1b2e');
+  bg.addColorStop(1, '#050b16');
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  ctx.strokeStyle = 'rgba(200,170,110,0.18)';
+  for(let y = 0; y < canvas.height; y += 42){
+    ctx.beginPath();
+    ctx.moveTo(0, y);
+    ctx.lineTo(canvas.width, y);
+    ctx.stroke();
+  }
+
+  ctx.fillStyle = gold;
+  ctx.font = '700 30px Cinzel, serif';
+  ctx.fillText('LEAGUE OF LEGENDS', padding, 80);
+  ctx.font = '900 62px Cinzel, serif';
+  ctx.fillStyle = text;
+  ctx.fillText('DRAFT BUILDER REPORT', padding, 150);
+  ctx.font = '600 24px Rajdhani, sans-serif';
+  ctx.fillStyle = dim;
+  ctx.fillText(`Saved ${formatShareTimestamp(snapshot.savedAt)}`, padding, 192);
+
+  fillRoundRect(ctx, padding, 240, canvas.width - padding * 2, 220, 24, 'rgba(255,255,255,0.03)', 'rgba(200,170,110,0.18)');
+  ctx.font = '700 24px Rajdhani, sans-serif';
+  ctx.fillStyle = dim;
+  ctx.fillText('CORE METRICS', padding + 28, 282);
+
+  const metaItems = [
+    { label:'Synergy Score', value:`${snapshot.score}/100`, color:gold },
+    { label:'Tier', value:snapshot.grade, color:text },
+    { label:'Damage Mix', value:`${snapshot.damage.phys}% / ${snapshot.damage.magic}% / ${snapshot.damage.trueD}%`, color:text },
+    { label:'CC Types', value:String(snapshot.ccTypes.length), color:text }
+  ];
+
+  metaItems.forEach((item, index) => {
+    const col = index % 2;
+    const row = Math.floor(index / 2);
+    const x = padding + 28 + col * 370;
+    const y = 320 + row * 76;
+    ctx.font = '700 18px Rajdhani, sans-serif';
+    ctx.fillStyle = dim;
+    ctx.fillText(item.label.toUpperCase(), x, y);
+    ctx.font = '700 32px Rajdhani, sans-serif';
+    ctx.fillStyle = item.color;
+    ctx.fillText(item.value, x, y + 38);
+  });
+
+  ctx.font = '600 24px Rajdhani, sans-serif';
+  ctx.fillStyle = text;
+  const summaryLines = wrapCanvasText(ctx, snapshot.summary, canvas.width - padding * 2 - 56);
+  summaryLines.forEach((line, index) => {
+    ctx.fillText(line, padding + 28, 430 + index * 28);
+  });
+
+  fillRoundRect(ctx, padding, 500, canvas.width - padding * 2, 300, 24, 'rgba(255,255,255,0.03)', 'rgba(200,170,110,0.18)');
+  ctx.font = '700 24px Rajdhani, sans-serif';
+  ctx.fillStyle = dim;
+  ctx.fillText('CHAMPION LINEUP', padding + 28, 542);
+
+  const cardWidth = 265;
+  const cardGap = 14;
+  const cardY = 570;
+
+  for(let index = 0; index < snapshot.champions.length; index++){
+    const champ = snapshot.champions[index];
+    const cardX = padding + 28 + index * (cardWidth + cardGap);
+    fillRoundRect(ctx, cardX, cardY, cardWidth, 190, 18, 'rgba(8,17,33,0.95)', 'rgba(200,170,110,0.16)');
+
+    const icon = await loadImageForCanvas(`https://ddragon.leagueoflegends.com/cdn/14.24.1/img/champion/${champ.id}.png`);
+    if(icon){
+      ctx.save();
+      roundRectPath(ctx, cardX + 14, cardY + 14, cardWidth - 28, 96, 14);
+      ctx.clip();
+      ctx.drawImage(icon, cardX + 14, cardY + 14, cardWidth - 28, 96);
+      ctx.restore();
+    }else{
+      fillRoundRect(ctx, cardX + 14, cardY + 14, cardWidth - 28, 96, 14, 'rgba(74,158,255,0.18)');
+      ctx.font = '700 20px Rajdhani, sans-serif';
+      ctx.fillStyle = text;
+      ctx.fillText(champ.name, cardX + 28, cardY + 68);
+    }
+
+    ctx.font = '700 16px Rajdhani, sans-serif';
+    ctx.fillStyle = gold;
+    ctx.fillText(champ.lane.toUpperCase(), cardX + 16, cardY + 132);
+    ctx.font = '700 24px Rajdhani, sans-serif';
+    ctx.fillStyle = text;
+    ctx.fillText(champ.name, cardX + 16, cardY + 162);
+    ctx.font = '600 15px Rajdhani, sans-serif';
+    ctx.fillStyle = dim;
+    ctx.fillText(`${champ.class} • ${champ.type}`, cardX + 16, cardY + 182);
+  }
+
+  const leftX = padding;
+  const topY = 848;
+  const colWidth = (canvas.width - padding * 2 - 24) / 2;
+
+  fillRoundRect(ctx, leftX, topY, colWidth, 460, 24, 'rgba(255,255,255,0.03)', 'rgba(200,170,110,0.18)');
+  fillRoundRect(ctx, leftX + colWidth + 24, topY, colWidth, 460, 24, 'rgba(255,255,255,0.03)', 'rgba(200,170,110,0.18)');
+  fillRoundRect(ctx, padding, 1336, canvas.width - padding * 2, 500, 24, 'rgba(255,255,255,0.03)', 'rgba(200,170,110,0.18)');
+
+  ctx.font = '700 24px Rajdhani, sans-serif';
+  ctx.fillStyle = dim;
+  ctx.fillText('TEAM RATINGS', leftX + 24, topY + 40);
+  ctx.fillText('BEST COMBOS', leftX + colWidth + 48, topY + 40);
+  ctx.fillText('STRENGTHS & WEAKNESSES', padding + 24, 1378);
+
+  const ratingEntries = Object.entries(snapshot.ratings);
+  ratingEntries.forEach(([key, value], index) => {
+    const rowY = topY + 86 + index * 44;
+    ctx.font = '700 18px Rajdhani, sans-serif';
+    ctx.fillStyle = text;
+    ctx.fillText(key, leftX + 24, rowY);
+    fillRoundRect(ctx, leftX + 150, rowY - 16, colWidth - 220, 18, 9, 'rgba(255,255,255,0.05)');
+    fillRoundRect(ctx, leftX + 150, rowY - 16, (colWidth - 220) * (value / 10), 18, 9, 'rgba(200,170,110,0.88)');
+    ctx.fillStyle = gold;
+    ctx.fillText(value.toFixed(1), leftX + colWidth - 44, rowY);
+  });
+
+  const comboBaseY = topY + 78;
+  if(snapshot.combos.length){
+    snapshot.combos.slice(0, 5).forEach((combo, index) => {
+      const y = comboBaseY + index * 76;
+      ctx.font = '700 20px Rajdhani, sans-serif';
+      ctx.fillStyle = gold;
+      ctx.fillText(`${combo.pair}  +${combo.score}`, leftX + colWidth + 48, y);
+      ctx.font = '600 17px Rajdhani, sans-serif';
+      ctx.fillStyle = text;
+      wrapCanvasText(ctx, combo.reason, colWidth - 72).slice(0, 2).forEach((line, lineIndex) => {
+        ctx.fillText(line, leftX + colWidth + 48, y + 26 + lineIndex * 22);
+      });
+    });
+  }else{
+    ctx.font = '600 20px Rajdhani, sans-serif';
+    ctx.fillStyle = dim;
+    ctx.fillText('No standout combos detected yet.', leftX + colWidth + 48, comboBaseY);
+  }
+
+  const warningBaseY = 1422;
+  if(snapshot.warnings.length){
+    snapshot.warnings.slice(0, 6).forEach((warning, index) => {
+      const y = warningBaseY + index * 62;
+      const accent = warning.type === 'crit' ? red : warning.type === 'ok' ? green : blue;
+      ctx.fillStyle = accent;
+      ctx.fillRect(padding + 24, y - 14, 8, 34);
+      ctx.font = '700 20px Rajdhani, sans-serif';
+      ctx.fillStyle = text;
+      ctx.fillText(warning.title, padding + 46, y);
+      ctx.font = '600 16px Rajdhani, sans-serif';
+      ctx.fillStyle = dim;
+      wrapCanvasText(ctx, warning.desc, canvas.width - padding * 2 - 70).slice(0, 2).forEach((line, lineIndex) => {
+        ctx.fillText(line, padding + 46, y + 22 + lineIndex * 20);
+      });
+    });
+  }else{
+    ctx.font = '600 20px Rajdhani, sans-serif';
+    ctx.fillStyle = dim;
+    ctx.fillText('No warnings generated.', padding + 24, warningBaseY);
+  }
+
+  ctx.font = '600 18px Rajdhani, sans-serif';
+  ctx.fillStyle = 'rgba(240,230,210,0.7)';
+  ctx.fillText('Generated by Draft Builder', padding, canvas.height - 28);
+
+  return canvas;
+}
+
+function downloadCanvas(canvas, filename){
+  const link = document.createElement('a');
+  link.href = canvas.toDataURL('image/png');
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+function setShareStatus(message){
+  document.getElementById('shareStatus').textContent = message;
+}
+
+function updateShareButtons(){
+  const hasDraft = draft.some(Boolean);
+  document.getElementById('saveDraftBtn').disabled = !hasDraft;
+  document.getElementById('shareDraftBtn').disabled = !hasDraft;
+  if(!hasDraft && document.getElementById('sharePreview').classList.contains('hidden')){
+    setShareStatus('Build a draft to generate a full share summary.');
+  }
+}
+
+function saveCurrentDraft(){
+  if(!latestAnalysisSnapshot) return;
+  const snapshot = {
+    ...latestAnalysisSnapshot,
+    savedAt: new Date().toISOString()
+  };
+  localStorage.setItem(SAVED_DRAFT_KEY, JSON.stringify(snapshot));
+  renderSharePreview(snapshot, 'Saved Draft');
+  setShareStatus('Draft saved locally. You can reopen this page and keep the summary.');
+}
+
+async function shareCurrentDraft(){
+  if(!latestAnalysisSnapshot) return;
+  const snapshot = {
+    ...latestAnalysisSnapshot,
+    savedAt: new Date().toISOString()
+  };
+  renderSharePreview(snapshot, 'Share Preview');
+  try{
+    const canvas = await generateDraftShareImage(snapshot);
+    downloadCanvas(canvas, buildDraftFilename(snapshot));
+    setShareStatus('Draft image created and download started.');
+  }catch(error){
+    console.error('Draft image generation failed', error);
+    setShareStatus('Image generation failed. The text summary is still available below.');
+  }
+}
+
+function loadSavedDraftPreview(){
+  try{
+    const raw = localStorage.getItem(SAVED_DRAFT_KEY);
+    if(!raw) return;
+    const snapshot = JSON.parse(raw);
+    if(!snapshot || !Array.isArray(snapshot.champions) || !snapshot.champions.length) return;
+    renderSharePreview(snapshot, 'Last Saved Draft');
+    setShareStatus('Loaded your last saved draft summary.');
+  }catch(error){
+    console.warn('Unable to load saved draft preview', error);
+  }
+}
+
+async function copyTextToClipboard(text){
+  if(navigator.clipboard && window.isSecureContext){
+    try{
+      await navigator.clipboard.writeText(text);
+      return true;
+    }catch(error){
+      console.warn('Clipboard write failed', error);
+    }
+  }
+
+  const helper = document.createElement('textarea');
+  helper.value = text;
+  helper.setAttribute('readonly','');
+  helper.style.position = 'fixed';
+  helper.style.top = '-9999px';
+  document.body.appendChild(helper);
+  helper.select();
+  let success = false;
+  try{
+    success = document.execCommand('copy');
+  }catch(error){
+    console.warn('Fallback copy failed', error);
+  }
+  document.body.removeChild(helper);
+  return success;
+}
+
 function resetAnalysisUI(){
+  latestAnalysisSnapshot = null;
   document.getElementById('scoreNum').textContent = '—';
   document.getElementById('ringFill').style.strokeDashoffset = '339.3';
   document.getElementById('scoreGrade').textContent = 'Select Champions';
@@ -2486,6 +3185,7 @@ function resetAnalysisUI(){
   document.getElementById('ratingRows').innerHTML='';
   document.getElementById('warningList').innerHTML='<div class="empty-state">Select champions to see analysis</div>';
   document.getElementById('champCountBadge').textContent='0 / 5 selected';
+  updateShareButtons();
 }
 
 /* ─── Start ─── */
