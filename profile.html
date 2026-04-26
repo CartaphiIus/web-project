@@ -306,7 +306,7 @@
             color: rgba(200,155,60,.6);
             margin-bottom: 7px;
         }
-        .field input, .field select {
+        .field input, .field select, .field textarea {
             width: 100%;
             background: rgba(255,255,255,.04);
             border: 1px solid rgba(200,155,60,.2);
@@ -319,13 +319,174 @@
             clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%);
             -webkit-appearance: none;
         }
+        .field textarea {
+            min-height: 100px;
+            resize: vertical;
+            line-height: 1.45;
+        }
         .field select option { background: #0d1f35; }
-        .field input:focus, .field select:focus {
+        .field input:focus, .field select:focus, .field textarea:focus {
             border-color: var(--gold);
             background: rgba(200,155,60,.06);
             box-shadow: 0 0 0 3px rgba(200,155,60,.07);
         }
-        .field input::placeholder { color: rgba(240,230,210,.2); font-size: 13px; }
+        .field input::placeholder, .field textarea::placeholder { color: rgba(240,230,210,.2); font-size: 13px; }
+        .field-note {
+            display: block;
+            margin-top: 6px;
+            font-size: 12px;
+            color: rgba(240,230,210,.38);
+            letter-spacing: .2px;
+        }
+
+        .comp-builder {
+            border: 1px solid rgba(200,155,60,.16);
+            background: rgba(255,255,255,.02);
+            padding: 14px;
+            clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%);
+        }
+        .comp-slot-row {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+        .comp-slot {
+            position: relative;
+            min-height: 116px;
+            border: 1px dashed rgba(200,155,60,.24);
+            background: linear-gradient(180deg, rgba(10,20,40,.95), rgba(13,31,53,.82));
+            cursor: pointer;
+            overflow: hidden;
+            transition: border-color .25s, transform .2s, box-shadow .25s;
+        }
+        .comp-slot:hover {
+            border-color: rgba(200,155,60,.45);
+            transform: translateY(-2px);
+        }
+        .comp-slot.active {
+            border-style: solid;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 2px rgba(200,155,60,.08), 0 12px 24px rgba(0,0,0,.2);
+        }
+        .comp-slot img {
+            width: 100%;
+            height: 78px;
+            object-fit: cover;
+            display: block;
+            background: rgba(255,255,255,.03);
+        }
+        .comp-slot-empty {
+            height: 78px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(200,155,60,.28);
+            font-size: 28px;
+            font-weight: 700;
+        }
+        .comp-slot-lane,
+        .comp-slot-name {
+            padding: 6px 8px;
+            text-align: center;
+        }
+        .comp-slot-lane {
+            font-family: 'Cinzel', serif;
+            font-size: 9px;
+            letter-spacing: 1.7px;
+            color: rgba(200,155,60,.75);
+            border-top: 1px solid rgba(200,155,60,.1);
+        }
+        .comp-slot-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--gold-light);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .comp-picker-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+        .comp-active-lane {
+            font-family: 'Cinzel', serif;
+            font-size: 10px;
+            letter-spacing: 1.7px;
+            color: var(--gold);
+        }
+        .comp-clear-btn {
+            border: 1px solid rgba(200,155,60,.22);
+            background: rgba(200,155,60,.06);
+            color: rgba(240,230,210,.72);
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: .6px;
+            padding: 7px 10px;
+            cursor: pointer;
+            transition: all .25s;
+        }
+        .comp-clear-btn:hover {
+            border-color: rgba(221,85,85,.45);
+            color: #ff9e9e;
+            background: rgba(221,85,85,.08);
+        }
+        .comp-picker-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(86px, 1fr));
+            gap: 10px;
+            max-height: 300px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+        .comp-picker-grid::-webkit-scrollbar {
+            width: 8px;
+        }
+        .comp-picker-grid::-webkit-scrollbar-thumb {
+            background: rgba(200,155,60,.24);
+        }
+        .comp-card {
+            border: 1px solid rgba(200,155,60,.12);
+            background: rgba(255,255,255,.02);
+            cursor: pointer;
+            overflow: hidden;
+            transition: transform .2s, border-color .25s, box-shadow .25s;
+        }
+        .comp-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(200,155,60,.4);
+            box-shadow: 0 10px 20px rgba(0,0,0,.2);
+        }
+        .comp-card.selected {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 2px rgba(200,155,60,.08);
+        }
+        .comp-card img {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            display: block;
+            background: rgba(10,20,40,.95);
+        }
+        .comp-card-name {
+            padding: 7px 6px 8px;
+            font-size: 12px;
+            font-weight: 700;
+            color: rgba(240,230,210,.86);
+            text-align: center;
+            line-height: 1.15;
+        }
+        .comp-empty-grid {
+            padding: 18px 10px;
+            text-align: center;
+            color: rgba(240,230,210,.45);
+            border: 1px dashed rgba(200,155,60,.16);
+            font-size: 13px;
+        }
 
         .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 
@@ -437,6 +598,7 @@
             .rank-grid { grid-template-columns: repeat(4, 1fr); }
             header { padding: 0 16px; }
             .page-wrap { padding: 30px 14px 60px; }
+            .comp-slot-row { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
 </head>
@@ -563,6 +725,19 @@
                 <input type="text" id="pChampion" placeholder="Zed, Yasuo, Jinx...">
             </div>
 
+            <div class="field">
+                <label>FAVORITE TEAM COMPOSITION</label>
+                <div class="comp-builder">
+                    <div class="comp-slot-row" id="favCompSlots"></div>
+                    <div class="comp-picker-head">
+                        <div class="comp-active-lane" id="favCompActiveLane">Choose a lane slot to start building your comp.</div>
+                        <button type="button" class="comp-clear-btn" id="clearCompSlotBtn">CLEAR SLOT</button>
+                    </div>
+                    <div class="comp-picker-grid" id="favCompGrid"></div>
+                </div>
+                <small class="field-note">Her slot sadece kendi lane'ine uygun şampiyonları gösterir. Slotu seçip görsele tıklaman yeterli.</small>
+            </div>
+
             <button class="save-btn" onclick="saveProfile()">
                 Save Profile
             </button>
@@ -580,6 +755,8 @@
 
 <div class="toast" id="toast"></div>
 
+<script src="champion-lanes.js"></script>
+<script src="champion-full-tr.js"></script>
 <script>
     /* ── Data ── */
     const RANKS = [
@@ -619,6 +796,16 @@
     let selectedLane = '';
     let selectedGender = '';
     let currentAvatarSrc = ''; // base64 or emoji key
+    const TEAM_COMP_LANES = [
+        { key: 'Top', label: 'TOP' },
+        { key: 'Jungle', label: 'JUNGLE' },
+        { key: 'Middle', label: 'MID' },
+        { key: 'Bottom', label: 'ADC' },
+        { key: 'Support', label: 'SUPPORT' },
+    ];
+    let favoriteTeamComp = { Top: '', Jungle: '', Middle: '', Bottom: '', Support: '' };
+    let activeCompLane = 'Top';
+    let championPool = [];
 
     /* ── Build avatar grid ── */
     function buildAvatarGrid() {
@@ -714,6 +901,106 @@
         setTimeout(() => t.classList.remove('show'), 3000);
     }
 
+    function normalizeChampionName(name) {
+        return String(name || '')
+            .toLowerCase()
+            .replace(/[^a-z0-9]/g, '');
+    }
+
+    function buildChampionPool() {
+        const rawData = window.__LOL_CHAMPION_FULL__?.data || {};
+        championPool = Object.values(rawData).map(champion => ({
+            id: champion.id,
+            name: champion.name,
+            lane: typeof window.__resolveChampionLane === 'function'
+                ? window.__resolveChampionLane(champion.id, champion)
+                : 'Middle',
+            image: `https://ddragon.leagueoflegends.com/cdn/${window.__LOL_CHAMPION_FULL__.version}/img/champion/${champion.image.full}`,
+        })).sort((a, b) => a.name.localeCompare(b.name));
+    }
+
+    function getFavoriteCompChampion(laneKey) {
+        return championPool.find(champion => champion.id === favoriteTeamComp[laneKey]) || null;
+    }
+
+    function renderFavoriteCompSlots() {
+        const wrap = document.getElementById('favCompSlots');
+        if (!wrap) return;
+
+        wrap.innerHTML = '';
+        TEAM_COMP_LANES.forEach(({ key, label }) => {
+            const selectedChampion = getFavoriteCompChampion(key);
+            const slot = document.createElement('button');
+            slot.type = 'button';
+            slot.className = `comp-slot${activeCompLane === key ? ' active' : ''}`;
+            slot.innerHTML = selectedChampion
+                ? `
+                    <img src="${selectedChampion.image}" alt="${selectedChampion.name}">
+                    <div class="comp-slot-name">${selectedChampion.name}</div>
+                    <div class="comp-slot-lane">${label}</div>
+                  `
+                : `
+                    <div class="comp-slot-empty">+</div>
+                    <div class="comp-slot-name">Empty</div>
+                    <div class="comp-slot-lane">${label}</div>
+                  `;
+            slot.addEventListener('click', () => {
+                activeCompLane = key;
+                renderFavoriteCompSlots();
+                renderFavoriteCompGrid();
+            });
+            wrap.appendChild(slot);
+        });
+    }
+
+    function renderFavoriteCompGrid() {
+        const label = TEAM_COMP_LANES.find(item => item.key === activeCompLane)?.label || activeCompLane;
+        const title = document.getElementById('favCompActiveLane');
+        const grid = document.getElementById('favCompGrid');
+        if (!title || !grid) return;
+
+        title.textContent = `${label} champions`;
+        const champions = championPool.filter(champion => champion.lane === activeCompLane);
+
+        if (!champions.length) {
+            grid.innerHTML = '<div class="comp-empty-grid">No champions found for this lane.</div>';
+            return;
+        }
+
+        grid.innerHTML = '';
+        champions.forEach(champion => {
+            const card = document.createElement('button');
+            card.type = 'button';
+            card.className = `comp-card${favoriteTeamComp[activeCompLane] === champion.id ? ' selected' : ''}`;
+            card.innerHTML = `
+                <img src="${champion.image}" alt="${champion.name}" loading="lazy">
+                <div class="comp-card-name">${champion.name}</div>
+            `;
+            card.addEventListener('click', () => {
+                favoriteTeamComp[activeCompLane] = champion.id;
+                renderFavoriteCompSlots();
+                renderFavoriteCompGrid();
+            });
+            grid.appendChild(card);
+        });
+    }
+
+    function setupFavoriteCompBuilder() {
+        buildChampionPool();
+
+        const clearBtn = document.getElementById('clearCompSlotBtn');
+        if (clearBtn) {
+            clearBtn.addEventListener('click', () => {
+                favoriteTeamComp[activeCompLane] = '';
+                renderFavoriteCompSlots();
+                renderFavoriteCompGrid();
+            });
+        }
+
+        renderFavoriteCompSlots();
+        renderFavoriteCompGrid();
+    }
+
     /* ── Load profile ── */
     function loadProfile() {
         const user = JSON.parse(localStorage.getItem('lol_current') || 'null');
@@ -740,6 +1027,18 @@
         document.getElementById('pEmail').value     = profile.email     || user.email || '';
         document.getElementById('pBio').value       = profile.bio       || '';
         document.getElementById('pChampion').value  = profile.champion  || '';
+
+        if (profile.teamComp && typeof profile.teamComp === 'object') {
+            favoriteTeamComp = {
+                Top: profile.teamComp.Top || '',
+                Jungle: profile.teamComp.Jungle || '',
+                Middle: profile.teamComp.Middle || '',
+                Bottom: profile.teamComp.Bottom || '',
+                Support: profile.teamComp.Support || '',
+            };
+        }
+        renderFavoriteCompSlots();
+        renderFavoriteCompGrid();
 
         // Rank
         if (profile.rank) {
@@ -781,6 +1080,7 @@
             email:     document.getElementById('pEmail').value.trim(),
             bio:       document.getElementById('pBio').value.trim(),
             champion:  document.getElementById('pChampion').value.trim(),
+            teamComp:  favoriteTeamComp,
             rank:      selectedRank,
             lane:      selectedLane,
             gender:    selectedGender,
@@ -807,6 +1107,7 @@
     buildAvatarGrid();
     buildRankGrid();
     buildLaneGrid();
+    setupFavoriteCompBuilder();
     loadProfile();
 </script>
 </body>
