@@ -3078,6 +3078,268 @@ async function generateDraftShareImage(snapshot){
   return canvas;
 }
 
+async function generateDraftShareImage(snapshot){
+  const canvas = document.createElement('canvas');
+  canvas.width = 1920;
+  canvas.height = 1080;
+  const ctx = canvas.getContext('2d');
+  const padding = 64;
+  const gap = 24;
+  const gold = '#c8aa6e';
+  const text = '#f0e6d2';
+  const dim = '#a09b8c';
+  const red = '#e05050';
+  const blue = '#4a9eff';
+  const green = '#3dba6a';
+
+  const bg = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+  bg.addColorStop(0, '#091428');
+  bg.addColorStop(0.55, '#0d1b2e');
+  bg.addColorStop(1, '#050b16');
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  for(let i = 0; i < 8; i++){
+    const x = 160 + i * 220;
+    const y = i % 2 === 0 ? 48 : 128;
+    const radius = 200 + i * 10;
+    const glow = ctx.createRadialGradient(x, y, 10, x, y, radius);
+    glow.addColorStop(0, 'rgba(74,158,255,0.14)');
+    glow.addColorStop(0.3, 'rgba(200,170,110,0.08)');
+    glow.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = glow;
+    ctx.beginPath();
+    ctx.arc(x, y, radius, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  ctx.strokeStyle = 'rgba(200,170,110,0.08)';
+  for(let y = 0; y < canvas.height; y += 60){
+    ctx.beginPath();
+    ctx.moveTo(0, y);
+    ctx.lineTo(canvas.width, y);
+    ctx.stroke();
+  }
+
+  function drawCoverImage(img, x, y, width, height){
+    const scale = Math.max(width / img.width, height / img.height);
+    const drawWidth = img.width * scale;
+    const drawHeight = img.height * scale;
+    const drawX = x + (width - drawWidth) / 2;
+    const drawY = y + (height - drawHeight) / 2;
+    ctx.drawImage(img, drawX, drawY, drawWidth, drawHeight);
+  }
+
+  function drawPanelTitle(label, x, y){
+    ctx.font = '700 22px Rajdhani, sans-serif';
+    ctx.fillStyle = dim;
+    ctx.fillText(label.toUpperCase(), x, y);
+  }
+
+  function drawWrappedLines(lines, x, y, lineHeight, maxLines, color){
+    ctx.fillStyle = color;
+    lines.slice(0, maxLines).forEach((line, index) => {
+      ctx.fillText(line, x, y + index * lineHeight);
+    });
+  }
+
+  ctx.fillStyle = gold;
+  ctx.font = '700 26px Cinzel, serif';
+  ctx.fillText('LEAGUE OF LEGENDS', padding, 72);
+  ctx.font = '900 58px Cinzel, serif';
+  ctx.fillStyle = text;
+  ctx.fillText('DRAFT SHARE CARD', padding, 132);
+  ctx.font = '600 22px Rajdhani, sans-serif';
+  ctx.fillStyle = dim;
+  ctx.fillText(`Saved ${formatShareTimestamp(snapshot.savedAt)}`, padding, 168);
+
+  const badgeWidth = 220;
+  const badgeHeight = 92;
+  const badgeY = 54;
+  const badgeStartX = canvas.width - padding - badgeWidth * 2 - gap;
+  [
+    { x:badgeStartX, label:'Synergy Score', value:`${snapshot.score}/100`, color:gold },
+    { x:badgeStartX + badgeWidth + gap, label:'Tier', value:snapshot.grade, color:text }
+  ].forEach((badge) => {
+    fillRoundRect(ctx, badge.x, badgeY, badgeWidth, badgeHeight, 20, 'rgba(6,15,28,0.88)', 'rgba(200,170,110,0.2)');
+    ctx.font = '700 18px Rajdhani, sans-serif';
+    ctx.fillStyle = dim;
+    ctx.fillText(badge.label.toUpperCase(), badge.x + 20, badgeY + 30);
+    ctx.font = '800 34px Rajdhani, sans-serif';
+    ctx.fillStyle = badge.color;
+    ctx.fillText(badge.value, badge.x + 20, badgeY + 70);
+  });
+
+  const topPanelY = 212;
+  const topPanelHeight = 300;
+  fillRoundRect(ctx, padding, topPanelY, canvas.width - padding * 2, topPanelHeight, 28, 'rgba(255,255,255,0.035)', 'rgba(200,170,110,0.18)');
+  drawPanelTitle('Champion Draft', padding + 24, topPanelY + 36);
+
+  const champions = snapshot.champions || [];
+  const champCount = Math.max(champions.length, 1);
+  const cardInset = 22;
+  const cardGap = 20;
+  const cardWidth = (canvas.width - padding * 2 - cardInset * 2 - cardGap * Math.max(champCount - 1, 0)) / champCount;
+  const cardY = topPanelY + 54;
+  const cardHeight = 220;
+
+  for(let index = 0; index < champions.length; index++){
+    const champ = champions[index];
+    const cardX = padding + cardInset + index * (cardWidth + cardGap);
+    fillRoundRect(ctx, cardX, cardY, cardWidth, cardHeight, 20, 'rgba(8,17,33,0.94)', 'rgba(200,170,110,0.16)');
+
+    const splash = await loadImageForCanvas(`https://ddragon.leagueoflegends.com/cdn/img/champion/loading/${champ.id}_0.jpg`);
+    const icon = splash || await loadImageForCanvas(`https://ddragon.leagueoflegends.com/cdn/14.24.1/img/champion/${champ.id}.png`);
+    if(icon){
+      ctx.save();
+      roundRectPath(ctx, cardX + 14, cardY + 14, cardWidth - 28, 138, 14);
+      ctx.clip();
+      drawCoverImage(icon, cardX + 14, cardY + 14, cardWidth - 28, 138);
+      ctx.restore();
+    }else{
+      fillRoundRect(ctx, cardX + 14, cardY + 14, cardWidth - 28, 138, 14, 'rgba(74,158,255,0.18)');
+      ctx.font = '700 24px Rajdhani, sans-serif';
+      ctx.fillStyle = text;
+      ctx.fillText(champ.name, cardX + 28, cardY + 88);
+    }
+
+    fillRoundRect(ctx, cardX + 16, cardY + 166, 96, 28, 14, 'rgba(200,170,110,0.16)');
+    ctx.font = '700 15px Rajdhani, sans-serif';
+    ctx.fillStyle = gold;
+    ctx.fillText(champ.lane.toUpperCase(), cardX + 28, cardY + 186);
+    ctx.font = '800 28px Rajdhani, sans-serif';
+    ctx.fillStyle = text;
+    ctx.fillText(champ.name, cardX + 16, cardY + 214);
+    ctx.font = '600 16px Rajdhani, sans-serif';
+    ctx.fillStyle = dim;
+    ctx.fillText(`${champ.class} / ${champ.type}`, cardX + 16, cardY + 240);
+  }
+
+  const bottomY = topPanelY + topPanelHeight + 28;
+  const bottomHeight = canvas.height - bottomY - padding;
+  const leftWidth = 560;
+  const middleWidth = 584;
+  const rightWidth = canvas.width - padding * 2 - leftWidth - middleWidth - gap * 2;
+  const leftX = padding;
+  const middleX = leftX + leftWidth + gap;
+  const rightX = middleX + middleWidth + gap;
+  const rightTopHeight = 252;
+  const rightBottomY = bottomY + rightTopHeight + gap;
+  const rightBottomHeight = bottomHeight - rightTopHeight - gap;
+
+  fillRoundRect(ctx, leftX, bottomY, leftWidth, bottomHeight, 24, 'rgba(255,255,255,0.035)', 'rgba(200,170,110,0.18)');
+  fillRoundRect(ctx, middleX, bottomY, middleWidth, bottomHeight, 24, 'rgba(255,255,255,0.035)', 'rgba(200,170,110,0.18)');
+  fillRoundRect(ctx, rightX, bottomY, rightWidth, rightTopHeight, 24, 'rgba(255,255,255,0.035)', 'rgba(200,170,110,0.18)');
+  fillRoundRect(ctx, rightX, rightBottomY, rightWidth, rightBottomHeight, 24, 'rgba(255,255,255,0.035)', 'rgba(200,170,110,0.18)');
+
+  drawPanelTitle('Draft Summary', leftX + 24, bottomY + 38);
+  drawPanelTitle('Team Ratings', middleX + 24, bottomY + 38);
+  drawPanelTitle('Best Combos', rightX + 24, bottomY + 38);
+  drawPanelTitle('Strengths and Warnings', rightX + 24, rightBottomY + 38);
+
+  fillRoundRect(ctx, leftX + 24, bottomY + 60, leftWidth - 48, 112, 20, 'rgba(6,15,28,0.85)', 'rgba(200,170,110,0.14)');
+  ctx.font = '700 18px Rajdhani, sans-serif';
+  ctx.fillStyle = dim;
+  ctx.fillText('OVERVIEW', leftX + 46, bottomY + 92);
+  ctx.font = '900 54px Rajdhani, sans-serif';
+  ctx.fillStyle = gold;
+  ctx.fillText(`${snapshot.score}`, leftX + 44, bottomY + 148);
+  ctx.font = '700 22px Rajdhani, sans-serif';
+  ctx.fillStyle = text;
+  ctx.fillText(`/ 100  ${snapshot.grade}`, leftX + 150, bottomY + 144);
+  ctx.font = '600 18px Rajdhani, sans-serif';
+  ctx.fillStyle = dim;
+  ctx.fillText(`Detected combos ${snapshot.comboCount}`, leftX + 288, bottomY + 144);
+
+  ctx.font = '600 21px Rajdhani, sans-serif';
+  drawWrappedLines(wrapCanvasText(ctx, snapshot.summary, leftWidth - 52), leftX + 24, bottomY + 210, 28, 4, text);
+
+  ctx.font = '700 18px Rajdhani, sans-serif';
+  ctx.fillStyle = dim;
+  ctx.fillText('DAMAGE PROFILE', leftX + 24, bottomY + 338);
+  const barX = leftX + 24;
+  const barY = bottomY + 354;
+  const barWidth = leftWidth - 48;
+  const barHeight = 26;
+  fillRoundRect(ctx, barX, barY, barWidth, barHeight, 13, 'rgba(255,255,255,0.06)');
+  const physWidth = barWidth * (snapshot.damage.phys / 100);
+  const magicWidth = barWidth * (snapshot.damage.magic / 100);
+  const trueWidth = Math.max(barWidth - physWidth - magicWidth, 0);
+  fillRoundRect(ctx, barX, barY, physWidth, barHeight, 13, red);
+  fillRoundRect(ctx, barX + physWidth, barY, magicWidth, barHeight, 13, blue);
+  fillRoundRect(ctx, barX + physWidth + magicWidth, barY, trueWidth, barHeight, 13, green);
+
+  ctx.font = '700 17px Rajdhani, sans-serif';
+  ctx.fillStyle = text;
+  ctx.fillText(`Physical ${snapshot.damage.phys}%`, leftX + 24, bottomY + 404);
+  ctx.fillText(`Magic ${snapshot.damage.magic}%`, leftX + 206, bottomY + 404);
+  ctx.fillText(`True ${snapshot.damage.trueD}%`, leftX + 372, bottomY + 404);
+
+  ctx.font = '700 18px Rajdhani, sans-serif';
+  ctx.fillStyle = dim;
+  ctx.fillText('CC COVERAGE', leftX + 24, bottomY + 446);
+  ctx.font = '600 20px Rajdhani, sans-serif';
+  drawWrappedLines(
+    wrapCanvasText(ctx, snapshot.ccTypes.length ? snapshot.ccTypes.join(', ') : 'No crowd control detected.', leftWidth - 52),
+    leftX + 24,
+    bottomY + 474,
+    24,
+    2,
+    text
+  );
+
+  Object.entries(snapshot.ratings).forEach(([key, value], index) => {
+    const rowY = bottomY + 84 + index * 52;
+    const label = key.replace(/([A-Z])/g, ' $1').trim();
+    ctx.font = '700 18px Rajdhani, sans-serif';
+    ctx.fillStyle = text;
+    ctx.fillText(label, middleX + 24, rowY);
+    fillRoundRect(ctx, middleX + 172, rowY - 14, middleWidth - 248, 18, 9, 'rgba(255,255,255,0.06)');
+    fillRoundRect(ctx, middleX + 172, rowY - 14, (middleWidth - 248) * (value / 10), 18, 9, 'rgba(200,170,110,0.88)');
+    ctx.fillStyle = gold;
+    ctx.fillText(value.toFixed(1), middleX + middleWidth - 50, rowY);
+  });
+
+  if(snapshot.combos.length){
+    snapshot.combos.slice(0, 3).forEach((combo, index) => {
+      const itemY = bottomY + 76 + index * 62;
+      fillRoundRect(ctx, rightX + 20, itemY - 18, rightWidth - 40, 52, 16, 'rgba(200,170,110,0.08)');
+      ctx.font = '700 19px Rajdhani, sans-serif';
+      ctx.fillStyle = gold;
+      ctx.fillText(`${combo.pair}  +${combo.score}`, rightX + 34, itemY + 2);
+      ctx.font = '600 16px Rajdhani, sans-serif';
+      drawWrappedLines(wrapCanvasText(ctx, combo.reason, rightWidth - 72), rightX + 34, itemY + 24, 20, 2, text);
+    });
+  }else{
+    ctx.font = '600 20px Rajdhani, sans-serif';
+    ctx.fillStyle = dim;
+    ctx.fillText('No standout combos detected yet.', rightX + 24, bottomY + 96);
+  }
+
+  if(snapshot.warnings.length){
+    snapshot.warnings.slice(0, 3).forEach((warning, index) => {
+      const y = rightBottomY + 78 + index * 52;
+      const accent = warning.type === 'crit' ? red : warning.type === 'ok' ? green : blue;
+      fillRoundRect(ctx, rightX + 22, y - 16, 10, 36, 5, accent);
+      ctx.font = '700 18px Rajdhani, sans-serif';
+      ctx.fillStyle = text;
+      ctx.fillText(warning.title, rightX + 46, y + 2);
+      ctx.font = '600 15px Rajdhani, sans-serif';
+      drawWrappedLines(wrapCanvasText(ctx, warning.desc, rightWidth - 84), rightX + 46, y + 22, 18, 2, dim);
+    });
+  }else{
+    ctx.font = '600 20px Rajdhani, sans-serif';
+    ctx.fillStyle = dim;
+    ctx.fillText('No warnings generated.', rightX + 24, rightBottomY + 92);
+  }
+
+  ctx.font = '600 18px Rajdhani, sans-serif';
+  ctx.fillStyle = 'rgba(240,230,210,0.7)';
+  ctx.fillText('Generated by Draft Builder', padding, canvas.height - 28);
+
+  return canvas;
+}
+
 function downloadCanvas(canvas, filename){
   const link = document.createElement('a');
   link.href = canvas.toDataURL('image/png');
