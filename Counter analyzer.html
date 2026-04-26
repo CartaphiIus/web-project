@@ -735,6 +735,9 @@ header > .header-nav:first-of-type{display:none;}
   </div><!-- /right-panel -->
 </div><!-- /main-wrap -->
 
+<script src="champion-lanes.js"></script>
+<script src="champion-full-tr.js"></script>
+<script src="full-roster-helper.js"></script>
 <script>
 /* ═══════════════════════════════════════════════
    CHAMPION DATABASE
@@ -917,7 +920,10 @@ const DDVersion = '14.24.1';
 /* ═══════════════════════════════════════════════
    INIT
 ═══════════════════════════════════════════════ */
-function init(){
+async function init(){
+  if (typeof window.ensureFullChampionRoster === 'function') {
+    await window.ensureFullChampionRoster(CHAMPIONS);
+  }
   buildChampGrid();
   setupFilters();
   setupTabs();

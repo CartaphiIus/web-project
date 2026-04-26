@@ -929,6 +929,9 @@ header{
   </div><!-- /right-panel -->
 </div><!-- /main-wrap -->
 
+<script src="champion-lanes.js"></script>
+<script src="champion-full-tr.js"></script>
+<script src="full-roster-helper.js"></script>
 <script>
 /* ═══════════════════════════════════════════════
    CHAMPION DATABASE — Full Detailed Data
@@ -2266,7 +2269,10 @@ const SAVED_DRAFT_KEY = 'lol_draftbuilder_saved_draft';
 /* ═══════════════════════════════════════════════
    INIT
 ═══════════════════════════════════════════════ */
-function init(){
+async function init(){
+  if (typeof window.ensureFullChampionRoster === 'function') {
+    await window.ensureFullChampionRoster(CHAMPIONS);
+  }
   buildDraftSlots();
   buildChampGrid();
   setupFilters();
