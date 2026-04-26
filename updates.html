@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,6 +22,9 @@
                 <a href="lore.html">LORE</a>
                 <a href="aboutus.html">ABOUT US</a>
                 <a href="updates.html" class="active">UPDATES</a>
+                <a href="draft-builder.html">DRAFT BUILDER</a>
+                <a href="Counter analyzer.html">COUNTER ANALYZER</a>
+                <a href="Quiz.html">QUIZ</a>
             </nav>
         </div>
     </header>
@@ -41,11 +44,15 @@
                 <div class="hero-stats">
                     <div class="hero-stat">
                         <span class="hero-stat-value" id="heroNewsCount">0</span>
-                        <span class="hero-stat-label">NEW'S COUNT</span>
+                        <span class="hero-stat-label">Total News</span>
                     </div>
                     <div class="hero-stat">
                         <span class="hero-stat-value" id="heroPageCount">0</span>
-                        <span class="hero-stat-label">PAGE COUNT</span>
+                        <span class="hero-stat-label">Total Pages</span>
+                    </div>
+                    <div class="hero-stat">
+                        <span class="hero-stat-value">LoL</span>
+                        <span class="hero-stat-label">Theme</span>
                     </div>
                    
                 </div>
@@ -55,8 +62,8 @@
         <section class="home-links-section">
             <div class="section-shell">
                 <div class="section-heading">
-                    <p class="section-kicker">FROM HOME</p>
-                    <h2>HOT OFF THE PRESS !</h2>
+                    <p class="section-kicker">HOME CONNECTION</p>
+                    <h2>Spotlight headlines featured on the home page</h2>
                 </div>
                 <div class="home-links" id="homeLinks"></div>
             </div>
@@ -66,8 +73,8 @@
             <div class="section-shell">
                 <div class="section-heading section-heading-wide">
                     <div>
-                        <p class="section-kicker">NEWS</p>
-                        <h2>The Runeterra Bulletin</h2>
+                        <p class="section-kicker">NEWS GRID</p>
+                        <h2>Runeterra headlines</h2>
                     </div>
                     <div class="page-indicator" id="pageIndicator">1 / 1</div>
                 </div>
@@ -86,20 +93,13 @@
     <div class="news-modal" id="newsModal" aria-hidden="true">
         <div class="news-modal-backdrop" data-close-modal></div>
         <article class="news-modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-            <button type="button" class="modal-close" id="closeModal" aria-label="Haberi kapat">&times;</button>
-            <div class="news-modal-shell">
-                <div class="modal-media" id="modalMedia"></div>
-                <div class="modal-scroll-area" id="modalScrollArea">
-                    <div class="modal-body">
-                        <div class="modal-meta">
-                            <span id="modalCategory"></span>
-                            <span class="meta-divider"></span>
-                            <span id="modalDate"></span>
-                        </div>
-                        <h3 id="modalTitle"></h3>
-                        <p class="modal-subtitle" id="modalSubtitle"></p>
-                        <div class="modal-content" id="modalContent"></div>
-                    </div>
+            <button type="button" class="modal-close" id="closeModal" aria-label="Close article">&times;</button>
+            <div class="modal-media" id="modalMedia"></div>
+            <div class="modal-body">
+                <div class="modal-meta">
+                    <span id="modalCategory"></span>
+                    <span class="meta-divider"></span>
+                    <span id="modalDate"></span>
                 </div>
             </div>
         </article>

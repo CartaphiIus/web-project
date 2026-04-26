@@ -1,0 +1,3464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Synergy & Draft Builder — League of Legends</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --gold:       #c8aa6e;
+  --gold-light: #f0d98b;
+  --gold-dim:   #7a6235;
+  --navy:       #091428;
+  --navy-mid:   #0d1b2e;
+  --navy-light: #112040;
+  --red:        #c03030;
+  --blue-magic: #4a9eff;
+  --green-ok:   #3dba6a;
+  --orange-warn:#e88a2e;
+  --text:       #f0e6d2;
+  --text-dim:   #a09b8c;
+  --border:     rgba(200,170,110,0.22);
+  --border-hot: rgba(200,170,110,0.65);
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+html{scroll-behavior:smooth}
+
+body{
+  font-family:'Rajdhani',sans-serif;
+  background:#070f1e;
+  color:var(--text);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* ─── SCANLINE OVERLAY ─── */
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.06) 2px,rgba(0,0,0,.06) 4px);
+  pointer-events:none;z-index:9999;
+}
+
+/* ─── HEX BACKGROUND PATTERN ─── */
+body::after{
+  content:'';
+  position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='100'%3E%3Cpath d='M28 66L0 50V16L28 0l28 16v34zm0 34L0 84V50l28-16 28 16v34z' fill='none' stroke='rgba(200,170,110,0.04)' stroke-width='1'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:0;
+}
+
+/* ─── HEADER ─── */
+header{
+  position:sticky;top:0;z-index:500;
+  background:rgba(7,15,30,.92);
+  border-bottom:1px solid var(--border);
+  backdrop-filter:blur(12px);
+  padding:0 40px;
+  display:flex;align-items:center;justify-content:space-between;
+  height:64px;
+}
+.header-logo{
+  display:flex;align-items:center;gap:14px;
+}
+.header-logo-icon{
+  width:36px;height:36px;
+  background:linear-gradient(135deg,var(--gold),var(--gold-dim));
+  clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
+  display:grid;place-items:center;
+  font-size:1rem;
+  flex-shrink:0;
+}
+.header-logo h1{
+  font-family:'Cinzel',serif;
+  font-size:.95rem;
+  letter-spacing:3px;
+  color:var(--gold);
+  text-transform:uppercase;
+  font-weight:700;
+  line-height:1.1;
+}
+.header-logo span{
+  display:block;
+  font-family:'Rajdhani',sans-serif;
+  font-size:.65rem;
+  letter-spacing:4px;
+  color:var(--text-dim);
+  font-weight:400;
+}
+.header-nav{display:flex;gap:6px;}
+.nav-btn{
+  background:transparent;border:1px solid var(--border);
+  color:var(--text-dim);font-family:'Rajdhani',sans-serif;
+  font-size:.8rem;letter-spacing:2px;font-weight:600;
+  padding:6px 16px;border-radius:3px;cursor:pointer;
+  text-transform:uppercase;transition:all .25s;text-decoration:none;
+  display:flex;align-items:center;gap:6px;
+}
+.nav-btn:hover{border-color:var(--gold);color:var(--gold);}
+.nav-btn.active{background:rgba(200,170,110,.12);border-color:var(--gold);color:var(--gold);}
+
+/* ─── MAIN LAYOUT ─── */
+.main-wrap{
+  position:relative;z-index:1;
+  display:grid;
+  grid-template-columns:1fr 380px;
+  grid-template-rows:auto 1fr;
+  gap:0;
+  min-height:calc(100vh - 64px);
+}
+
+/* ─── LEFT PANEL ─── */
+.left-panel{
+  display:flex;flex-direction:column;
+  border-right:1px solid var(--border);
+  overflow:hidden;
+}
+
+/* ─── DRAFT ZONE ─── */
+.draft-zone{
+  padding:28px 32px 20px;
+  border-bottom:1px solid var(--border);
+  background:linear-gradient(to bottom, rgba(9,20,40,.8), rgba(7,15,30,.6));
+}
+.draft-zone-title{
+  font-family:'Cinzel',serif;
+  font-size:.75rem;letter-spacing:5px;
+  color:var(--gold);text-transform:uppercase;
+  margin-bottom:18px;opacity:.8;
+  display:flex;align-items:center;gap:12px;
+}
+.draft-zone-title::after{
+  content:'';flex:1;height:1px;
+  background:linear-gradient(to right,var(--gold-dim),transparent);
+}
+
+.draft-slots{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:12px;
+}
+
+.draft-slot{
+  position:relative;
+  aspect-ratio:.7;
+  border:1.5px dashed var(--border);
+  border-radius:6px;
+  cursor:pointer;
+  overflow:hidden;
+  background:rgba(9,20,40,.5);
+  transition:all .3s ease;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:flex-end;
+}
+.draft-slot:hover:not(.filled){
+  border-color:var(--gold-dim);
+  background:rgba(200,170,110,.05);
+}
+.draft-slot .slot-role{
+  font-size:.6rem;letter-spacing:3px;
+  color:var(--gold);text-transform:uppercase;
+  font-weight:700;padding:8px 4px;
+  background:linear-gradient(to top,rgba(7,15,30,.95),transparent);
+  width:100%;text-align:center;
+  position:relative;z-index:2;
+}
+.draft-slot .slot-empty-icon{
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-70%);
+  font-size:1.8rem;opacity:.15;
+  pointer-events:none;
+}
+.draft-slot.filled{
+  border-color:var(--gold-dim);
+  border-style:solid;
+}
+.draft-slot.filled img.slot-splash{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  object-fit:cover;object-position:top;
+  transition:transform .4s ease;
+}
+.draft-slot.filled:hover img.slot-splash{transform:scale(1.05);}
+.draft-slot.filled .slot-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(7,15,30,.95) 0%,rgba(7,15,30,.2) 60%,transparent 100%);
+  z-index:1;
+}
+.draft-slot.filled .slot-name{
+  position:relative;z-index:2;
+  font-family:'Cinzel',serif;
+  font-size:.72rem;font-weight:700;
+  color:var(--gold-light);
+  letter-spacing:1px;
+  text-align:center;padding:2px 4px 0;
+  width:100%;
+}
+.draft-slot.filled .slot-class-badge{
+  position:absolute;top:8px;left:8px;z-index:3;
+  background:rgba(7,15,30,.85);
+  border:1px solid var(--border);
+  border-radius:3px;font-size:.55rem;letter-spacing:1px;
+  color:var(--text-dim);padding:2px 5px;font-weight:700;
+  text-transform:uppercase;
+}
+.draft-slot .slot-remove{
+  display:none;position:absolute;top:6px;right:6px;z-index:10;
+  background:rgba(180,20,20,.8);border:none;
+  color:white;width:20px;height:20px;border-radius:50%;
+  font-size:.7rem;cursor:pointer;
+  align-items:center;justify-content:center;
+  transition:all .2s;
+}
+.draft-slot.filled:hover .slot-remove{display:flex;}
+.draft-slot .slot-remove:hover{background:var(--red);transform:scale(1.1);}
+
+/* ─── FILTERS ─── */
+.picker-section{
+  flex:1;overflow:hidden;
+  display:flex;flex-direction:column;
+  padding:20px 32px 24px;
+}
+.filters-row{
+  display:flex;gap:8px;flex-wrap:wrap;
+  margin-bottom:16px;
+  align-items:center;
+}
+.filter-label{
+  font-size:.65rem;letter-spacing:3px;color:var(--gold);
+  text-transform:uppercase;font-weight:700;margin-right:4px;opacity:.7;
+}
+.filter-btn{
+  background:transparent;
+  border:1px solid var(--border);
+  color:var(--text-dim);
+  font-family:'Rajdhani',sans-serif;
+  font-size:.75rem;letter-spacing:1px;font-weight:600;
+  padding:4px 12px;border-radius:3px;cursor:pointer;
+  transition:all .2s;text-transform:uppercase;
+}
+.filter-btn:hover{border-color:var(--gold-dim);color:var(--text);}
+.filter-btn.active{
+  background:rgba(200,170,110,.15);
+  border-color:var(--gold);color:var(--gold);
+}
+.filter-sep{width:1px;height:20px;background:var(--border);margin:0 4px;}
+
+.search-wrap{
+  position:relative;margin-bottom:14px;
+}
+.search-wrap input{
+  width:100%;
+  background:rgba(9,20,40,.7);
+  border:1px solid var(--border);
+  border-radius:4px;
+  color:var(--text);
+  font-family:'Rajdhani',sans-serif;
+  font-size:.9rem;padding:8px 16px 8px 38px;
+  outline:none;transition:border-color .2s;letter-spacing:.5px;
+}
+.search-wrap input:focus{border-color:var(--gold-dim);}
+.search-wrap input::placeholder{color:var(--text-dim);opacity:.6;}
+.search-wrap::before{
+  content:'⚔';
+  position:absolute;left:12px;top:50%;transform:translateY(-50%);
+  color:var(--gold-dim);font-size:.85rem;
+}
+
+/* ─── CHAMPION GRID ─── */
+.champ-grid{
+  flex:1;overflow-y:auto;
+  display:grid;
+  grid-template-columns:repeat(auto-fill,76px);
+  justify-content:flex-start;
+  align-content:flex-start;
+  gap:8px;
+  padding-right:4px;
+  scrollbar-width:thin;scrollbar-color:var(--gold-dim) transparent;
+}
+.champ-grid::-webkit-scrollbar{width:3px;}
+.champ-grid::-webkit-scrollbar-thumb{background:var(--gold-dim);border-radius:2px;}
+
+.champ-thumb{
+  position:relative;aspect-ratio:1;
+  border:1.5px solid var(--border);
+  border-radius:5px;overflow:hidden;
+  cursor:pointer;background:var(--navy);
+  transition:all .25s ease;
+}
+.champ-thumb:hover{
+  border-color:var(--gold);
+  transform:translateY(-2px);
+  box-shadow:0 4px 16px rgba(200,170,110,.25);
+}
+.champ-thumb.selected-in-draft{
+  border-color:var(--gold-dim);
+  opacity:.35;pointer-events:none;
+  filter:grayscale(.6);
+}
+.champ-thumb img{
+  width:100%;height:100%;
+  object-fit:cover;object-position:top;
+  pointer-events:none;
+}
+.champ-thumb .thumb-name{
+  position:absolute;bottom:0;left:0;right:0;
+  background:linear-gradient(to top,rgba(7,15,30,.95),transparent);
+  font-size:.6rem;letter-spacing:.5px;
+  color:var(--text);text-align:center;
+  padding:10px 2px 3px;font-weight:700;
+  text-transform:uppercase;
+}
+.champ-thumb.hidden{display:none;}
+
+/* Damage type dot */
+.champ-thumb .dmg-dot{
+  position:absolute;top:4px;right:4px;
+  width:7px;height:7px;border-radius:50%;
+  box-shadow:0 0 4px currentColor;
+}
+
+/* ─── RIGHT PANEL — ANALYSIS ─── */
+.right-panel{
+  display:flex;flex-direction:column;
+  overflow-y:auto;
+  scrollbar-width:thin;scrollbar-color:var(--gold-dim) transparent;
+  background:linear-gradient(to bottom,rgba(9,14,26,.98),rgba(7,11,20,.98));
+}
+.right-panel::-webkit-scrollbar{width:3px;}
+.right-panel::-webkit-scrollbar-thumb{background:var(--gold-dim);border-radius:2px;}
+
+.analysis-header{
+  padding:24px 24px 16px;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.analysis-title{
+  font-family:'Cinzel',serif;
+  font-size:.8rem;letter-spacing:4px;color:var(--gold);
+  text-transform:uppercase;font-weight:700;
+}
+.champ-count-badge{
+  font-family:'Share Tech Mono',monospace;
+  font-size:.75rem;color:var(--text-dim);
+  letter-spacing:1px;
+}
+
+/* ─── SYNERGY SCORE ─── */
+.synergy-score-wrap{
+  padding:24px;border-bottom:1px solid var(--border);
+  display:flex;flex-direction:column;align-items:center;
+  background:radial-gradient(ellipse at 50% 0%,rgba(200,170,110,.06),transparent 70%);
+}
+.score-ring{
+  position:relative;width:130px;height:130px;
+  margin-bottom:14px;
+}
+.score-ring svg{width:100%;height:100%;transform:rotate(-90deg);}
+.score-ring circle{fill:none;}
+.ring-bg{stroke:rgba(200,170,110,.1);stroke-width:8;}
+.ring-fill{
+  stroke:var(--gold);stroke-width:8;
+  stroke-linecap:round;
+  stroke-dasharray:339.3;
+  stroke-dashoffset:339.3;
+  transition:stroke-dashoffset 1s cubic-bezier(.4,0,.2,1),stroke .5s;
+  filter:drop-shadow(0 0 6px rgba(200,170,110,.6));
+}
+.score-num{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+}
+.score-num .num{
+  font-family:'Cinzel',serif;
+  font-size:2.4rem;font-weight:900;
+  color:var(--gold-light);line-height:1;
+}
+.score-num .label{
+  font-size:.6rem;letter-spacing:3px;
+  color:var(--text-dim);text-transform:uppercase;
+}
+.score-grade{
+  font-family:'Cinzel',serif;
+  font-size:1rem;font-weight:900;
+  letter-spacing:3px;color:var(--gold);
+  margin-bottom:4px;text-transform:uppercase;
+}
+.score-sublabel{
+  font-size:.72rem;color:var(--text-dim);
+  letter-spacing:1px;text-align:center;line-height:1.4;
+}
+
+/* Synergy combos */
+.synergy-combos{
+  padding:0 24px 20px;border-bottom:1px solid var(--border);
+}
+.sec-label{
+  font-size:.62rem;letter-spacing:4px;color:var(--gold);
+  text-transform:uppercase;font-weight:700;opacity:.75;
+  margin-bottom:12px;display:flex;align-items:center;gap:10px;
+}
+.sec-label::after{content:'';flex:1;height:1px;background:var(--border);}
+
+.combo-list{display:flex;flex-direction:column;gap:7px;}
+.combo-item{
+  background:rgba(9,20,40,.7);border:1px solid var(--border);
+  border-radius:5px;padding:8px 12px;
+  display:flex;align-items:center;gap:10px;
+}
+.combo-icons{display:flex;gap:-4px;}
+.combo-icons img{
+  width:28px;height:28px;border-radius:4px;
+  border:1px solid var(--gold-dim);object-fit:cover;
+  object-position:top;
+}
+.combo-icons img+img{margin-left:-6px;}
+.combo-info{flex:1;min-width:0;}
+.combo-pair{
+  font-size:.78rem;font-weight:700;color:var(--text);
+  letter-spacing:.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.combo-reason{font-size:.68rem;color:var(--text-dim);letter-spacing:.3px;}
+.combo-score{
+  font-family:'Share Tech Mono',monospace;
+  font-size:.9rem;color:var(--gold-light);font-weight:700;
+  flex-shrink:0;
+}
+
+.empty-state{
+  text-align:center;padding:20px;
+  color:var(--text-dim);font-size:.78rem;letter-spacing:1px;opacity:.5;
+}
+
+/* ─── DAMAGE CHART ─── */
+.damage-section{
+  padding:20px 24px;border-bottom:1px solid var(--border);
+}
+.damage-donut-wrap{
+  display:flex;align-items:center;gap:18px;
+  margin-top:14px;
+}
+.damage-donut{position:relative;width:90px;height:90px;flex-shrink:0;}
+.damage-donut svg{width:100%;height:100%;transform:rotate(-90deg);}
+.damage-donut circle{fill:none;stroke-width:14;}
+.donut-label{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  font-family:'Share Tech Mono',monospace;
+  font-size:.65rem;color:var(--text-dim);
+  letter-spacing:.5px;text-align:center;line-height:1.3;
+}
+.damage-legend{flex:1;display:flex;flex-direction:column;gap:8px;}
+.dmg-row{display:flex;align-items:center;gap:8px;}
+.dmg-dot-l{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+.dmg-label{font-size:.78rem;color:var(--text-dim);flex:1;letter-spacing:.5px;}
+.dmg-pct{
+  font-family:'Share Tech Mono',monospace;
+  font-size:.85rem;font-weight:700;
+}
+.dmg-bar-wrap{width:100%;height:6px;background:rgba(255,255,255,.06);border-radius:3px;margin-top:2px;overflow:hidden;}
+.dmg-bar{height:100%;border-radius:3px;transition:width .8s cubic-bezier(.4,0,.2,1);}
+
+/* ─── CC COVERAGE ─── */
+.cc-section{
+  padding:20px 24px;border-bottom:1px solid var(--border);
+}
+.cc-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;}
+.cc-tag{
+  padding:4px 10px;border-radius:3px;
+  font-size:.68rem;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;
+  border:1px solid;transition:all .3s;
+}
+.cc-tag.has{
+  background:rgba(61,186,106,.12);border-color:rgba(61,186,106,.4);color:var(--green-ok);
+}
+.cc-tag.missing{
+  background:rgba(160,155,140,.04);border-color:rgba(160,155,140,.15);color:var(--text-dim);
+  opacity:.4;
+}
+
+/* ─── STAT RATINGS ─── */
+.ratings-section{
+  padding:20px 24px;border-bottom:1px solid var(--border);
+}
+.rating-rows{display:flex;flex-direction:column;gap:8px;margin-top:12px;}
+.rating-row{display:flex;align-items:center;gap:10px;}
+.rating-key{
+  font-size:.72rem;color:var(--text-dim);letter-spacing:.5px;
+  width:80px;flex-shrink:0;
+}
+.rating-bar-track{
+  flex:1;height:5px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden;
+}
+.rating-bar-fill{
+  height:100%;border-radius:3px;
+  background:linear-gradient(to right,var(--gold-dim),var(--gold));
+  transition:width .8s ease;
+}
+.rating-val{
+  font-family:'Share Tech Mono',monospace;
+  font-size:.72rem;color:var(--gold-light);width:28px;text-align:right;flex-shrink:0;
+}
+
+/* ─── WEAKNESSES ─── */
+.weakness-section{
+  padding:20px 24px;
+}
+.warning-list{display:flex;flex-direction:column;gap:7px;margin-top:12px;}
+.warning-item{
+  border:1px solid;border-radius:5px;
+  padding:9px 12px;
+  display:flex;align-items:flex-start;gap:10px;
+  font-size:.78rem;line-height:1.5;
+  transition:all .3s;
+}
+.warning-item.crit{
+  background:rgba(192,48,48,.08);border-color:rgba(192,48,48,.35);
+}
+.warning-item.warn{
+  background:rgba(232,138,46,.07);border-color:rgba(232,138,46,.3);
+}
+.warning-item.ok{
+  background:rgba(61,186,106,.06);border-color:rgba(61,186,106,.25);
+}
+.warning-icon{font-size:1rem;flex-shrink:0;margin-top:1px;}
+.warning-text{flex:1;}
+.warning-title{
+  font-weight:700;letter-spacing:.5px;
+  display:block;margin-bottom:2px;font-size:.8rem;
+}
+.warning-item.crit .warning-title{color:#e05050;}
+.warning-item.warn .warning-title{color:#e8a44e;}
+.warning-item.ok .warning-title{color:var(--green-ok);}
+.warning-desc{color:var(--text-dim);font-size:.72rem;letter-spacing:.3px;}
+
+/* SAVE & SHARE */
+.share-section{
+  padding:20px 24px 24px;
+}
+.share-actions{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+  margin-top:14px;
+}
+.share-btn{
+  border:1px solid var(--border);
+  background:rgba(9,20,40,.82);
+  color:var(--text);
+  font-family:'Rajdhani',sans-serif;
+  font-size:.78rem;
+  letter-spacing:1.5px;
+  font-weight:700;
+  text-transform:uppercase;
+  padding:11px 12px;
+  cursor:pointer;
+  transition:all .25s ease;
+}
+.share-btn:hover:not(:disabled){
+  border-color:var(--gold);
+  color:var(--gold-light);
+  transform:translateY(-1px);
+}
+.share-btn:disabled{
+  opacity:.45;
+  cursor:not-allowed;
+}
+.share-btn.primary{
+  background:linear-gradient(135deg,rgba(200,170,110,.2),rgba(74,158,255,.16));
+}
+.share-status{
+  min-height:18px;
+  margin-top:10px;
+  font-size:.68rem;
+  color:var(--text-dim);
+  letter-spacing:.4px;
+}
+.share-preview{
+  margin-top:14px;
+  border:1px solid var(--border);
+  background:linear-gradient(180deg,rgba(9,20,40,.96),rgba(7,15,30,.92));
+  border-radius:6px;
+  overflow:hidden;
+}
+.share-preview.hidden{
+  display:none;
+}
+.share-preview-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+  padding:14px 16px 10px;
+  border-bottom:1px solid rgba(200,170,110,.12);
+}
+.share-preview-title{
+  font-family:'Cinzel',serif;
+  font-size:.8rem;
+  letter-spacing:2px;
+  color:var(--gold);
+  text-transform:uppercase;
+}
+.share-preview-time{
+  font-size:.64rem;
+  color:var(--text-dim);
+  text-align:right;
+  line-height:1.4;
+}
+.share-preview-body{
+  padding:14px 16px 16px;
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+.share-champ-list{
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:8px;
+}
+.share-champ-card{
+  border:1px solid rgba(200,170,110,.14);
+  background:rgba(255,255,255,.02);
+  overflow:hidden;
+}
+.share-champ-card img{
+  width:100%;
+  height:58px;
+  object-fit:cover;
+  display:block;
+}
+.share-champ-lane,
+.share-champ-name{
+  display:block;
+  text-align:center;
+  padding:5px 6px;
+}
+.share-champ-lane{
+  font-size:.56rem;
+  letter-spacing:1.6px;
+  color:var(--gold);
+  text-transform:uppercase;
+}
+.share-champ-name{
+  font-size:.68rem;
+  color:var(--text);
+  font-weight:700;
+  line-height:1.2;
+  padding-top:0;
+}
+.share-meta-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:8px;
+}
+.share-meta-item{
+  border:1px solid rgba(200,170,110,.12);
+  background:rgba(255,255,255,.02);
+  padding:10px 12px;
+}
+.share-meta-label{
+  display:block;
+  font-size:.58rem;
+  color:var(--text-dim);
+  letter-spacing:1.6px;
+  text-transform:uppercase;
+  margin-bottom:4px;
+}
+.share-meta-value{
+  display:block;
+  font-size:.84rem;
+  color:var(--gold-light);
+  font-weight:700;
+  line-height:1.3;
+}
+.share-block-title{
+  font-size:.62rem;
+  color:var(--gold);
+  letter-spacing:2px;
+  text-transform:uppercase;
+  margin-bottom:8px;
+}
+.share-line-list{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+.share-line-item{
+  font-size:.71rem;
+  color:var(--text);
+  line-height:1.45;
+}
+.share-line-item span{
+  color:var(--gold-light);
+  font-weight:700;
+}
+.share-summary-box{
+  width:100%;
+  min-height:170px;
+  resize:vertical;
+  border:1px solid rgba(200,170,110,.14);
+  background:rgba(5,11,22,.94);
+  color:var(--text);
+  font-family:'Share Tech Mono',monospace;
+  font-size:.7rem;
+  line-height:1.5;
+  padding:12px;
+  outline:none;
+}
+
+/* Animations */
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.anim{animation:fadeUp .4s ease both;}
+
+/* Tooltip on hover */
+.champ-thumb[title]:hover::after{
+  content:attr(title);
+  position:absolute;bottom:calc(100%+6px);left:50%;
+  transform:translateX(-50%);
+  background:rgba(7,15,30,.95);border:1px solid var(--gold-dim);
+  color:var(--text);font-size:.65rem;letter-spacing:.5px;
+  padding:3px 8px;border-radius:3px;white-space:nowrap;
+  z-index:100;pointer-events:none;
+}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:1100px){
+  .main-wrap{grid-template-columns:1fr 320px;}
+}
+@media(max-width:860px){
+  .main-wrap{grid-template-columns:1fr;grid-template-rows:auto auto;}
+  .right-panel{border-top:1px solid var(--border);}
+  .draft-slots{grid-template-columns:repeat(5,1fr);}
+  .share-champ-list{grid-template-columns:repeat(3,minmax(0,1fr));}
+  .share-meta-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-logo">
+    <div class="header-logo-icon">⚔</div>
+    <h1>Synergy & Draft Builder<span>League of Legends Composition Analyzer</span></h1>
+  </div>
+  <nav class="header-nav">
+    <a href="index.html" class="nav-btn">Home</a>
+    <a href="sampiyonlar.html" class="nav-btn">Champions</a>
+    <a href="lore.html" class="nav-btn">Lore</a>
+    <a href="aboutus.html" class="nav-btn">About Us</a>
+    <a href="updates.html" class="nav-btn">Updates</a>
+    <a href="Counter analyzer.html" class="nav-btn">Counter Analyzer</a>
+    <a href="Quiz.html" class="nav-btn">Quiz</a>
+    <button class="nav-btn active" type="button">Draft Builder</button>
+    <button class="nav-btn" id="resetBtn">↺ Reset</button>
+  </nav>
+</header>
+
+<div class="main-wrap">
+
+  <!-- ═══ LEFT PANEL ═══ -->
+  <div class="left-panel">
+
+    <!-- DRAFT SLOTS -->
+    <div class="draft-zone">
+      <div class="draft-zone-title">Your Composition (5/5)</div>
+      <div class="draft-slots" id="draftSlots">
+        <!-- generated by JS -->
+      </div>
+    </div>
+
+    <!-- FILTERS + PICKER -->
+    <div class="picker-section">
+      <div class="filters-row">
+        <span class="filter-label">Role</span>
+        <button class="filter-btn active" data-filter-role="all">All</button>
+        <button class="filter-btn" data-filter-role="top">Top</button>
+        <button class="filter-btn" data-filter-role="jungle">Jungle</button>
+        <button class="filter-btn" data-filter-role="mid">Mid</button>
+        <button class="filter-btn" data-filter-role="bot">Bot</button>
+        <button class="filter-btn" data-filter-role="support">Support</button>
+        <span class="filter-sep"></span>
+        <button class="filter-btn active" data-filter-type="all">All Range</button>
+        <button class="filter-btn" data-filter-type="melee">Melee</button>
+        <button class="filter-btn" data-filter-type="ranged">Ranged</button>
+      </div>
+      <div class="filters-row">
+        <span class="filter-label">Class</span>
+        <button class="filter-btn active" data-filter-class="all">All</button>
+        <button class="filter-btn" data-filter-class="tank">Tank</button>
+        <button class="filter-btn" data-filter-class="fighter">Fighter</button>
+        <button class="filter-btn" data-filter-class="mage">Mage</button>
+        <button class="filter-btn" data-filter-class="assassin">Assassin</button>
+        <button class="filter-btn" data-filter-class="marksman">Marksman</button>
+        <button class="filter-btn" data-filter-class="support">Support</button>
+        <button class="filter-btn" data-filter-class="enchanter">Enchanter</button>
+      </div>
+      <div class="search-wrap">
+        <input type="text" id="searchInput" placeholder="Search champion…" autocomplete="off"/>
+      </div>
+      <div class="champ-grid" id="champGrid"></div>
+    </div>
+  </div>
+
+  <!-- ═══ RIGHT PANEL — ANALYSIS ═══ -->
+  <div class="right-panel" id="rightPanel">
+
+    <div class="analysis-header">
+      <span class="analysis-title">⚡ Live Analysis</span>
+      <span class="champ-count-badge" id="champCountBadge">0 / 5 selected</span>
+    </div>
+
+    <!-- SYNERGY SCORE -->
+    <div class="synergy-score-wrap">
+      <div class="score-ring">
+        <svg viewBox="0 0 120 120">
+          <circle class="ring-bg" cx="60" cy="60" r="54"/>
+          <circle class="ring-fill" id="ringFill" cx="60" cy="60" r="54"/>
+        </svg>
+        <div class="score-num">
+          <span class="num" id="scoreNum">—</span>
+          <span class="label">Synergy</span>
+        </div>
+      </div>
+      <div class="score-grade" id="scoreGrade">Select Champions</div>
+      <div class="score-sublabel" id="scoreSubLabel">Pick 5 champions to analyze your composition</div>
+    </div>
+
+    <!-- SYNERGY COMBOS -->
+    <div class="synergy-combos">
+      <div class="sec-label">Synergy Combos Detected</div>
+      <div class="combo-list" id="comboList">
+        <div class="empty-state">No combos detected yet</div>
+      </div>
+    </div>
+
+    <!-- DAMAGE DISTRIBUTION -->
+    <div class="damage-section">
+      <div class="sec-label">Damage Distribution</div>
+      <div class="damage-donut-wrap">
+        <div class="damage-donut">
+          <svg viewBox="0 0 100 100">
+            <circle id="donutTrue"   cx="50" cy="50" r="38" stroke="#c8aa6e" stroke-dasharray="0 238.76"/>
+            <circle id="donutMagic"  cx="50" cy="50" r="38" stroke="#4a9eff" stroke-dasharray="0 238.76"/>
+            <circle id="donutPhys"   cx="50" cy="50" r="38" stroke="#e05050" stroke-dasharray="0 238.76"/>
+          </svg>
+          <div class="donut-label" id="donutLabel">—</div>
+        </div>
+        <div class="damage-legend">
+          <div>
+            <div class="dmg-row">
+              <div class="dmg-dot-l" style="background:#e05050;"></div>
+              <span class="dmg-label">Physical</span>
+              <span class="dmg-pct" id="physPct" style="color:#e05050;">—%</span>
+            </div>
+            <div class="dmg-bar-wrap"><div class="dmg-bar" id="physBar" style="background:#e05050;width:0%"></div></div>
+          </div>
+          <div>
+            <div class="dmg-row">
+              <div class="dmg-dot-l" style="background:#4a9eff;"></div>
+              <span class="dmg-label">Magic</span>
+              <span class="dmg-pct" id="magicPct" style="color:#4a9eff;">—%</span>
+            </div>
+            <div class="dmg-bar-wrap"><div class="dmg-bar" id="magicBar" style="background:#4a9eff;width:0%"></div></div>
+          </div>
+          <div>
+            <div class="dmg-row">
+              <div class="dmg-dot-l" style="background:var(--gold);"></div>
+              <span class="dmg-label">True</span>
+              <span class="dmg-pct" id="truePct" style="color:var(--gold);">—%</span>
+            </div>
+            <div class="dmg-bar-wrap"><div class="dmg-bar" id="trueBar" style="background:var(--gold);width:0%"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CC COVERAGE -->
+    <div class="cc-section">
+      <div class="sec-label">Crowd Control Coverage</div>
+      <div class="cc-tags" id="ccTags"></div>
+    </div>
+
+    <!-- TEAM RATINGS -->
+    <div class="ratings-section">
+      <div class="sec-label">Team Ratings</div>
+      <div class="rating-rows" id="ratingRows"></div>
+    </div>
+
+    <!-- WEAKNESSES / STRENGTHS -->
+    <div class="weakness-section">
+      <div class="sec-label">Strengths & Weaknesses</div>
+      <div class="warning-list" id="warningList">
+        <div class="empty-state">Select champions to see analysis</div>
+      </div>
+    </div>
+
+    <div class="share-section">
+      <div class="sec-label">Save & Share Draft</div>
+      <div class="share-actions">
+        <button class="share-btn" id="saveDraftBtn" disabled>Save Draft</button>
+        <button class="share-btn primary" id="shareDraftBtn" disabled>Share Draft</button>
+      </div>
+      <div class="share-status" id="shareStatus">Build a draft to generate a full share summary.</div>
+      <div class="share-preview hidden" id="sharePreview">
+        <div class="share-preview-head">
+          <div class="share-preview-title">Draft Summary</div>
+          <div class="share-preview-time" id="sharePreviewTime"></div>
+        </div>
+        <div class="share-preview-body">
+          <div class="share-champ-list" id="shareChampList"></div>
+          <div class="share-meta-grid" id="shareMetaGrid"></div>
+          <div>
+            <div class="share-block-title">Best Synergy Combos</div>
+            <div class="share-line-list" id="shareComboLines"></div>
+          </div>
+          <div>
+            <div class="share-block-title">Strengths & Weaknesses Snapshot</div>
+            <div class="share-line-list" id="shareWarningLines"></div>
+          </div>
+          <div>
+            <div class="share-block-title">Share Text</div>
+            <textarea class="share-summary-box" id="shareSummaryBox" readonly></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /right-panel -->
+</div><!-- /main-wrap -->
+
+<script src="champion-lanes.js"></script>
+<script src="champion-full-tr.js"></script>
+<script src="full-roster-helper.js"></script>
+<script>
+/* ═══════════════════════════════════════════════
+   CHAMPION DATABASE — Full Detailed Data
+═══════════════════════════════════════════════ */
+const CHAMPIONS = [
+  {
+    id:'Malphite', name:'Malphite', title:'Shard of the Monolith',
+    roles:['top','support'], type:'melee', class:'tank',
+    damage:{phys:25,magic:70,true:5},
+    cc:['knockup','slow'],
+    engage:9, peel:3, tankiness:10, utility:6, carry:2, waveclear:4, split:1, mobile:2,
+    tags:['engage','tank','aoe'],
+    synergies:{
+      Yasuo:{score:30,reason:'Ult → Last Breath (Mass Airborne Combo)'},
+      Yone:{score:25,reason:'Ult → Soul Unbound (Airborne Follow-up)'},
+      MissFortune:{score:20,reason:'Unstoppable Force locks enemies for Bullet Time'},
+      Jinx:{score:18,reason:'Ult engage into Get Excited chain'},
+      Orianna:{score:22,reason:'Ball delivery + Ult into Shockwave'},
+      Leesin:{score:16,reason:'Engage chain — Insec setup'},
+    }
+  },
+  {
+    id:'Yasuo', name:'Yasuo', title:'The Unforgiven',
+    roles:['mid','top','bot'], type:'melee', class:'fighter',
+    damage:{phys:78,magic:17,true:5},
+    cc:['knockup'],
+    engage:6, peel:2, tankiness:3, utility:4, carry:9, waveclear:7, split:7, mobile:9,
+    tags:['carry','mobile','disengage','airborne-user'],
+    synergies:{
+      Malphite:{score:30,reason:'Groundslam → Last Breath (99% Win Rate Combo)'},
+      Yone:{score:20,reason:"Brothers' Pact — dual airborne combo"},
+      Amumu:{score:25,reason:'Bandage Toss + Curse of the Sad Mummy → Last Breath'},
+      Leesin:{score:18,reason:'Insec kick → Airborne Last Breath window'},
+      Vi:{score:20,reason:'Assault and Battery → Last Breath'},
+      Orianna:{score:18,reason:'Ball repositioning into ult for Last Breath'},
+      Kayle:{score:16,reason:'Intervention grants invincibility during ult'},
+      Jarvan:{score:18,reason:'Cataclysm knockup → Last Breath'},
+    }
+  },
+  {
+    id:'Yone', name:'Yone', title:'The Unforgotten',
+    roles:['mid','top'], type:'melee', class:'fighter',
+    damage:{phys:68,magic:27,true:5},
+    cc:['knockup','fear','slow'],
+    engage:7, peel:3, tankiness:4, utility:5, carry:8, waveclear:7, split:6, mobile:8,
+    tags:['carry','mobile','airborne-user'],
+    synergies:{
+      Malphite:{score:25,reason:'Ult delivers airborne — Soul Unbound auto-follows'},
+      Amumu:{score:22,reason:'Mass stun + ult combo — near-guaranteed airborne'},
+      Leona:{score:18,reason:'Eclipse + zenith blade into ult chain'},
+      Yasuo:{score:20,reason:"Brothers' Pact — double airborne setup"},
+      Nautilus:{score:20,reason:'Hook + ult airborne follow-up'},
+      Orianna:{score:17,reason:'Shockwave setup into ult engage'},
+    }
+  },
+  {
+    id:'Ahri', name:'Ahri', title:'The Nine-Tailed Fox',
+    roles:['mid'], type:'ranged', class:'mage',
+    damage:{phys:12,magic:83,true:5},
+    cc:['charm','slow'],
+    engage:5, peel:4, tankiness:2, utility:6, carry:8, waveclear:6, split:3, mobile:8,
+    tags:['mobile','burst','poke','assassin-mage'],
+    synergies:{
+      Zed:{score:16,reason:'Charm lines up Zed Death Mark execution'},
+      Ashe:{score:14,reason:'Arrow + Charm — dual-lockdown kill setup'},
+      Caitlyn:{score:15,reason:'Charm into headshot burst combo'},
+      Thresh:{score:14,reason:'Flay + Charm chain CC'},
+    }
+  },
+  {
+    id:'Lux', name:'Lux', title:'The Lady of Luminosity',
+    roles:['mid','support'], type:'ranged', class:'mage',
+    damage:{phys:8,magic:87,true:5},
+    cc:['snare','slow'],
+    engage:4, peel:6, tankiness:1, utility:8, carry:7, waveclear:7, split:2, mobile:1,
+    tags:['poke','burst','snare','long-range'],
+    synergies:{
+      Blitzcrank:{score:18,reason:'Grab → Snare → Finales Funkeln delete combo'},
+      Caitlyn:{score:16,reason:'Snare → Ace in the Hole long-range burst'},
+      Xerath:{score:14,reason:'Double long-range artillery poke'},
+      Nautilus:{score:15,reason:'Hook/ult → snare → ult burst'},
+    }
+  },
+  {
+    id:'Jinx', name:'Jinx', title:'The Loose Cannon',
+    roles:['bot'], type:'ranged', class:'marksman',
+    damage:{phys:88,magic:7,true:5},
+    cc:['slow','snare'],
+    engage:2, peel:3, tankiness:1, utility:4, carry:9, waveclear:8, split:3, mobile:2,
+    tags:['carry','aoe','hypercarry'],
+    synergies:{
+      Thresh:{score:20,reason:'Hook → Get Excited kill chain'},
+      Leona:{score:18,reason:'Hard engage enables safe hypercarry play'},
+      Malphite:{score:18,reason:'Ult engage → Excited snowball'},
+      Nautilus:{score:19,reason:'Hook + Depth Charge → Get Excited'},
+      Amumu:{score:16,reason:'Curse lockdown → free AoE Super Mega Rocket'},
+    }
+  },
+  {
+    id:'MissFortune', name:'Miss Fortune', title:"The Bounty Hunter",
+    roles:['bot'], type:'ranged', class:'marksman',
+    damage:{phys:82,magic:13,true:5},
+    cc:['slow'],
+    engage:3, peel:3, tankiness:1, utility:5, carry:8, waveclear:7, split:2, mobile:2,
+    tags:['aoe','poke','burst','synergy-ult'],
+    synergies:{
+      Amumu:{score:28,reason:'Curse of the Sad Mummy → Bullet Time locked AoE delete'},
+      Leona:{score:22,reason:'Lock & Spray — Eclipse + Bullet Time'},
+      Nautilus:{score:22,reason:'Depth Charge stun → Bullet Time channels fully'},
+      Blitzcrank:{score:22,reason:'Grab → Bullet Time point-blank'},
+      Malphite:{score:20,reason:'Unstoppable Force → Bullet Time AoE combo'},
+      Morgana:{score:18,reason:'Black Shield prevents interrupt of Bullet Time'},
+      Pyke:{score:18,reason:'Phantom Undertow stun → Bullet Time into execute'},
+    }
+  },
+  {
+    id:'Thresh', name:'Thresh', title:'The Chain Warden',
+    roles:['support'], type:'melee', class:'support',
+    damage:{phys:22,magic:73,true:5},
+    cc:['hook','knockback','slow','snare'],
+    engage:8, peel:9, tankiness:4, utility:10, carry:3, waveclear:2, split:1, mobile:3,
+    tags:['engage','peel','utility','hook'],
+    synergies:{
+      Jinx:{score:20,reason:'Prisoner combo — hook sets up Get Excited chain'},
+      Jhin:{score:18,reason:'Curtain Call — flay/hook into immobile ult'},
+      Caitlyn:{score:16,reason:'Headshot setup via flay + hook'},
+      Vayne:{score:16,reason:'Peel + lantern repositioning for mobile carry'},
+      Kalista:{score:15,reason:'Oath-sworn bond + Lantern ultimate combo'},
+    }
+  },
+  {
+    id:'Leona', name:'Leona', title:'The Radiant Dawn',
+    roles:['support'], type:'melee', class:'tank',
+    damage:{phys:28,magic:67,true:5},
+    cc:['stun','knockup','slow'],
+    engage:10, peel:4, tankiness:8, utility:6, carry:2, waveclear:3, split:1, mobile:3,
+    tags:['engage','tank','hard-cc','lock-on'],
+    synergies:{
+      MissFortune:{score:22,reason:'Lock & Spray — guaranteed Bullet Time window'},
+      Caitlyn:{score:22,reason:'Headshot proc on all Eclipse hits — burst combo'},
+      Jinx:{score:18,reason:'Hard engage into Get Excited snowball'},
+      Varus:{score:16,reason:'Chain of Corruption on stunned targets'},
+      Yone:{score:18,reason:'Zenith Blade chain into ult fear combo'},
+      Yasuo:{score:15,reason:'Sunlight stacks + Last Breath airborne'},
+    }
+  },
+  {
+    id:'Vi', name:'Vi', title:'The Piltover Enforcer',
+    roles:['jungle'], type:'melee', class:'fighter',
+    damage:{phys:78,magic:17,true:5},
+    cc:['knockup','knockback','stun'],
+    engage:8, peel:3, tankiness:6, utility:5, carry:6, waveclear:7, split:4, mobile:6,
+    tags:['engage','carry','gap-close','target-lock'],
+    synergies:{
+      Yasuo:{score:20,reason:'Assault and Battery airborne → Last Breath'},
+      MissFortune:{score:18,reason:'Target-lock engage into Bullet Time'},
+      Orianna:{score:18,reason:'Ball delivery + ult into Shockwave'},
+      Syndra:{score:17,reason:'Stun chain enables full sphere burst'},
+      Caitlyn:{score:16,reason:'Target-lock sets up Ace in the Hole'},
+    }
+  },
+  {
+    id:'Leesin', name:'Lee Sin', title:'The Blind Monk',
+    roles:['jungle','top'], type:'melee', class:'fighter',
+    damage:{phys:85,magic:10,true:5},
+    cc:['slow','knockback'],
+    engage:8, peel:6, tankiness:4, utility:7, carry:7, waveclear:6, split:6, mobile:9,
+    tags:['mobile','engage','skillshot','insec'],
+    synergies:{
+      Orianna:{score:22,reason:'Insec kick into Shockwave — classic pro combo'},
+      Malphite:{score:18,reason:'Insec into team + Unstoppable Force follow-up'},
+      Yasuo:{score:18,reason:'Insec kick setup → Last Breath'},
+      Jarvan:{score:16,reason:'Insec into Cataclysm box trap'},
+    }
+  },
+  {
+    id:'Amumu', name:'Amumu', title:'The Sad Mummy',
+    roles:['jungle','support','top'], type:'melee', class:'tank',
+    damage:{phys:20,magic:75,true:5},
+    cc:['stun','snare','slow'],
+    engage:9, peel:4, tankiness:9, utility:7, carry:2, waveclear:7, split:1, mobile:3,
+    tags:['engage','tank','aoe','mass-cc'],
+    synergies:{
+      Yasuo:{score:25,reason:"Curse of the Sad Mummy → mass airborne Last Breath"},
+      Yone:{score:22,reason:'Mass stun into Soul Unbound ult combo'},
+      MissFortune:{score:28,reason:'#1 Combo — full team stun during Bullet Time'},
+      Katarina:{score:22,reason:'Mass stun nullifies Katarina interrupt window'},
+      Jinx:{score:16,reason:'Mass engage enables free Super Mega Rocket'},
+      Orianna:{score:20,reason:'Bandage toss deliveres ball → Shockwave'},
+    }
+  },
+  {
+    id:'Zed', name:'Zed', title:'The Master of Shadows',
+    roles:['mid','top'], type:'melee', class:'assassin',
+    damage:{phys:90,magic:5,true:5},
+    cc:['slow'],
+    engage:7, peel:1, tankiness:2, utility:2, carry:9, waveclear:6, split:8, mobile:8,
+    tags:['assassin','carry','mobile','snowball'],
+    synergies:{
+      Ahri:{score:16,reason:'Charm lines up Death Mark execution'},
+      Jarvan:{score:15,reason:'Cataclysm traps enemy in Death Mark zone'},
+      Ashe:{score:14,reason:'Arrow stun enables safe Death Mark rotation'},
+    }
+  },
+  {
+    id:'Katarina', name:'Katarina', title:'The Sinister Blade',
+    roles:['mid'], type:'melee', class:'assassin',
+    damage:{phys:28,magic:67,true:5},
+    cc:['slow'],
+    engage:6, peel:1, tankiness:2, utility:2, carry:9, waveclear:8, split:4, mobile:9,
+    tags:['assassin','carry','reset','aoe'],
+    synergies:{
+      Amumu:{score:22,reason:'Mass stun = uninterrupted Death Lotus'},
+      Leona:{score:18,reason:'Hard CC prevents Death Lotus interruption'},
+      Malphite:{score:16,reason:'Mass knockup → free ult channel'},
+      Nautilus:{score:18,reason:'Chain CC enables full Death Lotus duration'},
+    }
+  },
+  {
+    id:'Darius', name:'Darius', title:'The Hand of Noxus',
+    roles:['top'], type:'melee', class:'fighter',
+    damage:{phys:70,magic:5,true:25},
+    cc:['slow','pull'],
+    engage:5, peel:2, tankiness:7, utility:4, carry:8, waveclear:5, split:8, mobile:2,
+    tags:['carry','tank','juggernaut','execute','split'],
+    synergies:{
+      Vi:{score:18,reason:'Assault and Battery sets up Noxian Guillotine range'},
+      Kayle:{score:22,reason:'Intervention prevents death during all-in dive'},
+      TwistedFate:{score:14,reason:'Split push pressure enabled by global gate'},
+      Fiora:{score:14,reason:'Dual-juggernaut split push threat'},
+    }
+  },
+  {
+    id:'Garen', name:'Garen', title:'The Might of Demacia',
+    roles:['top'], type:'melee', class:'fighter',
+    damage:{phys:72,magic:5,true:23},
+    cc:['silence','slow'],
+    engage:5, peel:2, tankiness:8, utility:3, carry:7, waveclear:5, split:7, mobile:2,
+    tags:['carry','tank','juggernaut','execute','split'],
+    synergies:{
+      Lux:{score:16,reason:'Silence into snare for full ability burst'},
+      TwistedFate:{score:14,reason:'Split push + global roam pressure'},
+      Orianna:{score:12,reason:'Judgment in ball combo'},
+    }
+  },
+  {
+    id:'Syndra', name:'Syndra', title:'The Dark Sovereign',
+    roles:['mid'], type:'ranged', class:'mage',
+    damage:{phys:8,magic:87,true:5},
+    cc:['stun','slow'],
+    engage:5, peel:4, tankiness:1, utility:6, carry:9, waveclear:7, split:2, mobile:2,
+    tags:['burst','poke','carry','one-shot'],
+    synergies:{
+      Vi:{score:17,reason:'Target-lock into full sphere burst combo'},
+      Leona:{score:15,reason:'Eclipse stun into sphere stack burst'},
+      Nautilus:{score:16,reason:'Hook into stun + Force of Will delete'},
+    }
+  },
+  {
+    id:'Orianna', name:'Orianna', title:'The Lady of Clockwork',
+    roles:['mid'], type:'ranged', class:'mage',
+    damage:{phys:10,magic:85,true:5},
+    cc:['knockup','slow'],
+    engage:7, peel:6, tankiness:1, utility:9, carry:8, waveclear:7, split:2, mobile:2,
+    tags:['aoe','utility','setup','ball'],
+    synergies:{
+      Leesin:{score:22,reason:'Insec kick target into ball → Shockwave'},
+      Malphite:{score:22,reason:'Ult delivers ball → Shockwave mass engage'},
+      Amumu:{score:20,reason:'Bandage Toss into ball → Shockwave'},
+      Vi:{score:18,reason:'Assault and Battery ball delivery → Shockwave'},
+      Yasuo:{score:18,reason:'Ball repositioning + Last Breath airborne'},
+    }
+  },
+  {
+    id:'Blitzcrank', name:'Blitzcrank', title:'The Great Steam Golem',
+    roles:['support'], type:'melee', class:'tank',
+    damage:{phys:38,magic:57,true:5},
+    cc:['hook','knockup','silence'],
+    engage:9, peel:5, tankiness:7, utility:7, carry:2, waveclear:3, split:1, mobile:4,
+    tags:['engage','hook','tank','pick'],
+    synergies:{
+      MissFortune:{score:25,reason:'Rocket Grab → Bullet Time point-blank delete'},
+      Caitlyn:{score:20,reason:'Grab → Headshot immediate follow-up'},
+      Jinx:{score:16,reason:'Grab engage → Get Excited chain'},
+      Lux:{score:18,reason:'Grab → Snare → Finales Funkeln combo'},
+      Morgana:{score:20,reason:'Grab → Black Shield prevents escape or interrupts'},
+    }
+  },
+  {
+    id:'Nautilus', name:'Nautilus', title:'The Titan of the Depths',
+    roles:['support','jungle'], type:'melee', class:'tank',
+    damage:{phys:22,magic:73,true:5},
+    cc:['hook','knockup','snare','slow'],
+    engage:10, peel:7, tankiness:8, utility:8, carry:2, waveclear:3, split:1, mobile:2,
+    tags:['engage','tank','peel','mass-cc','hook'],
+    synergies:{
+      Caitlyn:{score:22,reason:'4-piece CC chain enables guaranteed headshot burst'},
+      Vayne:{score:22,reason:'All CC types let Vayne safely proc Silver Bolts'},
+      Jinx:{score:19,reason:'Hook lockdown chain → Get Excited'},
+      Yone:{score:20,reason:'Hook + airborne into Soul Unbound ult'},
+      MissFortune:{score:22,reason:'Depth Charge stun → clean Bullet Time'},
+      Katarina:{score:18,reason:'CC chain protects Death Lotus from interrupts'},
+    }
+  },
+  {
+    id:'Caitlyn', name:'Caitlyn', title:'The Sheriff of Piltover',
+    roles:['bot'], type:'ranged', class:'marksman',
+    damage:{phys:90,magic:5,true:5},
+    cc:['snare','slow'],
+    engage:3, peel:4, tankiness:1, utility:5, carry:9, waveclear:6, split:3, mobile:2,
+    tags:['poke','carry','long-range','headshot'],
+    synergies:{
+      Leona:{score:22,reason:'Sunlight procs headshot — triple damage burst'},
+      Nautilus:{score:22,reason:'4 CC sources trigger headshot bonus'},
+      Blitzcrank:{score:20,reason:'Grab into headshot kill combo'},
+      Thresh:{score:16,reason:'Hook/flay into trap + headshot'},
+      Pyke:{score:25,reason:'Execute gold sharing amplifies both carries'},
+    }
+  },
+  {
+    id:'Jhin', name:'Jhin', title:'The Virtuoso',
+    roles:['bot'], type:'ranged', class:'marksman',
+    damage:{phys:88,magic:7,true:5},
+    cc:['snare','slow'],
+    engage:4, peel:4, tankiness:1, utility:6, carry:8, waveclear:5, split:2, mobile:2,
+    tags:['poke','carry','long-range','pick'],
+    synergies:{
+      Thresh:{score:18,reason:'Flay slow into 4th shot + Curtain Call'},
+      Leona:{score:16,reason:'Immobilize allows free Curtain Call channels'},
+      Morgana:{score:16,reason:'Root into 4th shot burst + Curtain Call setup'},
+      Blitzcrank:{score:16,reason:'Grab into 4th shot crit burst'},
+    }
+  },
+  {
+    id:'TwistedFate', name:'Twisted Fate', title:'The Card Master',
+    roles:['mid'], type:'ranged', class:'mage',
+    damage:{phys:28,magic:67,true:5},
+    cc:['stun','slow'],
+    engage:6, peel:4, tankiness:1, utility:9, carry:7, waveclear:7, split:5, mobile:5,
+    tags:['utility','global','pick','roam'],
+    synergies:{
+      Fiora:{score:15,reason:'Gate enables safe split and team fights simultaneously'},
+      Darius:{score:14,reason:'Global presence amplifies split push threats'},
+      Zed:{score:14,reason:'Double mid roamer creates permanent pick pressure'},
+    }
+  },
+  {
+    id:'Ekko', name:'Ekko', title:'The Boy Who Shattered Time',
+    roles:['jungle','mid'], type:'melee', class:'assassin',
+    damage:{phys:18,magic:77,true:5},
+    cc:['stun','slow'],
+    engage:7, peel:3, tankiness:3, utility:6, carry:8, waveclear:7, split:5, mobile:8,
+    tags:['assassin','carry','mobile','aoe'],
+    synergies:{
+      Vi:{score:16,reason:'Jungle carry duo — dual engage snowball'},
+      Leesin:{score:15,reason:'Jungle duo dive coordination'},
+      Orianna:{score:15,reason:'Stasis field + Shockwave timing combo'},
+    }
+  },
+  {
+    id:'Fiora', name:'Fiora', title:'The Grand Duelist',
+    roles:['top'], type:'melee', class:'fighter',
+    damage:{phys:83,magic:5,true:12},
+    cc:['slow','stun'],
+    engage:5, peel:3, tankiness:4, utility:4, carry:9, waveclear:5, split:10, mobile:7,
+    tags:['split','carry','duel','anti-tank','true-damage'],
+    synergies:{
+      TwistedFate:{score:15,reason:'Gate teleport enables team while Fiora splits'},
+      Darius:{score:14,reason:'Dual-juggernaut split threats (different sides)'},
+      Shen:{score:16,reason:'Stand United teleport synergy during split push'},
+    }
+  },
+  {
+    id:'Vayne', name:'Vayne', title:'The Night Hunter',
+    roles:['bot','top'], type:'ranged', class:'marksman',
+    damage:{phys:80,magic:0,true:20},
+    cc:['knockback','stun'],
+    engage:3, peel:3, tankiness:1, utility:3, carry:9, waveclear:4, split:5, mobile:7,
+    tags:['carry','anti-tank','hypercarry','true-damage','stealth'],
+    synergies:{
+      Nautilus:{score:22,reason:'All 4 CC types let Vayne safely stack Silver Bolts'},
+      Thresh:{score:16,reason:'Lantern repositioning + peel enables safe carry'},
+      Leona:{score:14,reason:'Hard engage lets Vayne tumble freely'},
+      Kayle:{score:16,reason:'Intervention at low HP saves Vayne during all-in'},
+      Lulu:{score:18,reason:'Polymorph + Whimsy protect hypercarry'},
+    }
+  },
+  {
+    id:'Ashe', name:'Ashe', title:'The Frost Archer',
+    roles:['bot','support'], type:'ranged', class:'marksman',
+    damage:{phys:87,magic:8,true:5},
+    cc:['slow','stun'],
+    engage:7, peel:5, tankiness:2, utility:8, carry:7, waveclear:6, split:2, mobile:1,
+    tags:['poke','utility','engage','global-ult'],
+    synergies:{
+      Amumu:{score:20,reason:'Arrow into bandage toss — global engage chain'},
+      Zed:{score:14,reason:'Arrow stun enables safe Death Mark rotation'},
+      Ahri:{score:14,reason:'Arrow + Charm double lockdown burst'},
+      Blitzcrank:{score:14,reason:'Constant slow enables Rocket Grab accuracy'},
+    }
+  },
+  {
+    id:'Morgana', name:'Morgana', title:'The Fallen',
+    roles:['support','mid'], type:'ranged', class:'support',
+    damage:{phys:12,magic:83,true:5},
+    cc:['snare','suppress'],
+    engage:5, peel:9, tankiness:2, utility:8, carry:5, waveclear:8, split:2, mobile:2,
+    tags:['peel','anti-engage','snare','shield'],
+    synergies:{
+      Blitzcrank:{score:20,reason:'Black Shield prevents counter-engage on grabbed target'},
+      MissFortune:{score:18,reason:'Black Shield prevents Bullet Time interruption'},
+      Leona:{score:18,reason:'Black Shield lets Leona engage freely without fear'},
+      Jhin:{score:16,reason:'Q root into Curtain Call channel protection'},
+      Vayne:{score:16,reason:'Black Shield + Q snare — maximum Vayne peel'},
+    }
+  },
+  {
+    id:'Pyke', name:'Pyke', title:'The Bloodharbor Ripper',
+    roles:['support'], type:'melee', class:'support',
+    damage:{phys:72,magic:18,true:10},
+    cc:['hook','stun','slow'],
+    engage:7, peel:3, tankiness:3, utility:7, carry:7, waveclear:2, split:2, mobile:7,
+    tags:['assassin','engage','hook','execute','gold-share'],
+    synergies:{
+      Caitlyn:{score:25,reason:'Death from Below gold sharing + headshot burst'},
+      MissFortune:{score:22,reason:'Stun into Bullet Time + execute finisher'},
+      Jinx:{score:18,reason:'Execute share enables Get Excited advantage'},
+      Zed:{score:16,reason:'Double assassin dive coordination'},
+    }
+  },
+  {
+    id:'Kayle', name:'Kayle', title:'The Righteous',
+    roles:['top','mid'], type:'ranged', class:'fighter',
+    damage:{phys:48,magic:47,true:5},
+    cc:['slow'],
+    engage:4, peel:7, tankiness:4, utility:7, carry:8, waveclear:7, split:5, mobile:3,
+    tags:['carry','scaling','enchanter','late-game'],
+    synergies:{
+      Yasuo:{score:16,reason:'Intervention grants invincibility for Last Breath setup'},
+      Darius:{score:22,reason:'Righteous Fury + Noxian Guillotine unstoppable all-in'},
+      Vayne:{score:16,reason:'Intervention at 0 HP — save the hypercarry'},
+      Malphite:{score:14,reason:'Ult protect during Groundslam engage'},
+    }
+  },
+  // ── NEW CHAMPIONS ──
+  {
+    id:'Aatrox', name:'Aatrox', title:'The Darkin Blade',
+    roles:['top','jungle'], type:'melee', class:'fighter',
+    damage:{phys:78,magic:12,true:10},
+    cc:['knockup','slow'],
+    engage:8, peel:3, tankiness:7, utility:4, carry:9, waveclear:7, split:8, mobile:5,
+    tags:['carry','engage','sustain','juggernaut'],
+    synergies:{
+      Hecarim:{score:16,reason:'Dual frontline dive forces enemies to peel both threats'},
+      Vi:{score:15,reason:'Hard engage into Aatrox World Ender chain'},
+      Orianna:{score:14,reason:'Ball on Aatrox dive into Shockwave combo'},
+    }
+  },
+  {
+    id:'Akali', name:'Akali', title:'The Rogue Assassin',
+    roles:['mid','top'], type:'melee', class:'assassin',
+    damage:{phys:20,magic:75,true:5},
+    cc:['slow'],
+    engage:8, peel:1, tankiness:2, utility:3, carry:9, waveclear:6, split:6, mobile:9,
+    tags:['assassin','carry','mobile','stealth'],
+    synergies:{
+      Amumu:{score:20,reason:'Mass stun enables safe Akali dive without interrupt'},
+      Malphite:{score:18,reason:'Ult engage → free Five Point Strike chain'},
+      Leona:{score:16,reason:'Hard lockdown lets Akali burst without being peeled'},
+      Orianna:{score:15,reason:'Shockwave + Akali burst = instant kill combo'},
+    }
+  },
+  {
+    id:'Aphelios', name:'Aphelios', title:'The Weapon of the Faithful',
+    roles:['bot'], type:'ranged', class:'marksman',
+    damage:{phys:82,magic:13,true:5},
+    cc:['slow','knockup'],
+    engage:3, peel:3, tankiness:1, utility:5, carry:9, waveclear:7, split:2, mobile:2,
+    tags:['carry','hypercarry','poke','burst'],
+    synergies:{
+      Leona:{score:20,reason:'Sunlight proc enables Aphelios ult burst at max range'},
+      Nautilus:{score:18,reason:'Hook + ult lockdown = safe Aphelios positioning'},
+      Lulu:{score:18,reason:'Wild Growth + shield lets Aphelios hypercarry safely'},
+      Thresh:{score:15,reason:'Hook + flay chain into Infernum AoE'},
+    }
+  },
+  {
+    id:'AurelionSol', name:'Aurelion Sol', title:'The Star Forger',
+    roles:['mid'], type:'ranged', class:'mage',
+    damage:{phys:8,magic:88,true:4},
+    cc:['stun','slow','knockup'],
+    engage:6, peel:4, tankiness:2, utility:7, carry:8, waveclear:8, split:2, mobile:3,
+    tags:['poke','aoe','roam','scaling'],
+    synergies:{
+      Hecarim:{score:16,reason:'Black Hole + Hecarim engage = death zone'},
+      Vi:{score:15,reason:'Dual engage stardust control'},
+      Nautilus:{score:16,reason:'Hook into Stardust burst finisher'},
+    }
+  },
+  {
+    id:'Azir', name:'Azir', title:'The Emperor of the Sands',
+    roles:['mid'], type:'ranged', class:'mage',
+    damage:{phys:15,magic:80,true:5},
+    cc:['knockback','slow','knockup'],
+    engage:6, peel:8, tankiness:2, utility:8, carry:8, waveclear:8, split:2, mobile:5,
+    tags:['aoe','poke','utility','peel','carry'],
+    synergies:{
+      Yasuo:{score:22,reason:'Emperor\'s Divide wall → Last Breath airborne setup'},
+      Vi:{score:16,reason:'Shurima Shuffle wall cuts off escape routes'},
+      Orianna:{score:17,reason:'Emperor\'s Divide + ball control zone denial'},
+      Leesin:{score:18,reason:'Insec into Shurima Shuffle wall trap'},
+    }
+  },
+  {
+    id:'Bard', name:'Bard', title:'The Wandering Caretaker',
+    roles:['support'], type:'ranged', class:'support',
+    damage:{phys:28,magic:62,true:10},
+    cc:['stun','slow'],
+    engage:6, peel:7, tankiness:2, utility:10, carry:3, waveclear:3, split:1, mobile:6,
+    tags:['utility','roam','pick','global'],
+    synergies:{
+      Orianna:{score:16,reason:'Magical Journey + ball delivery for perfect engage'},
+      MissFortune:{score:15,reason:'Tempered Fate stun into Bullet Time'},
+      Jhin:{score:14,reason:'Tempered Fate = free Curtain Call channel'},
+      Karthus:{score:18,reason:'Tempered Fate freezes enemies for Requiem global ult'},
+    }
+  },
+  {
+    id:'Camille', name:'Camille', title:'The Steel Shadow',
+    roles:['top','jungle'], type:'melee', class:'fighter',
+    damage:{phys:80,magic:10,true:10},
+    cc:['stun','slow','knockback'],
+    engage:8, peel:3, tankiness:5, utility:5, carry:8, waveclear:6, split:9, mobile:8,
+    tags:['split','engage','carry','mobile','anti-tank'],
+    synergies:{
+      Orianna:{score:17,reason:'Hextech Ultimatum traps enemy in ball zone'},
+      Vi:{score:16,reason:'Dual engage — Hextech cage + Assault and Battery'},
+      Jinx:{score:14,reason:'Cage lockdown enables Get Excited chain'},
+      TwistedFate:{score:15,reason:'Global gate + Camille split = 2-front pressure'},
+    }
+  },
+  {
+    id:'Chogath', name:"Cho'Gath", title:'The Terror of the Void',
+    roles:['top','jungle','support'], type:'melee', class:'tank',
+    damage:{phys:22,magic:58,true:20},
+    cc:['knockup','silence','slow'],
+    engage:7, peel:4, tankiness:10, utility:6, carry:4, waveclear:6, split:3, mobile:2,
+    tags:['tank','engage','true-damage','execute'],
+    synergies:{
+      MissFortune:{score:18,reason:'Rupture knockup into Bullet Time AoE'},
+      Orianna:{score:16,reason:'Rupture ball delivery → Shockwave'},
+      Yasuo:{score:16,reason:'Rupture airborne → Last Breath'},
+      Amumu:{score:15,reason:'Dual mass CC engage guarantees kills'},
+    }
+  },
+  {
+    id:'Diana', name:'Diana', title:'Scorn of the Moon',
+    roles:['mid','jungle'], type:'melee', class:'assassin',
+    damage:{phys:15,magic:80,true:5},
+    cc:['knockup','slow'],
+    engage:8, peel:2, tankiness:4, utility:4, carry:9, waveclear:7, split:5, mobile:8,
+    tags:['assassin','carry','mobile','aoe','engage'],
+    synergies:{
+      Yasuo:{score:18,reason:'Lunar Rush knockup into Last Breath chain'},
+      Yone:{score:16,reason:'Mass Moonfall airborne → Soul Unbound ult'},
+      Orianna:{score:15,reason:'Moonfall grouping + Shockwave AoE combo'},
+      Amumu:{score:16,reason:'Dual mass engage — unstoppable teamfight'},
+    }
+  },
+  {
+    id:'Draven', name:'Draven', title:'The Glorious Executioner',
+    roles:['bot'], type:'ranged', class:'marksman',
+    damage:{phys:92,magic:3,true:5},
+    cc:['slow','knockback'],
+    engage:4, peel:3, tankiness:1, utility:3, carry:10, waveclear:5, split:3, mobile:2,
+    tags:['carry','early-game','snowball','burst'],
+    synergies:{
+      Thresh:{score:18,reason:'Hook sets up Spinning Axe high-value catches'},
+      Leona:{score:20,reason:'Eclipse stun into Draven burst — early kill pressure'},
+      Blitzcrank:{score:18,reason:'Rocket Grab into point-blank Spinning Axes'},
+      Nautilus:{score:18,reason:'Hook + ult into Whirling Death finisher'},
+    }
+  },
+  {
+    id:'Evelynn', name:'Evelynn', title:"Agony's Embrace",
+    roles:['jungle'], type:'melee', class:'assassin',
+    damage:{phys:15,magic:80,true:5},
+    cc:['charm','slow'],
+    engage:8, peel:1, tankiness:2, utility:4, carry:9, waveclear:7, split:5, mobile:8,
+    tags:['assassin','carry','stealth','mobile'],
+    synergies:{
+      Ahri:{score:15,reason:'Dual charm set-up for guaranteed burst'},
+      Orianna:{score:14,reason:'Camouflage approach + Shockwave combo'},
+      TwistedFate:{score:14,reason:'Double roaming invisibility pressure'},
+    }
+  },
+  {
+    id:'Ezreal', name:'Ezreal', title:'The Prodigal Explorer',
+    roles:['bot','mid'], type:'ranged', class:'marksman',
+    damage:{phys:55,magic:40,true:5},
+    cc:['slow'],
+    engage:3, peel:4, tankiness:1, utility:5, carry:8, waveclear:6, split:3, mobile:8,
+    tags:['poke','carry','mobile','long-range'],
+    synergies:{
+      Lux:{score:16,reason:'Snare into Mystic Shot poke combo'},
+      Orianna:{score:15,reason:'Ball delivery into long-range finisher'},
+      Senna:{score:16,reason:'Dual global ults provide cross-map pressure'},
+      Hecarim:{score:14,reason:'Engage into Ezreal follow-up burst poke'},
+    }
+  },
+  {
+    id:'Fiddlesticks', name:'Fiddlesticks', title:'The Ancient Fear',
+    roles:['jungle','support'], type:'ranged', class:'mage',
+    damage:{phys:8,magic:87,true:5},
+    cc:['fear','silence','slow'],
+    engage:9, peel:4, tankiness:2, utility:6, carry:7, waveclear:9, split:1, mobile:3,
+    tags:['aoe','engage','carry','stealth'],
+    synergies:{
+      MissFortune:{score:22,reason:'Crowstorm AoE + Bullet Time mass kill zone'},
+      Katarina:{score:20,reason:'Fear removes all interrupts on Death Lotus'},
+      Amumu:{score:18,reason:'Dual mass AoE engages — unstoppable teamfight'},
+      Orianna:{score:17,reason:'Crowstorm ball delivery + Shockwave follow-up'},
+    }
+  },
+  {
+    id:'Galio', name:'Galio', title:'The Colossus',
+    roles:['mid','support','top'], type:'melee', class:'tank',
+    damage:{phys:20,magic:75,true:5},
+    cc:['knockup','taunt','slow'],
+    engage:8, peel:7, tankiness:8, utility:8, carry:4, waveclear:7, split:2, mobile:4,
+    tags:['engage','tank','peel','global','anti-magic'],
+    synergies:{
+      MissFortune:{score:20,reason:'Hero\'s Entrance knockup into Bullet Time'},
+      Yasuo:{score:22,reason:'Hero\'s Entrance mass knockup → Last Breath'},
+      Yone:{score:20,reason:'Mass knockup → Soul Unbound airborne chain'},
+      Orianna:{score:18,reason:'Global engage delivers ball → Shockwave combo'},
+      Jinx:{score:16,reason:'Global knockup engage → Get Excited'},
+    }
+  },
+  {
+    id:'Gangplank', name:'Gangplank', title:'The Saltwater Scourge',
+    roles:['top'], type:'ranged', class:'fighter',
+    damage:{phys:62,magic:18,true:20},
+    cc:['slow'],
+    engage:5, peel:5, tankiness:5, utility:7, carry:8, waveclear:7, split:8, mobile:3,
+    tags:['carry','split','true-damage','global','poke'],
+    synergies:{
+      TwistedFate:{score:14,reason:'Dual global ultimates for cross-map play'},
+      Karthus:{score:14,reason:'Cannon Barrage + Requiem simultaneous global pressure'},
+      Shen:{score:13,reason:'Double global — split push coverage'},
+    }
+  },
+  {
+    id:'Gwen', name:'Gwen', title:'The Hallowed Seamstress',
+    roles:['top','jungle'], type:'melee', class:'fighter',
+    damage:{phys:30,magic:60,true:10},
+    cc:['slow'],
+    engage:5, peel:3, tankiness:6, utility:3, carry:8, waveclear:7, split:7, mobile:5,
+    tags:['carry','anti-tank','true-damage','duelist'],
+    synergies:{
+      Lulu:{score:18,reason:'Wild Growth + Whimsy enable safe Gwen all-in'},
+      Hecarim:{score:15,reason:'Dual frontline — enemy forced to peel both'},
+      Vi:{score:14,reason:'Dive coordination — Vi leads, Gwen finishes'},
+    }
+  },
+  {
+    id:'Hecarim', name:'Hecarim', title:'The Shadow of War',
+    roles:['jungle'], type:'melee', class:'fighter',
+    damage:{phys:75,magic:20,true:5},
+    cc:['knockback','fear','slow'],
+    engage:9, peel:3, tankiness:6, utility:5, carry:7, waveclear:7, split:4, mobile:9,
+    tags:['engage','carry','mobile','aoe'],
+    synergies:{
+      Orianna:{score:20,reason:'Onslaught of Shadows delivers ball → Shockwave'},
+      MissFortune:{score:18,reason:'Fear lockdown into Bullet Time AoE'},
+      Yasuo:{score:18,reason:'Onslaught knockback → Last Breath'},
+      Yone:{score:17,reason:'Fear chain into Soul Unbound ult follow-up'},
+      Fiddlesticks:{score:16,reason:'Double stealth engage — Hecarim + Fiddle burst'},
+    }
+  },
+  {
+    id:'Illaoi', name:'Illaoi', title:'The Kraken Priestess',
+    roles:['top'], type:'melee', class:'fighter',
+    damage:{phys:70,magic:20,true:10},
+    cc:['slow'],
+    engage:6, peel:2, tankiness:7, utility:3, carry:8, waveclear:7, split:8, mobile:2,
+    tags:['carry','anti-engage','split','sustain'],
+    synergies:{
+      Amumu:{score:18,reason:'Mass stun into Illaoi tentacles = AoE delete'},
+      Galio:{score:16,reason:'Hero\'s Entrance grounds enemies in Kraken zone'},
+      Malphite:{score:16,reason:'Groundslam groups enemies for Tentacle spam'},
+    }
+  },
+  {
+    id:'Irelia', name:'Irelia', title:'The Blade Dancer',
+    roles:['top','mid'], type:'melee', class:'fighter',
+    damage:{phys:72,magic:18,true:10},
+    cc:['stun','slow'],
+    engage:8, peel:2, tankiness:5, utility:4, carry:9, waveclear:7, split:8, mobile:9,
+    tags:['carry','mobile','engage','reset'],
+    synergies:{
+      Orianna:{score:16,reason:'Blade surge repositions into ball + Shockwave'},
+      Yasuo:{score:15,reason:'Vanguard\'s Edge stun wall → Last Breath'},
+      Leesin:{score:15,reason:'Dual mobile dive jungle+top'},
+      Amumu:{score:16,reason:'Mass stun enables Bladesurge resets freely'},
+    }
+  },
+  {
+    id:'JarvanIV', name:'Jarvan IV', title:'The Exemplar of Demacia',
+    roles:['jungle','top','support'], type:'melee', class:'fighter',
+    damage:{phys:72,magic:20,true:8},
+    cc:['knockup','slow'],
+    engage:8, peel:4, tankiness:7, utility:7, carry:5, waveclear:6, split:3, mobile:6,
+    tags:['engage','tank','trap','aoe'],
+    synergies:{
+      Yasuo:{score:18,reason:'Cataclysm knockup → Last Breath auto-trigger'},
+      MissFortune:{score:18,reason:'Cataclysm box traps for free Bullet Time'},
+      Orianna:{score:18,reason:'Cataclysm ball delivery → Shockwave'},
+      Katarina:{score:18,reason:'Cataclysm box = uninterrupted Death Lotus'},
+      Leesin:{score:16,reason:'Insec into Cataclysm box trap'},
+    }
+  },
+  {
+    id:'KaiSa', name:"Kai'Sa", title:'Daughter of the Void',
+    roles:['bot'], type:'ranged', class:'marksman',
+    damage:{phys:55,magic:40,true:5},
+    cc:['slow'],
+    engage:5, peel:3, tankiness:1, utility:4, carry:9, waveclear:6, split:3, mobile:8,
+    tags:['carry','mobile','hypercarry','hybrid'],
+    synergies:{
+      Nautilus:{score:22,reason:'Hook → Void Seeker guaranteed charge + Second Skin proc'},
+      Leona:{score:20,reason:'Immobilize triggers Kai\'Sa Killer Instinct dash'},
+      Thresh:{score:18,reason:'Hook into Void Seeker charge + burst'},
+      Rell:{score:18,reason:'Ult lockdown enables guaranteed Void Seeker stacks'},
+    }
+  },
+  {
+    id:'Karthus', name:'Karthus', title:'The Deathsinger',
+    roles:['jungle','mid','support'], type:'ranged', class:'mage',
+    damage:{phys:5,magic:92,true:3},
+    cc:['slow'],
+    engage:3, peel:3, tankiness:1, utility:6, carry:8, waveclear:9, split:1, mobile:1,
+    tags:['aoe','global','carry','poke'],
+    synergies:{
+      Amumu:{score:22,reason:'Mass stun into Requiem — cannot escape death'},
+      Bard:{score:18,reason:'Tempered Fate + Requiem = combo global delete'},
+      Gangplank:{score:14,reason:'Cannon Barrage + Requiem dual globals'},
+      MissFortune:{score:16,reason:'Bullet Time weakens, Requiem finishes survivors'},
+    }
+  },
+  {
+    id:'Kayn', name:'Kayn', title:'The Shadow Reaper',
+    roles:['jungle'], type:'melee', class:'assassin',
+    damage:{phys:80,magic:15,true:5},
+    cc:['stun','slow'],
+    engage:8, peel:2, tankiness:5, utility:3, carry:8, waveclear:7, split:5, mobile:9,
+    tags:['assassin','carry','mobile','engage','wall-walk'],
+    synergies:{
+      Orianna:{score:15,reason:'Shadow Step flank into ball Shockwave'},
+      Vi:{score:14,reason:'Dual jungle dive — Vi front, Kayn flank'},
+      Syndra:{score:15,reason:'Stun + burst combo for instant picks'},
+    }
+  },
+  {
+    id:'KhaZix', name:"Kha'Zix", title:'The Voidreaver',
+    roles:['jungle'], type:'melee', class:'assassin',
+    damage:{phys:85,magic:10,true:5},
+    cc:['slow'],
+    engage:7, peel:1, tankiness:2, utility:3, carry:9, waveclear:6, split:7, mobile:8,
+    tags:['assassin','carry','mobile','isolated-target'],
+    synergies:{
+      Zed:{score:16,reason:'Double assassin isolation hunt — Kha front, Zed flank'},
+      Rengar:{score:14,reason:'Dual stealth jungle predator pressure'},
+      Twisted_Fate:{score:15,reason:'Stun card isolates targets for Void Spike burst'},
+    }
+  },
+  {
+    id:'Kindred', name:'Kindred', title:'The Eternal Hunters',
+    roles:['jungle'], type:'ranged', class:'marksman',
+    damage:{phys:82,magic:13,true:5},
+    cc:['slow'],
+    engage:5, peel:4, tankiness:2, utility:7, carry:8, waveclear:6, split:4, mobile:6,
+    tags:['carry','utility','anti-execute','global'],
+    synergies:{
+      Karthus:{score:18,reason:'Lamb\'s Respite negates Requiem — use it for your team'},
+      Darius:{score:16,reason:'Respite enables Darius to dive recklessly'},
+      Fiora:{score:15,reason:'Respite ensures Fiora survives all-in duels'},
+      Aatrox:{score:15,reason:'Respite prevents World Ender from being cancelled'},
+    }
+  },
+  {
+    id:'Kled', name:'Kled', title:'The Cantankerous Cavalier',
+    roles:['top','jungle'], type:'melee', class:'fighter',
+    damage:{phys:75,magic:18,true:7},
+    cc:['knockup','slow','stun'],
+    engage:9, peel:2, tankiness:6, utility:5, carry:7, waveclear:5, split:7, mobile:7,
+    tags:['engage','carry','tank','split'],
+    synergies:{
+      MissFortune:{score:18,reason:'Chaaaaarge engage into point-blank Bullet Time'},
+      Orianna:{score:17,reason:'Chaaaaarge ball delivery → Shockwave'},
+      Vi:{score:15,reason:'Dual engage — Kled front, Vi locks single target'},
+      Yasuo:{score:16,reason:'Jousting knockup → Last Breath'},
+    }
+  },
+  {
+    id:'Lillia', name:'Lillia', title:'The Bashful Bloom',
+    roles:['jungle','mid'], type:'ranged', class:'mage',
+    damage:{phys:12,magic:83,true:5},
+    cc:['slow','sleep'],
+    engage:6, peel:5, tankiness:2, utility:8, carry:7, waveclear:7, split:2, mobile:7,
+    tags:['aoe','utility','engage','sleep'],
+    synergies:{
+      Orianna:{score:16,reason:'Lilting Lullaby mass sleep + Shockwave wakeup burst'},
+      Zed:{score:16,reason:'Sleep sets up free Death Mark detonation'},
+      Katarina:{score:18,reason:'Mass sleep = uninterrupted Death Lotus'},
+      Yasuo:{score:16,reason:'Lilting Lullaby sleep → Last Breath on wakeup'},
+      MissFortune:{score:18,reason:'Mass sleep into Bullet Time — cannot dodge'},
+    }
+  },
+  {
+    id:'Lulu', name:'Lulu', title:'The Fae Sorceress',
+    roles:['support','mid'], type:'ranged', class:'enchanter',
+    damage:{phys:12,magic:63,true:5},
+    cc:['polymorph','slow','knockup'],
+    engage:4, peel:10, tankiness:2, utility:10, carry:3, waveclear:4, split:1, mobile:2,
+    tags:['enchanter','peel','utility','hypercarry-enabler'],
+    synergies:{
+      Vayne:{score:18,reason:'Polymorph + Wild Growth — maximum hypercarry protection'},
+      Jinx:{score:18,reason:'Wild Growth on Jinx = unstoppable fed carry'},
+      KaiSa:{score:17,reason:'Wild Growth engage + shields enable dive-carry'},
+      Draven:{score:16,reason:'Polymorph peels divers off of Draven'},
+      Kog_Maw:{score:20,reason:'Wild Growth extends Kog\'Maw\'s Bio-Arcane Barrage'},
+    }
+  },
+  {
+    id:'Malzahar', name:'Malzahar', title:'The Prophet of the Void',
+    roles:['mid','support'], type:'ranged', class:'mage',
+    damage:{phys:8,magic:87,true:5},
+    cc:['suppress','slow'],
+    engage:6, peel:5, tankiness:1, utility:7, carry:7, waveclear:9, split:1, mobile:1,
+    tags:['carry','pick','suppress','anti-mobile'],
+    synergies:{
+      MissFortune:{score:22,reason:'Nether Grasp suppress → Bullet Time — victim cannot move'},
+      Caitlyn:{score:18,reason:'Suppress into headshot + Ace in the Hole delete'},
+      Nautilus:{score:16,reason:'Hook into suppress chain — target is dead'},
+      Pyke:{score:16,reason:'Suppress + execute gold combo'},
+    }
+  },
+  {
+    id:'Mordekaiser', name:'Mordekaiser', title:'The Iron Revenant',
+    roles:['top','jungle'], type:'melee', class:'fighter',
+    damage:{phys:15,magic:80,true:5},
+    cc:['slow','knockback','pull'],
+    engage:7, peel:2, tankiness:8, utility:5, carry:8, waveclear:6, split:8, mobile:2,
+    tags:['carry','tank','juggernaut','anti-mobility','death-realm'],
+    synergies:{
+      Hecarim:{score:15,reason:'Engage to isolate target for Realm of Death'},
+      Orianna:{score:14,reason:'Realm of Death + ball = guaranteed Shockwave on re-entry'},
+      Karthus:{score:16,reason:'Realm of Death + Requiem global = double execution'},
+    }
+  },
+  {
+    id:'Nasus', name:'Nasus', title:'The Curator of the Sands',
+    roles:['top','jungle'], type:'melee', class:'fighter',
+    damage:{phys:68,magic:12,true:20},
+    cc:['slow','wither'],
+    engage:5, peel:3, tankiness:8, utility:4, carry:7, waveclear:5, split:8, mobile:2,
+    tags:['carry','tank','split','juggernaut','scaling'],
+    synergies:{
+      TwistedFate:{score:14,reason:'Global gate enables roam while Nasus split-pushes'},
+      Shen:{score:14,reason:'Stand United protects Nasus during tower dives'},
+      Karthus:{score:14,reason:'Wither + Requiem = cannot escape global damage'},
+    }
+  },
+  {
+    id:'Neeko', name:'Neeko', title:'The Curious Chameleon',
+    roles:['mid','support'], type:'ranged', class:'mage',
+    damage:{phys:10,magic:85,true:5},
+    cc:['knockup','stun','slow'],
+    engage:7, peel:4, tankiness:2, utility:7, carry:7, waveclear:7, split:2, mobile:3,
+    tags:['aoe','engage','deceive','burst'],
+    synergies:{
+      Yasuo:{score:20,reason:'Here Comes Neeko knockup → Last Breath auto'},
+      Yone:{score:18,reason:'Mass knockup → Soul Unbound ult chain'},
+      MissFortune:{score:18,reason:'Mass root/knockup into Bullet Time'},
+      Orianna:{score:16,reason:'Here Comes Neeko ball delivery + Shockwave'},
+    }
+  },
+  {
+    id:'Nidalee', name:'Nidalee', title:'The Bestial Huntress',
+    roles:['jungle','mid'], type:'ranged', class:'assassin',
+    damage:{phys:40,magic:55,true:5},
+    cc:['slow'],
+    engage:5, peel:3, tankiness:2, utility:6, carry:7, waveclear:7, split:4, mobile:8,
+    tags:['poke','mobile','carry','burst'],
+    synergies:{
+      Zed:{score:14,reason:'Javelin spear into Zed assassination follow-up'},
+      Vi:{score:15,reason:'Poke down, Vi engages when enemy is low'},
+      Orianna:{score:14,reason:'Long-range poke synergy sets up ball combo'},
+    }
+  },
+  {
+    id:'Nocturne', name:'Nocturne', title:'The Eternal Nightmare',
+    roles:['jungle','top','mid'], type:'melee', class:'assassin',
+    damage:{phys:80,magic:15,true:5},
+    cc:['fear','slow'],
+    engage:9, peel:2, tankiness:4, utility:4, carry:8, waveclear:6, split:6, mobile:7,
+    tags:['assassin','engage','carry','global','anti-vision'],
+    synergies:{
+      MissFortune:{score:20,reason:'Paranoia darkness + Bullet Time — enemies cannot react'},
+      Katarina:{score:18,reason:'Fear removes interrupts during Death Lotus'},
+      Orianna:{score:16,reason:'Paranoia engage delivers ball → Shockwave'},
+      TwistedFate:{score:15,reason:'Dual global engages create unpredictable pressure'},
+    }
+  },
+  {
+    id:'Olaf', name:'Olaf', title:'The Berserker',
+    roles:['jungle','top'], type:'melee', class:'fighter',
+    damage:{phys:82,magic:10,true:8},
+    cc:['slow'],
+    engage:7, peel:2, tankiness:6, utility:3, carry:7, waveclear:6, split:6, mobile:5,
+    tags:['carry','tank','anti-cc','dive'],
+    synergies:{
+      MissFortune:{score:16,reason:'Ragnarok dive into Bullet Time window'},
+      Orianna:{score:14,reason:'Unstoppable dive delivers ball → Shockwave'},
+      Caitlyn:{score:15,reason:'Ragnarok dive takes all CC — Caitlyn frees to position'},
+    }
+  },
+  {
+    id:'Pantheon', name:'Pantheon', title:'The Unbreakable Spear',
+    roles:['support','top','jungle','mid'], type:'melee', class:'fighter',
+    damage:{phys:75,magic:15,true:10},
+    cc:['stun','slow'],
+    engage:8, peel:6, tankiness:6, utility:7, carry:5, waveclear:5, split:4, mobile:6,
+    tags:['engage','peel','global','burst'],
+    synergies:{
+      MissFortune:{score:20,reason:'Grand Starfall + Bullet Time global burst combo'},
+      Yasuo:{score:16,reason:'Grand Starfall airborne → Last Breath'},
+      Orianna:{score:16,reason:'Grand Starfall ball delivery → Shockwave'},
+      Draven:{score:15,reason:'Stun into Draven Spinning Axe burst'},
+    }
+  },
+  {
+    id:'Poppy', name:'Poppy', title:'Keeper of the Hammer',
+    roles:['top','jungle','support'], type:'melee', class:'tank',
+    damage:{phys:55,magic:35,true:10},
+    cc:['stun','knockback','slow'],
+    engage:7, peel:8, tankiness:8, utility:7, carry:3, waveclear:5, split:4, mobile:4,
+    tags:['tank','peel','engage','anti-mobility'],
+    synergies:{
+      Jinx:{score:16,reason:'Buckler toss stun + peel for safe hypercarry'},
+      Vayne:{score:16,reason:'Heroic Charge pins Vayne\'s divers to wall'},
+      Caitlyn:{score:14,reason:'Peel + anti-dash zone for safe positioning'},
+      MissFortune:{score:15,reason:'Keeper\'s Verdict knockup into Bullet Time'},
+    }
+  },
+  {
+    id:'Qiyana', name:'Qiyana', title:'Empress of the Elements',
+    roles:['mid','jungle'], type:'melee', class:'assassin',
+    damage:{phys:82,magic:13,true:5},
+    cc:['knockback','stun','slow'],
+    engage:8, peel:2, tankiness:2, utility:4, carry:9, waveclear:6, split:6, mobile:8,
+    tags:['assassin','carry','mobile','aoe'],
+    synergies:{
+      Yasuo:{score:18,reason:'Supreme Display knockup → Last Breath chain'},
+      Yone:{score:16,reason:'Mass ult stun + Yone airborne follow-up'},
+      Orianna:{score:16,reason:'Ult stun into ball → Shockwave delete'},
+      Vi:{score:14,reason:'Vi engage into Qiyana ult flank'},
+    }
+  },
+  {
+    id:'Rakan', name:'Rakan', title:'The Charmer',
+    roles:['support'], type:'melee', class:'enchanter',
+    damage:{phys:15,magic:70,true:5},
+    cc:['knockup','charm','stun','slow'],
+    engage:10, peel:7, tankiness:4, utility:9, carry:2, waveclear:2, split:1, mobile:7,
+    tags:['engage','enchanter','peel','utility','aoe'],
+    synergies:{
+      Xayah:{score:28,reason:'Feathers + Battle Dance repositioning = perfect dual ult combo'},
+      Yasuo:{score:22,reason:'The Quickness mass charm → Last Breath'},
+      Yone:{score:20,reason:'Grand Entrance knockup + charm → Soul Unbound ult'},
+      MissFortune:{score:20,reason:'Mass charm into Bullet Time delete'},
+      Orianna:{score:16,reason:'Battle Dance ball delivery + Shockwave'},
+    }
+  },
+  {
+    id:'Renekton', name:'Renekton', title:'The Butcher of the Sands',
+    roles:['top'], type:'melee', class:'fighter',
+    damage:{phys:78,magic:12,true:10},
+    cc:['stun','slow'],
+    engage:7, peel:2, tankiness:7, utility:3, carry:7, waveclear:6, split:7, mobile:6,
+    tags:['carry','tank','early-game','anti-jugger'],
+    synergies:{
+      Leona:{score:16,reason:'Dual stun chain lane dominance'},
+      Vi:{score:15,reason:'Early dive combo — Renekton leads, Vi follows'},
+      Orianna:{score:14,reason:'Slice engage delivers ball position'},
+    }
+  },
+  {
+    id:'Rengar', name:'Rengar', title:'The Pridestalker',
+    roles:['jungle','top'], type:'melee', class:'assassin',
+    damage:{phys:85,magic:10,true:5},
+    cc:['slow','snare'],
+    engage:8, peel:1, tankiness:3, utility:3, carry:9, waveclear:6, split:6, mobile:8,
+    tags:['assassin','carry','stealth','mobile','snowball'],
+    synergies:{
+      KhaZix:{score:14,reason:'Dual stealth jungle predator — double threat'},
+      Orianna:{score:14,reason:'Leap burst into ball Shockwave'},
+      Zed:{score:15,reason:'Double assassin dive — Rengar jumps, Zed shadows'},
+    }
+  },
+  {
+    id:'Riven', name:'Riven', title:'The Exile',
+    roles:['top'], type:'melee', class:'fighter',
+    damage:{phys:80,magic:10,true:10},
+    cc:['knockup','stun','slow'],
+    engage:8, peel:2, tankiness:5, utility:3, carry:9, waveclear:6, split:8, mobile:8,
+    tags:['carry','mobile','engage','snowball'],
+    synergies:{
+      Orianna:{score:14,reason:'Broken Wings knockup into ball + Shockwave'},
+      Vi:{score:15,reason:'Dual dive combo — fast and lethal'},
+      Hecarim:{score:15,reason:'Dual mobile dive top+jungle'},
+      Yasuo:{score:16,reason:'Ki Shout stun/knockup → Last Breath'},
+    }
+  },
+  {
+    id:'Samira', name:'Samira', title:'The Desert Rose',
+    roles:['bot'], type:'ranged', class:'marksman',
+    damage:{phys:80,magic:12,true:8},
+    cc:['knockup'],
+    engage:6, peel:3, tankiness:2, utility:4, carry:9, waveclear:6, split:3, mobile:7,
+    tags:['carry','mobile','reset','aoe','style'],
+    synergies:{
+      Amumu:{score:22,reason:'Mass CC lets Samira freely S-rank Inferno Trigger'},
+      Leona:{score:20,reason:'Hard CC into Inferno Trigger = unstoppable'},
+      Nautilus:{score:20,reason:'Chain CC enables full Inferno Trigger'},
+      Thresh:{score:18,reason:'Hook + flay builds Samira style gauge instantly'},
+      Rakan:{score:18,reason:'Mass charm into Inferno Trigger chain'},
+    }
+  },
+  {
+    id:'Senna', name:'Senna', title:'The Redeemer',
+    roles:['support','bot'], type:'ranged', class:'enchanter',
+    damage:{phys:42,magic:42,true:16},
+    cc:['snare','slow'],
+    engage:4, peel:7, tankiness:2, utility:8, carry:6, waveclear:4, split:2, mobile:3,
+    tags:['enchanter','poke','global','sustain'],
+    synergies:{
+      Lucian:{score:18,reason:'Lucian in the Mist + Senna snare = lane dominance'},
+      Karthus:{score:16,reason:'Dawning Shadow + Requiem global pressure'},
+      Ezreal:{score:16,reason:'Dual global poke pressure'},
+      Thresh:{score:15,reason:'Hook + snare chain CC in lane'},
+    }
+  },
+  {
+    id:'Seraphine', name:'Seraphine', title:'The Starry-Eyed Songstress',
+    roles:['support','mid'], type:'ranged', class:'enchanter',
+    damage:{phys:8,magic:82,true:10},
+    cc:['stun','charm','slow'],
+    engage:5, peel:8, tankiness:1, utility:10, carry:6, waveclear:7, split:1, mobile:2,
+    tags:['enchanter','aoe','utility','poke'],
+    synergies:{
+      MissFortune:{score:18,reason:'Encore mass charm into Bullet Time'},
+      Yasuo:{score:18,reason:'Encore knockup → Last Breath'},
+      Yone:{score:16,reason:'Mass charm + airborne → Soul Unbound'},
+      Orianna:{score:15,reason:'Encore + Shockwave AoE zone lockdown'},
+      Lulu:{score:16,reason:'Dual enchanter peel — hypercarry protected from all angles'},
+    }
+  },
+  {
+    id:'Sett', name:'Sett', title:'The Boss',
+    roles:['top','support','jungle'], type:'melee', class:'fighter',
+    damage:{phys:70,magic:10,true:20},
+    cc:['stun','slow','knockup'],
+    engage:8, peel:5, tankiness:8, utility:6, carry:7, waveclear:5, split:6, mobile:4,
+    tags:['carry','tank','engage','true-damage'],
+    synergies:{
+      Yasuo:{score:22,reason:'The Show Stopper slam knockup → Last Breath'},
+      Yone:{score:20,reason:'Show Stopper delivers airborne → Soul Unbound'},
+      Orianna:{score:18,reason:'Show Stopper slam ball delivery → Shockwave'},
+      MissFortune:{score:18,reason:'Slam lockdown into Bullet Time AoE'},
+      Jinx:{score:15,reason:'Show Stopper engage → Get Excited chain'},
+    }
+  },
+  {
+    id:'Shen', name:'Shen', title:'The Eye of Twilight',
+    roles:['top','support'], type:'melee', class:'tank',
+    damage:{phys:45,magic:45,true:10},
+    cc:['taunt','slow'],
+    engage:6, peel:8, tankiness:8, utility:8, carry:3, waveclear:5, split:7, mobile:5,
+    tags:['tank','peel','global','split'],
+    synergies:{
+      Fiora:{score:16,reason:'Stand United teleport during split push — never 1v1'},
+      Vayne:{score:15,reason:'Stand United saves Vayne at low HP'},
+      Jinx:{score:15,reason:'Global shield onto hypercarry during teamfight'},
+      Darius:{score:14,reason:'Stand United enables deep dive combo'},
+      Kayle:{score:15,reason:'Double global protection layer'},
+    }
+  },
+  {
+    id:'Shyvana', name:'Shyvana', title:'The Half-Dragon',
+    roles:['jungle'], type:'melee', class:'fighter',
+    damage:{phys:45,magic:50,true:5},
+    cc:['knockback','slow'],
+    engage:7, peel:2, tankiness:7, utility:4, carry:7, waveclear:8, split:5, mobile:6,
+    tags:['carry','tank','aoe','dragon'],
+    synergies:{
+      Orianna:{score:15,reason:'Dragon\'s Descent ball delivery + Shockwave'},
+      MissFortune:{score:16,reason:'Knockback into Bullet Time AoE'},
+      Amumu:{score:15,reason:'Dual frontline AoE engage'},
+    }
+  },
+  {
+    id:'Sona', name:'Sona', title:'Maven of the Strings',
+    roles:['support'], type:'ranged', class:'enchanter',
+    damage:{phys:10,magic:70,true:5},
+    cc:['stun','slow'],
+    engage:5, peel:9, tankiness:1, utility:10, carry:4, waveclear:3, split:1, mobile:2,
+    tags:['enchanter','utility','poke','sustain','aoe'],
+    synergies:{
+      MissFortune:{score:22,reason:'Crescendo mass stun into Bullet Time AoE'},
+      Katarina:{score:20,reason:'Crescendo prevents Death Lotus interrupts'},
+      Yasuo:{score:18,reason:'Crescendo stun → Last Breath'},
+      Yone:{score:16,reason:'Mass stun enables Soul Unbound ult chain'},
+      Jinx:{score:16,reason:'Crescendo engage into Get Excited'},
+    }
+  },
+  {
+    id:'Swain', name:'Swain', title:'The Noxian Grand General',
+    roles:['support','mid'], type:'ranged', class:'mage',
+    damage:{phys:12,magic:83,true:5},
+    cc:['pull','slow','stun'],
+    engage:7, peel:5, tankiness:5, utility:7, carry:7, waveclear:7, split:2, mobile:2,
+    tags:['engage','sustain','carry','drain'],
+    synergies:{
+      MissFortune:{score:18,reason:'Death\'s Hand pull into Bullet Time'},
+      Jinx:{score:16,reason:'Pull engage triggers Get Excited chain'},
+      Caitlyn:{score:15,reason:'Pull lockdown into headshot burst'},
+      Draven:{score:16,reason:'Ravenous Flock pull into Draven Spinning Axe burst'},
+    }
+  },
+  {
+    id:'Talon', name:'Talon', title:"The Blade's Shadow",
+    roles:['mid','jungle'], type:'melee', class:'assassin',
+    damage:{phys:90,magic:5,true:5},
+    cc:['slow'],
+    engage:7, peel:1, tankiness:2, utility:2, carry:9, waveclear:6, split:7, mobile:8,
+    tags:['assassin','carry','mobile','roam'],
+    synergies:{
+      Zed:{score:16,reason:'Double assassin roaming pressure from mid'},
+      TwistedFate:{score:14,reason:'Stun card into Talon burst assassination'},
+      Vi:{score:14,reason:'Vi engages, Talon flanks from wall-jump'},
+    }
+  },
+  {
+    id:'Teemo', name:'Teemo', title:'The Swift Scout',
+    roles:['top'], type:'ranged', class:'marksman',
+    damage:{phys:25,magic:70,true:5},
+    cc:['blind','slow'],
+    engage:4, peel:4, tankiness:2, utility:7, carry:6, waveclear:5, split:6, mobile:4,
+    tags:['poke','stealth','utility','anti-melee'],
+    synergies:{
+      Karthus:{score:14,reason:'Blind + Requiem slowed enemy = guaranteed global'},
+      Orianna:{score:13,reason:'Mushroom zone control + ball threat'},
+    }
+  },
+  {
+    id:'Tryndamere', name:'Tryndamere', title:'The Barbarian King',
+    roles:['top','jungle'], type:'melee', class:'fighter',
+    damage:{phys:85,magic:5,true:10},
+    cc:['slow'],
+    engage:6, peel:2, tankiness:5, utility:2, carry:9, waveclear:5, split:10, mobile:7,
+    tags:['carry','split','anti-execute','duelist'],
+    synergies:{
+      Shen:{score:16,reason:'Stand United during Undying Rage = double invincibility'},
+      Kayle:{score:18,reason:'Double invincibility overlap — Tryndamere during dive'},
+      Karthus:{score:15,reason:'Undying Rage survives Requiem, allies die'},
+    }
+  },
+  {
+    id:'Veigar', name:'Veigar', title:'The Tiny Master of Evil',
+    roles:['mid','support'], type:'ranged', class:'mage',
+    damage:{phys:5,magic:92,true:3},
+    cc:['stun','slow'],
+    engage:4, peel:5, tankiness:1, utility:6, carry:8, waveclear:6, split:1, mobile:2,
+    tags:['burst','carry','poke','scaling','one-shot'],
+    synergies:{
+      Lux:{score:16,reason:'Snare inside Event Horizon cage for guaranteed burst'},
+      Nautilus:{score:16,reason:'Hook into cage stun → Primordial Burst delete'},
+      Leona:{score:16,reason:'Stun inside cage → Primordial Burst one-shot'},
+      Malzahar:{score:18,reason:'Suppress + cage = target cannot escape burst'},
+    }
+  },
+  {
+    id:'VelKoz', name:"Vel'Koz", title:'The Eye of the Void',
+    roles:['support','mid'], type:'ranged', class:'mage',
+    damage:{phys:5,magic:85,true:10},
+    cc:['knockup','slow','stun'],
+    engage:4, peel:4, tankiness:1, utility:7, carry:7, waveclear:7, split:1, mobile:1,
+    tags:['poke','burst','true-damage','long-range'],
+    synergies:{
+      Nautilus:{score:16,reason:'Hook lockdown enables full Research stack burst'},
+      Blitzcrank:{score:15,reason:'Grab into full Void Rift chain'},
+      MissFortune:{score:16,reason:'Lifeform Disintegration Ray + Bullet Time AoE'},
+      Lux:{score:15,reason:'Dual long-range artillery poke lane'},
+    }
+  },
+  {
+    id:'Viego', name:'Viego', title:'The Ruined King',
+    roles:['jungle'], type:'melee', class:'assassin',
+    damage:{phys:70,magic:25,true:5},
+    cc:['slow','stun'],
+    engage:7, peel:2, tankiness:4, utility:5, carry:8, waveclear:7, split:5, mobile:7,
+    tags:['assassin','carry','mobile','possession'],
+    synergies:{
+      Orianna:{score:14,reason:'Possession enables stolen abilities + Shockwave'},
+      Vi:{score:15,reason:'Vi pins, Viego possesses fallen target\'s body'},
+      Amumu:{score:16,reason:'Mass stun enables safe Viego dive and possession'},
+    }
+  },
+  {
+    id:'Viktor', name:'Viktor', title:'The Machine Herald',
+    roles:['mid'], type:'ranged', class:'mage',
+    damage:{phys:5,magic:92,true:3},
+    cc:['slow','stun'],
+    engage:5, peel:5, tankiness:1, utility:7, carry:8, waveclear:9, split:1, mobile:2,
+    tags:['carry','poke','aoe','scaling'],
+    synergies:{
+      Leona:{score:16,reason:'Gravity Field stun into full Death Ray burst'},
+      Orianna:{score:15,reason:'Chaos Storm ball delivery → Shockwave'},
+      Nautilus:{score:15,reason:'Hook into Gravity Field stun + burst'},
+      Hecarim:{score:14,reason:'Engage into Viktor AoE follow-up'},
+    }
+  },
+  {
+    id:'Volibear', name:'Volibear', title:'The Relentless Storm',
+    roles:['top','jungle','support'], type:'melee', class:'fighter',
+    damage:{phys:65,magic:30,true:5},
+    cc:['knockup','stun','slow'],
+    engage:8, peel:4, tankiness:8, utility:6, carry:6, waveclear:6, split:5, mobile:5,
+    tags:['engage','tank','carry','anti-tower'],
+    synergies:{
+      Yasuo:{score:18,reason:'Stormbringer knockup → Last Breath'},
+      MissFortune:{score:17,reason:'Stormbringer engage into Bullet Time'},
+      Orianna:{score:16,reason:'Stormbringer ball delivery + Shockwave'},
+      Yone:{score:16,reason:'Knockup chain → Soul Unbound ult'},
+    }
+  },
+  {
+    id:'Warwick', name:'Warwick', title:'The Uncaged Wrath of Zaun',
+    roles:['jungle','top'], type:'melee', class:'fighter',
+    damage:{phys:65,magic:28,true:7},
+    cc:['suppress','slow'],
+    engage:8, peel:3, tankiness:7, utility:5, carry:6, waveclear:5, split:5, mobile:6,
+    tags:['engage','tank','sustain','anti-execute'],
+    synergies:{
+      MissFortune:{score:18,reason:'Infinite Duress suppress into Bullet Time'},
+      Caitlyn:{score:16,reason:'Suppress into Ace in the Hole delete'},
+      Orianna:{score:15,reason:'Suppress deliver ball + Shockwave'},
+      Jinx:{score:15,reason:'Suppress engage → Get Excited'},
+    }
+  },
+  {
+    id:'Xayah', name:'Xayah', title:'The Rebel',
+    roles:['bot'], type:'ranged', class:'marksman',
+    damage:{phys:85,magic:10,true:5},
+    cc:['snare','slow'],
+    engage:4, peel:5, tankiness:2, utility:5, carry:9, waveclear:7, split:3, mobile:5,
+    tags:['carry','peel','feathers','combo'],
+    synergies:{
+      Rakan:{score:28,reason:'Lover\'s Leap + Battle Dance + dual ult = perfect combo'},
+      Yasuo:{score:16,reason:'Clean Cuts feathers + Last Breath airborne'},
+      Orianna:{score:14,reason:'Ball delivery into Bladecaller snare burst'},
+      Leona:{score:15,reason:'Lockdown into Bladecaller feather pull'},
+    }
+  },
+  {
+    id:'Yuumi', name:'Yuumi', title:'The Magical Cat',
+    roles:['support'], type:'ranged', class:'enchanter',
+    damage:{phys:5,magic:60,true:10},
+    cc:['slow','stun'],
+    engage:3, peel:9, tankiness:1, utility:10, carry:2, waveclear:2, split:1, mobile:10,
+    tags:['enchanter','peel','utility','hypercarry-enabler','untargetable'],
+    synergies:{
+      Jinx:{score:20,reason:'Yuumi attached = Jinx hypercarries untouchable'},
+      Vayne:{score:20,reason:'Zoomies + Final Chapter while attached enables hyper-vayne'},
+      KaiSa:{score:18,reason:'Yuumi attached + dive enables safe burst combo'},
+      Draven:{score:18,reason:'Zoomies attack speed amplifies Spinning Axes value'},
+      Samira:{score:18,reason:'Yuumi attached = Samira never dies during Inferno Trigger'},
+    }
+  },
+  {
+    id:'Zoe', name:'Zoe', title:'The Aspect of Twilight',
+    roles:['mid','support'], type:'ranged', class:'mage',
+    damage:{phys:8,magic:88,true:4},
+    cc:['sleep','slow'],
+    engage:5, peel:3, tankiness:1, utility:5, carry:8, waveclear:5, split:2, mobile:5,
+    tags:['burst','poke','carry','pick'],
+    synergies:{
+      Zed:{score:16,reason:'Sleep into Death Mark detonation — cannot wake up in time'},
+      Yasuo:{score:14,reason:'Sleepy Trouble Bubble + knockup Last Breath'},
+      Orianna:{score:14,reason:'Sleep + ball zone = cannot escape burst'},
+      Leona:{score:15,reason:'Immobilize into Zoe sleep + burst combo'},
+    }
+  },
+  {
+    id:'Zyra', name:'Zyra', title:'Rise of the Thorns',
+    roles:['support','mid'], type:'ranged', class:'mage',
+    damage:{phys:8,magic:87,true:5},
+    cc:['knockup','snare','slow'],
+    engage:6, peel:5, tankiness:1, utility:7, carry:6, waveclear:7, split:1, mobile:2,
+    tags:['aoe','poke','peel','engage'],
+    synergies:{
+      MissFortune:{score:18,reason:'Stranglethorns knockup into Bullet Time'},
+      Yasuo:{score:18,reason:'Stranglethorns mass knockup → Last Breath'},
+      Caitlyn:{score:14,reason:'Snare into headshot burst combo'},
+      Jhin:{score:15,reason:'Snare into 4th shot + Curtain Call'},
+    }
+  },
+];
+
+
+/* ═══════════════════════════════════════════════
+   DRAFT STATE
+═══════════════════════════════════════════════ */
+const SLOT_ROLES = ['Top','Jungle','Mid','Bot','Support'];
+let draft = [null,null,null,null,null]; // champion ids
+let activeSlot = null; // which slot we're filling (if clicking slot first)
+let filterRole = 'all';
+let filterType = 'all';
+let filterClass = 'all';
+let latestAnalysisSnapshot = null;
+const SAVED_DRAFT_KEY = 'lol_draftbuilder_saved_draft';
+
+/* ═══════════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════════ */
+async function init(){
+  if (typeof window.ensureFullChampionRoster === 'function') {
+    await window.ensureFullChampionRoster(CHAMPIONS);
+  }
+  buildDraftSlots();
+  buildChampGrid();
+  setupFilters();
+  document.getElementById('resetBtn').addEventListener('click',resetDraft);
+  document.getElementById('searchInput').addEventListener('input',applyFilters);
+  document.getElementById('saveDraftBtn').addEventListener('click',saveCurrentDraft);
+  document.getElementById('shareDraftBtn').addEventListener('click',shareCurrentDraft);
+  loadSavedDraftPreview();
+  updateShareButtons();
+}
+
+/* ─── Build draft slots ─── */
+function buildDraftSlots(){
+  const wrap = document.getElementById('draftSlots');
+  wrap.innerHTML = '';
+  SLOT_ROLES.forEach((role,i)=>{
+    const slot = document.createElement('div');
+    slot.className = 'draft-slot' + (draft[i] ? ' filled' : '');
+    slot.dataset.slot = i;
+
+    if(draft[i]){
+      const c = getChamp(draft[i]);
+      slot.innerHTML = `
+        <img class="slot-splash" src="https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${c.id}_0.jpg" alt="${c.name}" onerror="this.style.display='none'"/>
+        <div class="slot-overlay"></div>
+        <div class="slot-class-badge">${c.class}</div>
+        <span class="slot-name">${c.name}</span>
+        <span class="slot-role">${role}</span>
+        <button class="slot-remove" data-slot="${i}" title="Remove">✕</button>
+      `;
+    } else {
+      slot.innerHTML = `
+        <span class="slot-empty-icon">+</span>
+        <span class="slot-role">${role}</span>
+      `;
+    }
+    wrap.appendChild(slot);
+  });
+
+  // Remove buttons
+  wrap.querySelectorAll('.slot-remove').forEach(btn=>{
+    btn.addEventListener('click',(e)=>{
+      e.stopPropagation();
+      const i = parseInt(btn.dataset.slot);
+      draft[i] = null;
+      refreshAll();
+    });
+  });
+
+  // Slot zone title
+  const filled = draft.filter(Boolean).length;
+  document.querySelector('.draft-zone-title').textContent = `Your Composition (${filled}/5)`;
+}
+
+/* ─── Build champion grid ─── */
+function buildChampGrid(){
+  const grid = document.getElementById('champGrid');
+  grid.innerHTML = '';
+  CHAMPIONS.forEach(c=>{
+    const el = document.createElement('div');
+    el.className = 'champ-thumb';
+    el.dataset.id = c.id;
+
+    // Dominant damage color dot
+    const dominant = c.damage.phys >= c.damage.magic ? '#e05050' : '#4a9eff';
+    el.innerHTML = `
+      <img src="https://ddragon.leagueoflegends.com/cdn/14.24.1/img/champion/${c.id}.png" 
+           alt="${c.name}"
+           onerror="this.style.background='#112040';this.style.display='block';this.style.height='100%'"/>
+      <div class="dmg-dot" style="background:${dominant};color:${dominant};"></div>
+      <div class="thumb-name">${c.name}</div>
+    `;
+    el.addEventListener('click',()=>selectChamp(c.id));
+    grid.appendChild(el);
+  });
+  applyFilters();
+}
+
+/* ─── Select a champion ─── */
+function selectChamp(id){
+  if(draft.includes(id)) return;
+  // Find first empty slot
+  const emptyIdx = draft.findIndex(s=>s===null);
+  if(emptyIdx === -1) return; // full
+  draft[emptyIdx] = id;
+  refreshAll();
+}
+
+/* ─── Refresh everything ─── */
+function refreshAll(){
+  buildDraftSlots();
+  applyFilters();
+  updateAnalysis();
+}
+
+/* ─── Filters ─── */
+function setupFilters(){
+  document.querySelectorAll('[data-filter-role]').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      document.querySelectorAll('[data-filter-role]').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      filterRole = btn.dataset.filterRole;
+      applyFilters();
+    });
+  });
+  document.querySelectorAll('[data-filter-type]').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      document.querySelectorAll('[data-filter-type]').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      filterType = btn.dataset.filterType;
+      applyFilters();
+    });
+  });
+  document.querySelectorAll('[data-filter-class]').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      document.querySelectorAll('[data-filter-class]').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      filterClass = btn.dataset.filterClass;
+      applyFilters();
+    });
+  });
+}
+
+function applyFilters(){
+  const search = document.getElementById('searchInput').value.toLowerCase().trim();
+  document.querySelectorAll('.champ-thumb').forEach(el=>{
+    const c = getChamp(el.dataset.id);
+    if(!c){el.classList.add('hidden');return;}
+    const inDraft = draft.includes(c.id);
+    const roleOk = filterRole==='all' || c.roles.includes(filterRole);
+    const typeOk = filterType==='all' || c.type===filterType;
+    const classOk = filterClass==='all' || c.class===filterClass || (filterClass==='support' && c.class==='support');
+    const nameOk = !search || c.name.toLowerCase().includes(search);
+    const hidden = !roleOk || !typeOk || !classOk || !nameOk;
+    el.classList.toggle('hidden', hidden);
+    el.classList.toggle('selected-in-draft', inDraft && !hidden);
+  });
+}
+
+/* ─── Get champ by id ─── */
+function getChamp(id){ return CHAMPIONS.find(c=>c.id===id); }
+
+/* ─── Reset ─── */
+function resetDraft(){
+  draft = [null,null,null,null,null];
+  refreshAll();
+}
+
+/* ═══════════════════════════════════════════════
+   ANALYSIS ENGINE
+═══════════════════════════════════════════════ */
+function updateAnalysis(){
+  const selected = draft.filter(Boolean).map(id=>getChamp(id));
+  const n = selected.length;
+
+  document.getElementById('champCountBadge').textContent = `${n} / 5 selected`;
+
+  if(n === 0){ resetAnalysisUI(); return; }
+
+  /* ── Synergy combos ── */
+  const combos = [];
+  for(let i=0;i<selected.length;i++){
+    for(let j=i+1;j<selected.length;j++){
+      const a = selected[i], b = selected[j];
+      let syn = null;
+      if(a.synergies && a.synergies[b.id]) syn = {a,b,...a.synergies[b.id]};
+      else if(b.synergies && b.synergies[a.id]) syn = {a:b,b:a,...b.synergies[a.id]};
+      if(syn) combos.push(syn);
+    }
+  }
+  combos.sort((x,y)=>y.score-x.score);
+
+  /* ── Synergy score ── */
+  let synScore = 40; // base
+  // Add combo scores
+  combos.forEach(c=>{ synScore += c.score * 1.2; });
+  // Bonus for CC variety
+  const allCC = [...new Set(selected.flatMap(c=>c.cc))];
+  synScore += Math.min(allCC.length * 3, 15);
+  // Bonus for role coverage (unique roles)
+  const roleCount = new Set(selected.flatMap(c=>c.roles)).size;
+  synScore += roleCount * 2;
+  // Damage balance bonus (closer to 50/50 phys/magic = better)
+  const totPhys = selected.reduce((s,c)=>s+c.damage.phys,0)/n;
+  const totMag  = selected.reduce((s,c)=>s+c.damage.magic,0)/n;
+  const balance = 1 - Math.abs(totPhys-totMag)/100;
+  synScore += balance * 10;
+  // Cap
+  synScore = Math.min(Math.round(synScore), 100);
+
+  /* ── Damage ── */
+  const avgPhys  = Math.round(selected.reduce((s,c)=>s+c.damage.phys,0)/n);
+  const avgMagic = Math.round(selected.reduce((s,c)=>s+c.damage.magic,0)/n);
+  const avgTrue  = Math.round(selected.reduce((s,c)=>s+c.damage.true,0)/n);
+
+  /* ── Team ratings ── */
+  const ratings = {
+    Engage:     avg(selected,'engage'),
+    Peel:       avg(selected,'peel'),
+    Tankiness:  avg(selected,'tankiness'),
+    Utility:    avg(selected,'utility'),
+    Carry:      avg(selected,'carry'),
+    Waveclear:  avg(selected,'waveclear'),
+    Splitpush:  avg(selected,'split'),
+    Mobility:   avg(selected,'mobile'),
+  };
+
+  /* ── CC coverage ── */
+  const ALL_CC = ['knockup','knockback','stun','snare','slow','charm','silence','hook','suppress','fear'];
+  const hasCC = {};
+  ALL_CC.forEach(cc=>{ hasCC[cc] = selected.some(c=>c.cc.includes(cc)); });
+
+  /* ── Warnings ── */
+  const warnings = generateWarnings(selected, ratings, avgPhys, avgMagic, avgTrue, allCC);
+
+  latestAnalysisSnapshot = buildAnalysisSnapshot(
+    selected,
+    combos,
+    synScore,
+    avgPhys,
+    avgMagic,
+    avgTrue,
+    ratings,
+    warnings,
+    allCC
+  );
+
+  /* ── Render ── */
+  renderScore(synScore, combos.length);
+  renderCombos(combos);
+  renderDamage(avgPhys, avgMagic, avgTrue);
+  renderCC(hasCC, ALL_CC);
+  renderRatings(ratings);
+  renderWarnings(warnings);
+  updateShareButtons();
+}
+
+function avg(arr, key){ return arr.reduce((s,c)=>s+(c[key]||0),0)/arr.length; }
+
+/* ─── Generate Warnings ─── */
+function generateWarnings(selected, ratings, phys, magic, trueD, allCC){
+  const w = [];
+  const classes = selected.map(c=>c.class);
+  const types   = selected.map(c=>c.type);
+  const tags    = selected.flatMap(c=>c.tags);
+  const n = selected.length;
+
+  // STRENGTHS
+  if(ratings.Engage >= 7)
+    w.push({type:'ok', icon:'⚔️', title:'Strong Engage', desc:`Avg engage rating ${ratings.Engage.toFixed(1)}/10 — team can initiate fights reliably.`});
+  if(ratings.Peel >= 6)
+    w.push({type:'ok', icon:'🛡️', title:'Good Peel', desc:'Backline is well-protected. Carries can play aggressively.'});
+  if(allCC.length >= 4)
+    w.push({type:'ok', icon:'⛓️', title:'Diverse CC Coverage', desc:`${allCC.length} distinct CC types ensure enemies are always locked down.`});
+  if(tags.includes('airborne-user') && selected.some(c=>c.cc.includes('knockup')))
+    w.push({type:'ok', icon:'🌪️', title:'Airborne Synergy Active', desc:'Yasuo/Yone in team with knockup source — Last Breath / Soul Unbound amplified.'});
+  if(phys < 60 && magic < 60)
+    w.push({type:'ok', icon:'⚖️', title:'Balanced Damage', desc:`${phys}% physical + ${magic}% magic — enemies cannot efficiently itemize against both.`});
+  if(ratings.Tankiness >= 6)
+    w.push({type:'ok', icon:'🏰', title:'Solid Frontline', desc:`Avg tankiness ${ratings.Tankiness.toFixed(1)}/10. Team has durability to initiate or absorb damage.`});
+  if(trueD >= 12)
+    w.push({type:'ok', icon:'💛', title:'True Damage Threat', desc:`${trueD}% true damage average — bypasses all resistances. Tanks beware.`});
+
+  // CRITICAL WARNINGS
+  if(n >= 3 && ratings.Tankiness < 3)
+    w.push({type:'crit', icon:'💀', title:'No Frontline', desc:'All squishy — enemy engage will immediately reach your backline. Consider adding a tank or bruiser.'});
+  if(n >= 3 && ratings.Engage < 3 && ratings.peel < 3)
+    w.push({type:'crit', icon:'🚫', title:'No Engage & No Peel', desc:'Team cannot initiate fights or protect carries. Composition has no game-plan.'});
+  if(n >= 3 && !allCC.some(cc=>['stun','knockup','snare','hook','suppress'].includes(cc)))
+    w.push({type:'crit', icon:'⚠️', title:'Zero Hard CC', desc:'Only slows detected. Enemy carries will walk through your team. Hard CC is essential.'});
+  if(n >= 3 && phys >= 85)
+    w.push({type:'crit', icon:'🔴', title:'Full Physical Damage', desc:`${phys}% physical — enemy team builds Thornmail + Armor and counters your entire team.`});
+  if(n >= 3 && magic >= 85)
+    w.push({type:'crit', icon:'🔵', title:'Full Magic Damage', desc:`${magic}% magic — enemy team builds Warmog + MR and becomes unkillable.`});
+  if(n >= 3 && !classes.some(c=>['tank','fighter'].includes(c)))
+    w.push({type:'crit', icon:'💣', title:'No Frontline or Fighter', desc:'Pure assassin/mage/marksman comp — team will collapse instantly against hard engage.'});
+
+  // REGULAR WARNINGS
+  if(n >= 3 && ratings.Carry < 4)
+    w.push({type:'warn', icon:'📉', title:'Low Damage Carry', desc:'Team lacks reliable damage dealers. Fights may drag on with no kill threat.'});
+  if(n >= 3 && ratings.Waveclear < 3)
+    w.push({type:'warn', icon:'🌊', title:'Poor Waveclear', desc:'Difficulty clearing minion waves — vulnerable to push-heavy opponents and objective control.'});
+  if(n >= 3 && ratings.Mobility < 3)
+    w.push({type:'warn', icon:'🐢', title:'Low Mobility', desc:'Slow team — kited easily. Enemy poke compositions will dominate spacing battles.'});
+  if(n >= 3 && types.every(t=>t==='melee'))
+    w.push({type:'warn', icon:'⚔️', title:'All Melee Composition', desc:'Zero ranged auto-attacks. Vulnerable to poke in lane and losing siege battles.'});
+  if(n >= 3 && !classes.includes('marksman'))
+    w.push({type:'warn', icon:'🏹', title:'No Marksman', desc:'Missing sustained ranged damage. Long fights and objective contests may be difficult.'});
+  if(n >= 3 && !classes.some(c=>['support','enchanter'].includes(c)))
+    w.push({type:'warn', icon:'💊', title:'No Support', desc:'No healing, shielding, or vision control. Team is self-reliant but loses sustain trades.'});
+  if(n >= 4 && classes.filter(c=>c==='assassin').length >= 2)
+    w.push({type:'warn', icon:'🗡️', title:'Double Assassin', desc:'Two assassins create squishy all-in comp. High-risk team with no margin for error.'});
+  if(n >= 3 && ratings.Splitpush >= 7 && ratings.Engage < 4)
+    w.push({type:'warn', icon:'🗺️', title:'Split Push Team, No Teamfight', desc:'Strong 1v1 lanes but weak in 5v5 — coordinate split-push macro or fights become 4v5.'});
+
+  // NEUTRAL / INFORMATIONAL
+  if(n >= 3 && ratings.Engage >= 8 && ratings.Peel < 3)
+    w.push({type:'warn', icon:'💡', title:'Engage without Peel', desc:'Team focuses entirely on offensive initiation. Carries will be left exposed after engage is spent.'});
+  if(n === 5 && w.filter(x=>x.type==='crit').length===0 && w.filter(x=>x.type==='warn').length<=1)
+    w.push({type:'ok', icon:'🏆', title:'Well-Rounded Composition', desc:'This team has no critical weaknesses. Solid draft with clear synergies and game plan.'});
+
+  return w;
+}
+
+/* ═══════════════════════════════════════════════
+   RENDER FUNCTIONS
+═══════════════════════════════════════════════ */
+function renderScore(score, comboCount){
+  document.getElementById('scoreNum').textContent = score;
+  const circ = 2*Math.PI*54; // 339.3
+  const offset = circ - (score/100)*circ;
+  const ring = document.getElementById('ringFill');
+  ring.style.strokeDashoffset = offset;
+
+  // Color by score
+  if(score >= 80)      ring.style.stroke = '#3dba6a';
+  else if(score >= 60) ring.style.stroke = '#c8aa6e';
+  else if(score >= 40) ring.style.stroke = '#e88a2e';
+  else                  ring.style.stroke = '#c03030';
+
+  let grade, sub;
+  if(score >= 85)      { grade='S TIER'; sub='Exceptional synergy. This comp has a clear, powerful game plan.'; }
+  else if(score >= 70) { grade='A TIER'; sub='Strong composition with good synergies and minimal gaps.'; }
+  else if(score >= 55) { grade='B TIER'; sub='Decent composition. Some synergies present, room to improve.'; }
+  else if(score >= 40) { grade='C TIER'; sub='Weak synergy. Champions work somewhat independently.'; }
+  else                  { grade='D TIER'; sub='Poor composition. Critical gaps or conflicting playstyles detected.'; }
+
+  document.getElementById('scoreGrade').textContent = grade;
+  document.getElementById('scoreSubLabel').textContent =
+    score > 0 ? sub + (comboCount > 0 ? ` ${comboCount} combo${comboCount>1?'s':''} found.` : '') : sub;
+}
+
+function renderCombos(combos){
+  const list = document.getElementById('comboList');
+  if(combos.length===0){
+    list.innerHTML = '<div class="empty-state">No specific synergies in this team</div>';
+    return;
+  }
+  list.innerHTML = combos.slice(0,8).map(c=>`
+    <div class="combo-item anim">
+      <div class="combo-icons">
+        <img src="https://ddragon.leagueoflegends.com/cdn/14.24.1/img/champion/${c.a.id}.png" alt="${c.a.name}" onerror="this.style.display='none'"/>
+        <img src="https://ddragon.leagueoflegends.com/cdn/14.24.1/img/champion/${c.b.id}.png" alt="${c.b.name}" onerror="this.style.display='none'"/>
+      </div>
+      <div class="combo-info">
+        <div class="combo-pair">${c.a.name} + ${c.b.name}</div>
+        <div class="combo-reason">${c.reason}</div>
+      </div>
+      <div class="combo-score">+${c.score}</div>
+    </div>
+  `).join('');
+}
+
+function renderDamage(phys, magic, trueD){
+  document.getElementById('physPct').textContent  = phys+'%';
+  document.getElementById('magicPct').textContent = magic+'%';
+  document.getElementById('truePct').textContent  = trueD+'%';
+  document.getElementById('physBar').style.width  = phys+'%';
+  document.getElementById('magicBar').style.width = magic+'%';
+  document.getElementById('trueBar').style.width  = trueD+'%';
+
+  // Donut chart using stroke-dasharray on concentric segments
+  const circ = 2*Math.PI*38; // 238.76
+  const pPhys  = phys/100  * circ;
+  const pMagic = magic/100 * circ;
+  const pTrue  = trueD/100 * circ;
+
+  // Physical starts at 0
+  const physEl  = document.getElementById('donutPhys');
+  const magicEl = document.getElementById('donutMagic');
+  const trueEl  = document.getElementById('donutTrue');
+
+  physEl.setAttribute('stroke-dasharray', `${pPhys} ${circ-pPhys}`);
+  physEl.setAttribute('stroke-dashoffset', '0');
+
+  magicEl.setAttribute('stroke-dasharray', `${pMagic} ${circ-pMagic}`);
+  magicEl.setAttribute('stroke-dashoffset', -pPhys);
+
+  trueEl.setAttribute('stroke-dasharray', `${pTrue} ${circ-pTrue}`);
+  trueEl.setAttribute('stroke-dashoffset', -(pPhys+pMagic));
+
+  const dominant = phys >= magic ? `${phys}%\nPhysical` : `${magic}%\nMagic`;
+  document.getElementById('donutLabel').style.whiteSpace='pre';
+  document.getElementById('donutLabel').textContent = dominant;
+}
+
+function renderCC(hasCC, allTypes){
+  const wrap = document.getElementById('ccTags');
+  const labels = {
+    knockup:'Knock-Up',knockback:'Knock-Back',stun:'Stun',
+    snare:'Snare',slow:'Slow',charm:'Charm',silence:'Silence',
+    hook:'Hook',suppress:'Suppress',fear:'Fear'
+  };
+  wrap.innerHTML = allTypes.map(cc=>`
+    <div class="cc-tag ${hasCC[cc]?'has':'missing'}">${labels[cc]}</div>
+  `).join('');
+}
+
+function renderRatings(ratings){
+  const wrap = document.getElementById('ratingRows');
+  wrap.innerHTML = Object.entries(ratings).map(([key,val])=>{
+    const pct = (val/10)*100;
+    return `
+      <div class="rating-row">
+        <span class="rating-key">${key}</span>
+        <div class="rating-bar-track"><div class="rating-bar-fill" style="width:${pct}%"></div></div>
+        <span class="rating-val">${val.toFixed(1)}</span>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderWarnings(warnings){
+  const wrap = document.getElementById('warningList');
+  if(warnings.length===0){
+    wrap.innerHTML = '<div class="empty-state">Add more champions for detailed analysis</div>';
+    return;
+  }
+  // Sort: crit first, warn second, ok last
+  const order = {crit:0, warn:1, ok:2};
+  warnings.sort((a,b)=>order[a.type]-order[b.type]);
+  wrap.innerHTML = warnings.map(w=>`
+    <div class="warning-item ${w.type} anim">
+      <span class="warning-icon">${w.icon}</span>
+      <div class="warning-text">
+        <span class="warning-title">${w.title}</span>
+        <span class="warning-desc">${w.desc}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function getScoreTier(score){
+  if(score >= 85) return { grade:'S TIER', summary:'Exceptional synergy. This comp has a clear, powerful game plan.' };
+  if(score >= 70) return { grade:'A TIER', summary:'Strong composition with good synergies and minimal gaps.' };
+  if(score >= 55) return { grade:'B TIER', summary:'Decent composition. Some synergies present, room to improve.' };
+  if(score >= 40) return { grade:'C TIER', summary:'Weak synergy. Champions work somewhat independently.' };
+  return { grade:'D TIER', summary:'Poor composition. Critical gaps or conflicting playstyles detected.' };
+}
+
+function buildAnalysisSnapshot(selected, combos, score, phys, magic, trueD, ratings, warnings, allCC){
+  const tier = getScoreTier(score);
+  return {
+    savedAt: new Date().toISOString(),
+    champions: draft.map((champId, index)=>{
+      const champ = champId ? getChamp(champId) : null;
+      return champ ? {
+        lane: SLOT_ROLES[index],
+        id: champ.id,
+        name: champ.name,
+        class: champ.class,
+        type: champ.type,
+      } : null;
+    }).filter(Boolean),
+    score,
+    grade: tier.grade,
+    summary: tier.summary,
+    comboCount: combos.length,
+    damage: { phys, magic, trueD },
+    ratings: Object.fromEntries(Object.entries(ratings).map(([key,val])=>[key, Number(val.toFixed(1))])),
+    ccTypes: [...allCC],
+    combos: combos.slice(0,6).map(combo=>({
+      pair: `${combo.a.name} + ${combo.b.name}`,
+      score: combo.score,
+      reason: combo.reason,
+    })),
+    warnings: warnings.slice(0,8).map(item=>({
+      type: item.type,
+      title: item.title,
+      desc: item.desc,
+    }))
+  };
+}
+
+function formatShareTimestamp(isoString){
+  const date = new Date(isoString);
+  if(Number.isNaN(date.getTime())) return '';
+  return date.toLocaleString('en-GB', {
+    year:'numeric',
+    month:'short',
+    day:'2-digit',
+    hour:'2-digit',
+    minute:'2-digit'
+  });
+}
+
+function buildShareText(snapshot){
+  const championLines = snapshot.champions
+    .map(champ=>`- ${champ.lane}: ${champ.name} (${champ.class}, ${champ.type})`)
+    .join('\n');
+  const ratingLines = Object.entries(snapshot.ratings)
+    .map(([key,val])=>`- ${key}: ${val}/10`)
+    .join('\n');
+  const comboLines = snapshot.combos.length
+    ? snapshot.combos.map(combo=>`- ${combo.pair}: ${combo.reason} (+${combo.score})`).join('\n')
+    : '- No standout combos detected yet';
+  const warningLines = snapshot.warnings.length
+    ? snapshot.warnings.map(item=>`- [${item.type.toUpperCase()}] ${item.title}: ${item.desc}`).join('\n')
+    : '- No warnings generated';
+
+  return [
+    'League of Legends Draft Builder',
+    `Saved: ${formatShareTimestamp(snapshot.savedAt)}`,
+    '',
+    `Synergy Score: ${snapshot.score}/100 (${snapshot.grade})`,
+    snapshot.summary,
+    '',
+    'Champions:',
+    championLines,
+    '',
+    `Damage Mix: ${snapshot.damage.phys}% Physical / ${snapshot.damage.magic}% Magic / ${snapshot.damage.trueD}% True`,
+    `CC Coverage: ${snapshot.ccTypes.length ? snapshot.ccTypes.join(', ') : 'None'}`,
+    '',
+    'Team Ratings:',
+    ratingLines,
+    '',
+    'Best Synergy Combos:',
+    comboLines,
+    '',
+    'Strengths & Weaknesses:',
+    warningLines
+  ].join('\n');
+}
+
+function renderSharePreview(snapshot, sourceLabel){
+  const preview = document.getElementById('sharePreview');
+  const timeEl = document.getElementById('sharePreviewTime');
+  const champList = document.getElementById('shareChampList');
+  const metaGrid = document.getElementById('shareMetaGrid');
+  const comboLines = document.getElementById('shareComboLines');
+  const warningLines = document.getElementById('shareWarningLines');
+  const summaryBox = document.getElementById('shareSummaryBox');
+
+  preview.classList.remove('hidden');
+  timeEl.textContent = `${sourceLabel}\n${formatShareTimestamp(snapshot.savedAt)}`;
+
+  champList.innerHTML = snapshot.champions.map(champ=>`
+    <div class="share-champ-card">
+      <img src="https://ddragon.leagueoflegends.com/cdn/14.24.1/img/champion/${champ.id}.png" alt="${champ.name}">
+      <span class="share-champ-lane">${champ.lane}</span>
+      <span class="share-champ-name">${champ.name}</span>
+    </div>
+  `).join('');
+
+  metaGrid.innerHTML = [
+    { label:'Synergy Score', value:`${snapshot.score}/100` },
+    { label:'Tier', value:snapshot.grade },
+    { label:'Damage Mix', value:`${snapshot.damage.phys}% / ${snapshot.damage.magic}% / ${snapshot.damage.trueD}%` },
+    { label:'CC Types', value:snapshot.ccTypes.length ? snapshot.ccTypes.join(', ') : 'None' },
+    { label:'Team Ratings', value:Object.entries(snapshot.ratings).map(([key,val])=>`${key} ${val}`).join(' | ') },
+    { label:'Summary', value:snapshot.summary }
+  ].map(item=>`
+    <div class="share-meta-item">
+      <span class="share-meta-label">${item.label}</span>
+      <span class="share-meta-value">${item.value}</span>
+    </div>
+  `).join('');
+
+  comboLines.innerHTML = snapshot.combos.length
+    ? snapshot.combos.map(combo=>`
+        <div class="share-line-item"><span>${combo.pair}</span> ${combo.reason} (+${combo.score})</div>
+      `).join('')
+    : '<div class="share-line-item">No standout combos detected yet.</div>';
+
+  warningLines.innerHTML = snapshot.warnings.length
+    ? snapshot.warnings.map(item=>`
+        <div class="share-line-item"><span>[${item.type.toUpperCase()}] ${item.title}</span> ${item.desc}</div>
+      `).join('')
+    : '<div class="share-line-item">No warnings generated.</div>';
+
+  summaryBox.value = buildShareText(snapshot);
+}
+
+function buildDraftFilename(snapshot){
+  const names = snapshot.champions.map(champ=>champ.name.toLowerCase().replace(/[^a-z0-9]+/g,'-'));
+  return `lol-draft-${names.join('_') || 'team'}.png`;
+}
+
+function loadImageForCanvas(src){
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = () => resolve(img);
+    img.onerror = () => resolve(null);
+    img.src = src;
+  });
+}
+
+function roundRectPath(ctx, x, y, width, height, radius){
+  const r = Math.min(radius, width / 2, height / 2);
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + width, y, x + width, y + height, r);
+  ctx.arcTo(x + width, y + height, x, y + height, r);
+  ctx.arcTo(x, y + height, x, y, r);
+  ctx.arcTo(x, y, x + width, y, r);
+  ctx.closePath();
+}
+
+function fillRoundRect(ctx, x, y, width, height, radius, fillStyle, strokeStyle){
+  roundRectPath(ctx, x, y, width, height, radius);
+  ctx.fillStyle = fillStyle;
+  ctx.fill();
+  if(strokeStyle){
+    ctx.strokeStyle = strokeStyle;
+    ctx.stroke();
+  }
+}
+
+function wrapCanvasText(ctx, text, maxWidth){
+  const words = String(text || '').split(/\s+/).filter(Boolean);
+  const lines = [];
+  let current = '';
+
+  words.forEach(word => {
+    const next = current ? `${current} ${word}` : word;
+    if(ctx.measureText(next).width <= maxWidth){
+      current = next;
+    }else{
+      if(current) lines.push(current);
+      current = word;
+    }
+  });
+
+  if(current) lines.push(current);
+  return lines.length ? lines : [''];
+}
+
+async function generateDraftShareImage(snapshot){
+  const canvas = document.createElement('canvas');
+  canvas.width = 1600;
+  canvas.height = 1900;
+  const ctx = canvas.getContext('2d');
+  const padding = 64;
+  const gold = '#c8aa6e';
+  const text = '#f0e6d2';
+  const dim = '#a09b8c';
+  const red = '#e05050';
+  const blue = '#4a9eff';
+  const green = '#3dba6a';
+
+  const bg = ctx.createLinearGradient(0, 0, 0, canvas.height);
+  bg.addColorStop(0, '#091428');
+  bg.addColorStop(0.6, '#0d1b2e');
+  bg.addColorStop(1, '#050b16');
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  ctx.strokeStyle = 'rgba(200,170,110,0.18)';
+  for(let y = 0; y < canvas.height; y += 42){
+    ctx.beginPath();
+    ctx.moveTo(0, y);
+    ctx.lineTo(canvas.width, y);
+    ctx.stroke();
+  }
+
+  ctx.fillStyle = gold;
+  ctx.font = '700 30px Cinzel, serif';
+  ctx.fillText('LEAGUE OF LEGENDS', padding, 80);
+  ctx.font = '900 62px Cinzel, serif';
+  ctx.fillStyle = text;
+  ctx.fillText('DRAFT BUILDER REPORT', padding, 150);
+  ctx.font = '600 24px Rajdhani, sans-serif';
+  ctx.fillStyle = dim;
+  ctx.fillText(`Saved ${formatShareTimestamp(snapshot.savedAt)}`, padding, 192);
+
+  fillRoundRect(ctx, padding, 240, canvas.width - padding * 2, 220, 24, 'rgba(255,255,255,0.03)', 'rgba(200,170,110,0.18)');
+  ctx.font = '700 24px Rajdhani, sans-serif';
+  ctx.fillStyle = dim;
+  ctx.fillText('CORE METRICS', padding + 28, 282);
+
+  const metaItems = [
+    { label:'Synergy Score', value:`${snapshot.score}/100`, color:gold },
+    { label:'Tier', value:snapshot.grade, color:text },
+    { label:'Damage Mix', value:`${snapshot.damage.phys}% / ${snapshot.damage.magic}% / ${snapshot.damage.trueD}%`, color:text },
+    { label:'CC Types', value:String(snapshot.ccTypes.length), color:text }
+  ];
+
+  metaItems.forEach((item, index) => {
+    const col = index % 2;
+    const row = Math.floor(index / 2);
+    const x = padding + 28 + col * 370;
+    const y = 320 + row * 76;
+    ctx.font = '700 18px Rajdhani, sans-serif';
+    ctx.fillStyle = dim;
+    ctx.fillText(item.label.toUpperCase(), x, y);
+    ctx.font = '700 32px Rajdhani, sans-serif';
+    ctx.fillStyle = item.color;
+    ctx.fillText(item.value, x, y + 38);
+  });
+
+  ctx.font = '600 24px Rajdhani, sans-serif';
+  ctx.fillStyle = text;
+  const summaryLines = wrapCanvasText(ctx, snapshot.summary, canvas.width - padding * 2 - 56);
+  summaryLines.forEach((line, index) => {
+    ctx.fillText(line, padding + 28, 430 + index * 28);
+  });
+
+  fillRoundRect(ctx, padding, 500, canvas.width - padding * 2, 300, 24, 'rgba(255,255,255,0.03)', 'rgba(200,170,110,0.18)');
+  ctx.font = '700 24px Rajdhani, sans-serif';
+  ctx.fillStyle = dim;
+  ctx.fillText('CHAMPION LINEUP', padding + 28, 542);
+
+  const cardWidth = 265;
+  const cardGap = 14;
+  const cardY = 570;
+
+  for(let index = 0; index < snapshot.champions.length; index++){
+    const champ = snapshot.champions[index];
+    const cardX = padding + 28 + index * (cardWidth + cardGap);
+    fillRoundRect(ctx, cardX, cardY, cardWidth, 190, 18, 'rgba(8,17,33,0.95)', 'rgba(200,170,110,0.16)');
+
+    const icon = await loadImageForCanvas(`https://ddragon.leagueoflegends.com/cdn/14.24.1/img/champion/${champ.id}.png`);
+    if(icon){
+      ctx.save();
+      roundRectPath(ctx, cardX + 14, cardY + 14, cardWidth - 28, 96, 14);
+      ctx.clip();
+      ctx.drawImage(icon, cardX + 14, cardY + 14, cardWidth - 28, 96);
+      ctx.restore();
+    }else{
+      fillRoundRect(ctx, cardX + 14, cardY + 14, cardWidth - 28, 96, 14, 'rgba(74,158,255,0.18)');
+      ctx.font = '700 20px Rajdhani, sans-serif';
+      ctx.fillStyle = text;
+      ctx.fillText(champ.name, cardX + 28, cardY + 68);
+    }
+
+    ctx.font = '700 16px Rajdhani, sans-serif';
+    ctx.fillStyle = gold;
+    ctx.fillText(champ.lane.toUpperCase(), cardX + 16, cardY + 132);
+    ctx.font = '700 24px Rajdhani, sans-serif';
+    ctx.fillStyle = text;
+    ctx.fillText(champ.name, cardX + 16, cardY + 162);
+    ctx.font = '600 15px Rajdhani, sans-serif';
+    ctx.fillStyle = dim;
+    ctx.fillText(`${champ.class} • ${champ.type}`, cardX + 16, cardY + 182);
+  }
+
+  const leftX = padding;
+  const topY = 848;
+  const colWidth = (canvas.width - padding * 2 - 24) / 2;
+
+  fillRoundRect(ctx, leftX, topY, colWidth, 460, 24, 'rgba(255,255,255,0.03)', 'rgba(200,170,110,0.18)');
+  fillRoundRect(ctx, leftX + colWidth + 24, topY, colWidth, 460, 24, 'rgba(255,255,255,0.03)', 'rgba(200,170,110,0.18)');
+  fillRoundRect(ctx, padding, 1336, canvas.width - padding * 2, 500, 24, 'rgba(255,255,255,0.03)', 'rgba(200,170,110,0.18)');
+
+  ctx.font = '700 24px Rajdhani, sans-serif';
+  ctx.fillStyle = dim;
+  ctx.fillText('TEAM RATINGS', leftX + 24, topY + 40);
+  ctx.fillText('BEST COMBOS', leftX + colWidth + 48, topY + 40);
+  ctx.fillText('STRENGTHS & WEAKNESSES', padding + 24, 1378);
+
+  const ratingEntries = Object.entries(snapshot.ratings);
+  ratingEntries.forEach(([key, value], index) => {
+    const rowY = topY + 86 + index * 44;
+    ctx.font = '700 18px Rajdhani, sans-serif';
+    ctx.fillStyle = text;
+    ctx.fillText(key, leftX + 24, rowY);
+    fillRoundRect(ctx, leftX + 150, rowY - 16, colWidth - 220, 18, 9, 'rgba(255,255,255,0.05)');
+    fillRoundRect(ctx, leftX + 150, rowY - 16, (colWidth - 220) * (value / 10), 18, 9, 'rgba(200,170,110,0.88)');
+    ctx.fillStyle = gold;
+    ctx.fillText(value.toFixed(1), leftX + colWidth - 44, rowY);
+  });
+
+  const comboBaseY = topY + 78;
+  if(snapshot.combos.length){
+    snapshot.combos.slice(0, 5).forEach((combo, index) => {
+      const y = comboBaseY + index * 76;
+      ctx.font = '700 20px Rajdhani, sans-serif';
+      ctx.fillStyle = gold;
+      ctx.fillText(`${combo.pair}  +${combo.score}`, leftX + colWidth + 48, y);
+      ctx.font = '600 17px Rajdhani, sans-serif';
+      ctx.fillStyle = text;
+      wrapCanvasText(ctx, combo.reason, colWidth - 72).slice(0, 2).forEach((line, lineIndex) => {
+        ctx.fillText(line, leftX + colWidth + 48, y + 26 + lineIndex * 22);
+      });
+    });
+  }else{
+    ctx.font = '600 20px Rajdhani, sans-serif';
+    ctx.fillStyle = dim;
+    ctx.fillText('No standout combos detected yet.', leftX + colWidth + 48, comboBaseY);
+  }
+
+  const warningBaseY = 1422;
+  if(snapshot.warnings.length){
+    snapshot.warnings.slice(0, 6).forEach((warning, index) => {
+      const y = warningBaseY + index * 62;
+      const accent = warning.type === 'crit' ? red : warning.type === 'ok' ? green : blue;
+      ctx.fillStyle = accent;
+      ctx.fillRect(padding + 24, y - 14, 8, 34);
+      ctx.font = '700 20px Rajdhani, sans-serif';
+      ctx.fillStyle = text;
+      ctx.fillText(warning.title, padding + 46, y);
+      ctx.font = '600 16px Rajdhani, sans-serif';
+      ctx.fillStyle = dim;
+      wrapCanvasText(ctx, warning.desc, canvas.width - padding * 2 - 70).slice(0, 2).forEach((line, lineIndex) => {
+        ctx.fillText(line, padding + 46, y + 22 + lineIndex * 20);
+      });
+    });
+  }else{
+    ctx.font = '600 20px Rajdhani, sans-serif';
+    ctx.fillStyle = dim;
+    ctx.fillText('No warnings generated.', padding + 24, warningBaseY);
+  }
+
+  ctx.font = '600 18px Rajdhani, sans-serif';
+  ctx.fillStyle = 'rgba(240,230,210,0.7)';
+  ctx.fillText('Generated by Draft Builder', padding, canvas.height - 28);
+
+  return canvas;
+}
+
+async function generateDraftShareImage(snapshot){
+  const canvas = document.createElement('canvas');
+  canvas.width = 1920;
+  canvas.height = 1080;
+  const ctx = canvas.getContext('2d');
+  const padding = 64;
+  const gap = 24;
+  const gold = '#c8aa6e';
+  const text = '#f0e6d2';
+  const dim = '#a09b8c';
+  const red = '#e05050';
+  const blue = '#4a9eff';
+  const green = '#3dba6a';
+
+  const bg = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+  bg.addColorStop(0, '#091428');
+  bg.addColorStop(0.55, '#0d1b2e');
+  bg.addColorStop(1, '#050b16');
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  for(let i = 0; i < 8; i++){
+    const x = 160 + i * 220;
+    const y = i % 2 === 0 ? 48 : 128;
+    const radius = 200 + i * 10;
+    const glow = ctx.createRadialGradient(x, y, 10, x, y, radius);
+    glow.addColorStop(0, 'rgba(74,158,255,0.14)');
+    glow.addColorStop(0.3, 'rgba(200,170,110,0.08)');
+    glow.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = glow;
+    ctx.beginPath();
+    ctx.arc(x, y, radius, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  ctx.strokeStyle = 'rgba(200,170,110,0.08)';
+  for(let y = 0; y < canvas.height; y += 60){
+    ctx.beginPath();
+    ctx.moveTo(0, y);
+    ctx.lineTo(canvas.width, y);
+    ctx.stroke();
+  }
+
+  function drawCoverImage(img, x, y, width, height){
+    const scale = Math.max(width / img.width, height / img.height);
+    const drawWidth = img.width * scale;
+    const drawHeight = img.height * scale;
+    const drawX = x + (width - drawWidth) / 2;
+    const drawY = y + (height - drawHeight) / 2;
+    ctx.drawImage(img, drawX, drawY, drawWidth, drawHeight);
+  }
+
+  function drawPanelTitle(label, x, y){
+    ctx.font = '700 22px Rajdhani, sans-serif';
+    ctx.fillStyle = dim;
+    ctx.fillText(label.toUpperCase(), x, y);
+  }
+
+  function drawWrappedLines(lines, x, y, lineHeight, maxLines, color){
+    ctx.fillStyle = color;
+    lines.slice(0, maxLines).forEach((line, index) => {
+      ctx.fillText(line, x, y + index * lineHeight);
+    });
+  }
+
+  ctx.fillStyle = gold;
+  ctx.font = '700 26px Cinzel, serif';
+  ctx.fillText('LEAGUE OF LEGENDS', padding, 72);
+  ctx.font = '900 58px Cinzel, serif';
+  ctx.fillStyle = text;
+  ctx.fillText('DRAFT SHARE CARD', padding, 132);
+  ctx.font = '600 22px Rajdhani, sans-serif';
+  ctx.fillStyle = dim;
+  ctx.fillText(`Saved ${formatShareTimestamp(snapshot.savedAt)}`, padding, 168);
+
+  const badgeWidth = 220;
+  const badgeHeight = 92;
+  const badgeY = 54;
+  const badgeStartX = canvas.width - padding - badgeWidth * 2 - gap;
+  [
+    { x:badgeStartX, label:'Synergy Score', value:`${snapshot.score}/100`, color:gold },
+    { x:badgeStartX + badgeWidth + gap, label:'Tier', value:snapshot.grade, color:text }
+  ].forEach((badge) => {
+    fillRoundRect(ctx, badge.x, badgeY, badgeWidth, badgeHeight, 20, 'rgba(6,15,28,0.88)', 'rgba(200,170,110,0.2)');
+    ctx.font = '700 18px Rajdhani, sans-serif';
+    ctx.fillStyle = dim;
+    ctx.fillText(badge.label.toUpperCase(), badge.x + 20, badgeY + 30);
+    ctx.font = '800 34px Rajdhani, sans-serif';
+    ctx.fillStyle = badge.color;
+    ctx.fillText(badge.value, badge.x + 20, badgeY + 70);
+  });
+
+  const topPanelY = 212;
+  const topPanelHeight = 300;
+  fillRoundRect(ctx, padding, topPanelY, canvas.width - padding * 2, topPanelHeight, 28, 'rgba(255,255,255,0.035)', 'rgba(200,170,110,0.18)');
+  drawPanelTitle('Champion Draft', padding + 24, topPanelY + 36);
+
+  const champions = snapshot.champions || [];
+  const champCount = Math.max(champions.length, 1);
+  const cardInset = 22;
+  const cardGap = 20;
+  const cardWidth = (canvas.width - padding * 2 - cardInset * 2 - cardGap * Math.max(champCount - 1, 0)) / champCount;
+  const cardY = topPanelY + 54;
+  const cardHeight = 220;
+
+  for(let index = 0; index < champions.length; index++){
+    const champ = champions[index];
+    const cardX = padding + cardInset + index * (cardWidth + cardGap);
+    fillRoundRect(ctx, cardX, cardY, cardWidth, cardHeight, 20, 'rgba(8,17,33,0.94)', 'rgba(200,170,110,0.16)');
+
+    const splash = await loadImageForCanvas(`https://ddragon.leagueoflegends.com/cdn/img/champion/loading/${champ.id}_0.jpg`);
+    const icon = splash || await loadImageForCanvas(`https://ddragon.leagueoflegends.com/cdn/14.24.1/img/champion/${champ.id}.png`);
+    if(icon){
+      ctx.save();
+      roundRectPath(ctx, cardX + 14, cardY + 14, cardWidth - 28, 138, 14);
+      ctx.clip();
+      drawCoverImage(icon, cardX + 14, cardY + 14, cardWidth - 28, 138);
+      ctx.restore();
+    }else{
+      fillRoundRect(ctx, cardX + 14, cardY + 14, cardWidth - 28, 138, 14, 'rgba(74,158,255,0.18)');
+      ctx.font = '700 24px Rajdhani, sans-serif';
+      ctx.fillStyle = text;
+      ctx.fillText(champ.name, cardX + 28, cardY + 88);
+    }
+
+    fillRoundRect(ctx, cardX + 16, cardY + 166, 96, 28, 14, 'rgba(200,170,110,0.16)');
+    ctx.font = '700 15px Rajdhani, sans-serif';
+    ctx.fillStyle = gold;
+    ctx.fillText(champ.lane.toUpperCase(), cardX + 28, cardY + 186);
+    ctx.font = '800 28px Rajdhani, sans-serif';
+    ctx.fillStyle = text;
+    ctx.fillText(champ.name, cardX + 16, cardY + 214);
+    ctx.font = '600 16px Rajdhani, sans-serif';
+    ctx.fillStyle = dim;
+    ctx.fillText(`${champ.class} / ${champ.type}`, cardX + 16, cardY + 240);
+  }
+
+  const bottomY = topPanelY + topPanelHeight + 28;
+  const bottomHeight = canvas.height - bottomY - padding;
+  const leftWidth = 560;
+  const middleWidth = 584;
+  const rightWidth = canvas.width - padding * 2 - leftWidth - middleWidth - gap * 2;
+  const leftX = padding;
+  const middleX = leftX + leftWidth + gap;
+  const rightX = middleX + middleWidth + gap;
+  const rightTopHeight = 252;
+  const rightBottomY = bottomY + rightTopHeight + gap;
+  const rightBottomHeight = bottomHeight - rightTopHeight - gap;
+
+  fillRoundRect(ctx, leftX, bottomY, leftWidth, bottomHeight, 24, 'rgba(255,255,255,0.035)', 'rgba(200,170,110,0.18)');
+  fillRoundRect(ctx, middleX, bottomY, middleWidth, bottomHeight, 24, 'rgba(255,255,255,0.035)', 'rgba(200,170,110,0.18)');
+  fillRoundRect(ctx, rightX, bottomY, rightWidth, rightTopHeight, 24, 'rgba(255,255,255,0.035)', 'rgba(200,170,110,0.18)');
+  fillRoundRect(ctx, rightX, rightBottomY, rightWidth, rightBottomHeight, 24, 'rgba(255,255,255,0.035)', 'rgba(200,170,110,0.18)');
+
+  drawPanelTitle('Draft Summary', leftX + 24, bottomY + 38);
+  drawPanelTitle('Team Ratings', middleX + 24, bottomY + 38);
+  drawPanelTitle('Best Combos', rightX + 24, bottomY + 38);
+  drawPanelTitle('Strengths and Warnings', rightX + 24, rightBottomY + 38);
+
+  fillRoundRect(ctx, leftX + 24, bottomY + 60, leftWidth - 48, 112, 20, 'rgba(6,15,28,0.85)', 'rgba(200,170,110,0.14)');
+  ctx.font = '700 18px Rajdhani, sans-serif';
+  ctx.fillStyle = dim;
+  ctx.fillText('OVERVIEW', leftX + 46, bottomY + 92);
+  ctx.font = '900 54px Rajdhani, sans-serif';
+  ctx.fillStyle = gold;
+  ctx.fillText(`${snapshot.score}`, leftX + 44, bottomY + 148);
+  ctx.font = '700 22px Rajdhani, sans-serif';
+  ctx.fillStyle = text;
+  ctx.fillText(`/ 100  ${snapshot.grade}`, leftX + 150, bottomY + 144);
+  ctx.font = '600 18px Rajdhani, sans-serif';
+  ctx.fillStyle = dim;
+  ctx.fillText(`Detected combos ${snapshot.comboCount}`, leftX + 288, bottomY + 144);
+
+  ctx.font = '600 21px Rajdhani, sans-serif';
+  drawWrappedLines(wrapCanvasText(ctx, snapshot.summary, leftWidth - 52), leftX + 24, bottomY + 210, 28, 4, text);
+
+  ctx.font = '700 18px Rajdhani, sans-serif';
+  ctx.fillStyle = dim;
+  ctx.fillText('DAMAGE PROFILE', leftX + 24, bottomY + 338);
+  const barX = leftX + 24;
+  const barY = bottomY + 354;
+  const barWidth = leftWidth - 48;
+  const barHeight = 26;
+  fillRoundRect(ctx, barX, barY, barWidth, barHeight, 13, 'rgba(255,255,255,0.06)');
+  const physWidth = barWidth * (snapshot.damage.phys / 100);
+  const magicWidth = barWidth * (snapshot.damage.magic / 100);
+  const trueWidth = Math.max(barWidth - physWidth - magicWidth, 0);
+  fillRoundRect(ctx, barX, barY, physWidth, barHeight, 13, red);
+  fillRoundRect(ctx, barX + physWidth, barY, magicWidth, barHeight, 13, blue);
+  fillRoundRect(ctx, barX + physWidth + magicWidth, barY, trueWidth, barHeight, 13, green);
+
+  ctx.font = '700 17px Rajdhani, sans-serif';
+  ctx.fillStyle = text;
+  ctx.fillText(`Physical ${snapshot.damage.phys}%`, leftX + 24, bottomY + 404);
+  ctx.fillText(`Magic ${snapshot.damage.magic}%`, leftX + 206, bottomY + 404);
+  ctx.fillText(`True ${snapshot.damage.trueD}%`, leftX + 372, bottomY + 404);
+
+  ctx.font = '700 18px Rajdhani, sans-serif';
+  ctx.fillStyle = dim;
+  ctx.fillText('CC COVERAGE', leftX + 24, bottomY + 446);
+  ctx.font = '600 20px Rajdhani, sans-serif';
+  drawWrappedLines(
+    wrapCanvasText(ctx, snapshot.ccTypes.length ? snapshot.ccTypes.join(', ') : 'No crowd control detected.', leftWidth - 52),
+    leftX + 24,
+    bottomY + 474,
+    24,
+    2,
+    text
+  );
+
+  Object.entries(snapshot.ratings).forEach(([key, value], index) => {
+    const rowY = bottomY + 84 + index * 52;
+    const label = key.replace(/([A-Z])/g, ' $1').trim();
+    ctx.font = '700 18px Rajdhani, sans-serif';
+    ctx.fillStyle = text;
+    ctx.fillText(label, middleX + 24, rowY);
+    fillRoundRect(ctx, middleX + 172, rowY - 14, middleWidth - 248, 18, 9, 'rgba(255,255,255,0.06)');
+    fillRoundRect(ctx, middleX + 172, rowY - 14, (middleWidth - 248) * (value / 10), 18, 9, 'rgba(200,170,110,0.88)');
+    ctx.fillStyle = gold;
+    ctx.fillText(value.toFixed(1), middleX + middleWidth - 50, rowY);
+  });
+
+  if(snapshot.combos.length){
+    snapshot.combos.slice(0, 3).forEach((combo, index) => {
+      const itemY = bottomY + 76 + index * 62;
+      fillRoundRect(ctx, rightX + 20, itemY - 18, rightWidth - 40, 52, 16, 'rgba(200,170,110,0.08)');
+      ctx.font = '700 19px Rajdhani, sans-serif';
+      ctx.fillStyle = gold;
+      ctx.fillText(`${combo.pair}  +${combo.score}`, rightX + 34, itemY + 2);
+      ctx.font = '600 16px Rajdhani, sans-serif';
+      drawWrappedLines(wrapCanvasText(ctx, combo.reason, rightWidth - 72), rightX + 34, itemY + 24, 20, 2, text);
+    });
+  }else{
+    ctx.font = '600 20px Rajdhani, sans-serif';
+    ctx.fillStyle = dim;
+    ctx.fillText('No standout combos detected yet.', rightX + 24, bottomY + 96);
+  }
+
+  if(snapshot.warnings.length){
+    snapshot.warnings.slice(0, 3).forEach((warning, index) => {
+      const y = rightBottomY + 78 + index * 52;
+      const accent = warning.type === 'crit' ? red : warning.type === 'ok' ? green : blue;
+      fillRoundRect(ctx, rightX + 22, y - 16, 10, 36, 5, accent);
+      ctx.font = '700 18px Rajdhani, sans-serif';
+      ctx.fillStyle = text;
+      ctx.fillText(warning.title, rightX + 46, y + 2);
+      ctx.font = '600 15px Rajdhani, sans-serif';
+      drawWrappedLines(wrapCanvasText(ctx, warning.desc, rightWidth - 84), rightX + 46, y + 22, 18, 2, dim);
+    });
+  }else{
+    ctx.font = '600 20px Rajdhani, sans-serif';
+    ctx.fillStyle = dim;
+    ctx.fillText('No warnings generated.', rightX + 24, rightBottomY + 92);
+  }
+
+  ctx.font = '600 18px Rajdhani, sans-serif';
+  ctx.fillStyle = 'rgba(240,230,210,0.7)';
+  ctx.fillText('Generated by Draft Builder', padding, canvas.height - 28);
+
+  return canvas;
+}
+
+function downloadCanvas(canvas, filename){
+  const link = document.createElement('a');
+  link.href = canvas.toDataURL('image/png');
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+function setShareStatus(message){
+  document.getElementById('shareStatus').textContent = message;
+}
+
+function updateShareButtons(){
+  const hasDraft = draft.some(Boolean);
+  document.getElementById('saveDraftBtn').disabled = !hasDraft;
+  document.getElementById('shareDraftBtn').disabled = !hasDraft;
+  if(!hasDraft && document.getElementById('sharePreview').classList.contains('hidden')){
+    setShareStatus('Build a draft to generate a full share summary.');
+  }
+}
+
+function saveCurrentDraft(){
+  if(!latestAnalysisSnapshot) return;
+  const snapshot = {
+    ...latestAnalysisSnapshot,
+    savedAt: new Date().toISOString()
+  };
+  localStorage.setItem(SAVED_DRAFT_KEY, JSON.stringify(snapshot));
+  renderSharePreview(snapshot, 'Saved Draft');
+  setShareStatus('Draft saved locally. You can reopen this page and keep the summary.');
+}
+
+async function shareCurrentDraft(){
+  if(!latestAnalysisSnapshot) return;
+  const snapshot = {
+    ...latestAnalysisSnapshot,
+    savedAt: new Date().toISOString()
+  };
+  renderSharePreview(snapshot, 'Share Preview');
+  try{
+    const canvas = await generateDraftShareImage(snapshot);
+    downloadCanvas(canvas, buildDraftFilename(snapshot));
+    setShareStatus('Draft image created and download started.');
+  }catch(error){
+    console.error('Draft image generation failed', error);
+    setShareStatus('Image generation failed. The text summary is still available below.');
+  }
+}
+
+function loadSavedDraftPreview(){
+  try{
+    const raw = localStorage.getItem(SAVED_DRAFT_KEY);
+    if(!raw) return;
+    const snapshot = JSON.parse(raw);
+    if(!snapshot || !Array.isArray(snapshot.champions) || !snapshot.champions.length) return;
+    renderSharePreview(snapshot, 'Last Saved Draft');
+    setShareStatus('Loaded your last saved draft summary.');
+  }catch(error){
+    console.warn('Unable to load saved draft preview', error);
+  }
+}
+
+async function copyTextToClipboard(text){
+  if(navigator.clipboard && window.isSecureContext){
+    try{
+      await navigator.clipboard.writeText(text);
+      return true;
+    }catch(error){
+      console.warn('Clipboard write failed', error);
+    }
+  }
+
+  const helper = document.createElement('textarea');
+  helper.value = text;
+  helper.setAttribute('readonly','');
+  helper.style.position = 'fixed';
+  helper.style.top = '-9999px';
+  document.body.appendChild(helper);
+  helper.select();
+  let success = false;
+  try{
+    success = document.execCommand('copy');
+  }catch(error){
+    console.warn('Fallback copy failed', error);
+  }
+  document.body.removeChild(helper);
+  return success;
+}
+
+function resetAnalysisUI(){
+  latestAnalysisSnapshot = null;
+  document.getElementById('scoreNum').textContent = '—';
+  document.getElementById('ringFill').style.strokeDashoffset = '339.3';
+  document.getElementById('scoreGrade').textContent = 'Select Champions';
+  document.getElementById('scoreSubLabel').textContent = 'Pick 5 champions to analyze your composition';
+  document.getElementById('comboList').innerHTML = '<div class="empty-state">No combos detected yet</div>';
+  ['physPct','magicPct','truePct'].forEach(id=>document.getElementById(id).textContent='—%');
+  ['physBar','magicBar','trueBar'].forEach(id=>document.getElementById(id).style.width='0%');
+  ['donutPhys','donutMagic','donutTrue'].forEach(id=>{
+    document.getElementById(id).setAttribute('stroke-dasharray','0 238.76');
+  });
+  document.getElementById('donutLabel').textContent='—';
+  document.getElementById('ccTags').innerHTML='';
+  document.getElementById('ratingRows').innerHTML='';
+  document.getElementById('warningList').innerHTML='<div class="empty-state">Select champions to see analysis</div>';
+  document.getElementById('champCountBadge').textContent='0 / 5 selected';
+  updateShareButtons();
+}
+
+/* ─── Start ─── */
+init();
+</script>
+</body>
+</html>
