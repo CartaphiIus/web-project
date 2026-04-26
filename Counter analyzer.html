@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Counter Analyzer — League of Legends Karşı Takım Analizi</title>
+<title>Counter Analyzer - League of Legends Enemy Team Analysis</title>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
 <style>
 :root {
@@ -509,7 +509,7 @@ header > .header-nav:first-of-type{display:none;}
 <header>
   <div class="header-logo">
     <div class="header-logo-icon">⚔️</div>
-    <h1>Counter Analyzer<span>Karşı Takım Analizi — LoL</span></h1>
+    <h1>Counter Analyzer<span>Enemy Team Analysis - LoL</span></h1>
   </div>
   <div class="header-nav">
     <button class="nav-btn active">🎯 Counter</button>
@@ -531,7 +531,7 @@ header > .header-nav:first-of-type{display:none;}
   <div class="left-panel">
     <!-- ENEMY DRAFT ZONE -->
     <div class="enemy-zone">
-      <div class="enemy-zone-title">☠️ Düşman Takımı — 5 Champion Seç</div>
+      <div class="enemy-zone-title">Enemy Team - Pick 5 Champions</div>
       <div class="enemy-slots" id="enemySlots">
         <div class="enemy-slot" data-index="0" onclick="openSlot(0)">
           <div class="slot-empty-icon">💀</div>
@@ -559,21 +559,21 @@ header > .header-nav:first-of-type{display:none;}
     <!-- FILTERS + PICKER -->
     <div class="picker-section">
       <div class="filters-row">
-        <span class="filter-label">Rol</span>
-        <button class="filter-btn active" data-filter-role="all">Tümü</button>
+        <span class="filter-label">Role</span>
+        <button class="filter-btn active" data-filter-role="all">All</button>
         <button class="filter-btn" data-filter-role="top">Top</button>
         <button class="filter-btn" data-filter-role="jungle">Jungle</button>
         <button class="filter-btn" data-filter-role="mid">Mid</button>
         <button class="filter-btn" data-filter-role="bot">Bot</button>
         <button class="filter-btn" data-filter-role="support">Support</button>
         <span class="filter-sep"></span>
-        <button class="filter-btn active" data-filter-type="all">Tümü</button>
-        <button class="filter-btn" data-filter-type="melee">Yakın</button>
-        <button class="filter-btn" data-filter-type="ranged">Uzak</button>
+        <button class="filter-btn active" data-filter-type="all">All</button>
+        <button class="filter-btn" data-filter-type="melee">Melee</button>
+        <button class="filter-btn" data-filter-type="ranged">Ranged</button>
       </div>
       <div class="filters-row">
-        <span class="filter-label">Sınıf</span>
-        <button class="filter-btn active" data-filter-class="all">Tümü</button>
+        <span class="filter-label">Class</span>
+        <button class="filter-btn active" data-filter-class="all">All</button>
         <button class="filter-btn" data-filter-class="tank">Tank</button>
         <button class="filter-btn" data-filter-class="fighter">Fighter</button>
         <button class="filter-btn" data-filter-class="mage">Mage</button>
@@ -583,7 +583,7 @@ header > .header-nav:first-of-type{display:none;}
         <button class="filter-btn" data-filter-class="enchanter">Enchanter</button>
       </div>
       <div class="search-wrap">
-        <input type="text" id="searchInput" placeholder="Champion ara…" autocomplete="off"/>
+        <input type="text" id="searchInput" placeholder="Search champion..." autocomplete="off"/>
       </div>
       <div class="champ-grid" id="champGrid"></div>
     </div>
@@ -593,8 +593,8 @@ header > .header-nav:first-of-type{display:none;}
   <div class="right-panel" id="rightPanel">
 
     <div class="analysis-header">
-      <span class="analysis-title">☠️ Düşman Analizi</span>
-      <span class="champ-count-badge" id="champCountBadge">0 / 5 seçildi</span>
+      <span class="analysis-title">Enemy Analysis</span>
+      <span class="champ-count-badge" id="champCountBadge">0 / 5 selected</span>
     </div>
 
     <!-- THREAT METER -->
@@ -606,26 +606,26 @@ header > .header-nav:first-of-type{display:none;}
         </svg>
         <div class="score-num">
           <span class="num" id="threatNum">—</span>
-          <span class="label">Tehdit</span>
+          <span class="label">Threat</span>
         </div>
       </div>
-      <div class="threat-grade" id="threatGrade">Düşman Seç</div>
-      <div class="threat-sublabel" id="threatSublabel">5 champion seçerek düşman takımını analiz et</div>
+      <div class="threat-grade" id="threatGrade">Select Enemies</div>
+      <div class="threat-sublabel" id="threatSublabel">Analyze the enemy team by selecting 5 champions</div>
     </div>
 
     <!-- TABS -->
     <div class="tab-nav">
-      <button class="tab-btn active" data-tab="items">🗡️ Eşya</button>
-      <button class="tab-btn" data-tab="strategy">📋 Strateji</button>
-      <button class="tab-btn" data-tab="runes">💎 Rün</button>
-      <button class="tab-btn" data-tab="threats">⚡ Tehdit</button>
-      <button class="tab-btn" data-tab="analysis">📊 Analiz</button>
+      <button class="tab-btn active" data-tab="items">Items</button>
+      <button class="tab-btn" data-tab="strategy">Strategy</button>
+      <button class="tab-btn" data-tab="runes">Runes</button>
+      <button class="tab-btn" data-tab="threats">Threats</button>
+      <button class="tab-btn" data-tab="analysis">Analysis</button>
     </div>
 
     <!-- TAB: ITEMS -->
     <div class="tab-pane active" id="tab-items">
       <div class="damage-section">
-        <div class="sec-label">Düşman Hasar Dağılımı</div>
+        <div class="sec-label">Enemy Damage Profile</div>
         <div class="damage-donut-wrap">
           <div class="damage-donut">
             <svg viewBox="0 0 100 100">
@@ -639,7 +639,7 @@ header > .header-nav:first-of-type{display:none;}
             <div>
               <div class="dmg-row">
                 <div class="dmg-dot-l" style="background:#e05050;"></div>
-                <span class="dmg-label">Fiziksel</span>
+                <span class="dmg-label">Physical</span>
                 <span class="dmg-pct" id="physPct" style="color:#e05050;">—%</span>
               </div>
               <div class="dmg-bar-wrap"><div class="dmg-bar" id="physBar" style="background:#e05050;width:0%"></div></div>
@@ -647,7 +647,7 @@ header > .header-nav:first-of-type{display:none;}
             <div>
               <div class="dmg-row">
                 <div class="dmg-dot-l" style="background:#4a9eff;"></div>
-                <span class="dmg-label">Büyü</span>
+                <span class="dmg-label">Magic</span>
                 <span class="dmg-pct" id="magicPct" style="color:#4a9eff;">—%</span>
               </div>
               <div class="dmg-bar-wrap"><div class="dmg-bar" id="magicBar" style="background:#4a9eff;width:0%"></div></div>
@@ -655,7 +655,7 @@ header > .header-nav:first-of-type{display:none;}
             <div>
               <div class="dmg-row">
                 <div class="dmg-dot-l" style="background:var(--gold);"></div>
-                <span class="dmg-label">Gerçek</span>
+                <span class="dmg-label">True</span>
                 <span class="dmg-pct" id="truePct" style="color:var(--gold);">—%</span>
               </div>
               <div class="dmg-bar-wrap"><div class="dmg-bar" id="trueBar" style="background:var(--gold);width:0%"></div></div>
@@ -665,9 +665,9 @@ header > .header-nav:first-of-type{display:none;}
       </div>
 
       <div class="items-section">
-        <div class="sec-label">Önerilen Karşı Eşyalar</div>
+        <div class="sec-label">Recommended Counter Items</div>
         <div id="itemBuilds" class="role-builds">
-          <div class="empty-state">Champion seç, eşya önerileri görün</div>
+          <div class="empty-state">Pick a champion to see item suggestions</div>
         </div>
       </div>
     </div>
@@ -675,13 +675,13 @@ header > .header-nav:first-of-type{display:none;}
     <!-- TAB: STRATEGY -->
     <div class="tab-pane" id="tab-strategy">
       <div class="strategy-section" style="border-bottom:none;padding-bottom:0;">
-        <div class="sec-label">Oyun Planı & Strateji</div>
+        <div class="sec-label">Game Plan & Strategy</div>
         <div id="strategyCards" class="strategy-cards">
-          <div class="empty-state">Champion seç, strateji görün</div>
+          <div class="empty-state">Pick a champion to see strategy advice</div>
         </div>
       </div>
       <div class="ratings-section">
-        <div class="sec-label">Düşman Güç Seviyeleri</div>
+        <div class="sec-label">Enemy Power Ratings</div>
         <div class="rating-rows" id="ratingRows"></div>
       </div>
     </div>
@@ -689,13 +689,13 @@ header > .header-nav:first-of-type{display:none;}
     <!-- TAB: RUNES -->
     <div class="tab-pane" id="tab-runes">
       <div class="runes-section" style="border-bottom:none;">
-        <div class="sec-label">Karşı Rün Önerileri</div>
+        <div class="sec-label">Counter Rune Suggestions</div>
         <div id="runeGroups" class="rune-groups">
-          <div class="empty-state">Champion seç, rün önerisi görün</div>
+          <div class="empty-state">Pick a champion to see rune suggestions</div>
         </div>
       </div>
       <div class="cc-section">
-        <div class="sec-label">Düşman CC Kapsamı</div>
+        <div class="sec-label">Enemy CC Coverage</div>
         <div class="cc-tags" id="ccTags"></div>
       </div>
     </div>
@@ -703,15 +703,15 @@ header > .header-nav:first-of-type{display:none;}
     <!-- TAB: THREATS -->
     <div class="tab-pane" id="tab-threats">
       <div class="synergy-threats" style="border-bottom:none;">
-        <div class="sec-label">Tehlikeli Sinerji Combolar</div>
+        <div class="sec-label">Dangerous Synergy Combos</div>
         <div id="threatCombos" class="threat-combo-list">
-          <div class="empty-state">Champion seç, tehditler görün</div>
+          <div class="empty-state">Pick a champion to see threat combos</div>
         </div>
       </div>
       <div class="warnings-section">
-        <div class="sec-label">Dikkat Edilmesi Gerekenler</div>
+        <div class="sec-label">Things to Watch Out For</div>
         <div id="warningList" class="warning-list">
-          <div class="empty-state">Analiz için champion seç</div>
+          <div class="empty-state">Pick a champion to start analysis</div>
         </div>
       </div>
     </div>
@@ -719,15 +719,15 @@ header > .header-nav:first-of-type{display:none;}
     <!-- TAB: ANALYSIS -->
     <div class="tab-pane" id="tab-analysis">
       <div class="warnings-section" style="border-bottom:1px solid var(--enemy-border);">
-        <div class="sec-label">Düşman Zayıf Noktaları</div>
+        <div class="sec-label">Enemy Weak Points</div>
         <div id="weaknessList" class="warning-list">
-          <div class="empty-state">Champion seç, zayıflık analizi görün</div>
+          <div class="empty-state">Pick a champion to see weakness analysis</div>
         </div>
       </div>
       <div class="warnings-section">
-        <div class="sec-label">Düşman Güçlü Yönleri</div>
+        <div class="sec-label">Enemy Strengths</div>
         <div id="strengthList" class="warning-list">
-          <div class="empty-state">Champion seç, güç analizi görün</div>
+          <div class="empty-state">Pick a champion to see strength analysis</div>
         </div>
       </div>
     </div>
@@ -806,13 +806,13 @@ const COUNTER_ITEMS = {
   // Against Heavy Physical Damage
   physicalCounter: [
     {icon:'🛡️', name:'Thornmail', type:'core', reason:'Fiziksel hasara karşı zırh + ateş hasarı veriri. Ağır AD düşman takımlarında çekirdek eşya.'},
-    {icon:'⚔️', name:'Frozen Heart', type:'core', reason:'Düşman saldırı hızını %20 azaltır. Marksman ve AD jungler'lara karşı çok etkili.'},
+    {icon:'⚔️', name:'Frozen Heart', type:'core', reason:"Reduces enemy attack speed by 20%. Very effective against marksmen and AD junglers."},
     {icon:'🗡️', name:'Warden\'s Mail', type:'situational', reason:'Erken oyun fiziksel zırh + yavaşlatma azaltma eşyası.'},
     {icon:'🧲', name:'Plated Steelcaps', type:'core', reason:'Auto attack hasarını %12 azaltır, fiziksel ilave zırh sağlar.'},
   ],
   // Against Heavy Magic Damage
   magicCounter: [
-    {icon:'🔮', name:'Banshee\'s Veil', type:'core', reason:'İlk büyü yeteneğini engeller. Burst mage'lere karşı hayat kurtarır.'},
+    {icon:'🔮', name:'Banshee\'s Veil', type:'core', reason:"Blocks the first spell. A lifesaver against burst mages."},
     {icon:'🌑', name:'Force of Nature', type:'core', reason:'Yığılabilir büyü direnci + hareket hızı. Çok fazla büyü hasarına karşı çok etkili.'},
     {icon:'🔥', name:'Abyssal Mask', type:'situational', reason:'Tank için büyü direnci + CC zincirine yardımcı passive.'},
     {icon:'⚡', name:'Mercury Treads', type:'core', reason:'CC süresini %30 azaltır + büyü direnci. CC ağır takımlara karşı çok önemli.'},
@@ -821,15 +821,15 @@ const COUNTER_ITEMS = {
   tankCounter: [
     {icon:'🩸', name:'Blade of the Ruined King', type:'core', reason:'Mevcut canın %10\'unu fiziksel hasar verir. Tank ve yüksek HP düşmanlara karşı güçlü.'},
     {icon:'🗡️', name:'Lord Dominik\'s Regards', type:'core', reason:'Zırh delme + daha fazla cana sahip düşmanlara karşı bonus hasar.'},
-    {icon:'⚔️', name:'Liandry\'s Anguish', type:'core', reason:'Burn passive — mevcut canın %1.5\'ini yakar. Tank'lara karşı çok güçlü.'},
-    {icon:'🧪', name:'Void Staff', type:'core', reason:'%40 büyü delme. Tank'ların büyü direncini tamamen geçer.'},
+    {icon:'⚔️', name:'Liandry\'s Anguish', type:'core', reason:"Burns 1.5% of current health. Extremely strong into tanks."},
+    {icon:'🧪', name:'Void Staff', type:'core', reason:"40% magic penetration. Great for punching through tank MR."},
   ],
   // Against Healing / Sustain
   healCounter: [
     {icon:'🩹', name:'Mortal Reminder', type:'core', reason:'%40 iyileşme azaltma. Yaşam çalma ve iyileşme yapan tüm düşmanlara karşı.'},
     {icon:'☠️', name:'Executioner\'s Calling', type:'situational', reason:'Erken oyun iyileşme azaltma eşyası.'},
-    {icon:'💀', name:'Grievous Wounds', type:'core', reason:'Tüm iyileşmeyi %40 azaltır. Sustain'li takımlara karşı her zaman alınmalı.'},
-    {icon:'🔮', name:'Oblivion Orb', type:'situational', reason:'Mage'ler için erken iyileşme azaltma.'},
+    {icon:'💀', name:'Grievous Wounds', type:'core', reason:"Cuts all healing by 40%. Always valuable versus sustain-heavy teams."},
+    {icon:'🔮', name:'Oblivion Orb', type:'situational', reason:"Early anti-heal option for mages."},
   ],
   // Against Assassins / Burst
   assassinCounter: [
@@ -1068,7 +1068,7 @@ function calcThreat(ch){
 function analyze(){
   const team = enemyTeam.filter(Boolean);
   const n = team.length;
-  document.getElementById('champCountBadge').textContent = `${n} / 5 seçildi`;
+  document.getElementById('champCountBadge').textContent = `${n} / 5 selected`;
 
   if(n === 0){ resetAnalysisUI(); return; }
 
@@ -1148,11 +1148,11 @@ function renderThreat(score, n){
   else ring.style.stroke='#3dba6a';
 
   let grade, sub;
-  if(score >= 80){ grade='ÖLÜM TEHDİDİ'; sub='Bu takım son derece tehlikeli. Dikkatli ve organize oyna.'; }
-  else if(score >= 65){ grade='YÜKSEK TEHDİT'; sub='Güçlü bir karşı takım. Doğru karşı eşyalar şart.'; }
-  else if(score >= 50){ grade='ORTA TEHDİT'; sub='Dengeli bir karşı takım. Fırsatları değerlendir.'; }
-  else if(score >= 35){ grade='DÜŞÜK TEHDİT'; sub='Yönetilebilir bir takım. Avantajı sen belirle.'; }
-  else { grade='ZEK TEHDİT'; sub='Bu takımı kolayca geçebilirsin. Baskı uygula.'; }
+  if(score >= 80){ grade='DEADLY THREAT'; sub='This team is extremely dangerous. Play carefully and stay coordinated.'; }
+  else if(score >= 65){ grade='HIGH THREAT'; sub='A powerful enemy comp. Proper counter itemization is essential.'; }
+  else if(score >= 50){ grade='MEDIUM THREAT'; sub='A balanced enemy team. Look for openings and punish mistakes.'; }
+  else if(score >= 35){ grade='LOW THREAT'; sub='A manageable team. You can dictate the pace.'; }
+  else { grade='MINOR THREAT'; sub='This team is very punishable. Keep up the pressure.'; }
 
   document.getElementById('threatGrade').textContent = grade;
   document.getElementById('threatSublabel').textContent = sub;
@@ -1176,11 +1176,11 @@ function renderDamage(phys, magic, trueD){
   magicEl.setAttribute('stroke-dashoffset',-pPhys);
   trueEl.setAttribute('stroke-dasharray',`${pTrue} ${circ-pTrue}`);
   trueEl.setAttribute('stroke-dashoffset',-(pPhys+pMagic));
-  document.getElementById('donutLabel').textContent = phys >= magic ? `${phys}%\nFiziksel` : `${magic}%\nBüyü`;
+  document.getElementById('donutLabel').textContent = phys >= magic ? `${phys}%\nPhysical` : `${magic}%\nMagic`;
 }
 
 function renderCC(hasCC, allTypes){
-  const labels={knockup:'Knock-Up',knockback:'Geri İtme',stun:'Sersemletme',snare:'Hareketsiz',slow:'Yavaşlatma',charm:'Büyüleyicilik',silence:'Susturma',hook:'Kanca',suppress:'Bastırma',fear:'Korku'};
+  const labels={knockup:'Knock-Up',knockback:'Knockback',stun:'Stun',snare:'Root',slow:'Slow',charm:'Charm',silence:'Silence',hook:'Hook',suppress:'Suppress',fear:'Fear'};
   document.getElementById('ccTags').innerHTML = allTypes.map(cc=>`<div class="cc-tag ${hasCC[cc]?'has':'missing'}">${labels[cc]}</div>`).join('');
 }
 
@@ -1208,7 +1208,7 @@ function renderThreatCombos(team){
   combos.sort((a,b)=>b.score-a.score);
   const wrap = document.getElementById('threatCombos');
   if(combos.length===0){
-    wrap.innerHTML='<div class="empty-state">Tehlikeli sinerji combo yok</div>'; return;
+    wrap.innerHTML='<div class="empty-state">No dangerous synergy combo detected</div>'; return;
   }
   wrap.innerHTML = combos.slice(0,6).map(c=>`
     <div class="threat-combo anim">
@@ -1233,39 +1233,39 @@ function calcAnalysis(team, ratings, phys, magic, trueD, hasCC){
 
   // WEAKNESSES (enemy weaknesses = your opportunities)
   if(n>=3 && ratings['Tankiness']<3)
-    weaknesses.push({type:'ok',icon:'💥',title:'Frontline Yok — Saldır!',desc:'Düşman takımında tank yok. Dive kompozisyonuyla kolayca geçebilirsin.'});
+    weaknesses.push({type:'ok',icon:'💥',title:'No Frontline - Attack!',desc:'The enemy team has no real tank. Dive comps can break through them easily.'});
   if(n>=3 && ratings['Mobility']<3)
-    weaknesses.push({type:'ok',icon:'🎯',title:'Mobil Değil — Yakala!',desc:'Yavaş bir takım. CC zincirleriyle ve kanca ile kolay kill fırsatları elde edeceksin.'});
+    weaknesses.push({type:'ok',icon:'🎯',title:'Low Mobility - Punish It!',desc:'This is a slow comp. CC chains and hooks should create easy pick opportunities.'});
   if(n>=3 && ratings['Waveclear']<3)
-    weaknesses.push({type:'ok',icon:'🌊',title:'Waveclear Yetersiz',desc:'Minion dalgasını temizleyemezler. Split push ile lane baskısı uygula.'});
+    weaknesses.push({type:'ok',icon:'🌊',title:'Weak Waveclear',desc:'They cannot clear waves well. Pressure side lanes and split push aggressively.'});
   if(n>=3 && !classes.some(c=>['support','enchanter'].includes(c)))
-    weaknesses.push({type:'ok',icon:'💊',title:'Heal/Shield Yok',desc:'Takımda healer ya da shield yok. Agresif dövüşlerde avantajlısın.'});
+    weaknesses.push({type:'ok',icon:'💊',title:'No Heal or Shield',desc:'There is little defensive support in this comp. You can force more aggressive fights.'});
   if(n>=3 && ratings['Peel']<3)
-    weaknesses.push({type:'ok',icon:'🏃',title:'Peel Yapamıyorlar',desc:'Carry\'lerini koruyamıyorlar. Onların carry\'lerine ulaşmak kolay.'});
+    weaknesses.push({type:'ok',icon:'🏃',title:'Weak Peel',desc:'They struggle to protect their carries, so access to the backline is much easier.'});
   if(n>=3 && phys>=80)
-    weaknesses.push({type:'ok',icon:'🛡️',title:'Full Fiziksel Hasar',desc:`%${phys} fiziksel hasar. Armor stack (Thornmail + Frozen Heart) ile kolayca sayaç koyabilirsin.`});
+    weaknesses.push({type:'ok',icon:'🛡️',title:'Almost Full Physical Damage',desc:`They deal ${phys}% physical damage. Stacking armor like Thornmail and Frozen Heart is highly effective.`});
   if(n>=3 && magic>=80)
-    weaknesses.push({type:'ok',icon:'🔮',title:'Full Büyü Hasarı',desc:`%${magic} büyü hasarı. Banshee + Force of Nature ile kolayca karşılayabilirsin.`});
+    weaknesses.push({type:'ok',icon:'🔮',title:'Almost Full Magic Damage',desc:`They deal ${magic}% magic damage. Banshee's Veil and Force of Nature are excellent answers.`});
   if(n>=3 && !hasCC['stun'] && !hasCC['knockup'] && !hasCC['snare'])
-    weaknesses.push({type:'ok',icon:'🕊️',title:'Sert CC Yok',desc:'Düşmanın sert kontrol yeteneği yok. Agresif oynayabilirsin.'});
+    weaknesses.push({type:'ok',icon:'🕊️',title:'Low Hard CC',desc:'The enemy comp lacks reliable hard crowd control, so you can play more aggressively.'});
 
   // STRENGTHS (enemy strengths = things you need to worry about)
   if(n>=3 && ratings['Engage']>=8)
-    strengths.push({type:'crit',icon:'💥',title:'Çok Güçlü Engage',desc:'Düşman çok güçlü bir engage takımı. Vision kontrolü ve pozisyonlanma hayati.'});
+    strengths.push({type:'crit',icon:'💥',title:'Very Strong Engage',desc:'This team can start fights hard and fast. Vision control and positioning are critical.'});
   if(n>=3 && ratings['Carry']>=8)
-    strengths.push({type:'crit',icon:'💰',title:'Yüksek Hasar Carry',desc:'Düşman güçlü carry\'lere sahip. Onları snowball yapmadan öldür.'});
+    strengths.push({type:'crit',icon:'💰',title:'High Damage Carries',desc:'The enemy carries can take over fights. Shut them down before they snowball.'});
   if(n>=3 && ratings['Tankiness']>=8)
-    strengths.push({type:'warn',icon:'🏰',title:'Sağlam Frontline',desc:'Kalın bir frontline var. Anti-tank eşyalar (BotRK, LDR) almayı unutma.'});
+    strengths.push({type:'warn',icon:'🏰',title:'Durable Frontline',desc:'They have a sturdy front line. Do not skip anti-tank items like BotRK or LDR.'});
   if(n>=3 && hasCC['suppress'])
-    strengths.push({type:'crit',icon:'🔴',title:'Suppress Var!',desc:'Suppress'e karşı hiçbir şey yapılamaz. Hedef seçiminde dikkatli ol.'});
+    strengths.push({type:'crit',icon:'🔴',title:'Suppress Threat!',desc:'Suppress can instantly punish mistakes. Be disciplined with your positioning and target choice.'});
   if(n>=3 && (hasCC['knockup'] || hasCC['stun']) && ratings['Engage']>=7)
-    strengths.push({type:'crit',icon:'⚠️',title:'Kitle Kontrol Tehlikesi',desc:'Sert CC + güçlü engage kombinasyonu var. Tenacity ve Mercury Treads şart.'});
+    strengths.push({type:'crit',icon:'⚠️',title:'Heavy Crowd Control',desc:'They combine strong engage with hard CC. Tenacity and Mercury Treads are very valuable.'});
   if(n>=3 && ratings['Mobility']>=7)
-    strengths.push({type:'warn',icon:'💨',title:'Çok Mobil Takım',desc:'Düşman çok hızlı. Kırmızı smite, Rylai veya Frozen Mallet ile yavaşlat.'});
+    strengths.push({type:'warn',icon:'💨',title:'Highly Mobile Team',desc:'This comp moves fast and repositions well. Slows and point-and-click lockdown matter more here.'});
   if(trueD>=15)
-    strengths.push({type:'warn',icon:'💛',title:'True Hasar Var',desc:`%${trueD} gerçek hasar var. Hiçbir zırh veya büyü direnci bunu azaltamaz.`});
+    strengths.push({type:'warn',icon:'💛',title:'True Damage Present',desc:`They deal ${trueD}% true damage. Armor and MR will not reduce that portion.`});
   if(n>=4 && team.filter(c=>c.tags&&c.tags.includes('hypercarry')).length>=1)
-    strengths.push({type:'crit',icon:'👑',title:'Hypercarry Tehlikesi',desc:'Düşman takımında hypercarry var. Onu erken öldür veya snowball yapmasını engelle.'});
+    strengths.push({type:'crit',icon:'👑',title:'Hypercarry Threat',desc:'There is a hypercarry in this draft. Deny them early or they will take over late fights.'});
 
   return {weaknesses, strengths};
 }
@@ -1275,7 +1275,7 @@ function renderWarnings(weaknesses, strengths){
   const weakWrap = document.getElementById('weaknessList');
   const strWrap = document.getElementById('strengthList');
 
-  if(weaknesses.length===0) weakWrap.innerHTML='<div class="empty-state">Belirgin zayıflık tespit edilmedi</div>';
+  if(weaknesses.length===0) weakWrap.innerHTML='<div class="empty-state">No clear weakness detected</div>';
   else weakWrap.innerHTML = weaknesses.map(w=>`
     <div class="warning-item ${w.type} anim">
       <span class="warning-icon">${w.icon}</span>
@@ -1286,7 +1286,7 @@ function renderWarnings(weaknesses, strengths){
     </div>
   `).join('');
 
-  if(strengths.length===0) strWrap.innerHTML='<div class="empty-state">Belirgin güçlü yön yok</div>';
+  if(strengths.length===0) strWrap.innerHTML='<div class="empty-state">No standout strength detected</div>';
   else strWrap.innerHTML = strengths.map(w=>`
     <div class="warning-item ${w.type} anim">
       <span class="warning-icon">${w.icon}</span>
@@ -1298,7 +1298,7 @@ function renderWarnings(weaknesses, strengths){
   `).join('');
 
   // Also render in threats tab
-  if(strengths.length===0) warnWrap.innerHTML='<div class="empty-state">Büyük tehdit yok</div>';
+  if(strengths.length===0) warnWrap.innerHTML='<div class="empty-state">No major threat detected</div>';
   else warnWrap.innerHTML = strengths.map(w=>`
     <div class="warning-item ${w.type} anim">
       <span class="warning-icon">${w.icon}</span>
@@ -1312,7 +1312,7 @@ function renderWarnings(weaknesses, strengths){
 
 function renderItems(team, phys, magic, trueD, ratings, hasCC){
   const wrap = document.getElementById('itemBuilds');
-  if(team.length===0){ wrap.innerHTML='<div class="empty-state">Champion seç, eşya önerileri görün</div>'; return; }
+  if(team.length===0){ wrap.innerHTML='<div class="empty-state">Pick a champion to see item suggestions</div>'; return; }
 
   // Generate item recommendations per champion role
   const perRoleItems = [];
@@ -1328,7 +1328,7 @@ function renderItems(team, phys, magic, trueD, ratings, hasCC){
           <img src="https://ddragon.leagueoflegends.com/cdn/${DDVersion}/img/champion/${ch.id}.png" onerror="this.style.display='none'"/>
         </div>
         <div>
-          <div class="role-champ-name">${ch.name}'e Karşı</div>
+          <div class="role-champ-name">Against ${ch.name}</div>
           <div class="role-champ-role">${ch.class} · ${ch.type}</div>
         </div>
       </div>
@@ -1350,54 +1350,54 @@ function getCounterItems(ch, phys, magic, trueD, ratings, hasCC){
 
   // Anti-Healer
   if(ch.tags && (ch.tags.includes('sustain') || ch.id === 'Aatrox' || ch.id === 'Fiora' || ch.id === 'Garen' || ch.id === 'Darius')){
-    items.push({icon:'🩹', name:'Mortal Reminder', type:'core', reason:'Bu champion güçlü iyileşmeye sahip. İyileşme azaltma şart.'});
+    items.push({icon:'🩹', name:'Mortal Reminder', type:'core', reason:'This champion has strong sustain. Anti-heal is mandatory.'});
   }
   if(ch.id==='Senna'||ch.id==='Soraka'||ch.id==='Yuumi'||ch.class==='enchanter'){
-    items.push({icon:'☠️', name:'Grievous Wounds', type:'core', reason:'Enchanter heal\'ını kesmek için erken Grievous Wounds al.'});
+    items.push({icon:'☠️', name:'Grievous Wounds', type:'core', reason:'Buy anti-heal early to cut enchanter sustain.'});
   }
 
   // Against tanks
   if(ch.class==='tank' || ch.tankiness >= 8){
-    items.push({icon:'🩸', name:'Blade of the Ruined King', type:'core', reason:ch.name+'\'in yüksek HP\'sine karşı mevcut can hasarı.'});
-    items.push({icon:'🗡️', name:'Lord Dominik\'s', type:'core', reason:'Zırh delme — tank\'ın direncini geçer.'});
-    items.push({icon:'⚔️', name:'Liandry\'s Anguish', type:'core', reason:'Burn passive tank\'ı eriterek öldürür.'});
+    items.push({icon:'🩸', name:'Blade of the Ruined King', type:'core', reason:`Current-health damage is very strong against ${ch.name}.`});
+    items.push({icon:'🗡️', name:'Lord Dominik\'s', type:'core', reason:'Armor penetration helps shred tank resistances.'});
+    items.push({icon:'⚔️', name:'Liandry\'s Anguish', type:'core', reason:'The burn passive is excellent for melting tanks.'});
   }
 
   // Against magic damage
   if(ch.damage && ch.damage.magic > 60){
-    items.push({icon:'🔮', name:'Banshee\'s Veil', type:'core', reason:ch.name+'\'nin büyü burst\'üne karşı ilk yeteneği engeller.'});
-    items.push({icon:'🌑', name:'Force of Nature', type:'situational', reason:'Büyü direnci + yığılabilir stack ile hasar azaltma.'});
-    items.push({icon:'⚡', name:'Mercury Treads', type:'core', reason:'CC süresi azaltma + büyü direnci.'});
+    items.push({icon:'🔮', name:'Banshee\'s Veil', type:'core', reason:`Blocks the first burst spell from ${ch.name}.`});
+    items.push({icon:'🌑', name:'Force of Nature', type:'situational', reason:'Strong magic resistance with stacking durability.'});
+    items.push({icon:'⚡', name:'Mercury Treads', type:'core', reason:'Tenacity plus magic resistance is very efficient here.'});
   }
 
   // Against physical damage
   if(ch.damage && ch.damage.phys > 60){
-    items.push({icon:'🛡️', name:'Thornmail', type:'core', reason:ch.name+'\'nin fiziksel hasarını hasar olarak geri ver.'});
-    items.push({icon:'❄️', name:'Frozen Heart', type:'core', reason:'Saldırı hızı azaltma + zırh — AD\'ye karşı çok güçlü.'});
-    items.push({icon:'🧲', name:'Plated Steelcaps', type:'situational', reason:'Auto attack hasarını azalt.'});
+    items.push({icon:'🛡️', name:'Thornmail', type:'core', reason:`Efficient armor option against ${ch.name}'s physical damage.`});
+    items.push({icon:'❄️', name:'Frozen Heart', type:'core', reason:'Attack speed reduction plus armor is great into AD threats.'});
+    items.push({icon:'🧲', name:'Plated Steelcaps', type:'situational', reason:'Reduces incoming auto-attack damage.'});
   }
 
   // Against assassins
   if(ch.class==='assassin' || (ch.engage >= 7 && ch.tankiness <= 3)){
-    items.push({icon:'💛', name:'Zhonya\'s Hourglass', type:'core', reason:ch.name+' sana atladığında dokunulmazlık sağlar.'});
-    items.push({icon:'🌑', name:'Guardian Angel', type:'core', reason:'Assassin dive\'ına karşı revive şansı.'});
-    items.push({icon:'⚡', name:'Sterak\'s Gage', type:'situational', reason:'Burst hasarı kalkanla emer.'});
+    items.push({icon:'💛', name:'Zhonya\'s Hourglass', type:'core', reason:`Lets you deny ${ch.name}'s all-in with stasis.`});
+    items.push({icon:'🌑', name:'Guardian Angel', type:'core', reason:'Gives you a second life against assassin dives.'});
+    items.push({icon:'⚡', name:'Sterak\'s Gage', type:'situational', reason:'Helps absorb burst damage with a shield.'});
   }
 
   // Against high CC
   if(ch.cc && (ch.cc.includes('stun')||ch.cc.includes('knockup')||ch.cc.includes('snare')||ch.cc.includes('suppress'))){
-    items.push({icon:'⚡', name:'Mercury Treads', type:'core', reason:ch.name+'\'nin CC süresi %30 azalır.'});
-    items.push({icon:'💪', name:'Tenacity Items', type:'situational', reason:'Legend: Tenacity rünü + Unflinching ile CC azalt.'});
+    items.push({icon:'⚡', name:'Mercury Treads', type:'core', reason:`Reduces the crowd control impact from ${ch.name}.`});
+    items.push({icon:'💪', name:'Tenacity Items', type:'situational', reason:'Pair tenacity runes and items to reduce CC lockout.'});
   }
 
   // Against mobile
   if(ch.mobile >= 7){
-    items.push({icon:'🧊', name:'Rylai\'s Scepter', type:'situational', reason:ch.name+' çok hızlı — yavaşlatıcı passive değer katar.'});
+    items.push({icon:'🧊', name:'Rylai\'s Scepter', type:'situational', reason:`${ch.name} is very mobile, so extra slows are valuable.`});
   }
 
   // Against split push
   if(ch.split >= 7){
-    items.push({icon:'📡', name:'Teleport + Vision', type:'situational', reason:ch.name+' split push yapıyor. TP + ward kontrolü ile takip et.'});
+    items.push({icon:'📡', name:'Teleport + Vision', type:'situational', reason:`${ch.name} wants to split push. Match it with TP and strong ward coverage.`});
   }
 
   // Dedup and limit
@@ -1410,7 +1410,7 @@ function getCounterItems(ch, phys, magic, trueD, ratings, hasCC){
 
 function renderStrategy(team, ratings, phys, magic, hasCC){
   const wrap = document.getElementById('strategyCards');
-  if(team.length===0){ wrap.innerHTML='<div class="empty-state">Champion seç, strateji görün</div>'; return; }
+  if(team.length===0){ wrap.innerHTML='<div class="empty-state">Pick a champion to see strategy advice</div>'; return; }
 
   const cards = [];
   const hasEngage = ratings['Engage'] >= 7;
@@ -1421,47 +1421,47 @@ function renderStrategy(team, ratings, phys, magic, hasCC){
   const n = team.length;
 
   // EARLY GAME
-  cards.push({cls:'phase-early', icon:'🌅', title:'Erken Oyun (1-15dk)',
+  cards.push({cls:'phase-early', icon:'🌅', title:'Early Game (1-15 min)',
     desc: hasEngage
-      ? `Düşman erken engage yapabilir. Ward\'ları aktif kullan, 1v1\'den kaçın. Bot lane\'de 2v2 avoidance önemli.`
-      : `Düşman geç güçleniyor. Erken baskı uygula — lane swap veya agresif invade ile harita kontrolü al.`
+      ? `The enemy can force early engages. Use wards actively, avoid bad 1v1s, and respect early 2v2 fights in bot lane.`
+      : `This comp scales later. Apply early pressure with proactive lanes, invades, and objective setup.`
   });
 
   // MID GAME
-  cards.push({cls:'phase-mid', icon:'⚔️', title:'Orta Oyun (15-30dk)',
+  cards.push({cls:'phase-mid', icon:'⚔️', title:'Mid Game (15-30 min)',
     desc: hasMassCC
-      ? `Düşmanda güçlü mass CC var. Teamfight'tan önce Tenacity eşyaları al. Flash + CC'ye karşı daima geriye pozisyonlan.`
-      : `Karanlık bölgelere girme. Fırsatçı teamfight veya split push ile objective kontrol sağla.`
+      ? `The enemy has strong layered CC. Buy tenacity before key fights and position safely against Flash engages.`
+      : `Do not walk into dark areas. Look for opportunistic fights or split pressure around objectives.`
   });
 
   // LATE GAME
-  cards.push({cls:'phase-late', icon:'🏆', title:'Geç Oyun (30dk+)',
+  cards.push({cls:'phase-late', icon:'🏆', title:'Late Game (30+ min)',
     desc: hasCarry && ratings['Tankiness'] < 5
-      ? `Düşman carry'leri güçlü ama fronline zayıf. Onları dive ederek öldür, teamfight'ta önce carry'yi hedef al.`
+      ? `Their carries are dangerous but the frontline is weak. Dive the backline and prioritize carries in teamfights.`
       : hasTank
-        ? `Kalın bir frontline var. Engage'i bekle ve split push'a zorlama yap. Ziraat yapmadan engage'e girme.`
-        : `Düşman zayıf — agresif teamfight yap, baron/dragon kontrolünü ele geçir.`
+        ? `They have a thick frontline. Let them commit first and create pressure through side lanes before forcing fights.`
+        : `The enemy is vulnerable. Fight aggressively and take control of Baron and Dragon setups.`
   });
 
   // SPECIFIC TIPS
   if(hasCC['suppress'])
-    cards.push({cls:'tip', icon:'🔴', title:'SUPPRESS Uyarısı!',
-      desc:'Düşmanda Suppress var (Malzahar/Warwick). QSS eşyasını mutlaka al — tek kaçış yolu bu.'});
+    cards.push({cls:'tip', icon:'🔴', title:'SUPPRESS Warning!',
+      desc:'The enemy has suppress effects, such as Malzahar or Warwick. QSS is often your safest answer.'});
   if(hasMobility)
-    cards.push({cls:'tip', icon:'💨', title:'Mobil Takıma Karşı',
-      desc:'Düşman çok hızlı. Dar koridor dövüşlerini tercih et, açık alanda kovalama yapma.'});
+    cards.push({cls:'tip', icon:'💨', title:'Versus Mobile Teams',
+      desc:'They are very mobile. Prefer tight corridors and avoid long chases in open space.'});
   if(magic > 70)
-    cards.push({cls:'tip', icon:'🔮', title:'AP Takımına Karşı',
-      desc:`%${magic} büyü hasarı var. Tüm ekip erken MR almalı. Banshee veya FoN takıma şart.`});
+    cards.push({cls:'tip', icon:'🔮', title:'Versus Heavy AP',
+      desc:`They deal ${magic}% magic damage. Early MR across the team is highly valuable.`});
   if(phys > 70)
-    cards.push({cls:'tip', icon:'🛡️', title:'AD Takımına Karşı',
-      desc:`%${phys} fiziksel hasar var. Tüm ekip zırh almalı. Thornmail + Frozen Heart + Plated Steelcaps.`});
+    cards.push({cls:'tip', icon:'🛡️', title:'Versus Heavy AD',
+      desc:`They deal ${phys}% physical damage. Armor stacking, Thornmail, Frozen Heart, and Steelcaps are strong choices.`});
   if(ratings['Split Push'] >= 7)
-    cards.push({cls:'tip', icon:'🗺️', title:'Split Push Tehdidi',
-      desc:'Düşmanda güçlü split pusher var. Mapin diğer yarısında vision kontrolü sağla ve TP ile cevap ver.'});
+    cards.push({cls:'tip', icon:'🗺️', title:'Split Push Threat',
+      desc:'They have a strong split pusher. Maintain side vision and answer with TP when needed.'});
   if(ratings['Waveclear'] >= 7)
-    cards.push({cls:'tip', icon:'🌊', title:'Waveclear Takımına Karşı',
-      desc:'Düşman minyon dalgasını temizliyor. Dive yapmadan baron oynama — önce 5v5 avantajı sağla.'});
+    cards.push({cls:'tip', icon:'🌊', title:'Against Strong Waveclear',
+      desc:'They can stall waves well. Do not force Baron without first securing a real 5v5 advantage.'});
 
   wrap.innerHTML = cards.map(c=>`
     <div class="strategy-card ${c.cls} anim">
@@ -1476,7 +1476,7 @@ function renderStrategy(team, ratings, phys, magic, hasCC){
 
 function renderRunes(team, ratings, phys, magic, hasCC){
   const wrap = document.getElementById('runeGroups');
-  if(team.length===0){ wrap.innerHTML='<div class="empty-state">Champion seç, rün önerisi görün</div>'; return; }
+  if(team.length===0){ wrap.innerHTML='<div class="empty-state">Pick a champion to see rune suggestions</div>'; return; }
 
   const hasMassCC = hasCC['stun']||hasCC['knockup']||hasCC['snare']||hasCC['suppress'];
   const hasAssassin = team.some(c=>c.class==='assassin');
@@ -1496,7 +1496,7 @@ function renderRunes(team, ratings, phys, magic, hasCC){
 
   wrap.innerHTML = Object.entries(classRunes).map(([champName, runes])=>`
     <div class="rune-group-card anim">
-      <div class="rune-champ-label">${champName} vs Oynuyorsan</div>
+      <div class="rune-champ-label">If you are playing into ${champName}</div>
       <div class="rune-row">
         <span class="rune-chip keystone">${runes.keystone}</span>
         ${runes.primary.map(r=>`<span class="rune-chip">${r}</span>`).join('')}
@@ -1509,15 +1509,15 @@ function renderRunes(team, ratings, phys, magic, hasCC){
 function resetAnalysisUI(){
   document.getElementById('threatNum').textContent='—';
   document.getElementById('ringFill').style.strokeDashoffset='339.3';
-  document.getElementById('threatGrade').textContent='Düşman Seç';
-  document.getElementById('threatSublabel').textContent='5 champion seçerek düşman takımını analiz et';
-  document.getElementById('itemBuilds').innerHTML='<div class="empty-state">Champion seç, eşya önerileri görün</div>';
-  document.getElementById('strategyCards').innerHTML='<div class="empty-state">Champion seç, strateji görün</div>';
-  document.getElementById('runeGroups').innerHTML='<div class="empty-state">Champion seç, rün önerisi görün</div>';
-  document.getElementById('threatCombos').innerHTML='<div class="empty-state">Champion seç, tehditler görün</div>';
-  document.getElementById('warningList').innerHTML='<div class="empty-state">Analiz için champion seç</div>';
-  document.getElementById('weaknessList').innerHTML='<div class="empty-state">Champion seç, zayıflık analizi görün</div>';
-  document.getElementById('strengthList').innerHTML='<div class="empty-state">Champion seç, güç analizi görün</div>';
+  document.getElementById('threatGrade').textContent='Select Enemies';
+  document.getElementById('threatSublabel').textContent='Analyze the enemy team by selecting 5 champions';
+  document.getElementById('itemBuilds').innerHTML='<div class="empty-state">Pick a champion to see item suggestions</div>';
+  document.getElementById('strategyCards').innerHTML='<div class="empty-state">Pick a champion to see strategy advice</div>';
+  document.getElementById('runeGroups').innerHTML='<div class="empty-state">Pick a champion to see rune suggestions</div>';
+  document.getElementById('threatCombos').innerHTML='<div class="empty-state">Pick a champion to see threat combos</div>';
+  document.getElementById('warningList').innerHTML='<div class="empty-state">Pick a champion to start analysis</div>';
+  document.getElementById('weaknessList').innerHTML='<div class="empty-state">Pick a champion to see weakness analysis</div>';
+  document.getElementById('strengthList').innerHTML='<div class="empty-state">Pick a champion to see strength analysis</div>';
   document.getElementById('ratingRows').innerHTML='';
   document.getElementById('ccTags').innerHTML='';
   ['physPct','magicPct','truePct'].forEach(id=>document.getElementById(id).textContent='—%');
@@ -1526,7 +1526,7 @@ function resetAnalysisUI(){
     document.getElementById(id).setAttribute('stroke-dasharray','0 238.76');
   });
   document.getElementById('donutLabel').textContent='—';
-  document.getElementById('champCountBadge').textContent='0 / 5 seçildi';
+  document.getElementById('champCountBadge').textContent='0 / 5 selected';
 }
 
 init();
