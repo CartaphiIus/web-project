@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>LoL Quiz — Champion Knowledge Test</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --gold:#c8aa6e;--gold-light:#f0d98b;--gold-dim:#7a6235;
+  --navy:#091428;--navy-mid:#0d1b2e;--navy-light:#112040;
+  --red:#c03030;--red-bright:#ff4444;
+  --blue-magic:#4a9eff;--green-ok:#3dba6a;--orange-warn:#e88a2e;
+  --text:#f0e6d2;--text-dim:#a09b8c;
+  --border:rgba(200,170,110,0.22);--border-hot:rgba(200,170,110,0.65);
+  --enemy-red:rgba(180,30,30,0.15);--enemy-border:rgba(200,60,60,0.35);
+  --gold-border:rgba(200,170,110,0.35);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Rajdhani',sans-serif;
+  background:#070f1e;color:var(--text);
+  min-height:100vh;overflow-x:hidden;
+}
+body::before{
+  content:'';position:fixed;inset:0;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.06) 2px,rgba(0,0,0,.06) 4px);
+  pointer-events:none;z-index:9999;
+}
+body::after{
+  content:'';position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='100'%3E%3Cpath d='M28 66L0 50V16L28 0l28 16v34zm0 34L0 84V50l28-16 28 16v34z' fill='none' stroke='rgba(200,170,110,0.025)' stroke-width='1'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:0;
+}
+
+/* HEADER */
+header{
+  position:sticky;top:0;z-index:500;
+  background:rgba(7,15,30,.95);
+  border-bottom:1px solid var(--gold-border);
+  backdrop-filter:blur(12px);
+  padding:0 40px;
+  display:flex;align-items:center;justify-content:space-between;
+  height:64px;
+}
+.header-logo{display:flex;align-items:center;gap:14px;}
+.header-logo-icon{
+  width:36px;height:36px;
+  background:linear-gradient(135deg,#c8aa6e,#7a6235);
+  clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
+  display:grid;place-items:center;font-size:1rem;flex-shrink:0;
+}
+.header-logo h1{
+  font-family:'Cinzel',serif;font-size:.95rem;letter-spacing:3px;
+  color:var(--gold);text-transform:uppercase;font-weight:700;line-height:1.1;
+}
+.header-logo span{
+  display:block;font-family:'Rajdhani',sans-serif;
+  font-size:.65rem;letter-spacing:4px;color:var(--text-dim);font-weight:400;
+}
+.header-nav{display:flex;gap:6px;}
+.nav-btn{
+  background:transparent;border:1px solid var(--gold-border);
+  color:var(--text-dim);font-family:'Rajdhani',sans-serif;
+  font-size:.8rem;letter-spacing:2px;font-weight:600;
+  padding:6px 16px;border-radius:3px;cursor:pointer;
+  text-transform:uppercase;transition:all .25s;text-decoration:none;
+  display:flex;align-items:center;gap:6px;
+}
+.nav-btn:hover{border-color:var(--gold);color:var(--gold);}
+.nav-btn.active{background:rgba(200,170,110,.12);border-color:var(--gold);color:var(--gold);}
+
+/* MAIN */
+.main-wrap{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:40px 24px 80px;}
+
+/* SCORE BAR */
+.score-bar{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:32px;padding:14px 24px;
+  background:rgba(200,170,110,.05);
+  border:1px solid var(--gold-border);border-radius:6px;
+}
+.score-group{display:flex;flex-direction:column;align-items:center;gap:2px;}
+.score-label{font-size:.6rem;letter-spacing:3px;color:var(--text-dim);text-transform:uppercase;font-weight:700;}
+.score-val{font-family:'Cinzel',serif;font-size:1.5rem;font-weight:900;color:var(--gold);}
+.score-val.red{color:#ff8888;}
+.score-val.green{color:var(--green-ok);}
+.lives-row{display:flex;gap:6px;}
+.life{font-size:1.1rem;transition:all .3s;}
+.life.lost{opacity:.15;filter:grayscale(1);}
+.progress-wrap{flex:1;margin:0 24px;}
+.progress-label{font-size:.62rem;letter-spacing:2px;color:var(--text-dim);text-transform:uppercase;margin-bottom:6px;text-align:center;}
+.progress-track{height:6px;background:rgba(200,170,110,.1);border-radius:3px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(to right,var(--gold-dim),var(--gold));border-radius:3px;transition:width .5s ease;}
+.streak-badge{
+  font-family:'Share Tech Mono',monospace;font-size:.7rem;
+  background:rgba(200,170,110,.12);border:1px solid var(--gold-border);
+  border-radius:3px;padding:4px 10px;color:var(--gold);letter-spacing:1px;
+}
+.streak-badge.hot{background:rgba(200,80,30,.15);border-color:rgba(255,120,60,.4);color:#ff9944;}
+
+/* MODE SELECT */
+.mode-screen{text-align:center;padding:60px 0;}
+.mode-title{
+  font-family:'Cinzel',serif;font-size:2rem;font-weight:900;
+  letter-spacing:6px;color:var(--gold);text-transform:uppercase;margin-bottom:8px;
+}
+.mode-sub{font-size:.85rem;letter-spacing:2px;color:var(--text-dim);margin-bottom:48px;}
+.mode-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:720px;margin:0 auto 48px;}
+.mode-card{
+  background:rgba(200,170,110,.04);border:1.5px solid var(--gold-border);
+  border-radius:8px;padding:28px 20px;cursor:pointer;transition:all .3s;
+  position:relative;overflow:hidden;
+}
+.mode-card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(200,170,110,.08),transparent);
+  opacity:0;transition:opacity .3s;
+}
+.mode-card:hover{border-color:var(--gold);transform:translateY(-4px);box-shadow:0 8px 32px rgba(200,170,110,.1);}
+.mode-card:hover::before{opacity:1;}
+.mode-card.selected{border-color:var(--gold);background:rgba(200,170,110,.1);}
+.mode-icon{font-size:2.2rem;margin-bottom:12px;}
+.mode-name{font-family:'Cinzel',serif;font-size:.85rem;letter-spacing:3px;color:var(--gold);text-transform:uppercase;font-weight:700;margin-bottom:6px;}
+.mode-desc{font-size:.75rem;color:var(--text-dim);line-height:1.5;letter-spacing:.5px;}
+.mode-diff{
+  display:inline-block;margin-top:10px;
+  font-size:.58rem;letter-spacing:2px;font-weight:700;text-transform:uppercase;
+  padding:3px 8px;border-radius:2px;
+}
+.diff-easy{background:rgba(61,186,106,.15);color:var(--green-ok);border:1px solid rgba(61,186,106,.3);}
+.diff-med{background:rgba(232,138,46,.15);color:var(--orange-warn);border:1px solid rgba(232,138,46,.3);}
+.diff-hard{background:rgba(200,48,48,.15);color:#ff8888;border:1px solid rgba(200,48,48,.3);}
+.start-btn{
+  font-family:'Cinzel',serif;font-size:.85rem;letter-spacing:4px;
+  background:linear-gradient(135deg,rgba(200,170,110,.2),rgba(200,170,110,.05));
+  border:1.5px solid var(--gold);color:var(--gold);
+  padding:14px 48px;border-radius:4px;cursor:pointer;text-transform:uppercase;
+  font-weight:700;transition:all .3s;
+}
+.start-btn:hover{background:rgba(200,170,110,.25);box-shadow:0 0 24px rgba(200,170,110,.2);}
+.start-btn:disabled{opacity:.4;cursor:not-allowed;}
+
+/* QUIZ AREA */
+.quiz-screen{display:none;}
+.quiz-screen.active{display:block;}
+
+.question-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:24px;
+}
+.q-num{font-family:'Share Tech Mono',monospace;font-size:.75rem;letter-spacing:2px;color:var(--text-dim);}
+.q-mode-badge{
+  font-size:.6rem;letter-spacing:3px;font-weight:700;text-transform:uppercase;
+  padding:4px 12px;border-radius:3px;
+}
+.badge-splash{background:rgba(74,158,255,.12);border:1px solid rgba(74,158,255,.3);color:#7ab8ff;}
+.badge-trivia{background:rgba(200,170,110,.12);border:1px solid var(--gold-border);color:var(--gold);}
+.badge-ability{background:rgba(155,89,182,.15);border:1px solid rgba(155,89,182,.35);color:#c39bd3;}
+.badge-quote{background:rgba(61,186,106,.12);border:1px solid rgba(61,186,106,.3);color:#7ddba0;}
+
+/* TIMER */
+.timer-bar-wrap{height:4px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden;margin-bottom:28px;}
+.timer-bar{height:100%;background:linear-gradient(to right,var(--green-ok),var(--gold));border-radius:2px;transition:width .1s linear;}
+.timer-bar.danger{background:linear-gradient(to right,#c03030,#ff4444);}
+
+/* QUESTION CARD */
+.question-card{
+  background:rgba(200,170,110,.04);border:1px solid var(--gold-border);
+  border-radius:8px;padding:32px;margin-bottom:24px;text-align:center;
+  min-height:200px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+}
+.question-card.splash-mode{padding:0;overflow:hidden;background:transparent;border:none;min-height:auto;}
+.splash-container{
+  position:relative;width:100%;border-radius:8px;overflow:hidden;
+  border:1px solid var(--gold-border);
+}
+.splash-img{
+  width:100%;height:340px;object-fit:cover;object-position:top;
+  filter:brightness(.9) saturate(1.1);display:block;
+}
+.splash-fog{
+  position:absolute;inset:0;
+  background:linear-gradient(to bottom,transparent 40%,rgba(7,15,30,.95) 100%);
+}
+.splash-hint{
+  position:absolute;bottom:0;left:0;right:0;padding:20px;
+  font-size:.7rem;letter-spacing:2px;color:var(--text-dim);text-transform:uppercase;
+}
+.ability-showcase{
+  display:flex;align-items:center;gap:24px;flex-direction:column;padding:20px 0;
+}
+.ability-icon-wrap{
+  width:100px;height:100px;border-radius:8px;overflow:hidden;
+  border:2px solid rgba(155,89,182,.5);box-shadow:0 0 32px rgba(155,89,182,.2);
+}
+.ability-icon-wrap img{width:100%;height:100%;object-fit:cover;}
+.ability-key{
+  font-family:'Cinzel',serif;font-size:2.5rem;font-weight:900;
+  color:rgba(155,89,182,.6);letter-spacing:4px;
+}
+.ability-hint-text{font-size:.82rem;color:var(--text-dim);letter-spacing:1px;line-height:1.6;max-width:500px;}
+.question-text{
+  font-family:'Cinzel',serif;font-size:1.1rem;font-weight:700;
+  color:var(--gold-light);letter-spacing:2px;line-height:1.6;
+}
+.question-sub{font-size:.8rem;color:var(--text-dim);letter-spacing:1px;margin-top:8px;}
+
+/* ANSWERS */
+.answers-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px;}
+.answer-btn{
+  background:rgba(200,170,110,.04);border:1.5px solid var(--gold-border);
+  color:var(--text);font-family:'Rajdhani',sans-serif;
+  font-size:.95rem;letter-spacing:1px;font-weight:600;
+  padding:16px 20px;border-radius:6px;cursor:pointer;
+  text-align:left;transition:all .25s;position:relative;overflow:hidden;
+}
+.answer-btn::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:var(--gold);opacity:0;transition:opacity .2s;
+}
+.answer-btn:hover:not(:disabled){border-color:var(--gold);color:var(--gold-light);}
+.answer-btn:hover:not(:disabled)::before{opacity:1;}
+.answer-btn.correct{
+  background:rgba(61,186,106,.15);border-color:var(--green-ok);
+  color:#7ddba0;animation:pulse-green .4s ease;
+}
+.answer-btn.correct::before{background:var(--green-ok);opacity:1;}
+.answer-btn.wrong{
+  background:rgba(200,48,48,.15);border-color:#c03030;
+  color:#ff8888;
+}
+.answer-btn.wrong::before{background:#c03030;opacity:1;}
+.answer-btn.reveal{
+  background:rgba(61,186,106,.08);border-color:rgba(61,186,106,.4);
+  color:rgba(125,219,160,.6);
+}
+.answer-btn:disabled{cursor:not-allowed;}
+.answer-letter{
+  font-family:'Cinzel',serif;font-size:.65rem;font-weight:700;
+  color:var(--text-dim);letter-spacing:2px;margin-right:10px;
+}
+.answer-btn.correct .answer-letter{color:var(--green-ok);}
+.answer-btn.wrong .answer-letter{color:#c03030;}
+
+/* FEEDBACK */
+.feedback-bar{
+  display:flex;align-items:center;gap:14px;
+  padding:14px 20px;border-radius:6px;margin-bottom:20px;
+  font-size:.85rem;letter-spacing:1px;font-weight:600;
+  animation:slide-up .3s ease;
+}
+.feedback-bar.correct{background:rgba(61,186,106,.12);border:1px solid rgba(61,186,106,.3);color:#7ddba0;}
+.feedback-bar.wrong{background:rgba(200,48,48,.1);border:1px solid rgba(200,48,48,.25);color:#ff9999;}
+.feedback-icon{font-size:1.2rem;}
+.feedback-detail{font-size:.75rem;color:var(--text-dim);margin-top:2px;letter-spacing:.5px;}
+.next-btn{
+  width:100%;font-family:'Cinzel',serif;font-size:.8rem;letter-spacing:3px;
+  background:transparent;border:1px solid var(--gold-border);
+  color:var(--text-dim);padding:12px;border-radius:4px;
+  cursor:pointer;text-transform:uppercase;font-weight:700;transition:all .3s;
+}
+.next-btn:hover{border-color:var(--gold);color:var(--gold);}
+
+/* RESULTS SCREEN */
+.results-screen{display:none;text-align:center;padding:60px 0;}
+.results-screen.active{display:block;}
+.results-ring{position:relative;width:160px;height:160px;margin:0 auto 24px;}
+.results-ring svg{width:100%;height:100%;transform:rotate(-90deg);}
+.results-ring circle{fill:none;}
+.ring-bg{stroke:rgba(200,170,110,.1);stroke-width:10;}
+.ring-fill{stroke:var(--gold);stroke-width:10;stroke-linecap:round;stroke-dasharray:440;stroke-dashoffset:440;transition:stroke-dashoffset 1.5s cubic-bezier(.4,0,.2,1);}
+.ring-inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.ring-pct{font-family:'Cinzel',serif;font-size:2rem;font-weight:900;color:var(--gold);}
+.ring-label{font-size:.6rem;letter-spacing:3px;color:var(--text-dim);text-transform:uppercase;}
+.results-title{font-family:'Cinzel',serif;font-size:1.6rem;font-weight:900;letter-spacing:4px;color:var(--gold);margin-bottom:8px;}
+.results-sub{font-size:.85rem;color:var(--text-dim);letter-spacing:1px;margin-bottom:40px;}
+.results-stats{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:12px;
+  max-width:600px;margin:0 auto 40px;
+}
+.stat-box{
+  background:rgba(200,170,110,.05);border:1px solid var(--gold-border);
+  border-radius:6px;padding:16px 12px;
+}
+.stat-n{font-family:'Cinzel',serif;font-size:1.5rem;font-weight:900;color:var(--gold);}
+.stat-l{font-size:.62rem;letter-spacing:2px;color:var(--text-dim);text-transform:uppercase;margin-top:3px;}
+.history-list{max-width:600px;margin:0 auto 40px;text-align:left;display:flex;flex-direction:column;gap:6px;}
+.history-item{
+  display:flex;align-items:center;gap:12px;
+  padding:10px 14px;border-radius:4px;font-size:.78rem;letter-spacing:.5px;
+}
+.history-item.c{background:rgba(61,186,106,.08);border:1px solid rgba(61,186,106,.2);}
+.history-item.w{background:rgba(200,48,48,.06);border:1px solid rgba(200,48,48,.18);}
+.h-icon{font-size:.9rem;flex-shrink:0;}
+.h-q{flex:1;color:var(--text-dim);}
+.h-a{color:var(--text);font-weight:600;}
+.h-time{font-family:'Share Tech Mono',monospace;font-size:.65rem;color:var(--text-dim);}
+.results-btns{display:flex;gap:12px;justify-content:center;}
+.res-btn{
+  font-family:'Cinzel',serif;font-size:.75rem;letter-spacing:3px;
+  padding:12px 32px;border-radius:4px;cursor:pointer;text-transform:uppercase;font-weight:700;transition:all .3s;
+}
+.res-btn.primary{background:rgba(200,170,110,.15);border:1.5px solid var(--gold);color:var(--gold);}
+.res-btn.primary:hover{background:rgba(200,170,110,.25);}
+.res-btn.secondary{background:transparent;border:1px solid var(--gold-border);color:var(--text-dim);}
+.res-btn.secondary:hover{border-color:var(--gold);color:var(--gold);}
+
+/* RANK DISPLAY */
+.rank-badge{
+  display:inline-flex;align-items:center;gap:10px;
+  background:rgba(200,170,110,.08);border:1px solid var(--gold-border);
+  border-radius:6px;padding:10px 20px;margin-bottom:20px;
+}
+.rank-icon{font-size:1.8rem;}
+.rank-name{font-family:'Cinzel',serif;font-size:.9rem;letter-spacing:3px;color:var(--gold);text-transform:uppercase;}
+
+@keyframes pulse-green{0%{transform:scale(1)}50%{transform:scale(1.02)}100%{transform:scale(1)}}
+@keyframes slide-up{from{transform:translateY(8px);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+.shake{animation:shake .35s ease;}
+
+/* LOADING */
+.loading-pulse{
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  padding:40px;color:var(--text-dim);font-size:.75rem;letter-spacing:2px;text-transform:uppercase;
+}
+.pulse-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);animation:dot-pulse 1.2s infinite;}
+.pulse-dot:nth-child(2){animation-delay:.2s;}
+.pulse-dot:nth-child(3){animation-delay:.4s;}
+@keyframes dot-pulse{0%,80%,100%{transform:scale(0.6);opacity:.4}40%{transform:scale(1);opacity:1}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-logo">
+    <div class="header-logo-icon">⚔</div>
+    <h1>Rift Intel<span>League of Legends Suite</span></h1>
+  </div>
+  <nav class="header-nav">
+    <a href="index.html" class="nav-btn">Home</a>
+    <a href="sampiyonlar.html" class="nav-btn">Champions</a>
+    <a href="lore.html" class="nav-btn">Lore</a>
+    <a href="aboutus.html" class="nav-btn">About Us</a>
+    <a href="updates.html" class="nav-btn">Updates</a>
+    <a href="draft-builder.html" class="nav-btn">Draft Builder</a>
+    <a href="Counter analyzer.html" class="nav-btn">Counter Analyzer</a>
+    <button class="nav-btn active" type="button">Quiz</button>
+  </nav>
+</header>
+
+<div class="main-wrap">
+
+  <!-- SCORE BAR (hidden on mode select) -->
+  <div class="score-bar" id="scoreBar" style="display:none;">
+    <div class="score-group">
+      <span class="score-label">Score</span>
+      <span class="score-val" id="scoreVal">0</span>
+    </div>
+    <div class="score-group">
+      <span class="score-label">Correct</span>
+      <span class="score-val green" id="correctVal">0</span>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-label" id="progressLabel">Question 1 of 10</div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    </div>
+    <div class="score-group">
+      <span class="score-label">Lives</span>
+      <div class="lives-row" id="livesRow">
+        <span class="life">❤️</span><span class="life">❤️</span><span class="life">❤️</span>
+      </div>
+    </div>
+    <div class="score-group">
+      <span class="streak-badge" id="streakBadge">🔥 0 streak</span>
+    </div>
+  </div>
+
+  <!-- MODE SELECT SCREEN -->
+  <div class="mode-screen" id="modeScreen">
+    <div class="mode-title">Champion Quiz</div>
+    <div class="mode-sub">Test your League of Legends knowledge</div>
+
+    <div class="mode-grid">
+      <div class="mode-card" data-mode="splash" onclick="selectMode(this)">
+        <div class="mode-icon">🎨</div>
+        <div class="mode-name">Splash Art</div>
+        <div class="mode-desc">Identify the champion from their splash artwork. How well do you know their look?</div>
+        <span class="mode-diff diff-easy">Easy</span>
+      </div>
+      <div class="mode-card" data-mode="ability" onclick="selectMode(this)">
+        <div class="mode-icon">⚡</div>
+        <div class="mode-name">Ability Icons</div>
+        <div class="mode-desc">Identify which champion has this ability based on the icon and a hint.</div>
+        <span class="mode-diff diff-med">Medium</span>
+      </div>
+      <div class="mode-card" data-mode="trivia" onclick="selectMode(this)">
+        <div class="mode-icon">📜</div>
+        <div class="mode-name">Trivia</div>
+        <div class="mode-desc">Deep LoL knowledge — lore, stats, mechanics, history, and more.</div>
+        <span class="mode-diff diff-hard">Hard</span>
+      </div>
+      <div class="mode-card" data-mode="quote" onclick="selectMode(this)">
+        <div class="mode-icon">💬</div>
+        <div class="mode-name">Champion Quotes</div>
+        <div class="mode-desc">Read the iconic quote and name the champion who said it.</div>
+        <span class="mode-diff diff-med">Medium</span>
+      </div>
+      <div class="mode-card" data-mode="title" onclick="selectMode(this)">
+        <div class="mode-icon">🏷️</div>
+        <div class="mode-name">Champion Titles</div>
+        <div class="mode-desc">Match the epithet to the champion. "The Nine-Tailed Fox" — who is it?</div>
+        <span class="mode-diff diff-easy">Easy</span>
+      </div>
+      <div class="mode-card" data-mode="mixed" onclick="selectMode(this)">
+        <div class="mode-icon">🎲</div>
+        <div class="mode-name">Mixed Mode</div>
+        <div class="mode-desc">All question types shuffled together. The ultimate LoL knowledge test.</div>
+        <span class="mode-diff diff-hard">Hard</span>
+      </div>
+    </div>
+
+    <button class="start-btn" id="startBtn" onclick="startQuiz()" disabled>Select a Mode to Begin</button>
+  </div>
+
+  <!-- QUIZ SCREEN -->
+  <div class="quiz-screen" id="quizScreen">
+    <div class="question-header">
+      <span class="q-num" id="qNum">Question 1 / 10</span>
+      <span class="q-mode-badge badge-splash" id="qModeBadge">Splash Art</span>
+    </div>
+    <div class="timer-bar-wrap"><div class="timer-bar" id="timerBar" style="width:100%"></div></div>
+    <div class="question-card" id="questionCard">
+      <div class="loading-pulse"><span class="pulse-dot"></span><span class="pulse-dot"></span><span class="pulse-dot"></span></div>
+    </div>
+    <div id="feedbackArea"></div>
+    <div class="answers-grid" id="answersGrid"></div>
+    <button class="next-btn" id="nextBtn" style="display:none;" onclick="nextQuestion()">Next Question →</button>
+  </div>
+
+  <!-- RESULTS SCREEN -->
+  <div class="results-screen" id="resultsScreen">
+    <div class="rank-badge" id="rankBadge"><span class="rank-icon" id="rankIcon">🏆</span><span class="rank-name" id="rankName">Champion</span></div>
+    <div class="results-ring">
+      <svg viewBox="0 0 160 160"><circle class="ring-bg" cx="80" cy="80" r="70"/><circle class="ring-fill" id="ringFill" cx="80" cy="80" r="70"/></svg>
+      <div class="ring-inner"><span class="ring-pct" id="ringPct">0%</span><span class="ring-label">Accuracy</span></div>
+    </div>
+    <div class="results-title" id="resultsTitle">Results</div>
+    <div class="results-sub" id="resultsSub">Here's how you did</div>
+    <div class="results-stats">
+      <div class="stat-box"><div class="stat-n" id="rScore">0</div><div class="stat-l">Score</div></div>
+      <div class="stat-box"><div class="stat-n" id="rCorrect">0</div><div class="stat-l">Correct</div></div>
+      <div class="stat-box"><div class="stat-n" id="rWrong">0</div><div class="stat-l">Wrong</div></div>
+      <div class="stat-box"><div class="stat-n" id="rStreak">0</div><div class="stat-l">Best Streak</div></div>
+    </div>
+    <div class="history-list" id="historyList"></div>
+    <div class="results-btns">
+      <button class="res-btn primary" onclick="restartSameMode()">Play Again</button>
+      <button class="res-btn secondary" onclick="backToMenu()">Change Mode</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const DDv = '14.10.1';
+const BASE = `https://ddragon.leagueoflegends.com/cdn/${DDv}`;
+
+// ─── CHAMPION DATA ───────────────────────────────────────
+const CHAMPS = [
+  {id:'Ahri',      name:'Ahri',        title:'The Nine-Tailed Fox',   region:'Ionia',    class:'Mage',       role:'Mid',     quote:'"I think about him constantly, but I can\'t let feelings distract me from the hunt."'},
+  {id:'Akali',     name:'Akali',       title:'The Rogue Assassin',    region:'Ionia',    class:'Assassin',   role:'Mid',     quote:'"To be a leader, sometimes you need to take the first step."'},
+  {id:'Alistar',   name:'Alistar',     title:'The Minotaur',          region:'Runeterra',class:'Tank',       role:'Support', quote:'"You can\'t milk those."'},
+  {id:'Amumu',     name:'Amumu',       title:'The Sad Mummy',         region:'Shurima',  class:'Tank',       role:'Jungle',  quote:'"Why won\'t anyone play with me?"'},
+  {id:'Annie',     name:'Annie',       title:'The Dark Child',        region:'Runeterra',class:'Mage',       role:'Mid',     quote:'"Tibbers, sic \'em!"'},
+  {id:'Ashe',      name:'Ashe',        title:'The Frost Archer',      region:'Freljord', class:'Marksman',   role:'Bot',     quote:'"I am the arrow that fells the oppressor."'},
+  {id:'Blitzcrank',name:'Blitzcrank',  title:'The Great Steam Golem', region:'Zaun',     class:'Tank',       role:'Support', quote:'"Everything can be quantified."'},
+  {id:'Caitlyn',   name:'Caitlyn',     title:'The Sheriff of Piltover',region:'Piltover',class:'Marksman',  role:'Bot',     quote:'"I never miss — it\'s physics."'},
+  {id:'Darius',    name:'Darius',      title:'The Hand of Noxus',     region:'Noxus',    class:'Fighter',    role:'Top',     quote:'"Noxus does not suffer weakness."'},
+  {id:'Ekko',      name:'Ekko',        title:'The Boy Who Shattered Time',region:'Zaun', class:'Assassin',  role:'Mid',     quote:'"I\'ve done this a thousand times."'},
+  {id:'Ezreal',    name:'Ezreal',      title:'The Prodigal Explorer', region:'Piltover', class:'Marksman',   role:'Bot',     quote:'"Looks like we made it."'},
+  {id:'Fiora',     name:'Fiora',       title:'The Grand Duelist',     region:'Demacia',  class:'Fighter',    role:'Top',     quote:'"Victory is decided before the first strike."'},
+  {id:'Garen',     name:'Garen',       title:'The Might of Demacia',  region:'Demacia',  class:'Fighter',    role:'Top',     quote:'"Demacia!"'},
+  {id:'Jinx',      name:'Jinx',        title:'The Loose Cannon',      region:'Zaun',     class:'Marksman',   role:'Bot',     quote:'"Get excited!"'},
+  {id:'Kayn',      name:'Kayn',        title:'The Shadow Reaper',     region:'Ionia',    class:'Assassin',   role:'Jungle',  quote:'"This scythe... it wants something from me."'},
+  {id:'Katarina',  name:'Katarina',    title:'The Sinister Blade',    region:'Noxus',    class:'Assassin',   role:'Mid',     quote:'"Blade and shadow — tools of the trade."'},
+  {id:'Leesin',    name:'Lee Sin',     title:'The Blind Monk',        region:'Ionia',    class:'Fighter',    role:'Jungle',  quote:'"One must be the hammer, not the nail."'},
+  {id:'Leona',     name:'Leona',       title:'The Radiant Dawn',      region:'Targon',   class:'Tank',       role:'Support', quote:'"The sun will rise."'},
+  {id:'Lucian',    name:'Lucian',      title:'The Purifier',          region:'Runeterra',class:'Marksman',  role:'Bot',     quote:'"Rest in peace — after I\'m done with you."'},
+  {id:'Lux',       name:'Lux',         title:'The Lady of Luminosity',region:'Demacia',  class:'Mage',       role:'Mid',     quote:'"Radiance is my gift to the world."'},
+  {id:'Malphite',  name:'Malphite',    title:'Shard of the Monolith', region:'Ixtal',    class:'Tank',       role:'Top',     quote:'"Unstoppable."'},
+  {id:'MissFortune',name:'Miss Fortune',title:'The Bounty Hunter',    region:'Bilgewater',class:'Marksman', role:'Bot',     quote:'"They call me Miss Fortune for a reason."'},
+  {id:'Nautilus',  name:'Nautilus',    title:'The Titan of the Depths',region:'Runeterra',class:'Tank',     role:'Support', quote:'"I am the weight of the ocean."'},
+  {id:'Orianna',   name:'Orianna',     title:'The Lady of Clockwork', region:'Piltover', class:'Mage',       role:'Mid',     quote:'"Shall we play a game?"'},
+  {id:'RekSai',    name:"Rek'Sai",     title:'The Void Burrower',     region:'Void',     class:'Fighter',    role:'Jungle',  quote:'"[Shrieking from beneath the earth]"'},
+  {id:'Riven',     name:'Riven',       title:'The Exile',             region:'Noxus',    class:'Fighter',    role:'Top',     quote:'"I chose this exile."'},
+  {id:'Ryze',      name:'Ryze',        title:'The Rune Mage',         region:'Runeterra',class:'Mage',       role:'Mid',     quote:'"Magic is not a toy."'},
+  {id:'Shen',      name:'Shen',        title:'The Eye of Twilight',   region:'Ionia',    class:'Tank',       role:'Top',     quote:'"Balance is not something you find, it\'s something you create."'},
+  {id:'Sivir',     name:'Sivir',       title:'The Battle Mistress',   region:'Shurima',  class:'Marksman',   role:'Bot',     quote:'"Aim for the top — it\'s lonely there for a reason."'},
+  {id:'Syndra',    name:'Syndra',      title:'The Dark Sovereign',    region:'Ionia',    class:'Mage',       role:'Mid',     quote:'"True power comes at a price."'},
+  {id:'Thresh',    name:'Thresh',      title:'The Chain Warden',      region:'Shadow Isles',class:'Support',role:'Support', quote:'"Your soul will be mine."'},
+  {id:'TwistedFate',name:'Twisted Fate',title:'The Card Master',     region:'Bilgewater',class:'Mage',      role:'Mid',     quote:'"Lady Luck is smiling on me today."'},
+  {id:'Vayne',     name:'Vayne',       title:'The Night Hunter',      region:'Demacia',  class:'Marksman',   role:'Bot',     quote:'"I hunt monsters."'},
+  {id:'Vi',        name:'Vi',          title:'The Piltover Enforcer', region:'Piltover', class:'Fighter',    role:'Jungle',  quote:'"Piltover\'s finest, at your service."'},
+  {id:'Yasuo',     name:'Yasuo',       title:'The Unforgiven',        region:'Ionia',    class:'Fighter',    role:'Mid',     quote:'"Death is like the wind — always by my side."'},
+  {id:'Yone',      name:'Yone',        title:'The Unforgotten',       region:'Ionia',    class:'Fighter',    role:'Mid',     quote:'"I have slain a thousand of my own demons."'},
+  {id:'Zed',       name:'Zed',         title:'The Master of Shadows', region:'Ionia',    class:'Assassin',   role:'Mid',     quote:'"Stand in the light, and cast a shadow."'},
+  {id:'Zeri',      name:'Zeri',        title:'The Spark of Zaun',     region:'Zaun',     class:'Marksman',   role:'Bot',     quote:'"Come on, come on — keep up!"'},
+  {id:'Zilean',    name:'Zilean',      title:'The Chronokeeper',      region:'Runeterra',class:'Support',   role:'Support', quote:'"Time flies whether you want it to or not."'},
+];
+
+// ─── TRIVIA QUESTIONS ────────────────────────────────────
+const TRIVIA_QS = [
+  {q:'Which region is Thresh from?',  answers:['Shadow Isles','Void','Runeterra','Noxus'], correct:0, fact:'Thresh was once a warden who sought forbidden power on the Shadow Isles.'},
+  {q:'What currency is used in Bilgewater?', answers:['Gold Crowns','Silver Coins','Ducats','Bits'], correct:0, fact:'Gold Crowns are the primary currency in Bilgewater.'},
+  {q:'How many Elemental Drakes exist in the base game?', answers:['4','5','6','3'], correct:0, fact:'Ocean, Infernal, Mountain, and Cloud are the four elemental drakes.'},
+  {q:'Which champion holds the title "The Chronokeeper"?', answers:['Zilean','Ekko','Malzahar','Bard'], correct:0, fact:'Zilean lost his mind unraveling the secrets of time.'},
+  {q:'What is the base gold bounty for killing a champion?', answers:['300','250','400','200'], correct:0, fact:'Killing a champion always rewards at least 300 gold.'},
+  {q:'Which region does Ekko come from?', answers:['Zaun','Piltover','Bilgewater','Ionia'], correct:0, fact:'Ekko grew up in the harsh undercity of Zaun.'},
+  {q:'Rek\'Sai originates from which region?', answers:['Void','Shurima','Runeterra','Ixtal'], correct:0, fact:"Rek'Sai is a Void creature that tunnels beneath Shurima's sands."},
+  {q:'Which item grants a spell shield on a 40s cooldown?', answers:["Banshee's Veil",'Sterak\'s Gage','Maw of Malmortius','Guardian Angel'], correct:0, fact:"Banshee's Veil blocks the first ability that hits you."},
+  {q:'How many total towers does one team have?', answers:['11','9','13','7'], correct:0, fact:'Each team has 11 towers: 3 lanes × 3 tiers + 2 base towers.'},
+  {q:'Which champion\'s passive is called "Undertow"?', answers:['Olaf','Tryndamere','Darius','Garen'], correct:0, fact:'Olaf throws his axe which he can pick up for reduced cooldown.'},
+  {q:'What is the base respawn time at level 1?', answers:['8 seconds','6 seconds','10 seconds','12 seconds'], correct:0, fact:'Respawn time scales up with level throughout the game.'},
+  {q:'Fiora\'s ultimate is called what?', answers:['Grand Challenge','Blade Waltz','Riposte','Duelist\'s Dance'], correct:0, fact:'Grand Challenge reveals all four Vitals and heals the area if Fiora strikes them all.'},
+  {q:'Which faction does Darius serve?', answers:['Noxus','Demacia','Piltover','Freljord'], correct:0, fact:'Darius is the Hand of Noxus, its most feared general.'},
+  {q:'Baron Nashor first spawns at what time?', answers:['20 minutes','15 minutes','25 minutes','18 minutes'], correct:0, fact:'Baron spawns at 20 minutes and grants a powerful buff.'},
+  {q:'Twisted Fate is from which region?', answers:['Bilgewater','Noxus','Runeterra','Piltover'], correct:0, fact:'Twisted Fate is a renowned gambler from Bilgewater.'},
+  {q:'Which champion has a skill called "Mystic Shot"?', answers:['Ezreal','Lucian','Caitlyn','Jinx'], correct:0, fact:'Mystic Shot is Ezreal\'s Q — a long-range skill shot.'},
+  {q:'What is Ashe\'s region?', answers:['Freljord','Demacia','Runeterra','Noxus'], correct:0, fact:'Ashe is the Avarosan warmother who seeks to unite the Freljord.'},
+  {q:'The dragon pit is located in which quadrant of the map?', answers:['Bottom right','Top left','Bottom left','Top right'], correct:0, fact:"Dragon spawns in the river near bot lane on the map's right side."},
+  {q:'What buff does the Rift Herald grant after being activated?', answers:['Empowers recall and batters towers','Grants vision','Increases move speed','Provides CC immunity'], correct:0, fact:"The Rift Herald charges at the nearest tower and deals massive damage to it."},
+  {q:'Which champion is known as the "Purifier"?', answers:['Lucian','Vayne','Vi','Caitlyn'], correct:0, fact:'Lucian hunts the undead with magical weapons passed down in his family.'},
+];
+
+// ─── ABILITY QUESTIONS ───────────────────────────────────
+const ABILITY_QS = [
+  {champId:'Ahri',     slot:'Q', hint:'A bolt of energy that deals magic damage and returns to the caster.'},
+  {champId:'Blitzcrank',slot:'Q',hint:'A rocket fist that grabs and pulls the first enemy hit.'},
+  {champId:'Ashe',     slot:'R', hint:'A global enchanted arrow that stuns on impact.'},
+  {champId:'Lux',      slot:'E', hint:'A luminous sphere that slows and damages enemies in its area.'},
+  {champId:'Yasuo',    slot:'W', hint:'A wall of wind that blocks all incoming projectiles.'},
+  {champId:'Jinx',     slot:'R', hint:'A rocket fired globally that gains damage the further it travels.'},
+  {champId:'Zed',      slot:'R', hint:'A shadow mark placed on the target; lethal for isolated enemies.'},
+  {champId:'Thresh',   slot:'Q', hint:'A scythe thrown in a line that hooks the first enemy.'},
+  {champId:'Ekko',     slot:'R', hint:'Rewinds the champion to a past position, healing a portion of lost health.'},
+  {champId:'Leona',    slot:'R', hint:'A blinding dawn that strikes from the sky, stunning enemies in the center.'},
+  {champId:'Vi',       slot:'R', hint:'A charge that knocks aside enemies and pins the target.'},
+  {champId:'Orianna',  slot:'R', hint:'A shockwave that pulls nearby enemies to the Ball, dealing damage.'},
+  {champId:'Ryze',     slot:'R', hint:'Opens a portal that teleports an entire allied team.'},
+  {champId:'Vayne',    slot:'R', hint:'Enhanced stealth and movement when using Tumble.'},
+  {champId:'Caitlyn',  slot:'R', hint:'A long-range shot that can be blocked by enemies standing in the way.'},
+];
+
+// ─── STATE ───────────────────────────────────────────────
+let mode='', questions=[], qIndex=0, score=0, correct=0, wrong=0;
+let streak=0, bestStreak=0, lives=3, answered=false;
+let timerInterval=null, timeLeft=20, totalTime=20;
+let history=[];
+
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function rand(arr){return arr[Math.floor(Math.random()*arr.length)];}
+function pick(arr,n){return shuffle([...arr]).slice(0,n);}
+
+function selectMode(el){
+  document.querySelectorAll('.mode-card').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+  mode = el.dataset.mode;
+  const btn = document.getElementById('startBtn');
+  btn.disabled = false;
+  btn.textContent = 'Begin Quiz →';
+}
+
+function buildSplashQ(){
+  const champ = rand(CHAMPS);
+  const wrong3 = pick(CHAMPS.filter(c=>c.id!==champ.id), 3);
+  const opts = shuffle([champ, ...wrong3]);
+  return {type:'splash', champ, opts};
+}
+
+function buildAbilityQ(){
+  const aq = rand(ABILITY_QS);
+  const champ = CHAMPS.find(c=>c.id===aq.champId);
+  const wrong3 = pick(CHAMPS.filter(c=>c.id!==champ.id), 3);
+  const opts = shuffle([champ, ...wrong3]);
+  return {type:'ability', champ, opts, slot:aq.slot, hint:aq.hint};
+}
+
+function buildTriviaQ(){
+  const tq = rand(TRIVIA_QS);
+  // shuffle answer positions
+  const idxs = shuffle([0,1,2,3]);
+  const answers = idxs.map(i=>tq.answers[i]);
+  const correctIdx = idxs.indexOf(tq.correct);
+  return {type:'trivia', question:tq.q, answers, correctIdx, fact:tq.fact};
+}
+
+function buildQuoteQ(){
+  const champ = rand(CHAMPS.filter(c=>c.quote));
+  const wrong3 = pick(CHAMPS.filter(c=>c.id!==champ.id), 3);
+  const opts = shuffle([champ, ...wrong3]);
+  return {type:'quote', champ, opts};
+}
+
+function buildTitleQ(){
+  const champ = rand(CHAMPS);
+  const wrong3 = pick(CHAMPS.filter(c=>c.id!==champ.id), 3);
+  const opts = shuffle([champ, ...wrong3]);
+  return {type:'title', champ, opts};
+}
+
+function buildQSet(m, n=10){
+  const qs=[];
+  const builders={
+    splash:   ()=>buildSplashQ(),
+    ability:  ()=>buildAbilityQ(),
+    trivia:   ()=>buildTriviaQ(),
+    quote:    ()=>buildQuoteQ(),
+    title:    ()=>buildTitleQ(),
+    mixed:    ()=>[buildSplashQ,buildAbilityQ,buildTriviaQ,buildQuoteQ,buildTitleQ][Math.floor(Math.random()*5)](),
+  };
+  const b=builders[m]||builders.mixed;
+  for(let i=0;i<n;i++) qs.push(b());
+  return qs;
+}
+
+function startQuiz(){
+  questions = buildQSet(mode, 10);
+  qIndex=0; score=0; correct=0; wrong=0; streak=0; bestStreak=0; lives=3; history=[];
+  document.getElementById('modeScreen').style.display='none';
+  document.getElementById('scoreBar').style.display='flex';
+  document.getElementById('quizScreen').classList.add('active');
+  updateScoreBar();
+  renderQuestion();
+}
+
+function updateScoreBar(){
+  document.getElementById('scoreVal').textContent = score;
+  document.getElementById('correctVal').textContent = correct;
+  document.getElementById('progressLabel').textContent = `Question ${qIndex+1} of ${questions.length}`;
+  document.getElementById('progressFill').style.width = `${(qIndex/questions.length)*100}%`;
+  const lives_row=document.getElementById('livesRow');
+  lives_row.innerHTML='';
+  for(let i=0;i<3;i++){
+    const s=document.createElement('span');
+    s.className='life'+(i>=lives?' lost':'');
+    s.textContent='❤️';lives_row.appendChild(s);
+  }
+  const sb=document.getElementById('streakBadge');
+  sb.textContent=`🔥 ${streak} streak`;
+  sb.className='streak-badge'+(streak>=3?' hot':'');
+}
+
+function renderQuestion(){
+  const q=questions[qIndex];
+  answered=false;
+  document.getElementById('feedbackArea').innerHTML='';
+  document.getElementById('nextBtn').style.display='none';
+  document.getElementById('qNum').textContent=`Question ${qIndex+1} / ${questions.length}`;
+  clearInterval(timerInterval);
+
+  // badge
+  const badge=document.getElementById('qModeBadge');
+  const badgeMap={splash:['Splash Art','badge-splash'],ability:['Ability Icon','badge-ability'],trivia:['Trivia','badge-trivia'],quote:['Champion Quote','badge-quote'],title:['Champion Title','badge-trivia']};
+  const [bl,bc]=badgeMap[q.type]||['Quiz','badge-trivia'];
+  badge.textContent=bl; badge.className=`q-mode-badge ${bc}`;
+
+  // time limit by type
+  totalTime=q.type==='splash'?25:q.type==='trivia'?20:15;
+  timeLeft=totalTime;
+  startTimer();
+
+  // render card
+  const card=document.getElementById('questionCard');
+  if(q.type==='splash'){
+    card.className='question-card splash-mode';
+    card.innerHTML=`<div class="splash-container">
+      <img class="splash-img" src="https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${q.champ.id}_0.jpg"
+        onerror="this.onerror=null;this.src='https://ddragon.leagueoflegends.com/cdn/${DDv}/img/champion/${q.champ.id}.png';this.style.height='200px';this.style.objectFit='contain';this.style.padding='20px';"
+      />
+      <div class="splash-fog"></div>
+      <div class="splash-hint">Which champion is shown above?</div>
+    </div>`;
+  } else if(q.type==='ability'){
+    card.className='question-card';
+    card.innerHTML=`<div class="ability-showcase">
+      <div class="ability-icon-wrap">
+        <img src="https://ddragon.leagueoflegends.com/cdn/${DDv}/img/champion/${q.champ.id}.png"
+          onerror="this.onerror=null;this.style.background='#2a1a3a';this.style.display='block';"
+        />
+      </div>
+      <div class="ability-key">${q.slot}</div>
+      <p class="ability-hint-text">${q.hint}</p>
+    </div>`;
+  } else if(q.type==='trivia'){
+    card.className='question-card';
+    card.innerHTML=`<div class="question-text">${q.question}</div>`;
+  } else if(q.type==='quote'){
+    card.className='question-card';
+    card.innerHTML=`<div class="question-text" style="font-style:italic;font-size:.95rem;color:var(--gold-light);">"${q.champ.quote.replace(/['"]/g,'')}"</div><div class="question-sub">Which champion said this?</div>`;
+  } else if(q.type==='title'){
+    card.className='question-card';
+    card.innerHTML=`<div class="question-text">${q.champ.title}</div><div class="question-sub">Which champion holds this title?</div>`;
+  }
+
+  // render answers
+  const grid=document.getElementById('answersGrid');
+  const letters=['A','B','C','D'];
+  if(q.type==='trivia'){
+    grid.innerHTML=q.answers.map((a,i)=>`<button class="answer-btn" onclick="answer(this)" data-idx="${i}"><span class="answer-letter">${letters[i]}</span>${a}</button>`).join('');
+  } else {
+    grid.innerHTML=q.opts.map((c,i)=>`<button class="answer-btn" onclick="answer(this)" data-id="${c.id}"><span class="answer-letter">${letters[i]}</span>${c.name}</button>`).join('');
+  }
+}
+
+function startTimer(){
+  const bar=document.getElementById('timerBar');
+  bar.style.width='100%';bar.className='timer-bar';
+  clearInterval(timerInterval);
+  timerInterval=setInterval(()=>{
+    timeLeft-=0.1;
+    const pct=(timeLeft/totalTime)*100;
+    bar.style.width=pct+'%';
+    if(pct<30) bar.className='timer-bar danger';
+    if(timeLeft<=0){clearInterval(timerInterval);timeOut();}
+  },100);
+}
+
+function timeOut(){
+  if(answered) return;
+  answered=true;
+  const q=questions[qIndex];
+  // show correct
+  const grid=document.getElementById('answersGrid');
+  grid.querySelectorAll('.answer-btn').forEach(b=>{
+    b.disabled=true;
+    if(q.type==='trivia'){
+      if(parseInt(b.dataset.idx)===q.correctIdx) b.classList.add('correct');
+    } else {
+      if(b.dataset.id===q.champ.id) b.classList.add('correct');
+    }
+  });
+  showFeedback(false,'⏰','Time\'s up!', q.type==='trivia'?`Correct: ${q.answers[q.correctIdx]}`:`It was ${q.champ.name}`);
+  streak=0; lives=Math.max(0,lives-1);
+  history.push({correct:false,q:getQSummary(q),a:'Time Out',time:0});
+  updateScoreBar();
+  if(lives<=0){setTimeout(()=>endQuiz(),1200);return;}
+  document.getElementById('nextBtn').style.display='block';
+}
+
+function answer(btn){
+  if(answered) return;
+  answered=true;
+  clearInterval(timerInterval);
+  const q=questions[qIndex];
+  const timeBonus=Math.round(timeLeft*2);
+  let isCorrect=false;
+  const grid=document.getElementById('answersGrid');
+
+  if(q.type==='trivia'){
+    const clickedIdx = parseInt(btn.dataset.idx);
+    isCorrect = (clickedIdx === q.correctIdx);
+    grid.querySelectorAll('.answer-btn').forEach(b => {
+      b.disabled = true;
+      const idx = parseInt(b.dataset.idx);
+      if(idx === q.correctIdx){
+        b.classList.add('correct');
+      } else if(b === btn && !isCorrect){
+        b.classList.add('wrong');
+      }
+    });
+  } else {
+    const cid = q.champ.id;
+    isCorrect = (btn.dataset.id === cid);
+    grid.querySelectorAll('.answer-btn').forEach(b => {
+      b.disabled = true;
+      if(b.dataset.id === cid){
+        b.classList.add('correct');
+      } else if(b === btn && !isCorrect){
+        b.classList.add('wrong');
+      }
+    });
+  }
+
+  const pts=isCorrect?100+timeBonus+streak*10:0;
+  const correctAns=q.type==='trivia'?q.answers[q.correctIdx]:q.champ.name;
+  const fact=q.type==='trivia'?q.fact:'';
+
+  if(isCorrect){
+    score+=pts; correct++; streak++; bestStreak=Math.max(bestStreak,streak);
+    showFeedback(true,'✓',`+${pts} points${streak>1?` · ${streak}x streak`:''}`,fact);
+  } else {
+    lives=Math.max(0,lives-1); streak=0; wrong++;
+    showFeedback(false,'✗',`Correct answer: ${correctAns}`,fact);
+    if(lives<=0){setTimeout(()=>endQuiz(),1400);answered=true;
+      document.getElementById('nextBtn').style.display='none';return;}
+  }
+
+  history.push({correct:isCorrect,q:getQSummary(q),a:correctAns,time:Math.round(totalTime-timeLeft)});
+  updateScoreBar();
+  document.getElementById('nextBtn').style.display='block';
+}
+
+function getQSummary(q){
+  if(q.type==='splash') return `Splash: ${q.champ.name}`;
+  if(q.type==='ability') return `Ability ${q.slot}: ${q.champ.name}`;
+  if(q.type==='trivia') return q.question.slice(0,50)+'…';
+  if(q.type==='quote') return `Quote: "${q.champ.quote.slice(0,40)}…"`;
+  if(q.type==='title') return `Title: ${q.champ.title}`;
+  return 'Question';
+}
+
+function showFeedback(isOk,icon,msg,sub){
+  const area=document.getElementById('feedbackArea');
+  area.innerHTML=`<div class="feedback-bar ${isOk?'correct':'wrong'}">
+    <span class="feedback-icon">${icon}</span>
+    <div><div>${msg}</div>${sub?`<div class="feedback-detail">${sub}</div>`:''}</div>
+  </div>`;
+}
+
+function nextQuestion(){
+  qIndex++;
+  if(qIndex>=questions.length){endQuiz();return;}
+  renderQuestion();
+}
+
+function endQuiz(){
+  clearInterval(timerInterval);
+  document.getElementById('quizScreen').classList.remove('active');
+  document.getElementById('scoreBar').style.display='none';
+  const res=document.getElementById('resultsScreen');
+  res.style.display='block';res.classList.add('active');
+
+  const total=correct+wrong;
+  const pct=total>0?Math.round((correct/total)*100):0;
+  document.getElementById('ringPct').textContent=pct+'%';
+  document.getElementById('rScore').textContent=score;
+  document.getElementById('rCorrect').textContent=correct;
+  document.getElementById('rWrong').textContent=wrong;
+  document.getElementById('rStreak').textContent=bestStreak;
+
+  // animate ring
+  const circ=2*Math.PI*70;
+  setTimeout(()=>{document.getElementById('ringFill').style.strokeDashoffset=circ-(pct/100)*circ;},100);
+
+  // rank
+  const ranks=[
+    {min:90,icon:'👑',name:'Challenger',msg:'Flawless. The Rift bows to your knowledge.'},
+    {min:75,icon:'💎',name:'Diamond',  msg:'Exceptional. You know this game deeply.'},
+    {min:60,icon:'🏆',name:'Platinum', msg:'Solid performance. A true Summoner.'},
+    {min:45,icon:'⚔️',name:'Gold',     msg:'Good showing. Keep studying the rift.'},
+    {min:0, icon:'🛡️',name:'Bronze',   msg:'You\'ll get there. Keep playing and learning.'},
+  ];
+  const rank=ranks.find(r=>pct>=r.min);
+  document.getElementById('rankIcon').textContent=rank.icon;
+  document.getElementById('rankName').textContent=rank.name;
+  document.getElementById('resultsTitle').textContent=rank.name+' Summoner';
+  document.getElementById('resultsSub').textContent=rank.msg;
+
+  // history
+  const hl=document.getElementById('historyList');
+  hl.innerHTML=history.slice(0,8).map(h=>`<div class="history-item ${h.correct?'c':'w'}">
+    <span class="h-icon">${h.correct?'✓':'✗'}</span>
+    <span class="h-q">${h.q}</span>
+    <span class="h-a">${h.a}</span>
+    <span class="h-time">${h.time}s</span>
+  </div>`).join('');
+}
+
+function restartSameMode(){
+  document.getElementById('resultsScreen').style.display='none';
+  document.getElementById('resultsScreen').classList.remove('active');
+  startQuiz();
+}
+
+function backToMenu(){
+  document.getElementById('resultsScreen').style.display='none';
+  document.getElementById('resultsScreen').classList.remove('active');
+  document.getElementById('scoreBar').style.display='none';
+  document.getElementById('quizScreen').classList.remove('active');
+  document.getElementById('modeScreen').style.display='block';
+  document.querySelectorAll('.mode-card').forEach(c=>c.classList.remove('selected'));
+  const btn=document.getElementById('startBtn');
+  btn.disabled=true;btn.textContent='Select a Mode to Begin';
+}
+</script>
+</body>
+</html>

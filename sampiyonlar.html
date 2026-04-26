@@ -1,7 +1,6 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>LoL Champions Hub</title>
     <link rel="icon" type="image/x-icon" href="96px-Champie_Sona_profileicon.ico">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,18 +21,36 @@
             <li><a href="sampiyonlar.html" class="active">CHAMPIONS</a></li>
             <li><a href="lore.html">LORE</a></li>
             <li><a href="aboutus.html">ABOUT US</a></li>
-             <li><a href="updates.html">UPDATES</a></li>
+            <li><a href="updates.html">UPDATES</a></li>
+            <li><a href="draft-builder.html">DRAFT BUILDER</a></li>
+            <li><a href="Counter analyzer.html">COUNTER ANALYZER</a></li>
+            <li><a href="Quiz.html">QUIZ</a></li>
+             
+
         </ul>
     </nav>
 
     <div class="search-bar">
-        <input type="text" placeholder="Search for your favorite Champion...">
+        <input
+            type="text"
+            id="championSearch"
+            placeholder="Search for your favorite Champion..."
+            autocomplete="off"
+        >
+        <div class="search-results" id="searchResults"></div>
         <span style="color: #c8aa6e;">🔍</span>
     </div>
 </header>
 
 <div class="container">
-    <div class="champion-grid">
+    <div class="champion-toolbar">
+        <div class="lane-filters" id="laneFilters"></div>
+        <div class="champion-toolbar-meta">
+            <span id="championCount">Loading champions...</span>
+            <span class="champion-toolbar-note">Champions are grouped by their most common primary role.</span>
+        </div>
+    </div>
+    <div class="champion-grid" id="championGrid">
         <div class="champion-card" data-champion="Aatrox" data-title="the Darkin Blade" data-img="aatrox.avif" data-imgpos="center">
             <img src="aatrox.avif" alt="Aatrox">
             <div class="champion-info">
@@ -554,11 +571,11 @@
             </div>
         </div>
 
-        <div class="champion-card" data-champion="Kled" data-title="The Cantankerous Cavalier" data-img="Kled_0.jpg" data-imgpos="80% center">
+        <div class="champion-card" data-champion="Kled" data-title="The Healthtankerous Cavalier" data-img="Kled_0.jpg" data-imgpos="80% center">
             <img src="Kled_0.jpg" alt="Kled" style="object-position: 80% center;">
             <div class="champion-info">
                 <span class="champion-name">Kled</span>
-                <span class="champion-title">The Cantankerous Cavalier</span>
+                <span class="champion-title">The Healthtankerous Cavalier</span>
             </div>
         </div>
 
@@ -786,25 +803,21 @@
 
 <div class="detail-panel" id="detailPanel">
 
-    <!-- KAPAT BUTONU -->
+    <!-- Close button -->
     <button class="panel-close" id="panelClose" aria-label="Close">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
         </svg>
     </button>
 
-    <!-- SOL KOLON: Video + Yetenekler -->
+    <!-- Left column: video and abilities -->
     <div class="panel-left">
         <div class="panel-left-inner">
 
-            <!-- VİDEO BÖLÜMÜ -->
+            <!-- Video section -->
             <div class="panel-video-section">
                 <div class="panel-section-label">CHAMPION VIDEO</div>
                 <div class="panel-video-wrapper" id="panelVideoWrapper">
-                    <div class="panel-video-loading" id="panelVideoLoading">
-                        <span class="video-spinner"></span>
-                        <span>Loading video...</span>
-                    </div>
                     <iframe
                         id="panelVideoFrame"
                         src=""
@@ -814,12 +827,30 @@
                         allowfullscreen
                         style="display:none;"
                     ></iframe>
+                    <a
+                        id="panelVideoPreview"
+                        class="panel-video-preview"
+                        href="#"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style="display:none;"
+                    >
+                        <img id="panelVideoThumbnail" src="" alt="Champion video preview">
+                        <span class="panel-video-preview-overlay">
+                            <span class="panel-video-preview-tag">Champion Spotlight</span>
+                            <span class="panel-video-preview-cta">Watch on YouTube</span>
+                        </span>
+                    </a>
+                    <div class="panel-video-loading" id="panelVideoLoading">
+                        <span class="video-spinner"></span>
+                        <span>Loading video...</span>
+                    </div>
                     <div class="panel-video-error" id="panelVideoError" style="display:none;">
                         <span>🎬</span>
-                        <span>Embedded video unavailable</span>
+                        <span>No official Riot spotlight video available</span>
                     </div>
                 </div>
-                <a id="panelVideoLink" class="panel-video-link" href="#" target="_blank" rel="noopener noreferrer" style="display:none;">Find latest spotlight on YouTube</a>
+                <a id="panelVideoLink" class="panel-video-link" href="#" target="_blank" rel="noopener noreferrer" style="display:none;">Watch on YouTube</a>
             </div>
 
             <div class="panel-divider">
@@ -828,7 +859,7 @@
                 <span class="divider-line"></span>
             </div>
 
-            <!-- YETENEKLer BÖLÜMÜ -->
+            <!-- Abilities section -->
             <div class="panel-abilities-section">
                 <div class="panel-section-label">ABILITIES</div>
                 <div class="abilities-grid" id="panelAbilities">
@@ -842,7 +873,7 @@
         </div>
     </div>
 
-    <!-- SAĞ KOLON: Görsel + Hikaye -->
+    <!-- Right column: artwork and lore -->
     <div class="panel-right">
 
         <div class="panel-hero">
@@ -858,13 +889,23 @@
         <div class="panel-lore-section">
             <h3 class="panel-lore-heading">LORE</h3>
             <p id="panelLore" class="panel-lore-text"></p>
+            <div class="panel-detail-block">
+                <h3 class="panel-lore-heading">STATS</h3>
+                <div id="panelStats" class="panel-stats-grid"></div>
+            </div>
+            <div class="panel-detail-block">
+                <h3 class="panel-lore-heading">TIPS</h3>
+                <div id="panelTips" class="panel-tips"></div>
+            </div>
         </div>
 
     </div>
 
 </div>
 
+<script src="champion-lanes.js"></script>
 <script>
+const ENGLISH_DDRAGON_VERSION = '16.8.1';
 const championLore = {
   "Aatrox": "Aatrox was once a noble Ascended warrior of Shurima, but he became a corrupted Darkin after the wars against the Void. Humanity trapped his essence inside his own sword, leaving him in a soul-crushing darkness for centuries. Now, he manifests by possessing the bodies of those foolish enough to wield his blade, though their flesh quickly withers under his power. Driven by agony and madness, he seeks to destroy all of existence in hopes of finally ending his own immortal suffering. Once a world protector, he is now the World Ender, a living weapon of pure destruction..",
   "Ahri": "Ahri is a vastaya from Ionia who was born with a natural connection to the spirit realm. She originally survived by consuming the life essence and memories of mortals to feel more human. However, this left her deeply conflicted and haunted by the lives she had taken. She eventually chose to control her hunger to seek out her lost heritage and her ancestors, the Vesani. Now, she travels the world seeking balance between her predatory nature and her quest for identity. As a nine-tailed fox, she uses her charms and spirit fire to protect her path.",
@@ -962,18 +1003,21 @@ function localizeStaticText() {
 
     if (videoLabel) videoLabel.textContent = 'CHAMPION VIDEO';
     if (videoLoadingText) videoLoadingText.textContent = 'Loading video...';
-    if (videoErrorText) videoErrorText.textContent = 'Embedded video unavailable';
+    if (videoErrorText) videoErrorText.textContent = 'No official Riot spotlight video available';
     if (abilitiesLabel) abilitiesLabel.textContent = 'ABILITIES';
     if (abilityLoadingText) abilityLoadingText.textContent = 'Loading abilities...';
     if (panelTag) panelTag.textContent = 'CHAMPION';
     if (loreHeading) loreHeading.textContent = 'LORE';
 }
 
-// Riot Data Dragon sürümü (güncel)
-const DDragon_VERSION = '15.10.1';
-const DDragon_BASE = `https://ddragon.leagueoflegends.com/cdn/${DDragon_VERSION}`;
+let championDataBundle = { version: ENGLISH_DDRAGON_VERSION, data: {} };
+let championDataMap = {};
 
-// Şampiyon adını Data Dragon key'ine çeviren map (özel isimlendirmeler)
+// Current Riot Data Dragon version
+let DDragon_VERSION = ENGLISH_DDRAGON_VERSION;
+let DDragon_BASE = `https://ddragon.leagueoflegends.com/cdn/${DDragon_VERSION}`;
+
+// Champion name to Data Dragon key map (special naming cases)
 const championKeyMap = {
   "Aatrox": "Aatrox", "Ahri": "Ahri", "Zed": "Zed", "Sona": "Sona",
   "Lee Sin": "LeeSin", "Katarina": "Katarina", "Thresh": "Thresh",
@@ -1006,9 +1050,33 @@ const championKeyMap = {
   "Yasuo": "Yasuo", "Lux": "Lux"
 };
 
-// Şampiyon YouTube video ID map
+// Champion YouTube video ID map
 const championVideoIds = {
   "Aatrox": "mNlgCZ85rJU", "Ahri": "qwyXMLwrtrE", "Zed": "5itYsy1EOnQ",
+  "Ambessa": "3dAb0HADFYU", "Dr. Mundo": "1MOjmAsF3OM",
+  "Akshan": "nR0j9MLjU4k", "Alistar": "a9_Hzl1NzuU", "Amumu": "0AvWV6Mk374",
+  "Anivia": "8SyM9tGYReE", "Annie": "B3towygTJhU", "Bel'Veth": "D4MBqR-VDEQ",
+  "Braum": "fvR--mV1l0A", "Briar": "QfCHG8d6zG4", "Brand": "vvuAw6KNn2E",
+  "Cassiopeia": "neQNvEyuhPU", "Corki": "9hJfpcwT1jQ", "Elise": "xUeNhAOGIHU",
+  "Fizz": "wqkc5BnpNAY", "Gnar": "INjR0Rwm8CI", "Gragas": "F-v2X2-gjvQ",
+  "Graves": "umxjA0q0IYU", "Heimerdinger": "RwNJ_m3S8t4", "Ivern": "L3w3_2E7Ns8",
+  "Jhin": "B4-BgDEy2AE", "Kalista": "Hf0o3EYB3Aw", "Karma": "_w3TBtAmjJI",
+  "Kayle": "adf-F4f0H9Q", "Kennen": "ZmzTnFJpfCg", "Kog'Maw": "0h3A4H4JzNQ",
+  "K'Sante": "Ud3iUqT2DdU", "LeBlanc": "f1Y34gztQ4w", "Lissandra": "CYyuH1Bp2ZI",
+  "Lucian": "Zf4XwCcvu5I", "Maokai": "7Fl2Wg5rkew", "Master Yi": "jFS4kqOYbAk",
+  "Milio": "Y3yoV_D1r6c", "Naafiri": "pKkLZlK5r2c", "Nami": "wd_Sz59QTVk",
+  "Nunu & Willump": "JrDnkQJRXuQ", "Ornn": "d8w_XsKQ14E", "Quinn": "O9eVLrcih9s",
+  "Rammus": "aeU2b9s-ZVw", "Rek'Sai": "c7rV-6s7P0g", "Rell": "ETaOCPL31U8",
+  "Renata Glasc": "bHftuUO_BKA", "Rumble": "Dghwqj_Qddc", "Ryze": "qNk6uNCLuDo",
+  "Sejuani": "7Fl2Wg5rkew", "Shaco": "Q9m48jiVWL4", "Singed": "ZOpT__qwjdQ",
+  "Sion": "aVuSi_ueNA0", "Smolder": "2jb0x7-JvO8", "Soraka": "KJ6f1nsoUTs",
+  "Sylas": "L6tWvy3JvFI", "Tahm Kench": "u9RM4HwwoKs", "Taliyah": "O7MwJ5WGA_A",
+  "Taric": "nPmZx7vM4wA", "Tristana": "633CHC6TTYY", "Trundle": "ImDVrSscUqA",
+  "Twisted Fate": "xfLinqHfP14", "Udyr": "dK4LE5WFWE8", "Urgot": "2ByJbA8Nh1I",
+  "Varus": "3U4WdutoYbI", "Vex": "R9oX0QpwEvA", "Vladimir": "Z4lBfM5SM0Y",
+  "Wukong": "k1zAhC5aeQs", "Xerath": "2v5MmuMJ2qU", "Xin Zhao": "AqwW2X6Q5AY",
+  "Yorick": "MneYj7W7UF0", "Zac": "7Fl2Wg5rkew", "Zeri": "2JYgD5n7vQ8",
+  "Ziggs": "x65qD4mM3N4", "Zilean": "J5ykbm8sJj4",
   "Sona": "BSsW1xkU1yU", "Lee Sin": "uGWeKV80jZo", "Katarina": "0pPV2Ehdhks",
   "Thresh": "52nII6q_OXM", "Vayne": "em1hzfw2cTY", "Darius": "3Fgq1ylnNxQ",
   "Leona": "yokpl6ReG1Y", "Caitlyn": "muYLs3wXpG4", "Morgana": "uYDyx8v4g4U",
@@ -1016,175 +1084,362 @@ const championVideoIds = {
   "Ekko": "YiYAGR06U2I", "Miss Fortune": "x0DwKnIgBgs", "Viktor": "eWZIW77zMm4",
   "Orianna": "Ov8MWMThSPs", "Jayce": "250V-xRh6dk", "Irelia": "pu8z9zJFHVg",
   "Pyke": "TXFfghY7kpM", "Kai'Sa": "PqlTxVd6FPI", "Akali": "01jlCIyLitQ",
-  "Jinx": "", "Vi": "", "Swain": "",
-  "Pantheon": "", "Samira": "", "Volibear": "",
-  "Twitch": "", "Malphite": "", "Nautilus": "",
-  "Jax": "", "Fiora": "", "Garen": "",
-  "Kassadin": "", "Malzahar": "", "Kayn": "",
-  "Mordekaiser": "", "Warwick": "", "Xayah": "",
-  "Rakan": "", "Seraphine": "", "Yuumi": "",
-  "Blitzcrank": "", "Draven": "", "Cho'Gath": "",
-  "Kha'Zix": "", "Rengar": "", "Zoe": "",
-  "Vel'Koz": "", "Teemo": "", "Aurelion Sol": "",
-  "Azir": "", "Bard": "", "Camille": "",
-  "Fiddlesticks": "", "Galio": "", "Gangplank": "",
-  "Gwen": "", "Hecarim": "", "Illaoi": "",
-  "Jarvan IV": "", "Karthus": "", "Kled": "",
-  "Lulu": "", "Nasus": "", "Neeko": "",
-  "Nidalee": "", "Nocturne": "", "Olaf": "",
-  "Poppy": "", "Qiyana": "", "Renekton": "",
-  "Senna": "", "Shen": "", "Shyvana": "",
-  "Talon": "", "Tryndamere": "", "Viego": "",
-  "Zyra": "", "Aphelios": "", "Syndra": "",
-  "Ashe": "", "Sett": "", "Yone": "",
-  "Kindred": "", "Veigar": "", "Lillia": "",
-  "Evelynn": "", "Yasuo": "", "Lux": ""
+  "Jinx": "xf0Qsm89qi0", "Vi": "AsH4abqB-cI", "Swain": "8uclTlkGq90",
+  "Pantheon": "nnXMYwbctXU", "Samira": "wugifsDSHyA", "Volibear": "VqFWpVB4l3M",
+  "Twitch": "QTtQR2LpKQg", "Malphite": "WIh69Xdv_bk", "Nautilus": "DBwBKheelg0",
+  "Jax": "op6TpJjGcng", "Fiora": "G7SZX-dnMV4", "Garen": "tqszl0qSP-c",
+  "Kassadin": "SE3NirwFNJQ", "Malzahar": "GiwAMiNZY1I", "Kayn": "pPaauwI6G5s",
+  "Mordekaiser": "bKs9LfkxIdk", "Warwick": "Rro20bR4jnQ", "Xayah": "CgQfr8bMNN8",
+  "Rakan": "3zSsmLK0FzA", "Seraphine": "hiNN2WKkR3Q", "Yuumi": "fnaUFvpdo2M",
+  "Blitzcrank": "WtmMC23DdT0", "Draven": "cicrM2KIMbs", "Cho'Gath": "GJ8QI_7puvU",
+  "Kha'Zix": "IIEiz7BFgKY", "Rengar": "TKe7DpENT2k", "Zoe": "sYTwZbzesgk",
+  "Vel'Koz": "Az2vsyDBUuw", "Teemo": "0vwElK69g38", "Aurelion Sol": "RmAINrkXAfU",
+  "Azir": "zqH4AA-KEgQ", "Bard": "iUZAPc36w28", "Camille": "YaNANTQH0zc",
+  "Fiddlesticks": "144Qb1IPm54", "Galio": "tSZmYA-QsXs", "Gangplank": "3kysDbC-NTo",
+  "Gwen": "cnTUsIpf7eU", "Hecarim": "tnKUCLVj4Jk", "Illaoi": "UFkCDRlb9FA",
+  "Jarvan IV": "EkRV7-ksIG4", "Karthus": "zSKw3m7JGvg", "Kled": "Pz145kVa-4w",
+  "Lulu": "W_QZEnq51_k", "Nasus": "J0nljt82ozo", "Neeko": "bPj48lmrynU",
+  "Nidalee": "bXAbROAXWOw", "Nocturne": "foo5gdzGbPk", "Olaf": "nLveEVH6Y_A",
+  "Poppy": "GnsRzWWnRo8", "Qiyana": "3ECXeoLlR3I", "Renekton": "IDXEHgsLfeM",
+  "Senna": "e4f_B46QvMs", "Shen": "5e3UUHq8xsI", "Shyvana": "D6BTkFRJ4Go",
+  "Talon": "vu3U9_ktd2A", "Tryndamere": "OvsWkEEqtnQ", "Viego": "v9S8DHRy6AM",
+  "Zyra": "XBWUecxw1F0", "Aphelios": "lDoeuuBRUFg", "Syndra": "pZNUomQvTG8",
+  "Ashe": "yB2mIHjtS90", "Sett": "n-KWeg-9GVU", "Yone": "Y0cGMy4wnwo",
+  "Kindred": "hNLqkR838z8", "Veigar": "cqp04g1GUDA", "Lillia": "WbghdTJ5o04",
+  "Evelynn": "_DPiQbqYRY8", "Yasuo": "gSmp0F4M_rg", "Lux": "_De0uYORQ7Y"
 };
 
 const abilityKeys = ['P', 'Q', 'W', 'E', 'R'];
 
-async function loadChampionAbilitiesEnglish(championName) {
-    const key = championKeyMap[championName] || championName.replace(/[^a-zA-Z]/g, '');
-    const abilitiesContainer = document.getElementById('panelAbilities');
-
-    abilitiesContainer.innerHTML = `<div class="ability-loading"><span class="ability-spinner"></span><span>Loading abilities...</span></div>`;
-
-    try {
-        const res = await fetch(`${DDragon_BASE}/data/en_US/champion/${key}.json`);
-        if (!res.ok) throw new Error('Fetch failed');
-        const data = await res.json();
-        const champ = data.data[key];
-
-        const allAbilities = [
-            { key: 'P', name: champ.passive.name, description: champ.passive.description, img: `${DDragon_BASE}/img/passive/${champ.passive.image.full}` },
-            ...champ.spells.map((spell, i) => ({
-                key: abilityKeys[i + 1],
-                name: spell.name,
-                description: spell.description.replace(/<[^>]+>/g, ''),
-                img: `${DDragon_BASE}/img/spell/${spell.id}.png`
-            }))
-        ];
-
-        abilitiesContainer.innerHTML = allAbilities.map(ab => `
-            <div class="ability-card" data-ability="${ab.key}">
-                <div class="ability-header">
-                    <div class="ability-icon-wrap">
-                        <img class="ability-icon" src="${ab.img}" alt="${ab.name}" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/img/champion/loading/${key}_0.jpg'">
-                        <span class="ability-key-badge">${ab.key}</span>
-                    </div>
-                    <div class="ability-title-block">
-                        <span class="ability-name">${ab.name}</span>
-                    </div>
-                </div>
-                <div class="ability-desc">${ab.description}</div>
-            </div>
-        `).join('');
-    } catch (e) {
-        abilitiesContainer.innerHTML = `<div class="ability-loading" style="color:#c8aa6e88">Ability data could not be loaded.</div>`;
-    }
+function stripHtml(value) {
+    return (value || '')
+        .replace(/<br\s*\/?>/gi, '\n')
+        .replace(/<li>/gi, '• ')
+        .replace(/<\/li>/gi, '\n')
+        .replace(/<[^>]+>/g, '')
+        .replace(/&nbsp;/g, ' ')
+        .replace(/\n{3,}/g, '\n\n')
+        .replace(/([a-z])\.([A-Z])/g, '$1. $2')
+        .replace(/\.{2,}/g, '.')
+        .replace(/[ \t]{2,}/g, ' ')
+        .trim();
 }
 
-async function loadChampionAbilities(championName) {
-    return loadChampionAbilitiesEnglish(championName);
-    const key = championKeyMap[championName] || championName.replace(/[^a-zA-Z]/g, '');
-    const abilitiesContainer = document.getElementById('panelAbilities');
-    
-    abilitiesContainer.innerHTML = `<div class="ability-loading"><span class="ability-spinner"></span><span>Loading abilities...</span></div>`;
-    
-    try {
-        const res = await fetch(`${DDragon_BASE}/data/en_US/champion/${key}.json`);
-        if (!res.ok) throw new Error('Fetch failed');
-        const data = await res.json();
-        const champ = data.data[key];
-        
-        // Passive + 4 spells = 5 total
-        const allAbilities = [
-            { key: 'P', name: champ.passive.name, description: champ.passive.description, img: `${DDragon_BASE}/img/passive/${champ.passive.image.full}` },
-            ...champ.spells.map((spell, i) => ({
-                key: abilityKeys[i + 1],
-                name: spell.name,
-                description: spell.description.replace(/<[^>]+>/g, ''),
-                img: `${DDragon_BASE}/img/spell/${spell.id}.png`
-            }))
-        ];
-
-        abilitiesContainer.innerHTML = allAbilities.map(ab => `
-            <div class="ability-card" data-ability="${ab.key}">
-                <div class="ability-header">
-                    <div class="ability-icon-wrap">
-                        <img class="ability-icon" src="${ab.img}" alt="${ab.name}" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/img/champion/loading/${key}_0.jpg'">
-                        <span class="ability-key-badge">${ab.key}</span>
-                    </div>
-                    <div class="ability-title-block">
-                        <span class="ability-name">${ab.name}</span>
-                    </div>
-                </div>
-                <div class="ability-desc">${ab.description}</div>
-            </div>
-        `).join('');
-
-    } catch(e) {
-        abilitiesContainer.innerHTML = `<div class="ability-loading" style="color:#c8aa6e88">Ability data could not be loaded.</div>`;
+function formatAbilityValue(value, suffix = '') {
+    if (value === undefined || value === null || value === '' || value === '0' || value === '-1') {
+        return null;
     }
+
+    return suffix ? `${value} ${suffix}` : String(value);
 }
 
-function loadChampionVideo(championName) {
+function getReadableResourceName(champion, spell) {
+    const normalizedPartype = String(champion?.partype || '')
+        .replace(/\{\{\s*abilityresourcename\s*\}\}/gi, '')
+        .trim();
+
+    const normalizedResource = String(spell?.resource || spell?.costType || '')
+        .replace(/\{\{\s*abilityresourcename\s*\}\}/gi, '')
+        .replace(/\{\{\s*cost\s*\}\}/gi, '')
+        .trim();
+
+    const rawValue = normalizedPartype || normalizedResource;
+    const compactValue = rawValue.toLowerCase().replace(/\s+/g, '');
+
+    if (!rawValue || compactValue === 'nocost' || compactValue === 'none') {
+        return 'No Cost';
+    }
+
+    const resourceMap = {
+        mana: 'Mana',
+        energy: 'Energy',
+        fury: 'Fury',
+        rage: 'Rage',
+        heat: 'Heat',
+        ferocity: 'Ferocity',
+        grit: 'Grit',
+        courage: 'Courage',
+        health: 'Health',
+        bloodwell: 'Blood Well',
+        flow: 'Flow',
+        shield: 'Shield',
+        ammo: 'Ammo'
+    };
+
+    return resourceMap[compactValue] || rawValue.replace(/\b\w/g, (char) => char.toUpperCase());
+}
+
+function getResourcePresentation(champion, spell) {
+    const resourceName = getReadableResourceName(champion, spell);
+    const compactValue = resourceName.toLowerCase().replace(/\s+/g, '-');
+
+    const presentationMap = {
+        mana: { icon: '💧', className: 'resource-mana' },
+        energy: { icon: '⚡', className: 'resource-energy' },
+        fury: { icon: '🔥', className: 'resource-fury' },
+        rage: { icon: '🔥', className: 'resource-rage' },
+        heat: { icon: '♨', className: 'resource-heat' },
+        ferocity: { icon: '🦁', className: 'resource-ferocity' },
+        grit: { icon: '🛡', className: 'resource-grit' },
+        courage: { icon: '🛡', className: 'resource-courage' },
+        health: { icon: '❤', className: 'resource-health' },
+        'blood-well': { icon: '🩸', className: 'resource-blood-well' },
+        flow: { icon: '🌪', className: 'resource-flow' },
+        shield: { icon: '🛡', className: 'resource-shield' },
+        ammo: { icon: '✦', className: 'resource-ammo' },
+        'no-cost': { icon: '✧', className: 'resource-no-cost' }
+    };
+
+    const presentation = presentationMap[compactValue] || { icon: '✦', className: 'resource-generic' };
+
+    return {
+        ...presentation,
+        name: resourceName
+    };
+}
+
+function renderAbilityMetaRows(champion, spell) {
+    const resourcePresentation = getResourcePresentation(champion, spell);
+    const metaRows = [
+        { label: 'Cooldown', value: formatAbilityValue(spell.cooldownBurn, 'sec') },
+        {
+            label: 'Cost',
+            value: spell.costBurn && spell.costBurn !== '0'
+                ? `${spell.costBurn} ${resourcePresentation.name}`.trim()
+                : resourcePresentation.name === 'No Cost'
+                    ? resourcePresentation.name
+                    : null
+        ,
+            accent: resourcePresentation
+        },
+        { label: 'Range', value: formatAbilityValue(spell.rangeBurn) },
+        { label: 'Max Rank', value: formatAbilityValue(spell.maxrank) }
+    ].filter((item) => item.value);
+
+    if (!metaRows.length) {
+        return '';
+    }
+
+    return `
+        <div class="ability-meta-grid">
+            ${metaRows.map((item) => `
+                <div class="ability-meta-item ${item.accent ? item.accent.className : ''}">
+                    <span>${item.label}</span>
+                    <strong>
+                        ${item.accent ? `<span class="resource-pill ${item.accent.className}"><span class="resource-icon">${item.accent.icon}</span><span>${item.value}</span></span>` : item.value}
+                    </strong>
+                </div>
+            `).join('')}
+        </div>
+    `;
+}
+
+function renderLevelTips(spell) {
+    if (!spell.leveltip || !Array.isArray(spell.leveltip.label) || !Array.isArray(spell.leveltip.effect)) {
+        return '';
+    }
+
+    const items = spell.leveltip.label.map((label, index) => {
+        const effectText = stripHtml(spell.leveltip.effect[index] || '');
+
+        if (!effectText || effectText.includes('{{')) {
+            return '';
+        }
+
+        return `
+            <div class="ability-scale-item">
+                <span>${stripHtml(label)}</span>
+                <strong>${effectText}</strong>
+            </div>
+        `;
+    }).filter(Boolean);
+
+    if (!items.length) {
+        return '';
+    }
+
+    return `
+        <div class="ability-scale-block">
+            <div class="ability-subtitle">Level Scaling</div>
+            <div class="ability-scale-list">${items.join('')}</div>
+        </div>
+    `;
+}
+
+function loadChampionAbilities(championName, championKey) {
+    const abilitiesContainer = document.getElementById('panelAbilities');
+    const champion = championDataMap[championKey] || championDataMap[championKeyMap[championName]];
+
+    if (!abilitiesContainer) return;
+
+    if (!champion) {
+        abilitiesContainer.innerHTML = `<div class="ability-loading" style="color:#c8aa6e88">Ability data could not be loaded.</div>`;
+        return;
+    }
+
+    const allAbilities = [
+        {
+            key: 'P',
+            name: champion.passive?.name || 'Passive',
+            description: stripHtml(champion.passive?.description || ''),
+            img: `${DDragon_BASE}/img/passive/${champion.passive?.image?.full || ''}`,
+            meta: ''
+        },
+        ...champion.spells.map((spell, i) => ({
+            key: abilityKeys[i + 1],
+            name: spell.name,
+            description: stripHtml(spell.description || spell.tooltip || ''),
+            img: `${DDragon_BASE}/img/spell/${spell.image?.full || `${spell.id}.png`}`,
+            meta: `${renderAbilityMetaRows(champion, spell)}${renderLevelTips(spell)}`
+        }))
+    ];
+
+    abilitiesContainer.innerHTML = allAbilities.map((ab) => `
+        <div class="ability-card" data-ability="${ab.key}">
+            <div class="ability-header">
+                <div class="ability-icon-wrap">
+                    <img class="ability-icon" src="${ab.img}" alt="${ab.name}" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/img/champion/loading/${championKey}_0.jpg'">
+                    <span class="ability-key-badge">${ab.key}</span>
+                </div>
+                <div class="ability-title-block">
+                    <span class="ability-name">${ab.name}</span>
+                </div>
+            </div>
+            <div class="ability-desc">${ab.description || 'No details available.'}</div>
+            ${ab.meta || ''}
+        </div>
+    `).join('');
+}
+
+function loadChampionVideo(championName, championKey, fallbackImageUrl) {
     const videoId = championVideoIds[championName];
-    const frame = document.getElementById('panelVideoFrame');
+    const preview = document.getElementById('panelVideoPreview');
+    const thumbnail = document.getElementById('panelVideoThumbnail');
     const loading = document.getElementById('panelVideoLoading');
     const error = document.getElementById('panelVideoError');
     const videoLink = document.getElementById('panelVideoLink');
     const searchUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(`League of Legends ${championName} Champion Spotlight Riot Games`)}`;
+    const watchUrl = videoId ? `https://www.youtube.com/watch?v=${videoId}` : searchUrl;
+    const splashUrl = championKey
+        ? `https://ddragon.leagueoflegends.com/cdn/img/champion/loading/${championKey}_0.jpg`
+        : '';
+    const thumbnailUrl = videoId ? `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg` : (splashUrl || fallbackImageUrl || '');
 
-    frame.style.display = 'none';
+    if (preview) {
+        preview.style.display = 'none';
+        preview.href = watchUrl;
+    }
+    if (thumbnail) {
+        thumbnail.src = thumbnailUrl;
+        thumbnail.alt = videoId ? `${championName} Champion Spotlight` : `${championName} artwork`;
+    }
     loading.style.display = 'flex';
     error.style.display = 'none';
     if (videoLink) {
         videoLink.style.display = 'none';
-        videoLink.href = searchUrl;
+        videoLink.href = watchUrl;
         videoLink.textContent = 'Find latest spotlight on YouTube';
     }
 
     if (!videoId) {
         loading.style.display = 'none';
-        error.style.display = 'flex';
+        if (preview && thumbnailUrl) {
+            preview.style.display = 'block';
+        } else {
+            error.style.display = 'flex';
+        }
         if (videoLink) {
             videoLink.style.display = 'inline-flex';
+            videoLink.textContent = `Search ${championName} on YouTube`;
         }
         return;
     }
 
-    frame.src = '';
-    frame.onload = null;
-    frame.onerror = null;
-
-    const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=0&rel=0&modestbranding=1&playsinline=1`;
-
-    frame.src = embedUrl;
-    frame.style.display = 'block';
     loading.style.display = 'none';
+    if (preview) {
+        preview.style.display = 'block';
+    }
 
     if (videoLink) {
-        videoLink.href = searchUrl;
+        videoLink.href = watchUrl;
         videoLink.style.display = 'inline-flex';
+        videoLink.textContent = 'Watch on YouTube';
     }
+}
+
+function renderChampionStats(champion) {
+    const panelStats = document.getElementById('panelStats');
+    if (!panelStats) return;
+
+    if (!champion) {
+        panelStats.innerHTML = '<div class="panel-empty-text">Stats could not be loaded.</div>';
+        return;
+    }
+
+    const statItems = [
+        { label: 'Class', value: (champion.tags || []).join(' / ') || 'Unknown' },
+        { label: 'Resource', value: champion.partype || 'None' },
+        { label: 'Health', value: `${champion.stats.hp} + ${champion.stats.hpperlevel}/lvl` },
+        { label: 'Mana', value: `${champion.stats.mp} + ${champion.stats.mpperlevel}/lvl` },
+        { label: 'Attack Damage', value: `${champion.stats.attackdamage}` },
+        { label: 'Armor', value: `${champion.stats.armor}` },
+        { label: 'Magic Resist', value: `${champion.stats.spellblock}` },
+        { label: 'Range', value: `${champion.stats.attackrange}` },
+        { label: 'Move Speed', value: `${champion.stats.movespeed}` },
+        { label: 'Difficulty', value: `${champion.info.difficulty}/10` }
+    ];
+
+    panelStats.innerHTML = statItems.map((item) => `
+        <div class="panel-stat-card">
+            <span>${item.label}</span>
+            <strong>${item.value}</strong>
+        </div>
+    `).join('');
+}
+
+function renderChampionTips(champion) {
+    const panelTips = document.getElementById('panelTips');
+    if (!panelTips) return;
+
+    const allyTips = (champion?.allytips || []).map((tip) => stripHtml(tip)).filter(Boolean);
+    const enemyTips = (champion?.enemytips || []).map((tip) => stripHtml(tip)).filter(Boolean);
+
+    if (!allyTips.length && !enemyTips.length) {
+        panelTips.innerHTML = '<div class="panel-empty-text">No extra tips available.</div>';
+        return;
+    }
+
+    panelTips.innerHTML = `
+        ${allyTips.length ? `
+            <div class="panel-tip-group">
+                <h4>Playing As</h4>
+                <ul>${allyTips.map((tip) => `<li>${tip}</li>`).join('')}</ul>
+            </div>
+        ` : ''}
+        ${enemyTips.length ? `
+            <div class="panel-tip-group">
+                <h4>Playing Against</h4>
+                <ul>${enemyTips.map((tip) => `<li>${tip}</li>`).join('')}</ul>
+            </div>
+        ` : ''}
+    `;
 }
 
 function openPanel(card) {
     const name = card.dataset.champion;
-    const title = card.dataset.title;
+    const championKey = card.dataset.key || championKeyMap[name] || name.replace(/[^a-zA-Z]/g, '');
+    const champion = championDataMap[championKey];
+    const title = champion?.title || card.dataset.title;
     const img = card.dataset.img;
-    const imgpos = card.dataset.imgpos || 'center';
+    const imgpos = card.dataset.imgpos || 'center top';
+    const loreText = stripHtml(champion?.lore || championLore[name] || '');
 
     panelImg.src = img;
     panelImg.alt = name;
     panelImg.style.objectPosition = imgpos;
     panelName.textContent = name;
     panelTitle.textContent = title;
-    if (!championLore[name]) {
-        panelLore.textContent = "This champion's story will be added soon.";
-    }
-    panelLore.textContent = championLore[name] || "This champion's story will be added soon.";
+    panelLore.textContent = loreText || "Lore for this champion will be added soon.";
 
     // Reset animation
     panelLore.style.animation = 'none';
@@ -1192,11 +1447,10 @@ function openPanel(card) {
     if (heroText) heroText.style.animation = 'none';
 
     // Load video + abilities
-    loadChampionVideo(name);
-    loadChampionAbilities(name);
-    if (!championLore[name]) {
-        panelLore.textContent = "This champion's story will be added soon.";
-    }
+    loadChampionVideo(name, championKey, img);
+    loadChampionAbilities(name, championKey);
+    renderChampionStats(champion);
+    renderChampionTips(champion);
     
     overlay.classList.add('active');
     panel.classList.add('active');
@@ -1214,22 +1468,373 @@ function closePanel() {
     panel.classList.remove('active');
     overlay.classList.remove('active');
     document.body.style.overflow = '';
-    // Video'yu durdur
-    const frame = document.getElementById('panelVideoFrame');
-    if (frame) frame.src = '';
 }
 
-const championGrid = document.querySelector('.champion-grid');
+const championGrid = document.getElementById('championGrid');
+const searchInput = document.getElementById('championSearch');
+const searchResults = document.getElementById('searchResults');
+const laneFilters = document.getElementById('laneFilters');
+const championCount = document.getElementById('championCount');
+const laneOrder = ['Top', 'Jungle', 'Middle', 'Bottom', 'Support'];
+const laneLabels = window.__LANE_LABELS__ || {};
 
-localizeStaticText();
+let championCards = [];
+let championRoster = [];
+let activeLane = 'All';
+
+function normalizeChampionText(value) {
+    return (value || '')
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9]/g, '');
+}
+
+function getChampionSlug(name) {
+    return encodeURIComponent(
+        (name || '')
+            .toLowerCase()
+            .replace(/'/g, '')
+            .replace(/\s+/g, '-')
+    );
+}
+
+function getChampionByKey(championKey) {
+    return championRoster.find((champion) => champion.id === championKey) || null;
+}
+
+function getChampionCardImage(championKey) {
+    return `https://ddragon.leagueoflegends.com/cdn/img/champion/loading/${championKey}_0.jpg`;
+}
+
+function getChampionHeroImage(championKey) {
+    return `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${championKey}_0.jpg`;
+}
+
+function getChampionIcon(championKey) {
+    return `${DDragon_BASE}/img/champion/${championKey}.png`;
+}
+
+function syncChampionCards() {
+    championCards = Array.from(document.querySelectorAll('.champion-card[data-champion]'));
+}
+
+function renderLaneFilters() {
+    if (!laneFilters) return;
+
+    const laneButtonData = [{ key: 'All', label: laneLabels.All || 'All Champions' }]
+        .concat(laneOrder.map((lane) => ({ key: lane, label: laneLabels[lane] || lane })));
+
+    laneFilters.innerHTML = laneButtonData.map((lane) => {
+        const count = lane.key === 'All'
+            ? championRoster.length
+            : championRoster.filter((champion) => champion.primaryLane === lane.key).length;
+
+        return `
+            <button
+                type="button"
+                class="lane-filter-btn ${activeLane === lane.key ? 'active' : ''}"
+                data-lane="${lane.key}"
+            >
+                <span>${lane.label}</span>
+                <strong>${count}</strong>
+            </button>
+        `;
+    }).join('');
+}
+
+function renderChampionSections() {
+    if (!championGrid) return;
+
+    const lanesToRender = activeLane === 'All' ? laneOrder : [activeLane];
+    championGrid.innerHTML = lanesToRender.map((lane) => {
+        const laneChampions = championRoster
+            .filter((champion) => champion.primaryLane === lane)
+            .sort((a, b) => a.name.localeCompare(b.name, 'en'));
+
+        if (!laneChampions.length) {
+            return '';
+        }
+
+        return `
+            <section class="lane-section" data-lane-section="${lane}">
+                <div class="lane-section-header">
+                    <h2>${laneLabels[lane] || lane}</h2>
+                    <span>${laneChampions.length} champions</span>
+                </div>
+                <div class="lane-champion-grid">
+                    ${laneChampions.map((champion) => `
+                        <div
+                            class="champion-card"
+                            data-key="${champion.id}"
+                            data-champion="${champion.name}"
+                            data-title="${champion.title}"
+                            data-img="${getChampionHeroImage(champion.id)}"
+                            data-imgpos="center top"
+                        >
+                            <img src="${getChampionCardImage(champion.id)}" alt="${champion.name}">
+                            <div class="champion-info">
+                                <span class="champion-name">${champion.name}</span>
+                                <span class="champion-title">${champion.title}</span>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            </section>
+        `;
+    }).join('');
+
+    syncChampionCards();
+
+    if (championCount) {
+        championCount.textContent = `${championRoster.length} official Riot champions loaded. Version: ${DDragon_VERSION}`;
+    }
+}
+
+function setActiveLane(lane) {
+    activeLane = lane;
+    renderLaneFilters();
+    renderChampionSections();
+}
+
+function findChampionCardByName(nameOrSlug) {
+    const rawValue = decodeURIComponent(nameOrSlug || '');
+    const normalizedInput = normalizeChampionText(rawValue);
+
+    let card = championCards.find((cardItem) => {
+        const championName = cardItem.dataset.champion || '';
+        return normalizeChampionText(championName) === normalizedInput
+            || getChampionSlug(championName) === nameOrSlug;
+    }) || null;
+
+    if (card) {
+        return card;
+    }
+
+    const champion = championRoster.find((championItem) => {
+        return normalizeChampionText(championItem.name) === normalizedInput
+            || getChampionSlug(championItem.name) === nameOrSlug
+            || normalizeChampionText(championItem.id) === normalizedInput;
+    });
+
+    if (!champion) {
+        return null;
+    }
+
+    if (activeLane !== 'All' && activeLane !== champion.primaryLane) {
+        setActiveLane(champion.primaryLane);
+    }
+
+    card = championCards.find((cardItem) => {
+        const championName = cardItem.dataset.champion || '';
+        return normalizeChampionText(championName) === normalizedInput
+            || getChampionSlug(championName) === nameOrSlug;
+    }) || null;
+
+    return card;
+}
+
+function renderSearchResults(matches) {
+    if (!searchResults) return;
+
+    if (!matches.length) {
+        searchResults.innerHTML = '<div class="search-result-empty">No champions found.</div>';
+        searchResults.classList.add('active');
+        return;
+    }
+
+    searchResults.innerHTML = matches.map((champion) => `
+        <button type="button" class="search-result-item" data-key="${champion.id}">
+            <img src="${getChampionIcon(champion.id)}" alt="${champion.name}">
+            <span class="search-result-text">
+                <strong>${champion.name}</strong>
+                <small>${champion.title} - ${laneLabels[champion.primaryLane] || champion.primaryLane}</small>
+            </span>
+        </button>
+    `).join('');
+    searchResults.classList.add('active');
+}
+
+function hideSearchResults() {
+    if (!searchResults) return;
+    searchResults.classList.remove('active');
+}
+
+function openChampionByCard(card, updateHash = true) {
+    if (!card) return;
+    openPanel(card);
+
+    if (updateHash) {
+        history.replaceState(null, '', `#${getChampionSlug(card.dataset.champion)}`);
+    }
+}
+
+function handleSearchInput() {
+    if (!searchInput || !searchResults) return;
+
+    const query = searchInput.value.trim();
+    if (!query) {
+        hideSearchResults();
+        return;
+    }
+
+    const normalizedQuery = normalizeChampionText(query);
+    const matches = championRoster
+        .filter((champion) => {
+            return normalizeChampionText(champion.name).includes(normalizedQuery)
+                || normalizeChampionText(champion.title).includes(normalizedQuery)
+                || normalizeChampionText(champion.id).includes(normalizedQuery);
+        })
+        .sort((a, b) => a.name.localeCompare(b.name, 'en'))
+        .slice(0, 10);
+
+    renderSearchResults(matches);
+}
+
+function buildRosterFromStaticCards() {
+    return Array.from(document.querySelectorAll('.champion-card[data-champion]'))
+        .map((card) => ({
+            id: card.dataset.champion.replace(/[^a-zA-Z]/g, ''),
+            name: card.dataset.champion,
+            title: card.dataset.title || '',
+            tags: [],
+            info: { difficulty: 0 },
+            stats: {
+                hp: 0,
+                hpperlevel: 0,
+                mp: 0,
+                mpperlevel: 0,
+                attackdamage: 0,
+                armor: 0,
+                spellblock: 0,
+                attackrange: 0,
+                movespeed: 0
+            },
+            partype: '',
+            primaryLane: 'Middle'
+        }))
+        .sort((a, b) => a.name.localeCompare(b.name, 'en'));
+}
+
+function initializeChampionRoster() {
+    const sourceChampions = Object.values(championDataMap);
+
+    championRoster = (sourceChampions.length ? sourceChampions : buildRosterFromStaticCards())
+        .map((champion) => ({
+            ...champion,
+            primaryLane: window.__resolveChampionLane
+                ? window.__resolveChampionLane(champion.id, champion)
+                : 'Middle'
+        }))
+        .sort((a, b) => a.name.localeCompare(b.name, 'en'));
+
+    renderLaneFilters();
+    renderChampionSections();
+}
+
+async function loadEnglishChampionData() {
+    try {
+        const response = await fetch(`https://ddragon.leagueoflegends.com/cdn/${ENGLISH_DDRAGON_VERSION}/data/en_US/championFull.json`);
+        if (!response.ok) {
+            throw new Error(`Failed to fetch champion data: ${response.status}`);
+        }
+
+        const data = await response.json();
+        championDataBundle = data;
+        championDataMap = data.data || {};
+        DDragon_VERSION = data.version || ENGLISH_DDRAGON_VERSION;
+        DDragon_BASE = `https://ddragon.leagueoflegends.com/cdn/${DDragon_VERSION}`;
+    } catch (error) {
+        console.warn('English champion data could not be loaded. Falling back to local card data.', error);
+        championDataBundle = { version: ENGLISH_DDRAGON_VERSION, data: {} };
+        championDataMap = {};
+        DDragon_VERSION = ENGLISH_DDRAGON_VERSION;
+        DDragon_BASE = `https://ddragon.leagueoflegends.com/cdn/${DDragon_VERSION}`;
+    }
+}
+
+async function initializeChampionsPage() {
+    localizeStaticText();
+    await loadEnglishChampionData();
+    initializeChampionRoster();
+}
+
+initializeChampionsPage();
 
 if (championGrid) {
     championGrid.addEventListener('click', (event) => {
         const card = event.target.closest('.champion-card[data-champion]');
         if (!card) return;
-        openPanel(card);
+        openChampionByCard(card);
     });
 }
+
+if (laneFilters) {
+    laneFilters.addEventListener('click', (event) => {
+        const button = event.target.closest('.lane-filter-btn[data-lane]');
+        if (!button) return;
+        setActiveLane(button.dataset.lane);
+    });
+}
+
+if (searchInput) {
+    searchInput.addEventListener('input', handleSearchInput);
+    searchInput.addEventListener('focus', handleSearchInput);
+    searchInput.addEventListener('keydown', (event) => {
+        if (event.key !== 'Enter') return;
+
+        const query = normalizeChampionText(searchInput.value.trim());
+        if (!query) return;
+
+        const firstMatch = championRoster.find((champion) => {
+            return normalizeChampionText(champion.name).includes(query)
+                || normalizeChampionText(champion.title).includes(query)
+                || normalizeChampionText(champion.id).includes(query);
+        });
+
+        if (!firstMatch) return;
+
+        event.preventDefault();
+        searchInput.value = firstMatch.name;
+        hideSearchResults();
+
+        if (activeLane !== 'All' && activeLane !== firstMatch.primaryLane) {
+            setActiveLane(firstMatch.primaryLane);
+        }
+
+        const firstMatchCard = findChampionCardByName(firstMatch.name);
+        openChampionByCard(firstMatchCard);
+    });
+}
+
+if (searchResults) {
+    searchResults.addEventListener('click', (event) => {
+        const resultItem = event.target.closest('.search-result-item[data-key]');
+        if (!resultItem) return;
+
+        const champion = getChampionByKey(resultItem.dataset.key);
+        if (!champion) return;
+
+        if (searchInput) {
+            searchInput.value = champion.name;
+        }
+
+        hideSearchResults();
+
+        if (activeLane !== 'All' && activeLane !== champion.primaryLane) {
+            setActiveLane(champion.primaryLane);
+        }
+
+        const card = findChampionCardByName(champion.name);
+        openChampionByCard(card);
+    });
+}
+
+document.addEventListener('click', (event) => {
+    if (!event.target.closest('.search-bar')) {
+        hideSearchResults();
+    }
+});
 
 if (closeBtn) {
     closeBtn.addEventListener('click', closePanel);
@@ -1241,6 +1846,16 @@ if (overlay) {
 
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') closePanel();
+});
+
+window.addEventListener('load', () => {
+    const championSlug = window.location.hash.replace('#', '').trim();
+    if (!championSlug) return;
+
+    const card = findChampionCardByName(championSlug);
+    if (card) {
+        openChampionByCard(card, false);
+    }
 });
 </script>
 </body>

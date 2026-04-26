@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,6 +22,9 @@
                 <a href="lore.html">LORE</a>
                 <a href="aboutus.html">ABOUT US</a>
                 <a href="updates.html" class="active">UPDATES</a>
+                <a href="draft-builder.html">DRAFT BUILDER</a>
+                <a href="Counter analyzer.html">COUNTER ANALYZER</a>
+                <a href="Quiz.html">QUIZ</a>
             </nav>
         </div>
     </header>
@@ -39,15 +42,15 @@
                 <div class="hero-stats">
                     <div class="hero-stat">
                         <span class="hero-stat-value" id="heroNewsCount">0</span>
-                        <span class="hero-stat-label">Toplam Haber</span>
+                        <span class="hero-stat-label">Total News</span>
                     </div>
                     <div class="hero-stat">
                         <span class="hero-stat-value" id="heroPageCount">0</span>
-                        <span class="hero-stat-label">Toplam Sayfa</span>
+                        <span class="hero-stat-label">Total Pages</span>
                     </div>
                     <div class="hero-stat">
                         <span class="hero-stat-value">LoL</span>
-                        <span class="hero-stat-label">Tema Dili</span>
+                        <span class="hero-stat-label">Theme</span>
                     </div>
                 </div>
             </div>
@@ -57,7 +60,7 @@
             <div class="section-shell">
                 <div class="section-heading">
                     <p class="section-kicker">HOME CONNECTION</p>
-                    <h2>Home Updates'tan gelen spotlight başlıkları</h2>
+                    <h2>Spotlight headlines featured on the home page</h2>
                 </div>
                 <div class="home-links" id="homeLinks"></div>
             </div>
@@ -68,7 +71,7 @@
                 <div class="section-heading section-heading-wide">
                     <div>
                         <p class="section-kicker">NEWS GRID</p>
-                        <h2>Runeterra gündemi</h2>
+                        <h2>Runeterra headlines</h2>
                     </div>
                     <div class="page-indicator" id="pageIndicator">1 / 1</div>
                 </div>
@@ -87,7 +90,7 @@
     <div class="news-modal" id="newsModal" aria-hidden="true">
         <div class="news-modal-backdrop" data-close-modal></div>
         <article class="news-modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-            <button type="button" class="modal-close" id="closeModal" aria-label="Haberi kapat">&times;</button>
+            <button type="button" class="modal-close" id="closeModal" aria-label="Close article">&times;</button>
             <div class="modal-media" id="modalMedia"></div>
             <div class="modal-body">
                 <div class="modal-meta">

@@ -1,0 +1,1608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Counter Analyzer - League of Legends Enemy Team Analysis</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --gold:       #c8aa6e;
+  --gold-light: #f0d98b;
+  --gold-dim:   #7a6235;
+  --navy:       #091428;
+  --navy-mid:   #0d1b2e;
+  --navy-light: #112040;
+  --red:        #c03030;
+  --red-bright: #ff4444;
+  --blue-magic: #4a9eff;
+  --green-ok:   #3dba6a;
+  --orange-warn:#e88a2e;
+  --purple:     #9b59b6;
+  --text:       #f0e6d2;
+  --text-dim:   #a09b8c;
+  --border:     rgba(200,170,110,0.22);
+  --border-hot: rgba(200,170,110,0.65);
+  --enemy-red:  rgba(180,30,30,0.15);
+  --enemy-border: rgba(200,60,60,0.35);
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Rajdhani',sans-serif;
+  background:#070f1e;
+  color:var(--text);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.06) 2px,rgba(0,0,0,.06) 4px);
+  pointer-events:none;z-index:9999;
+}
+body::after{
+  content:'';
+  position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='100'%3E%3Cpath d='M28 66L0 50V16L28 0l28 16v34zm0 34L0 84V50l28-16 28 16v34z' fill='none' stroke='rgba(200,60,60,0.035)' stroke-width='1'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:0;
+}
+
+/* HEADER */
+header{
+  position:sticky;top:0;z-index:500;
+  background:rgba(7,15,30,.95);
+  border-bottom:1px solid var(--enemy-border);
+  backdrop-filter:blur(12px);
+  padding:0 40px;
+  display:flex;align-items:center;justify-content:space-between;
+  height:64px;
+}
+.header-logo{display:flex;align-items:center;gap:14px;}
+.header-logo-icon{
+  width:36px;height:36px;
+  background:linear-gradient(135deg,#c03030,#7a1010);
+  clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
+  display:grid;place-items:center;
+  font-size:1rem;flex-shrink:0;
+}
+.header-logo h1{
+  font-family:'Cinzel',serif;
+  font-size:.95rem;letter-spacing:3px;color:#e05050;
+  text-transform:uppercase;font-weight:700;line-height:1.1;
+}
+.header-logo span{
+  display:block;font-family:'Rajdhani',sans-serif;
+  font-size:.65rem;letter-spacing:4px;
+  color:var(--text-dim);font-weight:400;
+}
+.header-nav{display:flex;gap:6px;}
+header > .header-nav:first-of-type{display:none;}
+.nav-btn{
+  background:transparent;border:1px solid var(--enemy-border);
+  color:var(--text-dim);font-family:'Rajdhani',sans-serif;
+  font-size:.8rem;letter-spacing:2px;font-weight:600;
+  padding:6px 16px;border-radius:3px;cursor:pointer;
+  text-transform:uppercase;transition:all .25s;text-decoration:none;
+  display:flex;align-items:center;gap:6px;
+}
+.nav-btn:hover{border-color:#e05050;color:#e05050;}
+.nav-btn.active{background:rgba(200,50,50,.15);border-color:#e05050;color:#e05050;}
+
+/* MAIN LAYOUT */
+.main-wrap{
+  position:relative;z-index:1;
+  display:grid;
+  grid-template-columns:1fr 420px;
+  gap:0;min-height:calc(100vh - 64px);
+}
+
+/* LEFT PANEL */
+.left-panel{
+  display:flex;flex-direction:column;
+  border-right:1px solid var(--enemy-border);
+  overflow:hidden;
+}
+
+/* ENEMY ZONE */
+.enemy-zone{
+  padding:28px 32px 20px;
+  border-bottom:1px solid var(--enemy-border);
+  background:linear-gradient(to bottom,rgba(30,8,8,.8),rgba(7,15,30,.6));
+}
+.enemy-zone-title{
+  font-family:'Cinzel',serif;
+  font-size:.75rem;letter-spacing:5px;
+  color:#e05050;text-transform:uppercase;
+  margin-bottom:18px;opacity:.9;
+  display:flex;align-items:center;gap:12px;
+}
+.enemy-zone-title::after{
+  content:'';flex:1;height:1px;
+  background:linear-gradient(to right,rgba(200,60,60,.5),transparent);
+}
+.enemy-slots{
+  display:grid;grid-template-columns:repeat(5,1fr);gap:12px;
+}
+.enemy-slot{
+  position:relative;aspect-ratio:.7;
+  border:1.5px dashed rgba(200,60,60,.3);
+  border-radius:6px;cursor:pointer;overflow:hidden;
+  background:rgba(30,8,8,.4);transition:all .3s ease;
+  display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
+}
+.enemy-slot:hover:not(.filled){
+  border-color:rgba(200,60,60,.7);background:rgba(200,60,60,.06);
+}
+.enemy-slot .slot-role{
+  font-size:.6rem;letter-spacing:3px;color:#e05050;text-transform:uppercase;
+  font-weight:700;padding:8px 4px;
+  background:linear-gradient(to top,rgba(7,15,30,.95),transparent);
+  width:100%;text-align:center;position:relative;z-index:2;
+}
+.enemy-slot .slot-empty-icon{
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-70%);font-size:1.8rem;opacity:.12;pointer-events:none;
+}
+.enemy-slot.filled{border-color:rgba(200,60,60,.6);border-style:solid;}
+.enemy-slot.filled img.slot-splash{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;object-position:top;transition:transform .4s ease;
+  filter:hue-rotate(5deg) saturate(1.1);
+}
+.enemy-slot.filled:hover img.slot-splash{transform:scale(1.05);}
+.enemy-slot.filled .slot-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(15,3,3,.97) 0%,rgba(15,3,3,.25) 60%,transparent 100%);
+  z-index:1;
+}
+.enemy-slot.filled .slot-name{
+  position:relative;z-index:2;font-family:'Cinzel',serif;
+  font-size:.72rem;font-weight:700;color:#ff8888;
+  letter-spacing:1px;text-align:center;padding:2px 4px 0;width:100%;
+}
+.enemy-slot.filled .slot-class-badge{
+  position:absolute;top:8px;left:8px;z-index:3;
+  background:rgba(15,3,3,.85);border:1px solid rgba(200,60,60,.4);
+  border-radius:3px;font-size:.55rem;letter-spacing:1px;
+  color:rgba(255,150,150,.7);padding:2px 5px;font-weight:700;text-transform:uppercase;
+}
+.enemy-slot .slot-remove{
+  display:none;position:absolute;top:6px;right:6px;z-index:10;
+  background:rgba(180,20,20,.8);border:none;color:white;
+  width:20px;height:20px;border-radius:50%;font-size:.7rem;cursor:pointer;
+  align-items:center;justify-content:center;transition:all .2s;
+}
+.enemy-slot.filled:hover .slot-remove{display:flex;}
+.enemy-slot .slot-remove:hover{background:var(--red);transform:scale(1.1);}
+
+/* THREAT BADGE on slot */
+.threat-badge{
+  position:absolute;top:8px;right:8px;z-index:3;
+  width:18px;height:18px;border-radius:50%;
+  font-size:.55rem;font-weight:900;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Share Tech Mono',monospace;
+}
+.threat-badge.high{background:#c03030;color:white;}
+.threat-badge.mid{background:#e88a2e;color:white;}
+.threat-badge.low{background:#3dba6a;color:white;}
+
+/* FILTERS */
+.picker-section{
+  flex:1;overflow:hidden;display:flex;flex-direction:column;
+  padding:20px 32px 24px;
+}
+.filters-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;align-items:center;}
+.filter-label{font-size:.65rem;letter-spacing:3px;color:#e05050;text-transform:uppercase;font-weight:700;margin-right:4px;opacity:.7;}
+.filter-btn{
+  background:transparent;border:1px solid var(--enemy-border);
+  color:var(--text-dim);font-family:'Rajdhani',sans-serif;
+  font-size:.75rem;letter-spacing:1px;font-weight:600;
+  padding:4px 12px;border-radius:3px;cursor:pointer;transition:all .2s;text-transform:uppercase;
+}
+.filter-btn:hover{border-color:rgba(200,60,60,.5);color:var(--text);}
+.filter-btn.active{background:rgba(200,60,60,.15);border-color:#e05050;color:#e05050;}
+.filter-sep{width:1px;height:20px;background:var(--enemy-border);margin:0 4px;}
+.search-wrap{position:relative;margin-bottom:14px;}
+.search-wrap input{
+  width:100%;background:rgba(20,5,5,.7);
+  border:1px solid var(--enemy-border);border-radius:4px;
+  color:var(--text);font-family:'Rajdhani',sans-serif;
+  font-size:.9rem;padding:8px 16px 8px 38px;
+  outline:none;transition:border-color .2s;letter-spacing:.5px;
+}
+.search-wrap input:focus{border-color:rgba(200,60,60,.5);}
+.search-wrap input::placeholder{color:var(--text-dim);opacity:.6;}
+.search-wrap::before{
+  content:'🎯';position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:.85rem;
+}
+.champ-grid{
+  flex:1;overflow-y:auto;
+  display:grid;grid-template-columns:repeat(auto-fill,76px);
+  justify-content:flex-start;
+  align-content:flex-start;
+  gap:8px;padding-right:4px;
+  scrollbar-width:thin;scrollbar-color:rgba(200,60,60,.4) transparent;
+}
+.champ-grid::-webkit-scrollbar{width:3px;}
+.champ-grid::-webkit-scrollbar-thumb{background:rgba(200,60,60,.4);border-radius:2px;}
+.champ-thumb{
+  position:relative;aspect-ratio:1;border:1.5px solid var(--enemy-border);
+  border-radius:5px;overflow:hidden;cursor:pointer;background:rgba(20,5,5,.6);transition:all .25s ease;
+}
+.champ-thumb:hover{
+  border-color:#e05050;transform:translateY(-2px);
+  box-shadow:0 4px 16px rgba(200,50,50,.25);
+}
+.champ-thumb.selected-in-draft{border-color:rgba(200,60,60,.3);opacity:.35;pointer-events:none;filter:grayscale(.6);}
+.champ-thumb img{width:100%;height:100%;object-fit:cover;object-position:top;pointer-events:none;}
+.champ-thumb .thumb-name{
+  position:absolute;bottom:0;left:0;right:0;
+  background:linear-gradient(to top,rgba(15,3,3,.95),transparent);
+  font-size:.6rem;letter-spacing:.5px;color:var(--text);
+  text-align:center;padding:10px 2px 3px;font-weight:700;text-transform:uppercase;
+}
+.champ-thumb.hidden{display:none;}
+.champ-thumb .dmg-dot{
+  position:absolute;top:4px;right:4px;width:7px;height:7px;
+  border-radius:50%;box-shadow:0 0 4px currentColor;
+}
+
+/* RIGHT PANEL */
+.right-panel{
+  display:flex;flex-direction:column;overflow-y:auto;
+  scrollbar-width:thin;scrollbar-color:rgba(200,60,60,.4) transparent;
+  background:linear-gradient(to bottom,rgba(12,5,5,.98),rgba(7,11,20,.98));
+}
+.right-panel::-webkit-scrollbar{width:3px;}
+.right-panel::-webkit-scrollbar-thumb{background:rgba(200,60,60,.4);border-radius:2px;}
+
+.analysis-header{
+  padding:24px 24px 16px;border-bottom:1px solid var(--enemy-border);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.analysis-title{
+  font-family:'Cinzel',serif;font-size:.8rem;letter-spacing:4px;
+  color:#e05050;text-transform:uppercase;font-weight:700;
+}
+.champ-count-badge{
+  font-family:'Share Tech Mono',monospace;font-size:.75rem;color:var(--text-dim);letter-spacing:1px;
+}
+
+/* THREAT METER */
+.threat-wrap{
+  padding:24px;border-bottom:1px solid var(--enemy-border);
+  display:flex;flex-direction:column;align-items:center;
+  background:radial-gradient(ellipse at 50% 0%,rgba(200,50,50,.08),transparent 70%);
+}
+.threat-ring{position:relative;width:130px;height:130px;margin-bottom:14px;}
+.threat-ring svg{width:100%;height:100%;transform:rotate(-90deg);}
+.threat-ring circle{fill:none;}
+.ring-bg-enemy{stroke:rgba(200,60,60,.1);stroke-width:8;}
+.ring-fill-enemy{
+  stroke:#c03030;stroke-width:8;stroke-linecap:round;
+  stroke-dasharray:339.3;stroke-dashoffset:339.3;
+  transition:stroke-dashoffset 1s cubic-bezier(.4,0,.2,1),stroke .5s;
+  filter:drop-shadow(0 0 6px rgba(200,50,50,.6));
+}
+.score-num{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.score-num .num{font-family:'Cinzel',serif;font-size:2.4rem;font-weight:900;color:#ff8888;line-height:1;}
+.score-num .label{font-size:.6rem;letter-spacing:3px;color:var(--text-dim);text-transform:uppercase;}
+.threat-grade{font-family:'Cinzel',serif;font-size:1rem;font-weight:900;letter-spacing:3px;color:#e05050;margin-bottom:4px;text-transform:uppercase;}
+.threat-sublabel{font-size:.72rem;color:var(--text-dim);letter-spacing:1px;text-align:center;line-height:1.4;}
+
+/* SECTION LABELS */
+.sec-label{
+  font-size:.62rem;letter-spacing:4px;color:#e05050;text-transform:uppercase;
+  font-weight:700;opacity:.85;margin-bottom:12px;
+  display:flex;align-items:center;gap:10px;
+}
+.sec-label::after{content:'';flex:1;height:1px;background:var(--enemy-border);}
+.section-pad{padding:0 24px 20px;border-bottom:1px solid var(--enemy-border);}
+
+/* DAMAGE ANALYSIS */
+.damage-section{padding:20px 24px;border-bottom:1px solid var(--enemy-border);}
+.damage-donut-wrap{display:flex;align-items:center;gap:20px;}
+.damage-donut{position:relative;width:90px;height:90px;flex-shrink:0;}
+.damage-donut svg{width:100%;height:100%;transform:rotate(-90deg);}
+.damage-donut circle{fill:none;stroke-width:12;}
+.donut-label{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-size:.58rem;font-weight:700;color:var(--text);text-align:center;line-height:1.2;
+  font-family:'Share Tech Mono',monospace;
+}
+.damage-legend{flex:1;display:flex;flex-direction:column;gap:8px;}
+.dmg-row{display:flex;align-items:center;gap:7px;margin-bottom:3px;}
+.dmg-dot-l{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+.dmg-label{font-size:.75rem;color:var(--text-dim);letter-spacing:1px;flex:1;}
+.dmg-pct{font-family:'Share Tech Mono',monospace;font-size:.8rem;font-weight:700;}
+.dmg-bar-wrap{height:3px;background:rgba(255,255,255,.07);border-radius:2px;overflow:hidden;}
+.dmg-bar{height:100%;border-radius:2px;transition:width .8s cubic-bezier(.4,0,.2,1);}
+
+/* CC SECTION */
+.cc-section{padding:20px 24px;border-bottom:1px solid var(--enemy-border);}
+.cc-tags{display:flex;flex-wrap:wrap;gap:6px;}
+.cc-tag{
+  padding:4px 10px;border-radius:3px;font-size:.65rem;letter-spacing:1.5px;
+  font-weight:700;text-transform:uppercase;
+}
+.cc-tag.has{background:rgba(200,60,60,.25);border:1px solid rgba(200,60,60,.5);color:#ff8888;}
+.cc-tag.missing{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:var(--text-dim);}
+
+/* ITEM BUILD SECTION */
+.items-section{padding:20px 24px;border-bottom:1px solid var(--enemy-border);}
+.role-builds{display:flex;flex-direction:column;gap:14px;}
+.role-build-card{
+  background:rgba(200,60,60,.05);border:1px solid rgba(200,60,60,.2);
+  border-radius:6px;padding:12px 14px;
+}
+.role-build-header{
+  display:flex;align-items:center;gap:10px;margin-bottom:10px;
+}
+.role-champ-icon{
+  width:32px;height:32px;border-radius:4px;overflow:hidden;
+  border:1.5px solid rgba(200,60,60,.4);flex-shrink:0;
+}
+.role-champ-icon img{width:100%;height:100%;object-fit:cover;object-position:top;}
+.role-champ-name{font-family:'Cinzel',serif;font-size:.75rem;color:#ff9999;font-weight:700;letter-spacing:1px;}
+.role-champ-role{font-size:.62rem;color:var(--text-dim);letter-spacing:2px;text-transform:uppercase;}
+.items-grid{display:flex;flex-wrap:wrap;gap:6px;}
+.item-chip{
+  display:flex;align-items:center;gap:6px;
+  background:rgba(9,20,40,.8);border:1px solid var(--border);
+  border-radius:4px;padding:5px 9px;cursor:default;
+  transition:all .2s;position:relative;
+}
+.item-chip:hover{border-color:var(--gold);background:rgba(200,170,110,.08);}
+.item-chip .item-icon{
+  font-size:1rem;width:20px;text-align:center;
+}
+.item-chip .item-name{font-size:.7rem;color:var(--text);letter-spacing:.5px;font-weight:600;}
+.item-chip .item-reason{
+  display:none;position:absolute;bottom:calc(100% + 6px);left:0;
+  background:rgba(9,20,40,.98);border:1px solid var(--border);
+  border-radius:4px;padding:8px 10px;font-size:.68rem;color:var(--text-dim);
+  width:200px;line-height:1.4;z-index:100;white-space:normal;pointer-events:none;
+}
+.item-chip:hover .item-reason{display:block;}
+.item-chip.core{border-color:var(--gold-dim);}
+.item-chip.core .item-name{color:var(--gold-light);}
+.item-chip.situational{border-color:rgba(74,158,255,.3);}
+.item-chip.situational .item-name{color:#88bbff;}
+
+/* STRATEGY SECTION */
+.strategy-section{padding:20px 24px;border-bottom:1px solid var(--enemy-border);}
+.strategy-cards{display:flex;flex-direction:column;gap:8px;}
+.strategy-card{
+  background:rgba(9,20,40,.6);border:1px solid var(--border);
+  border-radius:5px;padding:10px 12px;
+  display:flex;align-items:flex-start;gap:10px;
+}
+.strategy-card.phase-early{border-left:3px solid #3dba6a;}
+.strategy-card.phase-mid{border-left:3px solid #e88a2e;}
+.strategy-card.phase-late{border-left:3px solid #c03030;}
+.strategy-card.tip{border-left:3px solid #4a9eff;}
+.strategy-icon{font-size:1.1rem;flex-shrink:0;margin-top:1px;}
+.strategy-text{}
+.strategy-title{font-size:.75rem;font-weight:700;letter-spacing:1px;color:var(--text);margin-bottom:2px;}
+.strategy-desc{font-size:.72rem;color:var(--text-dim);line-height:1.4;letter-spacing:.3px;}
+
+/* RUNE RECOMMENDATIONS */
+.runes-section{padding:20px 24px;border-bottom:1px solid var(--enemy-border);}
+.rune-groups{display:flex;flex-direction:column;gap:10px;}
+.rune-group-card{background:rgba(9,20,40,.5);border:1px solid var(--border);border-radius:5px;padding:10px 12px;}
+.rune-champ-label{font-size:.65rem;color:#ff9999;letter-spacing:2px;font-weight:700;text-transform:uppercase;margin-bottom:8px;}
+.rune-row{display:flex;gap:6px;flex-wrap:wrap;}
+.rune-chip{
+  padding:3px 9px;background:rgba(200,170,110,.08);
+  border:1px solid rgba(200,170,110,.2);border-radius:3px;
+  font-size:.67rem;color:var(--text-dim);letter-spacing:.5px;font-weight:600;
+}
+.rune-chip.keystone{
+  background:rgba(200,170,110,.15);border-color:var(--gold-dim);color:var(--gold-light);font-weight:700;
+}
+
+/* WARNING / TIPS */
+.warnings-section{padding:20px 24px;}
+.warning-list{display:flex;flex-direction:column;gap:7px;}
+.warning-item{
+  background:rgba(9,20,40,.6);border:1px solid var(--border);
+  border-radius:5px;padding:9px 12px;
+  display:flex;align-items:flex-start;gap:10px;
+  animation:fadeSlide .3s ease;
+}
+.warning-item.crit{border-left:3px solid var(--red-bright);}
+.warning-item.warn{border-left:3px solid var(--orange-warn);}
+.warning-item.ok{border-left:3px solid var(--green-ok);}
+.warning-icon{font-size:1rem;flex-shrink:0;margin-top:1px;}
+.warning-text{display:flex;flex-direction:column;gap:2px;}
+.warning-title{font-size:.74rem;font-weight:700;color:var(--text);letter-spacing:.5px;}
+.warning-desc{font-size:.7rem;color:var(--text-dim);line-height:1.35;letter-spacing:.2px;}
+
+/* RATINGS */
+.ratings-section{padding:20px 24px;border-bottom:1px solid var(--enemy-border);}
+.rating-rows{display:flex;flex-direction:column;gap:6px;}
+.rating-row{display:flex;align-items:center;gap:8px;}
+.rating-key{font-size:.68rem;letter-spacing:1px;color:var(--text-dim);width:90px;flex-shrink:0;text-transform:uppercase;}
+.rating-bar-track{flex:1;height:4px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden;}
+.rating-bar-fill{height:100%;border-radius:2px;background:linear-gradient(to right,#c03030,#ff6666);transition:width .8s cubic-bezier(.4,0,.2,1);}
+.rating-val{font-family:'Share Tech Mono',monospace;font-size:.7rem;color:#ff8888;width:28px;text-align:right;}
+
+/* SYNERGY THREATS */
+.synergy-threats{padding:20px 24px;border-bottom:1px solid var(--enemy-border);}
+.threat-combo-list{display:flex;flex-direction:column;gap:7px;}
+.threat-combo{
+  background:rgba(30,5,5,.7);border:1px solid rgba(200,60,60,.3);
+  border-radius:5px;padding:8px 12px;display:flex;align-items:center;gap:10px;
+}
+.threat-combo-icons{display:flex;gap:4px;}
+.threat-combo-icons img{width:28px;height:28px;border-radius:4px;border:1px solid rgba(200,60,60,.4);}
+.threat-combo-info{flex:1;}
+.threat-combo-pair{font-size:.72rem;font-weight:700;color:#ff9999;letter-spacing:.5px;}
+.threat-combo-reason{font-size:.67rem;color:var(--text-dim);margin-top:1px;}
+.threat-combo-score{
+  font-family:'Share Tech Mono',monospace;font-size:.7rem;
+  color:#ff6666;font-weight:700;
+}
+
+/* EMPTY STATE */
+.empty-state{color:var(--text-dim);font-size:.78rem;letter-spacing:1px;text-align:center;padding:16px;opacity:.6;}
+
+/* ANIMATIONS */
+@keyframes fadeSlide{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+.anim{animation:fadeSlide .3s ease;}
+
+/* SCROLLBAR ENEMY RED */
+.left-panel::-webkit-scrollbar{width:3px;}
+
+/* TABS in right panel */
+.tab-nav{
+  display:flex;border-bottom:1px solid var(--enemy-border);
+  padding:0 16px;gap:0;
+}
+.tab-btn{
+  background:transparent;border:none;border-bottom:2px solid transparent;
+  color:var(--text-dim);font-family:'Rajdhani',sans-serif;
+  font-size:.72rem;letter-spacing:2px;font-weight:600;
+  padding:12px 14px;cursor:pointer;transition:all .2s;text-transform:uppercase;
+  margin-bottom:-1px;
+}
+.tab-btn:hover{color:var(--text);}
+.tab-btn.active{border-bottom-color:#e05050;color:#e05050;}
+.tab-pane{display:none;}
+.tab-pane.active{display:block;}
+
+/* CHAMPION DETAIL PANEL — appears when hovering an enemy slot */
+.champ-detail-bar{
+  background:linear-gradient(to right,rgba(200,60,60,.08),transparent);
+  border-bottom:1px solid rgba(200,60,60,.2);
+  padding:12px 24px;
+  display:none;flex-direction:column;gap:4px;
+}
+.champ-detail-bar.visible{display:flex;}
+.champ-detail-name{font-family:'Cinzel',serif;font-size:.85rem;color:#ff8888;font-weight:700;letter-spacing:2px;}
+.champ-detail-sub{font-size:.68rem;color:var(--text-dim);letter-spacing:1px;}
+
+/* OVERALL DANGER LEVEL */
+.danger-level-bar{
+  margin:0 24px 0;padding:14px 16px;
+  border-radius:6px;border:1px solid rgba(200,60,60,.3);
+  background:rgba(200,60,60,.06);
+  display:flex;align-items:center;gap:12px;margin-bottom:0;
+}
+.danger-icon{font-size:1.4rem;}
+.danger-text-wrap{}
+.danger-label{font-family:'Cinzel',serif;font-size:.75rem;color:#e05050;letter-spacing:2px;font-weight:700;text-transform:uppercase;}
+.danger-desc{font-size:.7rem;color:var(--text-dim);margin-top:2px;line-height:1.3;}
+
+/* Mobile responsive */
+@media(max-width:900px){
+  .main-wrap{grid-template-columns:1fr;}
+  .right-panel{max-height:70vh;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-logo">
+    <div class="header-logo-icon">⚔️</div>
+    <h1>Counter Analyzer<span>Enemy Team Analysis - LoL</span></h1>
+  </div>
+  <div class="header-nav counter-nav">
+    <a href="index.html" class="nav-btn">Home</a>
+    <a href="sampiyonlar.html" class="nav-btn">Champions</a>
+    <a href="lore.html" class="nav-btn">Lore</a>
+    <a href="aboutus.html" class="nav-btn">About Us</a>
+    <a href="updates.html" class="nav-btn">Updates</a>
+    <a href="draft-builder.html" class="nav-btn">Draft Builder</a>
+    <a href="Quiz.html" class="nav-btn">Quiz</a>
+    <button class="nav-btn active" type="button">Counter Analyzer</button>
+  </div>
+</header>
+
+<div class="main-wrap">
+  <!-- LEFT PANEL -->
+  <div class="left-panel">
+    <!-- ENEMY DRAFT ZONE -->
+    <div class="enemy-zone">
+      <div class="enemy-zone-title">Enemy Team - Pick 5 Champions</div>
+      <div class="enemy-slots" id="enemySlots">
+        <div class="enemy-slot" data-index="0" onclick="openSlot(0)">
+          <div class="slot-empty-icon">💀</div>
+          <div class="slot-role">Top</div>
+        </div>
+        <div class="enemy-slot" data-index="1" onclick="openSlot(1)">
+          <div class="slot-empty-icon">💀</div>
+          <div class="slot-role">Jungle</div>
+        </div>
+        <div class="enemy-slot" data-index="2" onclick="openSlot(2)">
+          <div class="slot-empty-icon">💀</div>
+          <div class="slot-role">Mid</div>
+        </div>
+        <div class="enemy-slot" data-index="3" onclick="openSlot(3)">
+          <div class="slot-empty-icon">💀</div>
+          <div class="slot-role">Bot</div>
+        </div>
+        <div class="enemy-slot" data-index="4" onclick="openSlot(4)">
+          <div class="slot-empty-icon">💀</div>
+          <div class="slot-role">Support</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FILTERS + PICKER -->
+    <div class="picker-section">
+      <div class="filters-row">
+        <span class="filter-label">Role</span>
+        <button class="filter-btn active" data-filter-role="all">All</button>
+        <button class="filter-btn" data-filter-role="top">Top</button>
+        <button class="filter-btn" data-filter-role="jungle">Jungle</button>
+        <button class="filter-btn" data-filter-role="mid">Mid</button>
+        <button class="filter-btn" data-filter-role="bot">Bot</button>
+        <button class="filter-btn" data-filter-role="support">Support</button>
+        <span class="filter-sep"></span>
+        <button class="filter-btn active" data-filter-type="all">All</button>
+        <button class="filter-btn" data-filter-type="melee">Melee</button>
+        <button class="filter-btn" data-filter-type="ranged">Ranged</button>
+      </div>
+      <div class="filters-row">
+        <span class="filter-label">Class</span>
+        <button class="filter-btn active" data-filter-class="all">All</button>
+        <button class="filter-btn" data-filter-class="tank">Tank</button>
+        <button class="filter-btn" data-filter-class="fighter">Fighter</button>
+        <button class="filter-btn" data-filter-class="mage">Mage</button>
+        <button class="filter-btn" data-filter-class="assassin">Assassin</button>
+        <button class="filter-btn" data-filter-class="marksman">Marksman</button>
+        <button class="filter-btn" data-filter-class="support">Support</button>
+        <button class="filter-btn" data-filter-class="enchanter">Enchanter</button>
+      </div>
+      <div class="search-wrap">
+        <input type="text" id="searchInput" placeholder="Search champion..." autocomplete="off"/>
+      </div>
+      <div class="champ-grid" id="champGrid"></div>
+    </div>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="right-panel" id="rightPanel">
+
+    <div class="analysis-header">
+      <span class="analysis-title">Enemy Analysis</span>
+      <span class="champ-count-badge" id="champCountBadge">0 / 5 selected</span>
+    </div>
+
+    <!-- THREAT METER -->
+    <div class="threat-wrap">
+      <div class="threat-ring">
+        <svg viewBox="0 0 120 120">
+          <circle class="ring-bg-enemy" cx="60" cy="60" r="54"/>
+          <circle class="ring-fill-enemy" id="ringFill" cx="60" cy="60" r="54"/>
+        </svg>
+        <div class="score-num">
+          <span class="num" id="threatNum">—</span>
+          <span class="label">Threat</span>
+        </div>
+      </div>
+      <div class="threat-grade" id="threatGrade">Select Enemies</div>
+      <div class="threat-sublabel" id="threatSublabel">Analyze the enemy team by selecting 5 champions</div>
+    </div>
+
+    <!-- TABS -->
+    <div class="tab-nav">
+      <button class="tab-btn active" data-tab="items">Items</button>
+      <button class="tab-btn" data-tab="strategy">Strategy</button>
+      <button class="tab-btn" data-tab="runes">Runes</button>
+      <button class="tab-btn" data-tab="threats">Threats</button>
+      <button class="tab-btn" data-tab="analysis">Analysis</button>
+    </div>
+
+    <!-- TAB: ITEMS -->
+    <div class="tab-pane active" id="tab-items">
+      <div class="damage-section">
+        <div class="sec-label">Enemy Damage Profile</div>
+        <div class="damage-donut-wrap">
+          <div class="damage-donut">
+            <svg viewBox="0 0 100 100">
+              <circle id="donutTrue"  cx="50" cy="50" r="38" stroke="#c8aa6e" stroke-dasharray="0 238.76"/>
+              <circle id="donutMagic" cx="50" cy="50" r="38" stroke="#4a9eff" stroke-dasharray="0 238.76"/>
+              <circle id="donutPhys"  cx="50" cy="50" r="38" stroke="#e05050" stroke-dasharray="0 238.76"/>
+            </svg>
+            <div class="donut-label" id="donutLabel">—</div>
+          </div>
+          <div class="damage-legend">
+            <div>
+              <div class="dmg-row">
+                <div class="dmg-dot-l" style="background:#e05050;"></div>
+                <span class="dmg-label">Physical</span>
+                <span class="dmg-pct" id="physPct" style="color:#e05050;">—%</span>
+              </div>
+              <div class="dmg-bar-wrap"><div class="dmg-bar" id="physBar" style="background:#e05050;width:0%"></div></div>
+            </div>
+            <div>
+              <div class="dmg-row">
+                <div class="dmg-dot-l" style="background:#4a9eff;"></div>
+                <span class="dmg-label">Magic</span>
+                <span class="dmg-pct" id="magicPct" style="color:#4a9eff;">—%</span>
+              </div>
+              <div class="dmg-bar-wrap"><div class="dmg-bar" id="magicBar" style="background:#4a9eff;width:0%"></div></div>
+            </div>
+            <div>
+              <div class="dmg-row">
+                <div class="dmg-dot-l" style="background:var(--gold);"></div>
+                <span class="dmg-label">True</span>
+                <span class="dmg-pct" id="truePct" style="color:var(--gold);">—%</span>
+              </div>
+              <div class="dmg-bar-wrap"><div class="dmg-bar" id="trueBar" style="background:var(--gold);width:0%"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="items-section">
+        <div class="sec-label">Recommended Counter Items</div>
+        <div id="itemBuilds" class="role-builds">
+          <div class="empty-state">Pick a champion to see item suggestions</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: STRATEGY -->
+    <div class="tab-pane" id="tab-strategy">
+      <div class="strategy-section" style="border-bottom:none;padding-bottom:0;">
+        <div class="sec-label">Game Plan & Strategy</div>
+        <div id="strategyCards" class="strategy-cards">
+          <div class="empty-state">Pick a champion to see strategy advice</div>
+        </div>
+      </div>
+      <div class="ratings-section">
+        <div class="sec-label">Enemy Power Ratings</div>
+        <div class="rating-rows" id="ratingRows"></div>
+      </div>
+    </div>
+
+    <!-- TAB: RUNES -->
+    <div class="tab-pane" id="tab-runes">
+      <div class="runes-section" style="border-bottom:none;">
+        <div class="sec-label">Counter Rune Suggestions</div>
+        <div id="runeGroups" class="rune-groups">
+          <div class="empty-state">Pick a champion to see rune suggestions</div>
+        </div>
+      </div>
+      <div class="cc-section">
+        <div class="sec-label">Enemy CC Coverage</div>
+        <div class="cc-tags" id="ccTags"></div>
+      </div>
+    </div>
+
+    <!-- TAB: THREATS -->
+    <div class="tab-pane" id="tab-threats">
+      <div class="synergy-threats" style="border-bottom:none;">
+        <div class="sec-label">Dangerous Synergy Combos</div>
+        <div id="threatCombos" class="threat-combo-list">
+          <div class="empty-state">Pick a champion to see threat combos</div>
+        </div>
+      </div>
+      <div class="warnings-section">
+        <div class="sec-label">Things to Watch Out For</div>
+        <div id="warningList" class="warning-list">
+          <div class="empty-state">Pick a champion to start analysis</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: ANALYSIS -->
+    <div class="tab-pane" id="tab-analysis">
+      <div class="warnings-section" style="border-bottom:1px solid var(--enemy-border);">
+        <div class="sec-label">Enemy Weak Points</div>
+        <div id="weaknessList" class="warning-list">
+          <div class="empty-state">Pick a champion to see weakness analysis</div>
+        </div>
+      </div>
+      <div class="warnings-section">
+        <div class="sec-label">Enemy Strengths</div>
+        <div id="strengthList" class="warning-list">
+          <div class="empty-state">Pick a champion to see strength analysis</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /right-panel -->
+</div><!-- /main-wrap -->
+
+<script src="champion-lanes.js"></script>
+<script src="champion-full-tr.js"></script>
+<script src="full-roster-helper.js"></script>
+<script>
+/* ═══════════════════════════════════════════════
+   CHAMPION DATABASE
+═══════════════════════════════════════════════ */
+const CHAMPIONS = [
+  {id:'Malphite',name:'Malphite',title:'Monolith Kırığı',roles:['top','support'],type:'melee',class:'tank',damage:{phys:25,magic:70,true:5},cc:['knockup','slow'],engage:9,peel:3,tankiness:10,utility:6,carry:2,waveclear:4,split:1,mobile:2,tags:['engage','tank','aoe'],synergies:{Yasuo:{score:30,reason:'Ult → Last Breath'},Yone:{score:25,reason:'Ult → Soul Unbound'},MissFortune:{score:20,reason:'Ult → Bullet Time'},Jinx:{score:18,reason:'Ult engage → Get Excited'},Orianna:{score:22,reason:'Ball delivery + Shockwave'}}},
+  {id:'Yasuo',name:'Yasuo',title:'The Unforgiven',roles:['mid','top','bot'],type:'melee',class:'fighter',damage:{phys:78,magic:17,true:5},cc:['knockup'],engage:6,peel:2,tankiness:3,utility:4,carry:9,waveclear:7,split:7,mobile:9,tags:['carry','mobile','airborne-user'],synergies:{Malphite:{score:30,reason:'Groundslam → Last Breath'},Amumu:{score:25,reason:'Mass stun → Last Breath'},Vi:{score:20,reason:'Ult → Last Breath'},Jarvan:{score:18,reason:'Cataclysm knockup → Last Breath'}}},
+  {id:'Yone',name:'Yone',title:'The Unforgotten',roles:['mid','top'],type:'melee',class:'fighter',damage:{phys:68,magic:27,true:5},cc:['knockup','fear','slow'],engage:7,peel:3,tankiness:4,utility:5,carry:8,waveclear:7,split:6,mobile:8,tags:['carry','mobile','airborne-user'],synergies:{Malphite:{score:25,reason:'Ult delivers airborne'},Amumu:{score:22,reason:'Mass stun + ult'},Nautilus:{score:20,reason:'Hook + airborne ult'}}},
+  {id:'Ahri',name:'Ahri',title:'Dokuz Kuyruklu Tilki',roles:['mid'],type:'ranged',class:'mage',damage:{phys:12,magic:83,true:5},cc:['charm','slow'],engage:5,peel:4,tankiness:2,utility:6,carry:8,waveclear:6,split:3,mobile:8,tags:['mobile','burst','poke'],synergies:{Zed:{score:16,reason:'Charm → Death Mark'},Ashe:{score:14,reason:'Arrow + Charm lock'}}},
+  {id:'Lux',name:'Lux',title:'Işık Hanımı',roles:['mid','support'],type:'ranged',class:'mage',damage:{phys:8,magic:87,true:5},cc:['snare','slow'],engage:4,peel:6,tankiness:1,utility:8,carry:7,waveclear:7,split:2,mobile:1,tags:['poke','burst','snare'],synergies:{Blitzcrank:{score:18,reason:'Grab → Snare combo'},Caitlyn:{score:16,reason:'Snare → Ace in the Hole'}}},
+  {id:'Jinx',name:'Jinx',title:'Deli Top',roles:['bot'],type:'ranged',class:'marksman',damage:{phys:88,magic:7,true:5},cc:['slow','snare'],engage:2,peel:3,tankiness:1,utility:4,carry:9,waveclear:8,split:3,mobile:2,tags:['carry','aoe','hypercarry'],synergies:{Thresh:{score:20,reason:'Hook → Get Excited'},Leona:{score:18,reason:'Engage → Hypercarry'},Nautilus:{score:19,reason:'Hook → Get Excited'}}},
+  {id:'MissFortune',name:'Miss Fortune',title:'Ödül Avcısı',roles:['bot'],type:'ranged',class:'marksman',damage:{phys:82,magic:13,true:5},cc:['slow'],engage:3,peel:3,tankiness:1,utility:5,carry:8,waveclear:7,split:2,mobile:2,tags:['aoe','poke','synergy-ult'],synergies:{Amumu:{score:28,reason:'Mass stun → Bullet Time'},Leona:{score:22,reason:'Lock → Bullet Time'},Malphite:{score:20,reason:'Ult → Bullet Time'}}},
+  {id:'Thresh',name:'Thresh',title:'Zincir Gardiyanı',roles:['support'],type:'melee',class:'support',damage:{phys:22,magic:73,true:5},cc:['hook','knockback','slow','snare'],engage:8,peel:9,tankiness:4,utility:10,carry:3,waveclear:2,split:1,mobile:3,tags:['engage','peel','utility','hook'],synergies:{Jinx:{score:20,reason:'Hook → Get Excited'},Jhin:{score:18,reason:'Curtain Call setup'},Vayne:{score:16,reason:'Peel + lantern'}}},
+  {id:'Leona',name:'Leona',title:'Işıl Şafak',roles:['support'],type:'melee',class:'tank',damage:{phys:28,magic:67,true:5},cc:['stun','knockup','slow'],engage:10,peel:4,tankiness:8,utility:6,carry:2,waveclear:3,split:1,mobile:3,tags:['engage','tank','hard-cc'],synergies:{MissFortune:{score:22,reason:'Lock → Bullet Time'},Caitlyn:{score:22,reason:'Headshot burst combo'},Jinx:{score:18,reason:'Engage → Get Excited'}}},
+  {id:'Vi',name:'Vi',title:'Piltover Uygulayıcısı',roles:['jungle'],type:'melee',class:'fighter',damage:{phys:78,magic:17,true:5},cc:['knockup','knockback','stun'],engage:8,peel:3,tankiness:6,utility:5,carry:6,waveclear:7,split:4,mobile:6,tags:['engage','carry','target-lock'],synergies:{Yasuo:{score:20,reason:'Ult → Last Breath'},MissFortune:{score:18,reason:'Target-lock → Bullet Time'}}},
+  {id:'Leesin',name:'Lee Sin',title:'Kör Keşiş',roles:['jungle','top'],type:'melee',class:'fighter',damage:{phys:85,magic:10,true:5},cc:['slow','knockback'],engage:8,peel:6,tankiness:4,utility:7,carry:7,waveclear:6,split:6,mobile:9,tags:['mobile','engage','insec'],synergies:{Orianna:{score:22,reason:'Insec → Shockwave'},Malphite:{score:18,reason:'Insec into team'}}},
+  {id:'Amumu',name:'Amumu',title:'Üzgün Mumya',roles:['jungle','support','top'],type:'melee',class:'tank',damage:{phys:20,magic:75,true:5},cc:['stun','snare','slow'],engage:9,peel:4,tankiness:9,utility:7,carry:2,waveclear:7,split:1,mobile:3,tags:['engage','tank','aoe','mass-cc'],synergies:{Yasuo:{score:25,reason:'Mass CC → Last Breath'},MissFortune:{score:28,reason:'Mass stun → Bullet Time'},Katarina:{score:22,reason:'Mass stun → free Death Lotus'}}},
+  {id:'Zed',name:'Zed',title:'Gölgelerin Efendisi',roles:['mid','top'],type:'melee',class:'assassin',damage:{phys:90,magic:5,true:5},cc:['slow'],engage:7,peel:1,tankiness:2,utility:2,carry:9,waveclear:6,split:8,mobile:8,tags:['assassin','carry','mobile'],synergies:{Ahri:{score:16,reason:'Charm → Death Mark'},Jarvan:{score:15,reason:'Cataclysm traps in Death Mark zone'}}},
+  {id:'Katarina',name:'Katarina',title:'Sinister Bıçak',roles:['mid'],type:'melee',class:'assassin',damage:{phys:28,magic:67,true:5},cc:['slow'],engage:6,peel:1,tankiness:2,utility:2,carry:9,waveclear:8,split:4,mobile:9,tags:['assassin','carry','reset','aoe'],synergies:{Amumu:{score:22,reason:'Mass stun → uninterrupted Death Lotus'},Leona:{score:18,reason:'Hard CC → free ult'}}},
+  {id:'Darius',name:'Darius',title:'Noxus\'un Eli',roles:['top'],type:'melee',class:'fighter',damage:{phys:70,magic:5,true:25},cc:['slow','pull'],engage:5,peel:2,tankiness:7,utility:4,carry:8,waveclear:5,split:8,mobile:2,tags:['carry','juggernaut','execute','split'],synergies:{Vi:{score:18,reason:'Vi ult → Guillotine range'},Kayle:{score:22,reason:'Intervention during all-in'}}},
+  {id:'Garen',name:'Garen',title:'Demacia\'nın Gücü',roles:['top'],type:'melee',class:'fighter',damage:{phys:72,magic:5,true:23},cc:['silence','slow'],engage:5,peel:2,tankiness:8,utility:3,carry:7,waveclear:5,split:7,mobile:2,tags:['carry','juggernaut','execute','split'],synergies:{Lux:{score:16,reason:'Silence + snare combo'},TwistedFate:{score:14,reason:'Split + global pressure'}}},
+  {id:'Syndra',name:'Syndra',title:'Karanlık Egemen',roles:['mid'],type:'ranged',class:'mage',damage:{phys:10,magic:87,true:3},cc:['stun','slow'],engage:6,peel:4,tankiness:1,utility:5,carry:8,waveclear:6,split:2,mobile:2,tags:['burst','poke','pick'],synergies:{Vi:{score:17,reason:'Stun chain → burst'},Nautilus:{score:16,reason:'Hook → stun chain burst'}}},
+  {id:'Orianna',name:'Orianna',title:'Saat Hanımı',roles:['mid'],type:'ranged',class:'mage',damage:{phys:15,magic:82,true:3},cc:['slow','knockup'],engage:7,peel:7,tankiness:2,utility:9,carry:7,waveclear:6,split:1,mobile:2,tags:['utility','aoe','peel','engage'],synergies:{Leesin:{score:22,reason:'Insec → Shockwave'},Malphite:{score:22,reason:'Ball delivery + Shockwave'},Hecarim:{score:20,reason:'Onslaught → Shockwave'}}},
+  {id:'Caitlyn',name:'Caitlyn',title:'Piltover\'ın Şerifi',roles:['bot'],type:'ranged',class:'marksman',damage:{phys:87,magic:8,true:5},cc:['snare','slow'],engage:3,peel:4,tankiness:1,utility:5,carry:8,waveclear:5,split:3,mobile:2,tags:['poke','burst','long-range'],synergies:{Leona:{score:22,reason:'Headshot on all stuns'},Thresh:{score:16,reason:'Headshot setup'},Blitzcrank:{score:18,reason:'Grab → headshot'}}},
+  {id:'Nautilus',name:'Nautilus',title:'Derin Deniz Kaptanı',roles:['support','jungle'],type:'melee',class:'tank',damage:{phys:22,magic:72,true:6},cc:['hook','knockup','stun','slow'],engage:10,peel:7,tankiness:9,utility:9,carry:2,waveclear:4,split:1,mobile:2,tags:['engage','tank','hard-cc','hook'],synergies:{KaiSa:{score:22,reason:'Hook → guaranteed Void Seeker'},Jinx:{score:19,reason:'Hook → Get Excited'},MissFortune:{score:22,reason:'Depth Charge → Bullet Time'}}},
+  {id:'Ashe',name:'Ashe',title:'Buz Okçusu',roles:['bot','support'],type:'ranged',class:'marksman',damage:{phys:72,magic:23,true:5},cc:['stun','slow'],engage:5,peel:5,tankiness:1,utility:8,carry:7,waveclear:5,split:2,mobile:1,tags:['utility','poke','global','slow'],synergies:{Ahri:{score:14,reason:'Arrow + Charm dual lock'},Caitlyn:{score:15,reason:'Arrow stun → Ace in the Hole'}}},
+  {id:'Blitzcrank',name:'Blitzcrank',title:'Harika Buhar Golemi',roles:['support','jungle'],type:'melee',class:'tank',damage:{phys:30,magic:62,true:8},cc:['hook','knockup','slow','silence'],engage:9,peel:4,tankiness:7,utility:8,carry:2,waveclear:3,split:1,mobile:3,tags:['engage','hook','pick','utility'],synergies:{MissFortune:{score:22,reason:'Grab → Bullet Time'},Lux:{score:18,reason:'Grab → Snare → ult'}}},
+  {id:'TwistedFate',name:'Twisted Fate',title:'Kart Ustası',roles:['mid'],type:'ranged',class:'mage',damage:{phys:25,magic:70,true:5},cc:['stun','slow'],engage:5,peel:3,tankiness:1,utility:8,carry:7,waveclear:7,split:4,mobile:3,tags:['global','pick','utility','poke'],synergies:{Darius:{score:14,reason:'Global + split pressure'},Zed:{score:15,reason:'Stun card → Death Mark'}}},
+  {id:'Vayne',name:'Vayne',title:'Gece Avcısı',roles:['bot','top'],type:'ranged',class:'marksman',damage:{phys:60,magic:10,true:30},cc:['knockback','stun'],engage:4,peel:3,tankiness:1,utility:3,carry:10,waveclear:4,split:8,mobile:6,tags:['hypercarry','anti-tank','true-damage','mobile'],synergies:{Lulu:{score:18,reason:'Wild Growth protection'},Thresh:{score:16,reason:'Peel + lantern'},Poppy:{score:16,reason:'Heroic Charge pin into wall'}}},
+  {id:'Kayle',name:'Kayle',title:'Adalet Kılıcı',roles:['top','jungle','support'],type:'ranged',class:'fighter',damage:{phys:55,magic:40,true:5},cc:['slow'],engage:4,peel:7,tankiness:3,utility:8,carry:8,waveclear:7,split:4,mobile:2,tags:['hypercarry','enchanter','late-game','utility'],synergies:{Darius:{score:22,reason:'Intervention during all-in dive'},Kayn:{score:14,reason:'Ult negates burst'},Fiora:{score:16,reason:'Intervention prevents execution'}}},
+  {id:'Shen',name:'Shen',title:'Gece\'nin Gözü',roles:['top','support'],type:'melee',class:'tank',damage:{phys:35,magic:55,true:10},cc:['taunt','slow'],engage:6,peel:8,tankiness:9,utility:9,carry:3,waveclear:4,split:5,mobile:4,tags:['global','tank','peel','engage'],synergies:{Gangplank:{score:13,reason:'Double global split coverage'},Vayne:{score:15,reason:'Stand United protects carries'}}},
+  {id:'Fiora',name:'Fiora',title:'Büyük Usta',roles:['top'],type:'melee',class:'fighter',damage:{phys:80,magic:8,true:12},cc:['stun','slow'],engage:7,peel:2,tankiness:4,utility:4,carry:9,waveclear:5,split:10,mobile:7,tags:['split','carry','duelist','anti-tank'],synergies:{Darius:{score:14,reason:'Dual split push juggernaut'},Kayle:{score:16,reason:'Intervention ensures Fiora survives'}}},
+  {id:'Jhin',name:'Jhin',title:'Virtüöz',roles:['bot'],type:'ranged',class:'marksman',damage:{phys:80,magic:15,true:5},cc:['snare','slow'],engage:5,peel:4,tankiness:1,utility:6,carry:8,waveclear:5,split:2,mobile:1,tags:['burst','poke','long-range','utility'],synergies:{Thresh:{score:18,reason:'Flay → Curtain Call'},Ashe:{score:16,reason:'Arrow stun → Curtain Call'},Bard:{score:14,reason:'Tempered Fate → free ult channel'}}},
+  {id:'Veigar',name:'Veigar',title:'Şer Küçük Üstat',roles:['mid','support'],type:'ranged',class:'mage',damage:{phys:5,magic:92,true:3},cc:['stun','slow'],engage:5,peel:5,tankiness:1,utility:7,carry:8,waveclear:7,split:1,mobile:1,tags:['burst','scaling','mage','cage'],synergies:{Lux:{score:14,reason:'Snare → free cage stun'},Nautilus:{score:15,reason:'Hook → cage → ult burst'}}},
+  {id:'Xerath',name:'Xerath',title:'Büyüsel Mermi',roles:['support','mid'],type:'ranged',class:'mage',damage:{phys:6,magic:91,true:3},cc:['stun','slow'],engage:4,peel:5,tankiness:1,utility:7,carry:7,waveclear:8,split:1,mobile:1,tags:['poke','long-range','artillery'],synergies:{Caitlyn:{score:16,reason:'Stun → headshot burst'},Lux:{score:14,reason:'Double artillery poke'}}},
+  {id:'Morgana',name:'Morgana',title:'Yaşayan Günah',roles:['support','jungle','mid'],type:'ranged',class:'mage',damage:{phys:8,magic:82,true:10},cc:['snare','stun','slow'],engage:6,peel:8,tankiness:2,utility:9,carry:4,waveclear:7,split:1,mobile:1,tags:['peel','utility','snare','anti-hook'],synergies:{MissFortune:{score:18,reason:'Black Shield protects Bullet Time channel'},Zyra:{score:14,reason:'Dual snare zone control'}}},
+  {id:'Rakan',name:'Rakan',title:'Büyüleyici',roles:['support'],type:'melee',class:'enchanter',damage:{phys:15,magic:70,true:5},cc:['knockup','charm','stun','slow'],engage:10,peel:7,tankiness:4,utility:9,carry:2,waveclear:2,split:1,mobile:7,tags:['engage','enchanter','aoe'],synergies:{Xayah:{score:28,reason:'Perfect dual ult combo'},Yasuo:{score:22,reason:'Mass charm → Last Breath'},MissFortune:{score:20,reason:'Mass charm → Bullet Time'}}},
+  {id:'Xayah',name:'Xayah',title:'İsyankâr',roles:['bot'],type:'ranged',class:'marksman',damage:{phys:82,magic:13,true:5},cc:['snare','slow'],engage:4,peel:5,tankiness:2,utility:5,carry:8,waveclear:6,split:3,mobile:5,tags:['carry','aoe','untargetable'],synergies:{Rakan:{score:28,reason:'Dual ult perfect combo'},Lulu:{score:15,reason:'Wild Growth enables aggressive play'}}},
+  {id:'Pyke',name:'Pyke',title:'Kan Limanı Kasabı',roles:['support'],type:'melee',class:'assassin',damage:{phys:70,magic:20,true:10},cc:['stun','slow','hook'],engage:8,peel:2,tankiness:3,utility:6,carry:6,waveclear:2,split:2,mobile:7,tags:['assassin','hook','execute','stealth'],synergies:{MissFortune:{score:18,reason:'Stun → Bullet Time → execute gold'},Malzahar:{score:16,reason:'Suppress + execute combo'}}},
+  {id:'Draven',name:'Draven',title:'Görkemli Cellat',roles:['bot'],type:'ranged',class:'marksman',damage:{phys:92,magic:3,true:5},cc:['slow','knockback'],engage:4,peel:3,tankiness:1,utility:3,carry:10,waveclear:5,split:3,mobile:2,tags:['carry','early-game','snowball'],synergies:{Thresh:{score:18,reason:'Hook → Spinning Axes burst'},Leona:{score:20,reason:'Stun → early kill pressure'}}},
+  {id:'Karthus',name:'Karthus',title:'Ölüm Şarkıcısı',roles:['jungle','mid','support'],type:'ranged',class:'mage',damage:{phys:5,magic:92,true:3},cc:['slow'],engage:3,peel:3,tankiness:1,utility:6,carry:8,waveclear:9,split:1,mobile:1,tags:['aoe','global','carry','poke'],synergies:{Amumu:{score:22,reason:'Mass stun → Requiem delete'},Bard:{score:18,reason:'Tempered Fate → Requiem global'}}},
+  {id:'Kayn',name:'Kayn',title:'Gölge Biçici',roles:['jungle'],type:'melee',class:'assassin',damage:{phys:80,magic:15,true:5},cc:['stun','slow'],engage:8,peel:2,tankiness:5,utility:3,carry:8,waveclear:7,split:5,mobile:9,tags:['assassin','carry','mobile','wall-walk'],synergies:{Orianna:{score:15,reason:'Flank → Shockwave'},Vi:{score:14,reason:'Dual jungle dive'}}},
+  {id:'Hecarim',name:'Hecarim',title:'Savaş Gölgesi',roles:['jungle'],type:'melee',class:'fighter',damage:{phys:75,magic:20,true:5},cc:['knockback','fear','slow'],engage:9,peel:3,tankiness:6,utility:5,carry:7,waveclear:7,split:4,mobile:9,tags:['engage','carry','mobile','aoe'],synergies:{Orianna:{score:20,reason:'Onslaught → Shockwave'},MissFortune:{score:18,reason:'Fear → Bullet Time'},Yasuo:{score:18,reason:'Knockback → Last Breath'}}},
+  {id:'Sett',name:'Sett',title:'Patron',roles:['top','support','jungle'],type:'melee',class:'fighter',damage:{phys:70,magic:10,true:20},cc:['stun','slow','knockup'],engage:8,peel:5,tankiness:8,utility:6,carry:7,waveclear:5,split:6,mobile:4,tags:['carry','tank','engage','true-damage'],synergies:{Yasuo:{score:22,reason:'Show Stopper knockup → Last Breath'},Yone:{score:20,reason:'Deliver airborne → Soul Unbound'}}},
+  {id:'Camille',name:'Camille',title:'Çelik Gölge',roles:['top','jungle'],type:'melee',class:'fighter',damage:{phys:80,magic:10,true:10},cc:['stun','slow','knockback'],engage:8,peel:3,tankiness:5,utility:5,carry:8,waveclear:6,split:9,mobile:8,tags:['split','engage','carry','mobile'],synergies:{Orianna:{score:17,reason:'Hextech Ultimatum → ball zone'},Vi:{score:16,reason:'Dual engage combo'}}},
+  {id:'Diana',name:'Diana',title:'Ay\'ın Öfkesi',roles:['mid','jungle'],type:'melee',class:'assassin',damage:{phys:15,magic:80,true:5},cc:['knockup','slow'],engage:8,peel:2,tankiness:4,utility:4,carry:9,waveclear:7,split:5,mobile:8,tags:['assassin','carry','mobile','aoe'],synergies:{Yasuo:{score:18,reason:'Knockup → Last Breath'},Amumu:{score:16,reason:'Dual mass engage'}}},
+  {id:'Galio',name:'Galio',title:'Kolos',roles:['mid','support','top'],type:'melee',class:'tank',damage:{phys:20,magic:75,true:5},cc:['knockup','taunt','slow'],engage:8,peel:7,tankiness:8,utility:8,carry:4,waveclear:7,split:2,mobile:4,tags:['engage','tank','global','anti-magic'],synergies:{Yasuo:{score:22,reason:'Mass knockup → Last Breath'},MissFortune:{score:20,reason:'Global knockup → Bullet Time'}}},
+  {id:'Fiddlesticks',name:'Fiddlesticks',title:'Kadim Korku',roles:['jungle','support'],type:'ranged',class:'mage',damage:{phys:8,magic:87,true:5},cc:['fear','silence','slow'],engage:9,peel:4,tankiness:2,utility:6,carry:7,waveclear:9,split:1,mobile:3,tags:['aoe','engage','carry','stealth'],synergies:{MissFortune:{score:22,reason:'Crowstorm + Bullet Time'},Katarina:{score:20,reason:'Fear → free Death Lotus'}}},
+  {id:'Irelia',name:'Irelia',title:'Bıçak Dansçısı',roles:['top','mid'],type:'melee',class:'fighter',damage:{phys:72,magic:18,true:10},cc:['stun','slow'],engage:8,peel:2,tankiness:5,utility:4,carry:9,waveclear:7,split:8,mobile:9,tags:['carry','mobile','engage','reset'],synergies:{Orianna:{score:16,reason:'Blade surge → Shockwave'},Amumu:{score:16,reason:'Mass stun → free resets'}}},
+  {id:'Lulu',name:'Lulu',title:'Peri Büyücüsü',roles:['support','mid'],type:'ranged',class:'enchanter',damage:{phys:12,magic:63,true:5},cc:['polymorph','slow','knockup'],engage:4,peel:10,tankiness:2,utility:10,carry:3,waveclear:4,split:1,mobile:2,tags:['enchanter','peel','utility'],synergies:{Vayne:{score:18,reason:'Polymorph + Wild Growth protection'},Jinx:{score:18,reason:'Wild Growth → unstoppable hypercarry'}}},
+  {id:'Gangplank',name:'Gangplank',title:'Tuzlu Su Korsanı',roles:['top'],type:'ranged',class:'fighter',damage:{phys:62,magic:18,true:20},cc:['slow'],engage:5,peel:5,tankiness:5,utility:7,carry:8,waveclear:7,split:8,mobile:3,tags:['carry','split','true-damage','global'],synergies:{TwistedFate:{score:14,reason:'Dual global pressure'},Karthus:{score:14,reason:'Double global ult combo'}}},
+  {id:'Seraphine',name:'Seraphine',title:'Yıldız Gözlü Şarkıcı',roles:['support','mid'],type:'ranged',class:'enchanter',damage:{phys:8,magic:82,true:10},cc:['stun','charm','slow'],engage:5,peel:8,tankiness:1,utility:10,carry:6,waveclear:7,split:1,mobile:2,tags:['enchanter','aoe','utility'],synergies:{MissFortune:{score:18,reason:'Encore → Bullet Time'},Yasuo:{score:18,reason:'Encore knockup → Last Breath'}}},
+  {id:'Samira',name:'Samira',title:'Çöl Gülü',roles:['bot'],type:'ranged',class:'marksman',damage:{phys:80,magic:12,true:8},cc:['knockup'],engage:6,peel:3,tankiness:2,utility:4,carry:9,waveclear:6,split:3,mobile:7,tags:['carry','mobile','reset','aoe'],synergies:{Amumu:{score:22,reason:'Mass CC → Inferno Trigger'},Leona:{score:20,reason:'Hard CC → Inferno Trigger'}}},
+  {id:'Renekton',name:'Renekton',title:'Kumların Kasabı',roles:['top'],type:'melee',class:'fighter',damage:{phys:78,magic:12,true:10},cc:['stun','slow'],engage:7,peel:2,tankiness:7,utility:3,carry:7,waveclear:6,split:7,mobile:6,tags:['carry','tank','early-game'],synergies:{Leona:{score:16,reason:'Dual stun chain dominance'},Vi:{score:15,reason:'Early dive combo'}}},
+  {id:'JarvanIV',name:'Jarvan IV',title:'Demacia\'nın Örneği',roles:['jungle','top','support'],type:'melee',class:'fighter',damage:{phys:72,magic:20,true:8},cc:['knockup','slow'],engage:8,peel:4,tankiness:7,utility:7,carry:5,waveclear:6,split:3,mobile:6,tags:['engage','tank','trap','aoe'],synergies:{Yasuo:{score:18,reason:'Cataclysm knockup → Last Breath'},MissFortune:{score:18,reason:'Cataclysm → free Bullet Time'},Katarina:{score:18,reason:'Cataclysm box → free Death Lotus'}}},
+  {id:'KaiSa',name:"Kai'Sa",title:'Void\'un Kızı',roles:['bot'],type:'ranged',class:'marksman',damage:{phys:55,magic:40,true:5},cc:['slow'],engage:5,peel:3,tankiness:1,utility:4,carry:9,waveclear:6,split:3,mobile:8,tags:['carry','mobile','hypercarry','hybrid'],synergies:{Nautilus:{score:22,reason:'Hook → guaranteed Void Seeker'},Leona:{score:20,reason:'Immobilize → Killer Instinct'}}},
+  {id:'Pantheon',name:'Pantheon',title:'Kırılmaz Mızrak',roles:['support','top','jungle','mid'],type:'melee',class:'fighter',damage:{phys:75,magic:15,true:10},cc:['stun','slow'],engage:8,peel:6,tankiness:6,utility:7,carry:5,waveclear:5,split:4,mobile:6,tags:['engage','peel','global','burst'],synergies:{MissFortune:{score:20,reason:'Grand Starfall + Bullet Time'},Yasuo:{score:16,reason:'Grand Starfall airborne → Last Breath'}}},
+  {id:'Senna',name:'Senna',title:'Kurtarıcı',roles:['support','bot'],type:'ranged',class:'enchanter',damage:{phys:42,magic:42,true:16},cc:['snare','slow'],engage:4,peel:7,tankiness:2,utility:8,carry:6,waveclear:4,split:2,mobile:3,tags:['enchanter','poke','global','sustain'],synergies:{Lucian:{score:18,reason:'Senna snare → lane dominance'},Ezreal:{score:16,reason:'Dual global poke'}}},
+  {id:'Ezreal',name:'Ezreal',title:'Mucit Kaşif',roles:['bot','mid'],type:'ranged',class:'marksman',damage:{phys:55,magic:40,true:5},cc:['slow'],engage:3,peel:4,tankiness:1,utility:5,carry:8,waveclear:6,split:3,mobile:8,tags:['poke','carry','mobile','long-range'],synergies:{Lux:{score:16,reason:'Snare → Mystic Shot poke'},Senna:{score:16,reason:'Dual global pressure'}}},
+  {id:'Poppy',name:'Poppy',title:'Çekicin Bekçisi',roles:['top','jungle','support'],type:'melee',class:'tank',damage:{phys:55,magic:35,true:10},cc:['stun','knockback','slow'],engage:7,peel:8,tankiness:8,utility:7,carry:3,waveclear:5,split:4,mobile:4,tags:['tank','peel','engage','anti-mobility'],synergies:{Jinx:{score:16,reason:'Buckler stun + peel for hypercarry'},Vayne:{score:16,reason:'Heroic Charge pins divers'}}},
+  {id:'Malzahar',name:'Malzahar',title:'Void Peygamberi',roles:['mid','support'],type:'ranged',class:'mage',damage:{phys:8,magic:87,true:5},cc:['suppress','slow'],engage:6,peel:5,tankiness:1,utility:7,carry:7,waveclear:9,split:1,mobile:1,tags:['carry','pick','suppress','anti-mobile'],synergies:{MissFortune:{score:22,reason:'Suppress → Bullet Time'},Caitlyn:{score:18,reason:'Suppress → headshot burst'}}},
+  {id:'Bard',name:'Bard',title:'Gezgin Bakıcı',roles:['support'],type:'ranged',class:'support',damage:{phys:28,magic:62,true:10},cc:['stun','slow'],engage:6,peel:7,tankiness:2,utility:10,carry:3,waveclear:3,split:1,mobile:6,tags:['utility','roam','pick','global'],synergies:{MissFortune:{score:15,reason:'Tempered Fate → Bullet Time'},Karthus:{score:18,reason:'Tempered Fate → Requiem global'}}},
+];
+
+/* ═══════════════════════════════════════════════
+   COUNTER ITEM DATABASE
+═══════════════════════════════════════════════ */
+const COUNTER_ITEMS = {
+  // Against Heavy Physical Damage
+  physicalCounter: [
+    {icon:'🛡️', name:'Thornmail', type:'core', reason:'Fiziksel hasara karşı zırh + ateş hasarı veriri. Ağır AD düşman takımlarında çekirdek eşya.'},
+    {icon:'⚔️', name:'Frozen Heart', type:'core', reason:"Reduces enemy attack speed by 20%. Very effective against marksmen and AD junglers."},
+    {icon:'🗡️', name:'Warden\'s Mail', type:'situational', reason:'Erken oyun fiziksel zırh + yavaşlatma azaltma eşyası.'},
+    {icon:'🧲', name:'Plated Steelcaps', type:'core', reason:'Auto attack hasarını %12 azaltır, fiziksel ilave zırh sağlar.'},
+  ],
+  // Against Heavy Magic Damage
+  magicCounter: [
+    {icon:'🔮', name:'Banshee\'s Veil', type:'core', reason:"Blocks the first spell. A lifesaver against burst mages."},
+    {icon:'🌑', name:'Force of Nature', type:'core', reason:'Yığılabilir büyü direnci + hareket hızı. Çok fazla büyü hasarına karşı çok etkili.'},
+    {icon:'🔥', name:'Abyssal Mask', type:'situational', reason:'Tank için büyü direnci + CC zincirine yardımcı passive.'},
+    {icon:'⚡', name:'Mercury Treads', type:'core', reason:'CC süresini %30 azaltır + büyü direnci. CC ağır takımlara karşı çok önemli.'},
+  ],
+  // Against Tanks / High HP
+  tankCounter: [
+    {icon:'🩸', name:'Blade of the Ruined King', type:'core', reason:'Mevcut canın %10\'unu fiziksel hasar verir. Tank ve yüksek HP düşmanlara karşı güçlü.'},
+    {icon:'🗡️', name:'Lord Dominik\'s Regards', type:'core', reason:'Zırh delme + daha fazla cana sahip düşmanlara karşı bonus hasar.'},
+    {icon:'⚔️', name:'Liandry\'s Anguish', type:'core', reason:"Burns 1.5% of current health. Extremely strong into tanks."},
+    {icon:'🧪', name:'Void Staff', type:'core', reason:"40% magic penetration. Great for punching through tank MR."},
+  ],
+  // Against Healing / Sustain
+  healCounter: [
+    {icon:'🩹', name:'Mortal Reminder', type:'core', reason:'%40 iyileşme azaltma. Yaşam çalma ve iyileşme yapan tüm düşmanlara karşı.'},
+    {icon:'☠️', name:'Executioner\'s Calling', type:'situational', reason:'Erken oyun iyileşme azaltma eşyası.'},
+    {icon:'💀', name:'Grievous Wounds', type:'core', reason:"Cuts all healing by 40%. Always valuable versus sustain-heavy teams."},
+    {icon:'🔮', name:'Oblivion Orb', type:'situational', reason:"Early anti-heal option for mages."},
+  ],
+  // Against Assassins / Burst
+  assassinCounter: [
+    {icon:'💛', name:'Zhonya\'s Hourglass', type:'core', reason:'2.5 saniyelik dokunulmazlık. Burst ve hedef kilit assassin\'lere karşı hayat kurtarır.'},
+    {icon:'🛡️', name:'Immortal Shieldbow', type:'core', reason:'Ölümcül hasarı koruyucuyla emer + yaşam çalma. Marksman için temel karşı.'},
+    {icon:'⚡', name:'Sterak\'s Gage', type:'core', reason:'Ölümcül hasarı kalkan + güç bonusuyla karşılar.'},
+    {icon:'🌑', name:'Guardian Angel', type:'core', reason:'Öldükten sonra canlanır. Dive ve assassin takımlarına karşı çok değerli.'},
+  ],
+  // Against Mobile Champions
+  mobileCounter: [
+    {icon:'🧊', name:'Rylai\'s Crystal Scepter', type:'core', reason:'Her yeteneğin yavaşlatması. Mobil düşmanların kısıtlanmasına yardımcı olur.'},
+    {icon:'🔴', name:'Frozen Mallet', type:'situational', reason:'Auto attack yavaşlatması. Kaçan mobil düşmanları yakalar.'},
+    {icon:'⚓', name:'Anathema\'s Chains', type:'situational', reason:'Tek bir hedefe karşı CC ve direnç azaltma.'},
+  ],
+  // General counter items
+  general: [
+    {icon:'❄️', name:'Warmog\'s Armor', type:'situational', reason:'Geri çekilince çok hızlı iyileşir. Poke takımlarına karşı çok etkili.'},
+    {icon:'🌊', name:'Heartsteel', type:'situational', reason:'Tank için yığılabilir HP. Uzun süreli savaşlarda çok güçlü.'},
+  ]
+};
+
+/* ═══════════════════════════════════════════════
+   RUNE DATABASE
+═══════════════════════════════════════════════ */
+const COUNTER_RUNES = {
+  tank: {
+    keystone: 'Grasp of the Undying',
+    primary: ['Demolish','Bone Plating','Unflinching'],
+    secondary: ['Conditioning','Overgrowth']
+  },
+  fighter: {
+    keystone: 'Conqueror',
+    primary: ['Triumph','Legend: Tenacity','Last Stand'],
+    secondary: ['Bone Plating','Revitalize']
+  },
+  mage: {
+    keystone: 'Phase Rush',
+    primary: ['Manaflow Band','Transcendence','Scorch'],
+    secondary: ['Bone Plating','Conditioning']
+  },
+  assassin: {
+    keystone: 'Electrocute',
+    primary: ['Sudden Impact','Eyeball Collection','Treasure Hunter'],
+    secondary: ['Bone Plating','Unflinching']
+  },
+  marksman: {
+    keystone: 'Lethal Tempo',
+    primary: ['Presence of Mind','Legend: Bloodline','Cut Down'],
+    secondary: ['Bone Plating','Revitalize']
+  },
+  support: {
+    keystone: 'Glacial Augment',
+    primary: ['Hextech Flashtraption','Biscuit Delivery','Cosmic Insight'],
+    secondary: ['Bone Plating','Revitalize']
+  },
+  enchanter: {
+    keystone: 'Summon Aery',
+    primary: ['Manaflow Band','Transcendence','Gathering Storm'],
+    secondary: ['Revitalize','Shield Bash']
+  },
+  // Special cases
+  vsCC: {
+    keystone: 'Fleet Footwork',
+    primary: ['Presence of Mind','Legend: Tenacity','Coup de Grace'],
+    secondary: ['Mercury Scavenger','Unflinching']
+  },
+  vsAssassin: {
+    keystone: 'Predator',
+    primary: ['Sudden Impact','Ravenous Hunter','Ingenious Hunter'],
+    secondary: ['Bone Plating','Conditioning']
+  }
+};
+
+/* ═══════════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════════ */
+let enemyTeam = [null,null,null,null,null];
+let activeSlot = null;
+let filterRole = 'all';
+let filterType = 'all';
+let filterClass = 'all';
+const ROLES = ['Top','Jungle','Mid','Bot','Support'];
+const DDVersion = '14.24.1';
+
+/* ═══════════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════════ */
+async function init(){
+  if (typeof window.ensureFullChampionRoster === 'function') {
+    await window.ensureFullChampionRoster(CHAMPIONS);
+  }
+  buildChampGrid();
+  setupFilters();
+  setupTabs();
+  resetAnalysisUI();
+}
+
+function buildChampGrid(){
+  const grid = document.getElementById('champGrid');
+  grid.innerHTML = '';
+  CHAMPIONS.forEach(ch => {
+    const div = document.createElement('div');
+    div.className = 'champ-thumb';
+    div.dataset.id = ch.id;
+    const dotColor = ch.damage.magic > 50 ? '#4a9eff' : ch.damage.phys > 60 ? '#e05050' : '#c8aa6e';
+    div.innerHTML = `
+      <img src="https://ddragon.leagueoflegends.com/cdn/${DDVersion}/img/champion/${ch.id}.png" alt="${ch.name}" onerror="this.style.display='none'"/>
+      <div class="thumb-name">${ch.name}</div>
+      <div class="dmg-dot" style="background:${dotColor};color:${dotColor};"></div>
+    `;
+    div.addEventListener('click', () => pickChampion(ch));
+    grid.appendChild(div);
+  });
+  applyFilters();
+}
+
+function setupFilters(){
+  document.querySelectorAll('[data-filter-role]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('[data-filter-role]').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      filterRole = btn.dataset.filterRole;
+      applyFilters();
+    });
+  });
+  document.querySelectorAll('[data-filter-type]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('[data-filter-type]').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      filterType = btn.dataset.filterType;
+      applyFilters();
+    });
+  });
+  document.querySelectorAll('[data-filter-class]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('[data-filter-class]').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      filterClass = btn.dataset.filterClass;
+      applyFilters();
+    });
+  });
+  document.getElementById('searchInput').addEventListener('input', e => {
+    applyFilters(e.target.value.toLowerCase());
+  });
+}
+
+function setupTabs(){
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+      document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('tab-'+btn.dataset.tab).classList.add('active');
+    });
+  });
+}
+
+function applyFilters(search=''){
+  const query = search || document.getElementById('searchInput').value.toLowerCase();
+  document.querySelectorAll('.champ-thumb').forEach(el => {
+    const ch = CHAMPIONS.find(c=>c.id===el.dataset.id);
+    if(!ch) return;
+    const roleOk = filterRole==='all' || ch.roles.includes(filterRole);
+    const typeOk = filterType==='all' || ch.type===filterType;
+    const classOk = filterClass==='all' || ch.class===filterClass;
+    const searchOk = !query || ch.name.toLowerCase().includes(query);
+    const selected = enemyTeam.some(e=>e&&e.id===ch.id);
+    el.classList.toggle('hidden', !roleOk||!typeOk||!classOk||!searchOk);
+    el.classList.toggle('selected-in-draft', selected);
+  });
+}
+
+function openSlot(index){
+  activeSlot = index;
+  // If filled, remove
+  if(enemyTeam[index]){
+    removeChampion(index);
+    return;
+  }
+}
+
+function pickChampion(ch){
+  if(activeSlot===null){
+    // Find first empty slot
+    const emptyIdx = enemyTeam.findIndex(e=>e===null);
+    if(emptyIdx===-1) return;
+    activeSlot = emptyIdx;
+  }
+  if(enemyTeam.some(e=>e&&e.id===ch.id)) return;
+  if(enemyTeam[activeSlot]!==null) return;
+  enemyTeam[activeSlot] = ch;
+  activeSlot = null;
+  renderEnemySlots();
+  applyFilters();
+  analyze();
+}
+
+function removeChampion(index){
+  enemyTeam[index] = null;
+  activeSlot = null;
+  renderEnemySlots();
+  applyFilters();
+  analyze();
+}
+
+function renderEnemySlots(){
+  const slots = document.querySelectorAll('.enemy-slot');
+  slots.forEach((slot, i) => {
+    const ch = enemyTeam[i];
+    if(ch){
+      const threat = calcThreat(ch);
+      const tClass = threat >= 7 ? 'high' : threat >= 4 ? 'mid' : 'low';
+      slot.classList.add('filled');
+      slot.innerHTML = `
+        <img class="slot-splash" src="https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${ch.id}_0.jpg" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/${DDVersion}/img/champion/${ch.id}.png'"/>
+        <div class="slot-overlay"></div>
+        <div class="slot-class-badge">${ch.class}</div>
+        <div class="threat-badge ${tClass}">${threat}</div>
+        <div class="slot-name">${ch.name}</div>
+        <div class="slot-role">${ROLES[i]}</div>
+        <button class="slot-remove" onclick="event.stopPropagation();removeChampion(${i})">✕</button>
+      `;
+      slot.onclick = () => removeChampion(i);
+    } else {
+      slot.classList.remove('filled');
+      slot.innerHTML = `<div class="slot-empty-icon">💀</div><div class="slot-role">${ROLES[i]}</div>`;
+      slot.onclick = () => openSlot(i);
+    }
+  });
+}
+
+function calcThreat(ch){
+  return Math.round((ch.carry + ch.engage + ch.mobile) / 3);
+}
+
+/* ═══════════════════════════════════════════════
+   ANALYSIS ENGINE
+═══════════════════════════════════════════════ */
+function analyze(){
+  const team = enemyTeam.filter(Boolean);
+  const n = team.length;
+  document.getElementById('champCountBadge').textContent = `${n} / 5 selected`;
+
+  if(n === 0){ resetAnalysisUI(); return; }
+
+  // Damage distribution
+  const avgPhys = Math.round(team.reduce((s,c)=>s+c.damage.phys,0)/n);
+  const avgMagic = Math.round(team.reduce((s,c)=>s+c.damage.magic,0)/n);
+  const avgTrue = Math.round(team.reduce((s,c)=>s+c.damage.true,0)/n);
+  const total = avgPhys + avgMagic + avgTrue;
+  const phys = Math.round((avgPhys/total)*100);
+  const magic = Math.round((avgMagic/total)*100);
+  const trueD = Math.round((avgTrue/total)*100);
+  renderDamage(phys, magic, trueD);
+
+  // Ratings
+  const ratings = {
+    'Engage': avg(team,'engage'),
+    'Carry': avg(team,'carry'),
+    'Tankiness': avg(team,'tankiness'),
+    'Mobility': avg(team,'mobile'),
+    'Waveclear': avg(team,'waveclear'),
+    'Peel': avg(team,'peel'),
+    'Utility': avg(team,'utility'),
+    'Split Push': avg(team,'split'),
+  };
+  renderRatings(ratings);
+
+  // CC
+  const allCC = ['knockup','knockback','stun','snare','slow','charm','silence','hook','suppress','fear'];
+  const hasCC = {};
+  team.forEach(ch=>ch.cc.forEach(c=>{hasCC[c]=true;}));
+  renderCC(hasCC, allCC);
+
+  // Threat score
+  const threatScore = calcTeamThreat(team, ratings, phys, magic);
+  renderThreat(threatScore, n);
+
+  // Synergy combos (threats to you)
+  renderThreatCombos(team);
+
+  // Warnings & analysis
+  const {weaknesses, strengths} = calcAnalysis(team, ratings, phys, magic, trueD, hasCC);
+  renderWarnings(weaknesses, strengths);
+
+  // Items
+  renderItems(team, phys, magic, trueD, ratings, hasCC);
+
+  // Strategy
+  renderStrategy(team, ratings, phys, magic, hasCC);
+
+  // Runes
+  renderRunes(team, ratings, phys, magic, hasCC);
+}
+
+function avg(team, key){ return team.reduce((s,c)=>s+(c[key]||0),0)/team.length; }
+
+function calcTeamThreat(team, ratings, phys, magic){
+  let score = 0;
+  score += ratings['Engage'] * 4;
+  score += ratings['Carry'] * 5;
+  score += ratings['Tankiness'] * 3;
+  score += ratings['Mobility'] * 2;
+  if(phys > 70 || magic > 70) score += 10;
+  if(ratings['Engage'] > 7 && ratings['Carry'] > 7) score += 15;
+  return Math.min(Math.round(score), 100);
+}
+
+function renderThreat(score, n){
+  if(n === 0){ resetAnalysisUI(); return; }
+  document.getElementById('threatNum').textContent = score;
+  const circ = 2*Math.PI*54;
+  const offset = circ - (score/100)*circ;
+  const ring = document.getElementById('ringFill');
+  ring.style.strokeDashoffset = offset;
+  if(score >= 80) ring.style.stroke='#c03030';
+  else if(score >= 60) ring.style.stroke='#e88a2e';
+  else if(score >= 40) ring.style.stroke='#c8aa6e';
+  else ring.style.stroke='#3dba6a';
+
+  let grade, sub;
+  if(score >= 80){ grade='DEADLY THREAT'; sub='This team is extremely dangerous. Play carefully and stay coordinated.'; }
+  else if(score >= 65){ grade='HIGH THREAT'; sub='A powerful enemy comp. Proper counter itemization is essential.'; }
+  else if(score >= 50){ grade='MEDIUM THREAT'; sub='A balanced enemy team. Look for openings and punish mistakes.'; }
+  else if(score >= 35){ grade='LOW THREAT'; sub='A manageable team. You can dictate the pace.'; }
+  else { grade='MINOR THREAT'; sub='This team is very punishable. Keep up the pressure.'; }
+
+  document.getElementById('threatGrade').textContent = grade;
+  document.getElementById('threatSublabel').textContent = sub;
+}
+
+function renderDamage(phys, magic, trueD){
+  document.getElementById('physPct').textContent = phys+'%';
+  document.getElementById('magicPct').textContent = magic+'%';
+  document.getElementById('truePct').textContent = trueD+'%';
+  document.getElementById('physBar').style.width = phys+'%';
+  document.getElementById('magicBar').style.width = magic+'%';
+  document.getElementById('trueBar').style.width = trueD+'%';
+  const circ = 2*Math.PI*38;
+  const pPhys=phys/100*circ, pMagic=magic/100*circ, pTrue=trueD/100*circ;
+  const physEl=document.getElementById('donutPhys');
+  const magicEl=document.getElementById('donutMagic');
+  const trueEl=document.getElementById('donutTrue');
+  physEl.setAttribute('stroke-dasharray',`${pPhys} ${circ-pPhys}`);
+  physEl.setAttribute('stroke-dashoffset','0');
+  magicEl.setAttribute('stroke-dasharray',`${pMagic} ${circ-pMagic}`);
+  magicEl.setAttribute('stroke-dashoffset',-pPhys);
+  trueEl.setAttribute('stroke-dasharray',`${pTrue} ${circ-pTrue}`);
+  trueEl.setAttribute('stroke-dashoffset',-(pPhys+pMagic));
+  document.getElementById('donutLabel').textContent = phys >= magic ? `${phys}%\nPhysical` : `${magic}%\nMagic`;
+}
+
+function renderCC(hasCC, allTypes){
+  const labels={knockup:'Knock-Up',knockback:'Knockback',stun:'Stun',snare:'Root',slow:'Slow',charm:'Charm',silence:'Silence',hook:'Hook',suppress:'Suppress',fear:'Fear'};
+  document.getElementById('ccTags').innerHTML = allTypes.map(cc=>`<div class="cc-tag ${hasCC[cc]?'has':'missing'}">${labels[cc]}</div>`).join('');
+}
+
+function renderRatings(ratings){
+  document.getElementById('ratingRows').innerHTML = Object.entries(ratings).map(([key,val])=>`
+    <div class="rating-row">
+      <span class="rating-key">${key}</span>
+      <div class="rating-bar-track"><div class="rating-bar-fill" style="width:${(val/10)*100}%"></div></div>
+      <span class="rating-val">${val.toFixed(1)}</span>
+    </div>
+  `).join('');
+}
+
+function renderThreatCombos(team){
+  const combos = [];
+  for(let i=0;i<team.length;i++){
+    for(let j=i+1;j<team.length;j++){
+      const a=team[i], b=team[j];
+      const syn = a.synergies && a.synergies[b.id];
+      if(syn && syn.score >= 15){
+        combos.push({a,b,score:syn.score,reason:syn.reason});
+      }
+    }
+  }
+  combos.sort((a,b)=>b.score-a.score);
+  const wrap = document.getElementById('threatCombos');
+  if(combos.length===0){
+    wrap.innerHTML='<div class="empty-state">No dangerous synergy combo detected</div>'; return;
+  }
+  wrap.innerHTML = combos.slice(0,6).map(c=>`
+    <div class="threat-combo anim">
+      <div class="threat-combo-icons">
+        <img src="https://ddragon.leagueoflegends.com/cdn/${DDVersion}/img/champion/${c.a.id}.png" onerror="this.style.display='none'"/>
+        <img src="https://ddragon.leagueoflegends.com/cdn/${DDVersion}/img/champion/${c.b.id}.png" onerror="this.style.display='none'"/>
+      </div>
+      <div class="threat-combo-info">
+        <div class="threat-combo-pair">⚡ ${c.a.name} + ${c.b.name}</div>
+        <div class="threat-combo-reason">${c.reason}</div>
+      </div>
+      <div class="threat-combo-score">+${c.score}</div>
+    </div>
+  `).join('');
+}
+
+/* ── Per-champion individual threat & weakness profiles ── */
+const CHAMP_PROFILES = {
+  Malphite:  { threats:['⚡ Unstoppable Force can instantly knock up an entire team','🪨 Extremely tanky and slow to take down','🔮 High magic damage punishes armor-heavy itemization'], weaknesses:['💨 Almost no mobility, so he is easy to kite','🌊 Very weak waveclear and vulnerable to side-lane pressure','🗡️ Passive early game that can be punished with invades'] },
+  Yasuo:     { threats:['🌀 Last Breath heavily punishes any airborne target','💨 Extremely mobile and hard to lock down','🛡️ Wind Wall can block key skillshots'], weaknesses:['💀 Can struggle early if he gets shoved in','⚔️ Loses a lot of damage into armor stacking','🎯 Very vulnerable to crowd control if he cannot snowball'] },
+  Yone:      { threats:['🌪️ His ultimate can start huge AoE knockup fights','🔮 Mixed physical and magic damage makes itemization awkward','💨 High mobility makes him slippery in skirmishes'], weaknesses:['⚡ Vulnerable when snapping back after E or ult','🔴 Much weaker in duels without passive uptime','💔 Can be punished hard before late game comes online'] },
+  Ahri:      { threats:['💕 Charm can instantly remove one target from the fight','💨 Triple dash from ult makes her very hard to catch','💥 Very high burst damage when she lands her combo'], weaknesses:['🎯 Her damage drops a lot if Charm misses','🔮 Banshee\'s Veil can deny her key pick tool','📍 If ult is down, she becomes much easier to punish'] },
+  Lux:       { threats:['🌟 Her AoE ult comes back quickly and keeps pressure high','🔗 Snare plus slow can create easy pick windows','💥 Full combo burst can erase a squishy target instantly'], weaknesses:['💀 Almost no mobility outside Flash','🎯 Her threat drops hard if skillshots are dodged','🗡️ Very fragile against physical dive and burst'] },
+  Jinx:      { threats:['🚀 Get Excited! lets her chase and snowball teamfights','💥 Her global ult is lethal on low-health targets','🌊 Strong waveclear creates heavy tower pressure'], weaknesses:['💀 No real mobility and very exposed to engage comps','🎯 Falls behind hard if denied early game tempo','⚔️ Can be killed easily by committed all-ins and dives'] },
+  MissFortune:{ threats:['🔴 Bullet Time can win an entire teamfight by itself','🐌 Double Up poke and Strut make her kiting strong','💥 Very oppressive early bot-lane trading power'], weaknesses:['💀 No dash and almost no escape tools','🎯 Channeling ult into hard engage is very risky','⚔️ Limited 1v1 dueling strength when isolated'] },
+  Thresh:    { threats:['🎣 Hook angles are wide and dangerous even through terrain','🔮 Lantern can completely save an ally from danger','🔗 Flay plus The Box can lock targets in a full CC trap'], weaknesses:['🐌 Failed engages feel bad if Lantern cannot bail him out','🎯 Missing hook removes much of his immediate pressure','💀 Low personal damage means he rarely wins fights alone'] },
+  Leona:     { threats:['💥 Daybreak and Solar Flare layer multiple hard CC tools','🛡️ High tankiness lets her survive after engaging','⚡ Massive dive threat, especially in bot lane'], weaknesses:['💀 Very limited peel for protecting carries','🌊 Weak waveclear and low lane pressure on her own','🔮 Outside engage, her utility is fairly limited'] },
+  Vi:        { threats:['🎯 Her ultimate guarantees access to a priority target','👊 Vault Breaker gives her long-range engage reach','⚡ Fast jungle clear enables strong early gank pressure'], weaknesses:['🎯 Her engage is much less threatening when ult is down','🔮 QSS can neutralize her point-and-click lockdown','📍 Easy to kite once she is committed forward'] },
+  Leesin:    { threats:['💀 Insec kicks can throw a target straight into his team','💨 One of the most mobile junglers in the game','⚡ Extremely strong early invade and gank pressure'], weaknesses:['📉 Scales poorly into late game compared to many junglers','🎯 Relies heavily on skillshots, and misses are costly','💔 Lower durability if he cannot snowball the game'] },
+  Amumu:     { threats:['🌐 His ultimate can flip an entire teamfight with AoE lockdown','🔴 Bandage Toss into ult can crush a single target','🛡️ Very durable when starting long fights'], weaknesses:['🎯 Missing Q cuts off most of his approach','💨 No mobility means kite comps punish him hard','📍 If his engage tools are on cooldown, he feels helpless'] },
+  Zed:       { threats:['💀 Death Mark gives him lethal execute-level burst','💨 Living Shadow creates pressure from multiple angles','🗡️ Poke plus dive can instantly delete an ADC'], weaknesses:['🔮 Zhonya\'s Hourglass can completely nullify Death Mark','🛡️ Heavy armor itemization can make him ineffective','💀 CC-heavy comps can deny him any room to play'] },
+  Katarina:  { threats:['🔴 Her reset mechanic can completely take over teamfights','💥 Shunpo into ult is very hard to escape cleanly','🌊 Strong waveclear and roaming pressure'], weaknesses:['🎯 Any crowd control instantly stops Death Lotus','🎣 Can be bullied in difficult early lane matchups','📍 Her damage drops hard if dagger resets are denied'] },
+  Darius:    { threats:['⚔️ Noxian Guillotine can chain executes through resets','🩸 Hemorrhage stacks deal brutal sustained damage','💥 Pull plus slow makes disengaging very difficult'], weaknesses:['💨 No mobility and very vulnerable to kiting','🌊 Weak waveclear and slow side-lane rotations','📍 Much less threatening when Guillotine is unavailable'] },
+  Garen:     { threats:['⚔️ Judgment deals steady damage and adds silence pressure','💥 Demacian Justice can execute low-health targets','🛡️ Passive regen gives him strong reset potential'], weaknesses:['💀 Very limited CC outside silence','💨 Extremely low mobility makes kiting easy','🔮 Magic-heavy comps reduce the value of his usual pattern'] },
+  Syndra:    { threats:['💥 Scatter the Weak into burst can instantly punish mistakes','🌟 A stacked ult can one-shot a carry','🎯 High range lets her poke from relative safety'], weaknesses:['💀 No mobility leaves her exposed to engage','🎯 Missing Force of Will lowers her threat considerably','📉 Early orb management can be punishing if misplayed'] },
+  Orianna:   { threats:['⚡ Ball delivery plus Shockwave creates huge AoE impact','🛡️ Shields and speed buffs strongly support her team','🌊 Her ball gives excellent zone control'], weaknesses:['📍 Misplacing the ball removes much of her utility','💀 Weak self-peel when pressured directly','🎯 Shockwave can be dodged if telegraphed'] },
+  Caitlyn:   { threats:['🎯 Her early-game range makes her lane damage very safe','🔴 Ace in the Hole can finish low-health targets','🪤 Traps and Net can shut down predictable engages'], weaknesses:['💀 Struggles badly into hard engage and dive comps','🐌 Very limited mobility outside Flash and Net','📍 Her sustained DPS drops if she cannot proc Headshot'] },
+  Nautilus:  { threats:['🎣 Hook plus Depth Charge layers multiple CC tools','💀 Can delete one target through repeated lockdown','🛡️ High base tank stats help him survive after diving'], weaknesses:['💀 Offers little damage outside single-target setup','💨 Extremely low mobility when disengaging','🎯 Missing hook usually ends the engage attempt'] },
+  Ashe:      { threats:['🏹 Crystal Arrow gives her global engage potential','🐌 Constant slows make her kiting elite','🌐 Volley and Hawkshot provide strong map control'], weaknesses:['💀 Almost no mobility and no real dash','⚔️ Very vulnerable to dive compositions','📉 Strong late game but fragile in early skirmishes'] },
+  Blitzcrank:{ threats:['🎣 One Rocket Grab can completely change a fight','⚡ Static Field adds instant silence and AoE damage','🏃 Power Fist starts immediate CC chains'], weaknesses:['🎯 Missing hook makes him far less threatening','💀 Low damage and limited utility outside hook setups','📍 Experienced teams can read his engage pattern'] },
+  TwistedFate:{ threats:['🌐 Destiny creates global pressure anywhere on the map','🃏 Gold Card gives reliable instant pick threat','🌊 Strong waveclear frees him to roam often'], weaknesses:['💀 Very low mobility against assassin pressure','📉 Weak late-game dueling compared to many carries','🎯 If Gold Card is denied, much of his threat disappears'] },
+  Vayne:     { threats:['🩸 Silver Bolts melts tanks with true damage','💨 Condemn can create deadly wall stuns','👑 Full-build Vayne can completely take over fights'], weaknesses:['📉 Very weak early game if bullied properly','🐌 Low range forces her to take close-range risks','🎯 Condemn is much weaker without wall angles'] },
+  Kayle:     { threats:['⚡ Intervention can make one ally fully untouchable','👑 Level 16 late game is nearly unstoppable','🌊 Extra range and waveclear make her kiting oppressive'], weaknesses:['📉 Levels 1-11 are very punishable','💀 Her peel drops sharply when ult is on cooldown','🐌 Very little mobility in the early game'] },
+  Shen:      { threats:['🌐 Stand United can save an ally from anywhere on the map','🛡️ Ki Barrier gives him strong damage absorption','⚡ Taunt plus Twilight Assault starts fights reliably'], weaknesses:['📉 Very limited solo carry potential','🌊 Weak early waveclear slows his side-lane pressure','💀 Almost no hard CC outside taunt'] },
+  Fiora:     { threats:['🩺 Grand Challenge can heal her team if she procs all vitals','💀 Lunge makes her engage and disengage very fast','⚔️ Riposte can completely deny the strongest CC tool'], weaknesses:['💀 Less effective in full teamfights than in side lanes','📍 Her impact is much narrower away from side-lane play','🎯 Can be kited if vital positioning is managed well'] },
+  Jhin:      { threats:['🎯 Curtain Call adds long-range fight pressure','💥 Fourth-shot crit gives him massive burst','🌸 Deadly Flourish plus traps can root targets quickly'], weaknesses:['🐌 Very low mobility makes him easy to pressure','📉 Reload windows leave him exposed after four shots','💀 Hard engage comps can leave him with no space to play'] },
+};
+
+/* Per-champion default (unknown champion) */
+function getChampProfile(ch){
+  if(CHAMP_PROFILES[ch.id]) return CHAMP_PROFILES[ch.id];
+  // Generate generic profile from stats
+  const t=[], w=[];
+  if(ch.engage>=8) t.push('⚡ Very strong engage threat that can start fights reliably');
+  if(ch.carry>=8) t.push('💥 High carry potential and strong snowball threat');
+  if(ch.mobile>=8) t.push('💨 Extremely mobile and difficult to lock down');
+  if(ch.tankiness>=8) t.push('🛡️ Very durable and hard to remove from fights');
+  if(ch.cc && ch.cc.some(c=>['stun','knockup','suppress'].includes(c))) t.push('🔗 Strong hard CC that can swing teamfights');
+  if(ch.utility>=8) t.push('🌟 High utility that strongly supports the team');
+  if(ch.split>=8) t.push('🗺️ Strong split-push threat that pulls pressure side lane');
+  if(ch.mobile<=2) w.push('🐌 Very low mobility, making them vulnerable to hooks and CC');
+  if(ch.tankiness<=2) w.push('💀 Low durability, so burst can remove them quickly');
+  if(ch.peel<=2) w.push('🏃 Weak peel, leaving their carry exposed');
+  if(ch.waveclear<=2) w.push('🌊 Weak waveclear and vulnerable to side-lane pressure');
+  if(ch.engage<=2) w.push('📍 Limited engage options and mostly reactive play');
+  if(ch.split<=2) w.push('🗺️ Poor split-push threat, forcing more 5v5 play');
+  return {threats: t.length ? t : ['⚠️ This champion\'s threats are still being evaluated...'], weaknesses: w.length ? w : ['✅ No clear weakness detected']};
+}
+
+function calcAnalysis(team, ratings, phys, magic, trueD, hasCC){
+  const weaknesses=[], strengths=[];
+  const n=team.length;
+  const classes=team.map(c=>c.class);
+
+  /* ── INDIVIDUAL champion threats & weaknesses (works from n=1) ── */
+  team.forEach(ch => {
+    const prof = getChampProfile(ch);
+    // Individual threats → go to strengths
+    prof.threats.slice(0,3).forEach(t => {
+      strengths.push({type: ch.carry>=8||ch.engage>=8 ? 'crit':'warn', icon:'⚔️', title:`${ch.name} Threat`, desc: t});
+    });
+    // Individual weaknesses → go to weaknesses
+    prof.weaknesses.slice(0,2).forEach(w => {
+      weaknesses.push({type:'ok', icon:'🎯', title:`${ch.name} Weakness`, desc: w});
+    });
+  });
+
+  /* ── TEAM-WIDE analysis (from n>=2) ── */
+  if(n>=2){
+    if(ratings['Tankiness']<3)
+      weaknesses.push({type:'ok',icon:'💥',title:'No Frontline - Punish It',desc:'The enemy team has no true tank. Dive compositions can cut through them much more easily.'});
+    if(ratings['Mobility']<3)
+      weaknesses.push({type:'ok',icon:'🎯',title:'Low Mobility - Punish It',desc:'This is a slow composition. CC chains and hooks can create easy pick opportunities.'});
+    if(ratings['Waveclear']<3)
+      weaknesses.push({type:'ok',icon:'🌊',title:'Weak Waveclear',desc:'They cannot clear waves well. Apply side-lane pressure and split push aggressively.'});
+    if(!classes.some(c=>['support','enchanter'].includes(c)))
+      weaknesses.push({type:'ok',icon:'💊',title:'No Heal/Shield Support',desc:'Their composition lacks a protective support, so you can force more aggressive fights.'});
+    if(ratings['Peel']<3)
+      weaknesses.push({type:'ok',icon:'🏃',title:'Weak Peel',desc:'They struggle to protect their carries, so reaching the backline is much easier.'});
+    if(phys>=80)
+      weaknesses.push({type:'ok',icon:'🛡️',title:'Almost Full Physical Damage',desc:`They deal ${phys}% physical damage. Armor items like Thornmail and Frozen Heart become extremely valuable.`});
+    if(magic>=80)
+      weaknesses.push({type:'ok',icon:'🔮',title:'Almost Full Magic Damage',desc:`They deal ${magic}% magic damage. Banshee's Veil and Force of Nature are excellent answers.`});
+    if(!hasCC['stun'] && !hasCC['knockup'] && !hasCC['snare'])
+      weaknesses.push({type:'ok',icon:'🕊️',title:'Low Hard CC',desc:'This composition lacks reliable hard crowd control, so you can play more aggressively.'});
+
+    if(ratings['Engage']>=8)
+      strengths.push({type:'crit',icon:'💥',title:'Extremely Strong Team Engage',desc:'They can start fights quickly and decisively. Vision control and positioning are critical.'});
+    if(ratings['Carry']>=8)
+      strengths.push({type:'crit',icon:'💰',title:'High-Damage Carries',desc:'Their carries can take over fights. Pressure them before they start snowballing.'});
+    if(ratings['Tankiness']>=8)
+      strengths.push({type:'warn',icon:'🏰',title:'Durable Frontline',desc:'They have a strong frontline. Do not skip anti-tank items like Blade of the Ruined King or Lord Dominik\'s Regards.'});
+    if(hasCC['suppress'])
+      strengths.push({type:'crit',icon:'🔴',title:'Suppress Threat!',desc:'The enemy has suppress effects such as Malzahar or Warwick. QSS is the safest answer.'});
+    if((hasCC['knockup']||hasCC['stun']) && ratings['Engage']>=7)
+      strengths.push({type:'crit',icon:'⚠️',title:'Heavy Crowd Control',desc:'They combine strong engage with hard CC. Tenacity and Mercury\'s Treads are very valuable.'});
+    if(ratings['Mobility']>=7)
+      strengths.push({type:'warn',icon:'💨',title:'Highly Mobile Team',desc:'This composition repositions quickly. Slows and point-and-click lockdown are especially important.'});
+    if(trueD>=15)
+      strengths.push({type:'warn',icon:'💛',title:'True Damage Threat',desc:`They deal ${trueD}% true damage. Armor and MR will not reduce that portion.`});
+    if(team.filter(c=>c.tags&&c.tags.includes('hypercarry')).length>=1)
+      strengths.push({type:'crit',icon:'👑',title:'Hypercarry Threat',desc:'This draft includes a hypercarry. Pressure them early or they can solo-win late fights.'});
+    if(ratings['Split Push']>=7)
+      strengths.push({type:'warn',icon:'🗺️',title:'Strong Split Push',desc:'They have a dangerous side laner. Answer with teleport pressure and keep vision up.'});
+    if(ratings['Utility']>=8)
+      strengths.push({type:'warn',icon:'🌟',title:'High-Utility Composition',desc:'Their utility is very high. Do not force fights blindly; identify the right target first.'});
+  }
+
+  return {weaknesses, strengths};
+}
+
+function renderWarnings(weaknesses, strengths){
+  const warnWrap = document.getElementById('warningList');
+  const weakWrap = document.getElementById('weaknessList');
+  const strWrap = document.getElementById('strengthList');
+
+  if(weaknesses.length===0) weakWrap.innerHTML='<div class="empty-state">No clear weakness detected</div>';
+  else weakWrap.innerHTML = weaknesses.map(w=>`
+    <div class="warning-item ${w.type} anim">
+      <span class="warning-icon">${w.icon}</span>
+      <div class="warning-text">
+        <span class="warning-title">${w.title}</span>
+        <span class="warning-desc">${w.desc}</span>
+      </div>
+    </div>
+  `).join('');
+
+  if(strengths.length===0) strWrap.innerHTML='<div class="empty-state">No standout strength detected</div>';
+  else strWrap.innerHTML = strengths.map(w=>`
+    <div class="warning-item ${w.type} anim">
+      <span class="warning-icon">${w.icon}</span>
+      <div class="warning-text">
+        <span class="warning-title">${w.title}</span>
+        <span class="warning-desc">${w.desc}</span>
+      </div>
+    </div>
+  `).join('');
+
+  // Also render in threats tab
+  if(strengths.length===0) warnWrap.innerHTML='<div class="empty-state">No major threat detected</div>';
+  else warnWrap.innerHTML = strengths.map(w=>`
+    <div class="warning-item ${w.type} anim">
+      <span class="warning-icon">${w.icon}</span>
+      <div class="warning-text">
+        <span class="warning-title">${w.title}</span>
+        <span class="warning-desc">${w.desc}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderItems(team, phys, magic, trueD, ratings, hasCC){
+  const wrap = document.getElementById('itemBuilds');
+  if(team.length===0){ wrap.innerHTML='<div class="empty-state">Pick a champion to see item suggestions</div>'; return; }
+
+  // Generate item recommendations per champion role
+  const perRoleItems = [];
+  team.forEach(ch => {
+    const items = getCounterItems(ch, phys, magic, trueD, ratings, hasCC);
+    perRoleItems.push({ch, items});
+  });
+
+  wrap.innerHTML = perRoleItems.map(({ch, items}) => `
+    <div class="role-build-card anim">
+      <div class="role-build-header">
+        <div class="role-champ-icon">
+          <img src="https://ddragon.leagueoflegends.com/cdn/${DDVersion}/img/champion/${ch.id}.png" onerror="this.style.display='none'"/>
+        </div>
+        <div>
+          <div class="role-champ-name">Against ${ch.name}</div>
+          <div class="role-champ-role">${ch.class} · ${ch.type}</div>
+        </div>
+      </div>
+      <div class="items-grid">
+        ${items.map(item=>`
+          <div class="item-chip ${item.type}">
+            <span class="item-icon">${item.icon}</span>
+            <span class="item-name">${item.name}</span>
+            <div class="item-reason">${item.reason}</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+function getCounterItems(ch, phys, magic, trueD, ratings, hasCC){
+  const items = [];
+
+  // Anti-Healer
+  if(ch.tags && (ch.tags.includes('sustain') || ch.id === 'Aatrox' || ch.id === 'Fiora' || ch.id === 'Garen' || ch.id === 'Darius')){
+    items.push({icon:'🩹', name:'Mortal Reminder', type:'core', reason:'This champion has strong sustain. Anti-heal is mandatory.'});
+  }
+  if(ch.id==='Senna'||ch.id==='Soraka'||ch.id==='Yuumi'||ch.class==='enchanter'){
+    items.push({icon:'☠️', name:'Grievous Wounds', type:'core', reason:'Buy anti-heal early to cut enchanter sustain.'});
+  }
+
+  // Against tanks
+  if(ch.class==='tank' || ch.tankiness >= 8){
+    items.push({icon:'🩸', name:'Blade of the Ruined King', type:'core', reason:`Current-health damage is very strong against ${ch.name}.`});
+    items.push({icon:'🗡️', name:'Lord Dominik\'s', type:'core', reason:'Armor penetration helps shred tank resistances.'});
+    items.push({icon:'⚔️', name:'Liandry\'s Anguish', type:'core', reason:'The burn passive is excellent for melting tanks.'});
+  }
+
+  // Against magic damage
+  if(ch.damage && ch.damage.magic > 60){
+    items.push({icon:'🔮', name:'Banshee\'s Veil', type:'core', reason:`Blocks the first burst spell from ${ch.name}.`});
+    items.push({icon:'🌑', name:'Force of Nature', type:'situational', reason:'Strong magic resistance with stacking durability.'});
+    items.push({icon:'⚡', name:'Mercury Treads', type:'core', reason:'Tenacity plus magic resistance is very efficient here.'});
+  }
+
+  // Against physical damage
+  if(ch.damage && ch.damage.phys > 60){
+    items.push({icon:'🛡️', name:'Thornmail', type:'core', reason:`Efficient armor option against ${ch.name}'s physical damage.`});
+    items.push({icon:'❄️', name:'Frozen Heart', type:'core', reason:'Attack speed reduction plus armor is great into AD threats.'});
+    items.push({icon:'🧲', name:'Plated Steelcaps', type:'situational', reason:'Reduces incoming auto-attack damage.'});
+  }
+
+  // Against assassins
+  if(ch.class==='assassin' || (ch.engage >= 7 && ch.tankiness <= 3)){
+    items.push({icon:'💛', name:'Zhonya\'s Hourglass', type:'core', reason:`Lets you deny ${ch.name}'s all-in with stasis.`});
+    items.push({icon:'🌑', name:'Guardian Angel', type:'core', reason:'Gives you a second life against assassin dives.'});
+    items.push({icon:'⚡', name:'Sterak\'s Gage', type:'situational', reason:'Helps absorb burst damage with a shield.'});
+  }
+
+  // Against high CC
+  if(ch.cc && (ch.cc.includes('stun')||ch.cc.includes('knockup')||ch.cc.includes('snare')||ch.cc.includes('suppress'))){
+    items.push({icon:'⚡', name:'Mercury Treads', type:'core', reason:`Reduces the crowd control impact from ${ch.name}.`});
+    items.push({icon:'💪', name:'Tenacity Items', type:'situational', reason:'Pair tenacity runes and items to reduce CC lockout.'});
+  }
+
+  // Against mobile
+  if(ch.mobile >= 7){
+    items.push({icon:'🧊', name:'Rylai\'s Scepter', type:'situational', reason:`${ch.name} is very mobile, so extra slows are valuable.`});
+  }
+
+  // Against split push
+  if(ch.split >= 7){
+    items.push({icon:'📡', name:'Teleport + Vision', type:'situational', reason:`${ch.name} wants to split push. Match it with TP and strong ward coverage.`});
+  }
+
+  // Dedup and limit
+  const seen = new Set();
+  return items.filter(i=>{
+    if(seen.has(i.name)) return false;
+    seen.add(i.name); return true;
+  }).slice(0, 5);
+}
+
+function renderStrategy(team, ratings, phys, magic, hasCC){
+  const wrap = document.getElementById('strategyCards');
+  if(team.length===0){ wrap.innerHTML='<div class="empty-state">Pick a champion to see strategy advice</div>'; return; }
+
+  const cards = [];
+  const hasEngage = ratings['Engage'] >= 7;
+  const hasTank = ratings['Tankiness'] >= 7;
+  const hasCarry = ratings['Carry'] >= 7;
+  const hasMobility = ratings['Mobility'] >= 7;
+  const hasMassCC = hasCC['stun'] && (hasCC['knockup'] || hasCC['snare']);
+  const n = team.length;
+
+  // EARLY GAME
+  cards.push({cls:'phase-early', icon:'🌅', title:'Early Game (1-15 min)',
+    desc: hasEngage
+      ? `The enemy can force early engages. Use wards actively, avoid bad 1v1s, and respect early 2v2 fights in bot lane.`
+      : `This comp scales later. Apply early pressure with proactive lanes, invades, and objective setup.`
+  });
+
+  // MID GAME
+  cards.push({cls:'phase-mid', icon:'⚔️', title:'Mid Game (15-30 min)',
+    desc: hasMassCC
+      ? `The enemy has strong layered CC. Buy tenacity before key fights and position safely against Flash engages.`
+      : `Do not walk into dark areas. Look for opportunistic fights or split pressure around objectives.`
+  });
+
+  // LATE GAME
+  cards.push({cls:'phase-late', icon:'🏆', title:'Late Game (30+ min)',
+    desc: hasCarry && ratings['Tankiness'] < 5
+      ? `Their carries are dangerous but the frontline is weak. Dive the backline and prioritize carries in teamfights.`
+      : hasTank
+        ? `They have a thick frontline. Let them commit first and create pressure through side lanes before forcing fights.`
+        : `The enemy is vulnerable. Fight aggressively and take control of Baron and Dragon setups.`
+  });
+
+  // SPECIFIC TIPS
+  if(hasCC['suppress'])
+    cards.push({cls:'tip', icon:'🔴', title:'SUPPRESS Warning!',
+      desc:'The enemy has suppress effects, such as Malzahar or Warwick. QSS is often your safest answer.'});
+  if(hasMobility)
+    cards.push({cls:'tip', icon:'💨', title:'Versus Mobile Teams',
+      desc:'They are very mobile. Prefer tight corridors and avoid long chases in open space.'});
+  if(magic > 70)
+    cards.push({cls:'tip', icon:'🔮', title:'Versus Heavy AP',
+      desc:`They deal ${magic}% magic damage. Early MR across the team is highly valuable.`});
+  if(phys > 70)
+    cards.push({cls:'tip', icon:'🛡️', title:'Versus Heavy AD',
+      desc:`They deal ${phys}% physical damage. Armor stacking, Thornmail, Frozen Heart, and Steelcaps are strong choices.`});
+  if(ratings['Split Push'] >= 7)
+    cards.push({cls:'tip', icon:'🗺️', title:'Split Push Threat',
+      desc:'They have a strong split pusher. Maintain side vision and answer with TP when needed.'});
+  if(ratings['Waveclear'] >= 7)
+    cards.push({cls:'tip', icon:'🌊', title:'Against Strong Waveclear',
+      desc:'They can stall waves well. Do not force Baron without first securing a real 5v5 advantage.'});
+
+  wrap.innerHTML = cards.map(c=>`
+    <div class="strategy-card ${c.cls} anim">
+      <span class="strategy-icon">${c.icon}</span>
+      <div class="strategy-text">
+        <div class="strategy-title">${c.title}</div>
+        <div class="strategy-desc">${c.desc}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderRunes(team, ratings, phys, magic, hasCC){
+  const wrap = document.getElementById('runeGroups');
+  if(team.length===0){ wrap.innerHTML='<div class="empty-state">Pick a champion to see rune suggestions</div>'; return; }
+
+  const hasMassCC = hasCC['stun']||hasCC['knockup']||hasCC['snare']||hasCC['suppress'];
+  const hasAssassin = team.some(c=>c.class==='assassin');
+
+  // Generate per-champion class rune suggestions
+  const classRunes = {};
+  const seen = new Set();
+  team.forEach(ch => {
+    const cls = hasMassCC && (ch.class==='mage'||ch.class==='marksman') ? 'vsCC' :
+                hasAssassin && (ch.class==='mage'||ch.class==='marksman') ? 'vsAssassin' :
+                ch.class;
+    if(!seen.has(cls)){
+      seen.add(cls);
+      classRunes[ch.name] = COUNTER_RUNES[cls] || COUNTER_RUNES.fighter;
+    }
+  });
+
+  wrap.innerHTML = Object.entries(classRunes).map(([champName, runes])=>`
+    <div class="rune-group-card anim">
+      <div class="rune-champ-label">If you are playing into ${champName}</div>
+      <div class="rune-row">
+        <span class="rune-chip keystone">${runes.keystone}</span>
+        ${runes.primary.map(r=>`<span class="rune-chip">${r}</span>`).join('')}
+        ${runes.secondary.map(r=>`<span class="rune-chip">${r}</span>`).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+function resetAnalysisUI(){
+  document.getElementById('threatNum').textContent='—';
+  document.getElementById('ringFill').style.strokeDashoffset='339.3';
+  document.getElementById('threatGrade').textContent='Select Enemies';
+  document.getElementById('threatSublabel').textContent='Analyze the enemy team by selecting 5 champions';
+  document.getElementById('itemBuilds').innerHTML='<div class="empty-state">Pick a champion to see item suggestions</div>';
+  document.getElementById('strategyCards').innerHTML='<div class="empty-state">Pick a champion to see strategy advice</div>';
+  document.getElementById('runeGroups').innerHTML='<div class="empty-state">Pick a champion to see rune suggestions</div>';
+  document.getElementById('threatCombos').innerHTML='<div class="empty-state">Pick a champion to see threat combos</div>';
+  document.getElementById('warningList').innerHTML='<div class="empty-state">Pick a champion to start analysis</div>';
+  document.getElementById('weaknessList').innerHTML='<div class="empty-state">Pick a champion to see weakness analysis</div>';
+  document.getElementById('strengthList').innerHTML='<div class="empty-state">Pick a champion to see strength analysis</div>';
+  document.getElementById('ratingRows').innerHTML='';
+  document.getElementById('ccTags').innerHTML='';
+  ['physPct','magicPct','truePct'].forEach(id=>document.getElementById(id).textContent='—%');
+  ['physBar','magicBar','trueBar'].forEach(id=>document.getElementById(id).style.width='0%');
+  ['donutPhys','donutMagic','donutTrue'].forEach(id=>{
+    document.getElementById(id).setAttribute('stroke-dasharray','0 238.76');
+  });
+  document.getElementById('donutLabel').textContent='—';
+  document.getElementById('champCountBadge').textContent='0 / 5 selected';
+}
+
+init();
+</script>
+</body>
+</html>

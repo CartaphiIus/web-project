@@ -1,13 +1,68 @@
-    <!DOCTYPE html>
-    <html lang="tr">
+﻿<!DOCTYPE html>
+    <html lang="en">
     <head>
-        <title>LoL Champions Hub</title>
+
     <link rel="icon" type="image/x-icon" href="9.ico">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>LOL Champions Hub</title>
         <link rel="stylesheet" href="styles.css">
-        
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap');
+            .profile-widget { position:relative; display:none; }
+            .profile-trigger {
+                display:flex; align-items:center; gap:9px; cursor:pointer;
+                padding:5px 12px 5px 6px;
+                border:1px solid rgba(200,155,60,.3);
+                background:rgba(200,155,60,.07);
+                transition:all .3s;
+                clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%);
+            }
+            .profile-trigger:hover { border-color:rgba(200,155,60,.55); background:rgba(200,155,60,.13); }
+            .profile-avatar-sm {
+                width:32px; height:32px; border-radius:50%;
+                border:2px solid rgba(200,155,60,.45);
+                background:#1a2f3f; overflow:hidden; flex-shrink:0;
+            }
+            .profile-avatar-sm img { width:100%; height:100%; object-fit:cover; display:block; }
+            .profile-username-sm { font-size:12px; font-weight:700; color:#f0e6d2; letter-spacing:.5px; max-width:90px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+            .profile-caret { font-size:9px; color:rgba(200,155,60,.5); transition:transform .3s; }
+            .profile-widget.open .profile-caret { transform:rotate(180deg); }
+            .profile-dropdown {
+                position:absolute; top:calc(100% + 10px); right:0;
+                min-width:210px;
+                background:rgba(10,20,40,.98);
+                border:1px solid rgba(200,155,60,.3);
+                opacity:0; pointer-events:none;
+                transform:translateY(-8px);
+                transition:all .25s; z-index:999;
+                clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px));
+            }
+            .profile-widget.open .profile-dropdown { opacity:1; pointer-events:all; transform:translateY(0); }
+            .dropdown-header {
+                padding:16px 18px 12px;
+                border-bottom:1px solid rgba(200,155,60,.12);
+                display:flex; align-items:center; gap:12px;
+            }
+            .dropdown-avatar-lg { width:44px; height:44px; border-radius:50%; border:2px solid rgba(200,155,60,.4); background:#1a2f3f; overflow:hidden; flex-shrink:0; }
+            .dropdown-avatar-lg img { width:100%; height:100%; object-fit:cover; }
+            .dropdown-name { font-size:14px; font-weight:700; color:#f0e6d2; }
+            .dropdown-rank { font-size:11px; color:rgba(200,155,60,.6); margin-top:2px; }
+            .dropdown-item {
+                display:block; width:100%; padding:11px 18px;
+                background:none; border:none; border-bottom:1px solid rgba(200,155,60,.06);
+                color:rgba(240,230,210,.6); font-size:12px; font-weight:600;
+                text-align:left; cursor:pointer; text-decoration:none;
+                transition:all .2s; letter-spacing:.5px;
+            }
+            .dropdown-item:last-child { border-bottom:none; }
+            .dropdown-item:hover { background:rgba(200,155,60,.09); color:#f0e6d2; padding-left:22px; }
+            .dropdown-item.red { color:rgba(221,85,85,.55); }
+            .dropdown-item.red:hover { color:#e55; background:rgba(221,85,85,.07); padding-left:22px; }
+            /* guest trigger */
+            .guest-trigger { cursor:pointer; }
+            .guest-avatar { display:flex; align-items:center; justify-content:center; font-size:16px; background:rgba(200,155,60,.07); }
+        </style>
     </head>
     <body>
         <!-- HEADER -->
@@ -24,9 +79,54 @@
                     <a href="lore.html" target="_self">LORE</a>
                     <a href="aboutus.html" target="_self">ABOUT US</a>
                     <a href="updates.html" target="_self">UPDATES</a>
+                    <a href="draft-builder.html" target="_self">DRAFT BUILDER</a>
+                    <a href="Counter analyzer.html" target="_self">COUNTER ANALYZER</a>
+                    <a href="Quiz.html" target="_self">QUIZ</a>
                     
                 </nav>
-                
+
+                <!-- PROFILE WIDGET — always visible -->
+                <div class="profile-widget" id="profileWidget" style="display:block;">
+
+                    <!-- GUEST STATE -->
+                    <div id="guestTrigger" class="profile-trigger guest-trigger" onclick="window.location.href='auth.html'">
+                        <div class="profile-avatar-sm guest-avatar">
+                            <span>👤</span>
+                        </div>
+                        <div style="display:flex;flex-direction:column;gap:1px;">
+                            <span class="profile-username-sm" style="color:rgba(200,155,60,.55);font-size:11px;">Guest</span>
+                            <span style="font-size:10px;color:rgba(200,155,60,.4);letter-spacing:.5px;">Sign In &rarr;</span>
+                        </div>
+                    </div>
+
+                    <!-- LOGGED-IN STATE -->
+                    <div id="loggedTrigger" class="profile-trigger" style="display:none;" onclick="toggleDropdown()">
+                        <div class="profile-avatar-sm" id="navAvatarWrap">
+                            <img id="navAvatar" src="" alt="" style="width:100%;height:100%;object-fit:cover;display:block;">
+                        </div>
+                        <span class="profile-username-sm" id="navUsername">Summoner</span>
+                        <span class="profile-caret">▼</span>
+                    </div>
+
+                    <!-- DROPDOWN (logged in only) -->
+                    <div class="profile-dropdown" id="profileDropdown">
+                        <div class="dropdown-header">
+                            <div class="dropdown-avatar-lg">
+                                <img id="dropAvatar" src="" alt="">
+                            </div>
+                            <div>
+                                <div class="dropdown-name" id="dropName">Summoner</div>
+                                <div class="dropdown-rank" id="dropRank">Rank not set</div>
+                            </div>
+                        </div>
+                        <a href="profile.html" class="dropdown-item">✦ Edit Profile</a>
+                        <a href="sampiyonlar.html" class="dropdown-item">⚡ Champions</a>
+                        <a href="draft-builder.html" class="dropdown-item">⚔ Draft Builder</a>
+                        <a href="Counter analyzer.html" class="dropdown-item">🎯 Counter Analyzer</a>
+                        <a href="Quiz.html" class="dropdown-item">🧠 Quiz</a>
+                        <button class="dropdown-item red" onclick="logout()">Sign Out</button>
+                    </div>
+                </div>
             </div>
         </header>
 
@@ -45,7 +145,7 @@
             <div class="hero-content">
                 <h1 class="hero-title">MASTER THE RIFT:</h1>
                 <div class="hero-subtitle">EXPLORE THE ADVENTURE !</div>
-                <a href="https://authenticate.riotgames.com/?client_id=accountodactyl-prod&method=riot_identity_signup&platform=web&redirect_uri=https%3A%2F%2Fauth.riotgames.com%2Fauthorize%3F_gl%3D1*1k71yum*_ga*ODIxMTM4NjE1LjE3NjM2NjYwMjU.*_ga_0X9JWXB87B*czE3NzY2OTM0NTUkbzIkZzEkdDE3NzY2OTM1MzQkajU1JGwwJGgw%26acr_values%3Durn%253Ariot%253Agold%26client_id%3Daccountodactyl-prod%26prompt%3Dsignup%26redirect_uri%3Dhttps%253A%252F%252Faccount.riotgames.com%252Foauth2%252Flog-in%26response_type%3Dcode%26scope%3Dopenid%2520email%2520profile%2520riot%253A%252F%252Friot.atlas%252Fopenid%2520riot%253A%252F%252Friot.atlas%252Faccounts.edit%2520riot%253A%252F%252Friot.atlas%252Faccounts%252Fpassword.edit%2520riot%253A%252F%252Friot.atlas%252Faccounts%252Femail.edit%2520riot%253A%252F%252Friot.atlas%252Faccounts.auth%2520riot%253A%252F%252Fthird_party.revoke%2520riot%253A%252F%252Fthird_party.query%2520riot%253A%252F%252Fforgetme%252Fnotify.write%2520riot%253A%252F%252Friot.authenticator%252Fauth.code%2520riot%253A%252F%252Friot.authenticator%252Fauthz.edit%2520riot%253A%252F%252Frso%252Fmfa%252Fdevice.write%2520riot%253A%252F%252Friot.authenticator%252Fidentity.add%2520riot%253A%252F%252Friot.atlas%252Faccounts.read%26state%3De324acd9-84b2-413b-850c-2d1d32123f4b%26ui_locales%3Dtr-TR&security_profile=high" target="_self"><button class="cta-button">JOIN THE STORY</button></a>
+                <a href="auth.html" target="_self" id="ctaBtn"><button class="cta-button">JOIN THE STORY</button></a>
             </div>
             <div class="carousel-controls">
                 <div class="carousel-dot active"></div>
@@ -62,7 +162,7 @@
                 <h2 class="section-title">FEATURED CHAMPIONS</h2>
                 <div class="champions-grid">
                     <div class="champion-card">
-                         <a href="sampiyonlar.html" target = "_self">
+                         <a href="sampiyonlar.html#lux" target = "_self">
                             <img src="lux-featured.jpg" alt="Lux" class="champion-image">
                         <div class="champion-info">
                             <div class="champion-name">LUX</div>
@@ -71,7 +171,7 @@
                         </div> </a>
                     </div>
                     <div class="champion-card">
-                         <a href="sampiyonlar.html" target = "_self"> 
+                         <a href="sampiyonlar.html#yasuo" target = "_self"> 
                             <img src="yasuo-featured.jpg" alt="Yasuo" class="champion-image">
                         <div class="champion-info">
                             <div class="champion-name">YASUO</div>
@@ -80,7 +180,7 @@
                         </div> </a>
                     </div>
                     <div class="champion-card">
-                         <a href="sampiyonlar.html" target = "_self">
+                         <a href="sampiyonlar.html#jinx" target = "_self">
                             <img src="jinx-featured.jpg" alt="Jinx" class="champion-image">
                         <div class="champion-info">
                             <div class="champion-name">JINX</div>
@@ -89,8 +189,8 @@
                         </div> </a>
                     </div>
                     <div class="champion-card">
-                        <a href="sampiyonlar.html" target = "_self">
-                            <img src="aatrox-featured.jpg" alt="Aatrox" class="champion-image">
+                        <a href="sampiyonlar.html#aatrox" target = "_self">
+                            <img src="aatrox-featured.jpg" alt="Ashe" class="champion-image">
                         <div class="champion-info">
                             <div class="champion-name">AATROX</div>
                             <div class="champion-role">Fighter</div>
@@ -108,97 +208,97 @@
                 <div class="champions-list">
                     <div style="text-align: center;">
                         <div class="champion-avatar">
-                            <a href="sampiyonlar.html"><img src="ahri.avif" alt="Ahri">
+                            <a href="sampiyonlar.html#ahri"><img src="ahri.avif" alt="Ahri">
                         </div>
                         <div class="champion-avatar-name">Ahri</div></a>
                     </div>
                     <div style="text-align: center;">
                         <div class="champion-avatar">
-                          <a href="sampiyonlar.html" target="_self"> <img src="zed.avif" alt="Top">
+                          <a href="sampiyonlar.html#zed" target="_self"> <img src="zed.avif" alt="Top">
                         </div>
                         <div class="champion-avatar-name">Zed</div></a>
                     </div>
                     <div style="text-align: center;">
                         <div class="champion-avatar">
-                          <a href="sampiyonlar.html" target="_self">  <img src="kindred.webp" alt="Jungle">
+                          <a href="sampiyonlar.html#kindred" target="_self">  <img src="kindred.webp" alt="Jungle">
                         </div>
                         <div class="champion-avatar-name">Kindred</div></a>
                     </div>
                     <div style="text-align: center;">
                         <div class="champion-avatar">
-                           <a href="sampiyonlar.html"> <img src="akali.avif" alt="Mid">
+                           <a href="sampiyonlar.html#akali"> <img src="akali.avif" alt="Mid">
                         </div>
                         <div class="champion-avatar-name">Akali</div></a>
                     </div>
                     <div style="text-align: center;">
                         <div class="champion-avatar">
-                           <a href="sampiyonlar.html" target="_self"> <img src="aurora.avif" alt="Adc">
+                           <a href="sampiyonlar.html#aurora" target="_self"> <img src="aurora.avif" alt="Aurora">
                         </div>
                         <div class="champion-avatar-name">Aurora</div> </a>
                     </div>
                     <div style="text-align: center;">
                         <div class="champion-avatar">
-                          <a href="sampiyonlar.html" target="_self">  <img src="ambessa.avif" alt="Support">
+                          <a href="sampiyonlar.html#ambessa" target="_self">  <img src="ambessa.avif" alt="Support">
                         </div>
                         <div class="champion-avatar-name">Ambessa</div></a>
                     </div>
                     <div style="text-align: center;">
                         <div class="champion-avatar">
-                         <a href="sampiyonlar.html" target="_self">  <img src="briar.avif" alt="Briar">
+                         <a href="sampiyonlar.html#briar" target="_self">  <img src="briar.avif" alt="Briar">
                         </div>
                         <div class="champion-avatar-name">Briar</div></a>
                     </div>
                     <div style="text-align: center;">
                         <div class="champion-avatar">
-                           <a href="sampiyonlar.html" target="_self"> <img src="yasuo.avif" alt="Yasuo">
+                           <a href="sampiyonlar.html#yasuo" target="_self"> <img src="yasuo.avif" alt="Yasuo">
                         </div>
                         <div class="champion-avatar-name">Yasuo</div></a>
                     </div>
                     <div style="text-align: center;">
                         <div class="champion-avatar">
-                           <a href="sampiyonlar.html" target="_self"> <img src="akshan.jpg" alt="Droin">
+                           <a href="sampiyonlar.html#akshan" target="_self"> <img src="akshan.jpg" alt="Akshan">
                         </div>
                         <div class="champion-avatar-name">Akshan</div></a>
                     </div>
                     <div style="text-align: center;">
                         <div class="champion-avatar">
-                            <a href="sampiyonlar.html" target="_self"><img src="aatrox.avif" alt="Aatrox">
+                            <a href="sampiyonlar.html#aatrox" target="_self"><img src="aatrox.avif" alt="Aatrox">
                         </div>
                         <div class="champion-avatar-name">Aatrox</div> </a>
                     </div>
                     <div style="text-align: center;">
                         <div class="champion-avatar">
-                            <a href="sampiyonlar.html" target="_self"><img src="ASHE.avif" alt="Aatrox">
+                            <a href="sampiyonlar.html#ashe" target="_self"><img src="ASHE.avif" alt="Ashe">
                         </div>
                         <div class="champion-avatar-name">Ashe</div> </a>
                     </div>
                     <div style="text-align: center;">
                         <div class="champion-avatar">
-                            <a href="sampiyonlar.html" target="_self"><img src="darius.avif" alt="Darius">
+                            <a href="sampiyonlar.html#darius" target="_self"><img src="darius.avif" alt="Darius">
                         </div>
                         <div class="champion-avatar-name">Darius</div></a>
                     </div>
                     <div style="text-align: center;">
                         <div class="champion-avatar">
-                            <a href="sampiyonlar.html"><img src="Mordekaiser_0.jpg" alt="Mordekaiser">
+                            <a href="sampiyonlar.html#mordekaiser"><img src="Mordekaiser_0.jpg" alt="Mordekaiser">
                         </div>
                         <div class="champion-avatar-name">Mordekaiser</div></a>
                     </div>
                     <div style="text-align: center;">
                         <div class="champion-avatar">
-                            <a href="sampiyonlar.html"><img src="Malzahar_0.jpg" alt="Malzahar">
+                            <a href="sampiyonlar.html#malzahar"><img src="Malzahar_0.jpg" alt="Malzahar">
                         </div>
                         <div class="champion-avatar-name">Malzahar</div></a>
                     </div>
                     <div style="text-align: center;">
                         <div class="champion-avatar">
-                            <a href="sampiyonlar.html"><img src="Kaisa_0.jpg" alt="Kaisa">
+                            <a href="sampiyonlar.html#kaisa"><img src="Kaisa_0.jpg" alt="Kaisa">
                         </div>
                         <div class="champion-avatar-name">Kaisa</div></a>
                     </div>
                     <div style="text-align: center;">
                         <div class="champion-avatar">
-                            <a href="sampiyonlar.html"><img src="Lissandra_0.jpg" alt="Lissandra" style="object-position: 80%;">
+                            <a href="sampiyonlar.html#lissandra"><img src="Lissandra_0.jpg" alt="Lissandra" style="object-position: 80%;">
                         </div>
                         <div class="champion-avatar-name">Lissandra</div></a>
                     </div>
@@ -238,8 +338,8 @@
             <div class="footer-content">
                 <div class="footer-links">
                 
-                    <a href="https://www.riotgames.com/tr/?utm_medium=card1%2Bsupport.riotgames.com&utm_source=riotbar" target="_self" class="footer-link">About ▼</a>
-                    <a href="https://support.riotgames.com/hc/tr" class="footer-link" target="_self">Support ▼</a>
+                    <a href="https://www.riotgames.com/tr/?utm_medium=card1%2Bsupport.riotgames.com&utm_source=riotbar" target="_self" class="footer-link">About</a>
+                    <a href="https://support.riotgames.com/hc/tr" class="footer-link" target="_self">Support</a>
                 </div>
                 <div class="footer-bottom">
                     <div>Riot Games © 2024. All rights reserved.</div>
@@ -248,5 +348,56 @@
         </footer>
 
         <script src="script.js"></script>
+        <script>
+            /* ── PROFILE WIDGET ── */
+            function initProfileWidget() {
+                const user = JSON.parse(localStorage.getItem('lol_current') || 'null');
+                const ctaBtn = document.getElementById('ctaBtn');
+                const guestTrigger  = document.getElementById('guestTrigger');
+                const loggedTrigger = document.getElementById('loggedTrigger');
+
+                if (user) {
+                    guestTrigger.style.display  = 'none';
+                    loggedTrigger.style.display = 'flex';
+                    if (ctaBtn) ctaBtn.style.display = 'none';
+
+                    const profile = JSON.parse(localStorage.getItem('lol_profile_' + user.email) || '{}');
+                    const name   = profile.username || user.username || 'Summoner';
+                    const avatar = profile.avatar || '';
+                    const rank   = profile.rank ? 'Rank: ' + profile.rank : 'Rank not set';
+
+                    const navImg = document.getElementById('navAvatar');
+                    if (avatar) { navImg.src = avatar; }
+                    else { document.getElementById('navAvatarWrap').innerHTML = '<span style="font-size:18px;display:flex;align-items:center;justify-content:center;width:100%;height:100%;">⚔</span>'; }
+
+                    document.getElementById('navUsername').textContent = name;
+                    const dropImg = document.getElementById('dropAvatar');
+                    if (avatar) dropImg.src = avatar;
+                    document.getElementById('dropName').textContent = name;
+                    document.getElementById('dropRank').textContent = rank;
+                } else {
+                    guestTrigger.style.display  = 'flex';
+                    loggedTrigger.style.display = 'none';
+                    if (ctaBtn) ctaBtn.style.display = 'inline';
+                }
+            }
+
+            function toggleDropdown() {
+                document.getElementById('profileWidget').classList.toggle('open');
+            }
+
+            // Close dropdown on outside click
+            document.addEventListener('click', function(e) {
+                const w = document.getElementById('profileWidget');
+                if (!w.contains(e.target)) w.classList.remove('open');
+            });
+
+            function logout() {
+                localStorage.removeItem('lol_current');
+                location.reload();
+            }
+
+            initProfileWidget();
+        </script>
     </body>
     </html>
