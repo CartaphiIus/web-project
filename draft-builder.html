@@ -2266,6 +2266,24 @@ let filterType = 'all';
 let filterClass = 'all';
 let latestAnalysisSnapshot = null;
 const SAVED_DRAFT_KEY = 'lol_draftbuilder_saved_draft';
+const DDRAGON_CHAMPION_ID_MAP = {
+  Leesin: 'LeeSin',
+  Chogath: 'ChoGath',
+  KhaZix: 'Khazix',
+  VelKoz: 'Velkoz',
+  Kog_Maw: 'KogMaw',
+  DrMundo: 'DrMundo',
+  TahmKench: 'TahmKench',
+  MonkeyKing: 'MonkeyKing',
+  Belveth: 'Belveth',
+  RekSai: 'RekSai',
+  Nunu: 'Nunu',
+  Renata: 'Renata'
+};
+
+function getDDragonChampionId(id){
+  return DDRAGON_CHAMPION_ID_MAP[id] || id;
+}
 
 /* ═══════════════════════════════════════════════
    INIT
@@ -2287,71 +2305,83 @@ async function init(){
 
 /* ─── Build draft slots ─── */
 function buildDraftSlots(){
-  const wrap = document.getElementById('draftSlots');
-  wrap.innerHTML = '';
-  SLOT_ROLES.forEach((role,i)=>{
-    const slot = document.createElement('div');
-    slot.className = 'draft-slot' + (draft[i] ? ' filled' : '');
-    slot.dataset.slot = i;
+    const wrap = document.getElementById('draftSlots');
+    wrap.innerHTML = '';
+    SLOT_ROLES.forEach((role, i) => {
+        const slot = document.createElement('div');
+        slot.className = 'draft-slot' + (draft[i] ? ' filled' : '');
+        slot.dataset.slot = i;
 
-    if(draft[i]){
-      const c = getChamp(draft[i]);
-      slot.innerHTML = `
-        <img class="slot-splash" src="https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${c.id}_0.jpg" alt="${c.name}" onerror="this.style.display='none'"/>
-        <div class="slot-overlay"></div>
-        <div class="slot-class-badge">${c.class}</div>
-        <span class="slot-name">${c.name}</span>
-        <span class="slot-role">${role}</span>
-        <button class="slot-remove" data-slot="${i}" title="Remove">✕</button>
-      `;
-    } else {
-      slot.innerHTML = `
-        <span class="slot-empty-icon">+</span>
-        <span class="slot-role">${role}</span>
-      `;
-    }
-    wrap.appendChild(slot);
-  });
+        if(draft[i]){
+            const c = getChamp(draft[i]);
+            let ddragonId = getDDragonChampionId(c.id);
 
-  // Remove buttons
-  wrap.querySelectorAll('.slot-remove').forEach(btn=>{
-    btn.addEventListener('click',(e)=>{
-      e.stopPropagation();
-      const i = parseInt(btn.dataset.slot);
-      draft[i] = null;
-      refreshAll();
+            // Kaisa ve Cho'Gath düzeltmesini buraya da ekliyoruz
+            if (ddragonId.toLowerCase().includes('cho')) {
+                ddragonId = 'ChoGath';
+            } else if (ddragonId.toLowerCase().includes('kaisa')) {
+                ddragonId = 'Kaisa';
+            }
+
+            slot.innerHTML = `
+                <img class="slot-splash" 
+                     src="https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${ddragonId}_0.jpg" 
+                     alt="${c.name}" 
+                     onerror="this.onerror=null; this.src='./assets/images/${c.id}.png';">
+                <div class="slot-overlay"></div>
+                <div class="slot-class-badge">${c.class}</div>
+                <span class="slot-name">${c.name}</span>
+                <span class="slot-role">${role}</span>
+                <button class="slot-remove" data-slot="${i}">✕</button>
+            `;
+        } else {
+            slot.innerHTML = `<span class="slot-empty-icon">+</span><span class="slot-role">${role}</span>`;
+        }
+        wrap.appendChild(slot);
     });
-  });
 
-  // Slot zone title
-  const filled = draft.filter(Boolean).length;
-  document.querySelector('.draft-zone-title').textContent = `Your Composition (${filled}/5)`;
+    // Remove butonları ve başlık güncellemesi aynı kalıyor...
+    wrap.querySelectorAll('.slot-remove').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const slotIdx = parseInt(btn.dataset.slot);
+            draft[slotIdx] = null;
+            refreshAll();
+        });
+    });
 }
+function buildChampGrid() {
+    const grid = document.getElementById('champGrid');
+    grid.innerHTML = '';
 
-/* ─── Build champion grid ─── */
-function buildChampGrid(){
-  const grid = document.getElementById('champGrid');
-  grid.innerHTML = '';
-  CHAMPIONS.forEach(c=>{
-    const el = document.createElement('div');
-    el.className = 'champ-thumb';
-    el.dataset.id = c.id;
+    CHAMPIONS.forEach(ch => {
+        const div = document.createElement('div');
+        div.className = 'champ-thumb';
+        div.dataset.id = ch.id;
 
-    // Dominant damage color dot
-    const dominant = c.damage.phys >= c.damage.magic ? '#e05050' : '#4a9eff';
-    el.innerHTML = `
-      <img src="https://ddragon.leagueoflegends.com/cdn/14.24.1/img/champion/${c.id}.png" 
-           alt="${c.name}"
-           onerror="this.style.background='#112040';this.style.display='block';this.style.height='100%'"/>
-      <div class="dmg-dot" style="background:${dominant};color:${dominant};"></div>
-      <div class="thumb-name">${c.name}</div>
-    `;
-    el.addEventListener('click',()=>selectChamp(c.id));
-    grid.appendChild(el);
-  });
-  applyFilters();
+        let ddragonId = getDDragonChampionId(ch.id);
+
+        // Analyzer'daki mantığın aynısını buraya ekliyoruz
+        if (ddragonId.toLowerCase().includes('cho')) {
+            ddragonId = 'ChoGath'; 
+        } else if (ddragonId.toLowerCase().includes('kaisa')) {
+            ddragonId = 'Kaisa'; // Senin klasöründeki dosya adı 'Kaisa' olduğu için
+        }
+
+        const dotColor = ch.damage.magic > 50 ? '#4a9eff' : ch.damage.phys > 60 ? '#e05050' : '#c8aa6e';
+        
+        div.innerHTML = `
+            <img src="https://ddragon.leagueoflegends.com/cdn/14.8.1/img/champion/${ddragonId}.png" 
+                 alt="${ch.name}" 
+                 onerror="this.onerror=null; this.src='./assets/images/${ch.id}.png';">
+            <div class="thumb-name">${ch.name}</div>
+            <div class="dmg-dot" style="background:${dotColor};"></div>
+        `;
+        div.addEventListener('click', () => selectChamp(ch.id)); // Ana projendeki fonksiyon adıyla eşledim
+        grid.appendChild(div);
+    });
+    applyFilters();
 }
-
 /* ─── Select a champion ─── */
 function selectChamp(id){
   if(draft.includes(id)) return;
@@ -2615,8 +2645,8 @@ function renderCombos(combos){
   list.innerHTML = combos.slice(0,8).map(c=>`
     <div class="combo-item anim">
       <div class="combo-icons">
-        <img src="https://ddragon.leagueoflegends.com/cdn/14.24.1/img/champion/${c.a.id}.png" alt="${c.a.name}" onerror="this.style.display='none'"/>
-        <img src="https://ddragon.leagueoflegends.com/cdn/14.24.1/img/champion/${c.b.id}.png" alt="${c.b.name}" onerror="this.style.display='none'"/>
+        <img src="https://ddragon.leagueoflegends.com/cdn/14.24.1/img/champion/${getDDragonChampionId(c.a.id)}.png" alt="${c.a.name}" onerror="this.style.display='none'"/>
+        <img src="https://ddragon.leagueoflegends.com/cdn/14.24.1/img/champion/${getDDragonChampionId(c.b.id)}.png" alt="${c.b.name}" onerror="this.style.display='none'"/>
       </div>
       <div class="combo-info">
         <div class="combo-pair">${c.a.name} + ${c.b.name}</div>
@@ -2812,7 +2842,7 @@ function renderSharePreview(snapshot, sourceLabel){
 
   champList.innerHTML = snapshot.champions.map(champ=>`
     <div class="share-champ-card">
-      <img src="https://ddragon.leagueoflegends.com/cdn/14.24.1/img/champion/${champ.id}.png" alt="${champ.name}">
+      <img src="https://ddragon.leagueoflegends.com/cdn/14.24.1/img/champion/${getDDragonChampionId(champ.id)}.png" alt="${champ.name}">
       <span class="share-champ-lane">${champ.lane}</span>
       <span class="share-champ-name">${champ.name}</span>
     </div>
@@ -2986,7 +3016,7 @@ async function generateDraftShareImage(snapshot){
     const cardX = padding + 28 + index * (cardWidth + cardGap);
     fillRoundRect(ctx, cardX, cardY, cardWidth, 190, 18, 'rgba(8,17,33,0.95)', 'rgba(200,170,110,0.16)');
 
-    const icon = await loadImageForCanvas(`https://ddragon.leagueoflegends.com/cdn/14.24.1/img/champion/${champ.id}.png`);
+    const icon = await loadImageForCanvas(`https://ddragon.leagueoflegends.com/cdn/14.24.1/img/champion/${getDDragonChampionId(champ.id)}.png`);
     if(icon){
       ctx.save();
       roundRectPath(ctx, cardX + 14, cardY + 14, cardWidth - 28, 96, 14);
@@ -3195,8 +3225,8 @@ async function generateDraftShareImage(snapshot){
     const cardX = padding + cardInset + index * (cardWidth + cardGap);
     fillRoundRect(ctx, cardX, cardY, cardWidth, cardHeight, 20, 'rgba(8,17,33,0.94)', 'rgba(200,170,110,0.16)');
 
-    const splash = await loadImageForCanvas(`https://ddragon.leagueoflegends.com/cdn/img/champion/loading/${champ.id}_0.jpg`);
-    const icon = splash || await loadImageForCanvas(`https://ddragon.leagueoflegends.com/cdn/14.24.1/img/champion/${champ.id}.png`);
+    const splash = await loadImageForCanvas(`https://ddragon.leagueoflegends.com/cdn/img/champion/loading/${getDDragonChampionId(champ.id)}_0.jpg`);
+    const icon = splash || await loadImageForCanvas(`https://ddragon.leagueoflegends.com/cdn/14.24.1/img/champion/${getDDragonChampionId(champ.id)}.png`);
     if(icon){
       ctx.save();
       roundRectPath(ctx, cardX + 14, cardY + 14, cardWidth - 28, 138, 14);

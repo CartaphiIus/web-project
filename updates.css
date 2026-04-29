@@ -41,7 +41,7 @@ body::before {
     inset: 0;
     background:
         linear-gradient(rgba(8, 17, 31, 0.48), rgba(8, 17, 31, 0.88)),
-        url('Howling_Abyss_Landscape.png') center/cover no-repeat;
+        url('assets/images/Howling_Abyss_Landscape.png') center/cover no-repeat;
     opacity: 0.24;
     z-index: -2;
     pointer-events: none;
@@ -162,7 +162,7 @@ main {
     inset: 0;
     background:
         linear-gradient(90deg, rgba(8, 17, 31, 0.92) 0%, rgba(8, 17, 31, 0.58) 50%, rgba(8, 17, 31, 0.88) 100%),
-        url('updates-background.jpg') center 25%/cover no-repeat;
+        url('assets/images/updates-background.jpg') center 25%/cover no-repeat;
     transform: scale(1.03);
 }
 

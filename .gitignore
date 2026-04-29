@@ -1,0 +1,7 @@
+# VS code workspace
+*.code-workspace
+.vscode/
+
+# Operating System Codes
+Thumbs.db
+desktop.ini

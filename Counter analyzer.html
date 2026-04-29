@@ -224,7 +224,7 @@ header > .header-nav:first-of-type{display:none;}
 .champ-grid::-webkit-scrollbar{width:3px;}
 .champ-grid::-webkit-scrollbar-thumb{background:rgba(200,60,60,.4);border-radius:2px;}
 .champ-thumb{
-  position:relative;aspect-ratio:1;border:1.5px solid var(--enemy-border);
+  position:relative;aspect-ratio:1;border:1.5px solid var(--enemy-border);isolation: isolate;
   border-radius:5px;overflow:hidden;cursor:pointer;background:rgba(20,5,5,.6);transition:all .25s ease;
 }
 .champ-thumb:hover{
@@ -232,9 +232,9 @@ header > .header-nav:first-of-type{display:none;}
   box-shadow:0 4px 16px rgba(200,50,50,.25);
 }
 .champ-thumb.selected-in-draft{border-color:rgba(200,60,60,.3);opacity:.35;pointer-events:none;filter:grayscale(.6);}
-.champ-thumb img{width:100%;height:100%;object-fit:cover;object-position:top;pointer-events:none;}
+.champ-thumb img{width:100%;height:100%;object-fit:cover;object-position:top;pointer-events:none;position: absolute;z-index: 0;}
 .champ-thumb .thumb-name{
-  position:absolute;bottom:0;left:0;right:0;
+  position:absolute;bottom:0;left:0;right:0;z-index: 10 !important;
   background:linear-gradient(to top,rgba(15,3,3,.95),transparent);
   font-size:.6rem;letter-spacing:.5px;color:var(--text);
   text-align:center;padding:10px 2px 3px;font-weight:700;text-transform:uppercase;
@@ -908,6 +908,24 @@ let filterType = 'all';
 let filterClass = 'all';
 const ROLES = ['Top','Jungle','Mid','Bot','Support'];
 const DDVersion = '14.24.1';
+const DDRAGON_CHAMPION_ID_MAP = {
+  Leesin: 'LeeSin',
+  Chogath: 'ChoGath',
+  KhaZix: 'Khazix',
+  VelKoz: 'Velkoz',
+  Kog_Maw: 'KogMaw',
+  DrMundo: 'DrMundo',
+  TahmKench: 'TahmKench',
+  MonkeyKing: 'MonkeyKing',
+  Belveth: 'Belveth',
+  RekSai: 'RekSai',
+  Nunu: 'Nunu',
+  Renata: 'Renata'
+};
+
+function getDDragonChampionId(id){
+  return DDRAGON_CHAMPION_ID_MAP[id] || id;
+}
 
 /* ═══════════════════════════════════════════════
    INIT
@@ -922,23 +940,42 @@ async function init(){
   resetAnalysisUI();
 }
 
-function buildChampGrid(){
-  const grid = document.getElementById('champGrid');
-  grid.innerHTML = '';
-  CHAMPIONS.forEach(ch => {
-    const div = document.createElement('div');
-    div.className = 'champ-thumb';
-    div.dataset.id = ch.id;
-    const dotColor = ch.damage.magic > 50 ? '#4a9eff' : ch.damage.phys > 60 ? '#e05050' : '#c8aa6e';
-    div.innerHTML = `
-      <img src="https://ddragon.leagueoflegends.com/cdn/${DDVersion}/img/champion/${ch.id}.png" alt="${ch.name}" onerror="this.style.display='none'"/>
-      <div class="thumb-name">${ch.name}</div>
-      <div class="dmg-dot" style="background:${dotColor};color:${dotColor};"></div>
-    `;
-    div.addEventListener('click', () => pickChampion(ch));
-    grid.appendChild(div);
-  });
-  applyFilters();
+function buildChampGrid() {
+    const grid = document.getElementById('champGrid');
+    grid.innerHTML = '';
+    
+    // 1. Sürümü projenin genel sürümüne (DDVersion) eşitleyelim
+    // Eğer DDVersion çalışmıyorsa buraya direkt '14.8.1' yazabilirsin
+    const currentVer = (typeof DDVersion !== 'undefined') ? DDVersion : '14.8.1';
+
+    CHAMPIONS.forEach(ch => {
+        const div = document.createElement('div');
+        div.className = 'champ-thumb';
+        div.dataset.id = ch.id;
+
+        // 2. Görsel için ID'yi hazırlayalım
+        let ddragonId = getDDragonChampionId(ch.id);
+
+        // 3. Cho'Gath ve Kai'Sa Düzeltmesi
+        if (ddragonId.toLowerCase().includes('cho')) {
+            ddragonId = 'ChoGath'; 
+        } else if (ddragonId.toLowerCase().includes('kaisa')) {
+            ddragonId = 'Kaisa';
+        }
+
+        const dotColor = ch.damage.magic > 50 ? '#4a9eff' : ch.damage.phys > 60 ? '#e05050' : '#c8aa6e';
+        
+        div.innerHTML = `
+    <img src="https://ddragon.leagueoflegends.com/cdn/14.8.1/img/champion/${ddragonId}.png" 
+         alt="${ch.name}" 
+         onerror="this.onerror=null; this.src='./assets/images/${ch.id}.png';">
+    <div class="thumb-name">${ch.name}</div>
+    <div class="dmg-dot" style="background:${dotColor};"></div>
+`;
+        div.addEventListener('click', () => pickChampion(ch));
+        grid.appendChild(div);
+    });
+    applyFilters();
 }
 
 function setupFilters(){
@@ -1035,11 +1072,12 @@ function renderEnemySlots(){
   slots.forEach((slot, i) => {
     const ch = enemyTeam[i];
     if(ch){
+      const ddragonId = getDDragonChampionId(ch.id);
       const threat = calcThreat(ch);
       const tClass = threat >= 7 ? 'high' : threat >= 4 ? 'mid' : 'low';
       slot.classList.add('filled');
       slot.innerHTML = `
-        <img class="slot-splash" src="https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${ch.id}_0.jpg" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/${DDVersion}/img/champion/${ch.id}.png'"/>
+        <img class="slot-splash" src="https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${ddragonId}_0.jpg" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/${DDVersion}/img/champion/${ddragonId}.png'"/>
         <div class="slot-overlay"></div>
         <div class="slot-class-badge">${ch.class}</div>
         <div class="threat-badge ${tClass}">${threat}</div>
@@ -1211,8 +1249,8 @@ function renderThreatCombos(team){
   wrap.innerHTML = combos.slice(0,6).map(c=>`
     <div class="threat-combo anim">
       <div class="threat-combo-icons">
-        <img src="https://ddragon.leagueoflegends.com/cdn/${DDVersion}/img/champion/${c.a.id}.png" onerror="this.style.display='none'"/>
-        <img src="https://ddragon.leagueoflegends.com/cdn/${DDVersion}/img/champion/${c.b.id}.png" onerror="this.style.display='none'"/>
+        <img src="https://ddragon.leagueoflegends.com/cdn/${DDVersion}/img/champion/${getDDragonChampionId(c.a.id)}.png" onerror="this.style.display='none'"/>
+        <img src="https://ddragon.leagueoflegends.com/cdn/${DDVersion}/img/champion/${getDDragonChampionId(c.b.id)}.png" onerror="this.style.display='none'"/>
       </div>
       <div class="threat-combo-info">
         <div class="threat-combo-pair">⚡ ${c.a.name} + ${c.b.name}</div>
@@ -1393,7 +1431,7 @@ function renderItems(team, phys, magic, trueD, ratings, hasCC){
     <div class="role-build-card anim">
       <div class="role-build-header">
         <div class="role-champ-icon">
-          <img src="https://ddragon.leagueoflegends.com/cdn/${DDVersion}/img/champion/${ch.id}.png" onerror="this.style.display='none'"/>
+          <img src="https://ddragon.leagueoflegends.com/cdn/${DDVersion}/img/champion/${getDDragonChampionId(ch.id)}.png" onerror="this.style.display='none'"/>
         </div>
         <div>
           <div class="role-champ-name">Against ${ch.name}</div>

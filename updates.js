@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
             title: 'Special Costume for Faker!',
             category: 'New Costume',
             date: '14 April 2026',
-            image: 'update-ahri.jpg',
+            image: 'assets/images/update-ahri.jpg',
             imagePosition: 'center 10%',
             teaser: 'Experience the legend with the latest skin dedicated to the Unkillable Demon King, complete with high-end splashes and event flavor.',
             subtitle: 'The spotlight bundle arrives with themed VFX, event missions and a prestige showcase made for the home teaser.',
@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
             title: 'Breath Taking Zoe Prestige',
             category: 'New Costume',
             date: '12 April 2026',
-            image: 'update-zoe.avif',
+            image: 'assets/images/update-zoe.avif',
             teaser: 'Sparkle with elegance in the new Zoe Prestige Edition, featuring exclusive golden particle effects and polished ability visuals.',
             subtitle: 'A radiant skin release focused on celestial particles, dreamy recall animation and event-token rewards.',
             featuredOnHome: true,
@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
             title: 'Good News for Master Yi Players',
             category: 'Balance Update',
             date: '09 April 2026',
-            image: 'update-master.jpg',
+            image: 'assets/images/update-master.jpg',
             teaser: 'The Wuju Master is getting a focused quality-of-life pass with early jungle help and smoother responsiveness.',
             subtitle: 'A focused pass on responsiveness, jungle clear feel and a cleaner power curve for ranked play.',
             featuredOnHome: true,
@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 {
                     champion : 'Master Yi',
                     skill : 'Alpha Strike (Q)',
-                    image : 'Master_Yi_Alpha_Strike.png',
+                    image : 'assets/images/Master_Yi_Alpha_Strike.png',
                     changes : [
                         
                         'Blinking updated for consistency when near walls (to avoid Master Yi reappearing on the other side of a jungle camp).'
@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 {
                     champion : 'Master Yi',
                     skill : 'Alpha Strike (Q)',
-                    image : 'master_yi_passive.png',
+                    image : 'assets/images/master_yi_passive.png',
                     changes : [
                         'On-hit modifier increased to 75% from 65%.'
                         
@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
             title: 'Patch 26.8 Notes',
             category: 'Patch Notes',
             date: '31 March 2026',
-            image: 'patch_upd.jpg',
+            image: 'assets/images/patch_upd.jpg',
             teaser: 'A larger gameplay patch featuring champion tuning, jungle pacing updates and a cleaner in-modal breakdown for individual skills.',
             subtitle: 'Champion tuning, jungle pacing and item follow-ups arrive in a larger gameplay patch.',
             featuredOnHome: false,
@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 {
                     champion: 'Morgana',
                     skill: 'Dark Binding (Q)',
-                    image: 'MorganaQ.png',
+                    image: 'assets/images/MorganaQ.png',
                     changes: [
                         'Base cooldown lowered in early ranks to make pick windows more reliable.',
                         'Missile width slightly increased for cleaner visual feedback on max range casts.'
@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 {
                     champion: 'Graves',
                     skill: 'End of the Line (Q)',
-                    image: 'GravesQLineSpell.png',
+                    image: 'assets/images/GravesQLineSpell.png',
                     changes: [
                         'Primary hit damage trimmed slightly to reduce early jungle burst.',
                         'Return explosion damage increased later in the game to preserve high-skill payoff.'
@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 {
                     champion: 'Heimerdinger',
                     skill: 'H-28G Evolution Turret (Q)',
-                    image: 'HeimerdingerQ.png',
+                    image: 'assets/images/HeimerdingerQ.png',
                     changes: [
                         'Turret beam charge cadence improved when landing grenade stuns.',
                         'Turret health growth adjusted so lane control stays strong without becoming oppressive.'
@@ -132,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
             title: 'Titans Clash: Misa Esports Dominates the Rift!',
             category: 'Esports',
             date: '26 March 2026',
-            image: 'Demacia_Hall_Of_Valor.jpg',
+            image: 'assets/images/Demacia_Hall_Of_Valor.jpg',
             teaser: 'The team-based tournament experience returns with refreshed rewards, clearer trophies and a cleaner weekend schedule.',
             subtitle: '⚔️ The Match Breakdown: Misas New Era',
             featuredOnHome: false,
@@ -151,7 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
             title: '🌸 Step Into the Spirit Realm: Arena Rotation Preview',
             category: 'Game Modes',
             date: '22 March 2026',
-            image: 'spirit_blossom_festival.jpg',
+            image: 'assets/images/spirit_blossom_festival.jpg',
             teaser: 'Arena gets a new augment pool, updated map variants and a faster round cadence in the next rotation.',
             subtitle: '⚔️ What’s Changing?',
             featuredOnHome: false,
@@ -170,7 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
             title: 'The Cosmos Aligns: Champion Roadmap - Summer 2026',
             category: 'Dev Update',
             date: '18 March 2026',
-            image: 'AurelionSol_0.jpg',
+            image: 'assets/images/AurelionSol_0.jpg',
             teaser: 'A seasonal roadmap covering new champion hints, VGU priorities and long-term developer goals.',
             subtitle: 'A seasonal roadmap covering upcoming champions, reworks and long-term gameplay priorities.',
             featuredOnHome: false,
@@ -191,7 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
             title: 'Conquer the Climb: Ranked Queue Adjustments',
             category: 'Competitive',
             date: '11 March 2026',
-            image: 'noxian-legion.png',
+            image: 'assets/images/noxian-legion.png',
             teaser: 'Queue time tuning, role-balance improvements and player-experience updates are bundled into this competitive systems note.',
             subtitle: 'Queue health changes aim to reduce wait times while keeping match quality stable across ranks.',
             featuredOnHome: false,
