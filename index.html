@@ -343,7 +343,14 @@
             </div>
         </footer>
 
-        <script src="script.js"></script>
+        <script type="importmap">
+            {
+                "imports": {
+                    "@scripts/": "./"
+                }
+            }
+        </script>
+        <script type="module" src="script.js"></script>
         <script>
             /* ── PROFILE WIDGET ── */
             function initProfileWidget() {

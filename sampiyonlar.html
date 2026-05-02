@@ -49,6 +49,20 @@
             <span id="championCount">Loading champions...</span>
             <span class="champion-toolbar-note">Champions are grouped by their most common primary role.</span>
         </div>
+        <div class="api-status-panel" id="apiStatusPanel" aria-live="polite">
+            <div class="api-status loading" id="loading">
+                <span class="api-status-dot"></span>
+                <span>Loading live champion data from Riot API...</span>
+            </div>
+            <div class="api-status success" id="success-message" style="display:none;">
+                <span class="api-status-dot"></span>
+                <span>Live champion data loaded successfully.</span>
+            </div>
+            <div class="api-status error" id="error-message" style="display:none;">
+                <span class="api-status-dot"></span>
+                <span>Could not load live data. Using offline data.</span>
+            </div>
+        </div>
     </div>
     <div class="champion-grid" id="championGrid">
         <div class="champion-card" data-champion="Aatrox" data-title="the Darkin Blade" data-img="assets/images/aatrox.avif" data-imgpos="center">
@@ -1732,13 +1746,31 @@ function initializeChampionRoster() {
     renderChampionSections();
 }
 
+function setApiStatus(state, message) {
+  const loadingEl = document.getElementById('loading');
+  const successEl = document.getElementById('success-message');
+  const errorEl = document.getElementById('error-message');
+
+  if (loadingEl) loadingEl.style.display = state === 'loading' ? 'flex' : 'none';
+  if (successEl) successEl.style.display = state === 'success' ? 'flex' : 'none';
+  if (errorEl) errorEl.style.display = state === 'error' ? 'flex' : 'none';
+
+  if (state === 'loading' && loadingEl && message) {
+    loadingEl.querySelector('span:last-child').textContent = message;
+  }
+
+  if (state === 'success' && successEl && message) {
+    successEl.querySelector('span:last-child').textContent = message;
+  }
+
+  if (state === 'error' && errorEl && message) {
+    errorEl.querySelector('span:last-child').textContent = message;
+  }
+}
+
  async function loadEnglishChampionData() {
   // 1. LOADING GÖSTER
-  const loadingEl = document.getElementById('loading');
-  const errorEl = document.getElementById('error-message');
-  
-  if (loadingEl) loadingEl.style.display = 'block';
-  if (errorEl) errorEl.style.display = 'none';
+  setApiStatus('loading', 'Loading live champion data from Riot API...');
 
   try {
     const response = await fetch(`https://ddragon.leagueoflegends.com/cdn/${ENGLISH_DDRAGON_VERSION}/data/en_US/championFull.json`);
@@ -1752,13 +1784,14 @@ function initializeChampionRoster() {
     championDataMap = data.data || {};
 
   
-    if (loadingEl) loadingEl.style.display = 'none';
+    setApiStatus('success', `Live champion data loaded successfully. Version: ${data.version || ENGLISH_DDRAGON_VERSION}`);
 
   } catch (error) {
     console.warn('English champion data could not be loaded. Falling back to local card data.', error);
     
    
-    if (errorEl) {
+    setApiStatus('error', 'Could not load live data. Using offline champion cards instead.');
+    if (false) {
       errorEl.style.display = 'block';
       errorEl.textContent = '⚠️ Could not load live data. Using offline data.';
     }
@@ -1768,7 +1801,7 @@ function initializeChampionRoster() {
     championDataMap = {};
   } finally {
     
-    if (loadingEl) loadingEl.style.display = 'none';
+    void 0;
   }
 }
 

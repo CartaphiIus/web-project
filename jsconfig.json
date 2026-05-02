@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@assets/*": [
+        "assets/*"
+      ],
+      "@images/*": [
+        "assets/images/*"
+      ],
+      "@data/*": [
+        "*.json"
+      ],
+      "@scripts/*": [
+        "*.js"
+      ]
+    }
+  },
+  "exclude": [
+    "node_modules",
+    ".git"
+  ]
+}

@@ -211,6 +211,69 @@ nav a:hover, nav a.active {
     font-size: 0.82rem;
 }
 
+.api-status-panel {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.api-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(200, 170, 110, 0.22);
+    background: rgba(9, 20, 40, 0.8);
+    color: #f0e6d2;
+    font-size: 0.8rem;
+}
+
+.api-status-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.api-status.loading {
+    border-color: rgba(200, 170, 110, 0.28);
+    color: #f7e7bf;
+}
+
+.api-status.loading .api-status-dot {
+    background: #c8aa6e;
+    box-shadow: 0 0 0 6px rgba(200, 170, 110, 0.12);
+    animation: apiPulse 1.2s ease-in-out infinite;
+}
+
+.api-status.success {
+    border-color: rgba(83, 186, 118, 0.32);
+    background: rgba(24, 64, 37, 0.45);
+    color: #c6f3d4;
+}
+
+.api-status.success .api-status-dot {
+    background: #53ba76;
+    box-shadow: 0 0 0 6px rgba(83, 186, 118, 0.12);
+}
+
+.api-status.error {
+    border-color: rgba(218, 88, 88, 0.32);
+    background: rgba(76, 24, 24, 0.45);
+    color: #ffd2d2;
+}
+
+.api-status.error .api-status-dot {
+    background: #da5858;
+    box-shadow: 0 0 0 6px rgba(218, 88, 88, 0.12);
+}
+
+@keyframes apiPulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(0.82); opacity: 0.72; }
+}
+
 /* Şampiyon Kartları Bölümü */
 .container {
     max-width: 1200px;
