@@ -1,0 +1,18 @@
+export const championVideoIds = {
+  Ahri: 'qwyXMLwrtrE',
+  Zed: '5itYsy1EOnQ',
+  Kindred: 'hNLqkR838z8',
+  Akali: '01jlCIyLitQ',
+  Aurora: '',
+  Ambessa: '3dAb0HADFYU',
+  Briar: 'QfCHG8d6zG4',
+  Yasuo: 'gSmp0F4M_rg',
+  Akshan: 'nR0j9MLjU4k',
+  Aatrox: 'mNlgCZ85rJU',
+  Ashe: 'yB2mIHjtS90',
+  Darius: '3Fgq1ylnNxQ',
+  Mordekaiser: 'bKs9LfkxIdk',
+  Malzahar: 'GiwAMiNZY1I',
+  "Kai'Sa": 'PqlTxVd6FPI',
+  Lissandra: 'CYyuH1Bp2ZI',
+}

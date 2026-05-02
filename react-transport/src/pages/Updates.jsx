@@ -136,7 +136,7 @@ function Updates() {
                   </div>
                   <h3>{item.title}</h3>
                   <p>{item.teaser}</p>
-                  <span className="home-link-action-react">Open Full Story -&gt;</span>
+                  <span className="home-link-action-react">Open Full Story</span>
                 </button>
               ))}
             </div>
@@ -182,7 +182,7 @@ function Updates() {
                     <h3 className="news-card-title-react">{item.title}</h3>
                     <p className="news-card-excerpt-react">{item.teaser}</p>
                     <div className="news-card-footer-react">
-                      <span className="news-read-more-react">Preview only -&gt;</span>
+                      <span className="news-read-more-react">Preview only</span>
                       <span className="news-open-btn-react">Open Story</span>
                     </div>
                   </div>
@@ -234,7 +234,7 @@ function Updates() {
           <div className="news-modal-backdrop-react" onClick={closeModal} />
           <article className="news-modal-card-react" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
             <button type="button" className="modal-close-react" onClick={closeModal} aria-label="Close article">
-              X
+              &times;
             </button>
 
             <div className="news-modal-shell-react">
