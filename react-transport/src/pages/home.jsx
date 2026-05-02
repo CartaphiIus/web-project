@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Link, NavLink } from 'react-router-dom'
 import './home.css'
 
 import carouselOne from '../assets/images/carousel1.avif'
@@ -124,34 +125,34 @@ function Home() {
     <div className="home-page">
       <header className="home-header">
         <div className="header-content">
-          <a href="/" className="logo">
+          <Link to="/" className="logo">
             <div className="logo-text">LOL</div>
             <div className="logo-main">CHAMPIONS</div>
             <div className="logo-sub">HUB</div>
-          </a>
+          </Link>
 
           <nav className="main-nav">
-            <a href="/" className="active">HOME</a>
-            <a href="/champions">CHAMPIONS</a>
-            <a href="/lore">LORE</a>
-            <a href="/updates">UPDATES</a>
-            <a href="/draft-builder">DRAFT BUILDER</a>
-            <a href="/counter-analyzer">COUNTER ANALYZER</a>
-            <a href="/quiz">QUIZ</a>
-            <a href="/aboutus">ABOUT US</a>
+            <NavLink to="/" end>HOME</NavLink>
+            <NavLink to="/champions">CHAMPIONS</NavLink>
+            <span className="nav-disabled">LORE</span>
+            <NavLink to="/updates">UPDATES</NavLink>
+            <span className="nav-disabled">DRAFT BUILDER</span>
+            <span className="nav-disabled">COUNTER ANALYZER</span>
+            <span className="nav-disabled">QUIZ</span>
+            <span className="nav-disabled">ABOUT US</span>
           </nav>
 
           <div className={`profile-widget ${dropdownOpen ? 'open' : ''}`} id="profileWidget">
             {!currentUser ? (
-              <a href="/auth" className="profile-trigger guest-trigger">
+              <button type="button" className="profile-trigger guest-trigger guest-button">
                 <div className="profile-avatar-sm guest-avatar">
                   <span>👤</span>
                 </div>
                 <div className="guest-copy">
                   <span className="profile-username-sm guest-name">Guest</span>
-                  <span className="guest-cta">Sign In →</span>
+                  <span className="guest-cta">Auth page soon</span>
                 </div>
-              </a>
+              </button>
             ) : (
               <>
                 <button
@@ -184,7 +185,7 @@ function Home() {
                       <div className="dropdown-rank">{rank}</div>
                     </div>
                   </div>
-                  <a href="/profile" className="dropdown-item">Edit Profile</a>
+                  <button type="button" className="dropdown-item">Edit Profile</button>
                   <button type="button" className="dropdown-item red" onClick={handleLogout}>
                     Sign Out
                   </button>
@@ -217,9 +218,9 @@ function Home() {
           <div className="hero-content">
             <h1 className="hero-title">MASTER THE RIFT:</h1>
             <div className="hero-subtitle">EXPLORE THE ADVENTURE !</div>
-            <a href="/auth" className="cta-link">
-              <span className="cta-button">JOIN THE STORY</span>
-            </a>
+            <button type="button" className="cta-link cta-button">
+              JOIN THE STORY
+            </button>
           </div>
 
           <div className="carousel-controls">
@@ -242,14 +243,14 @@ function Home() {
               <div className="champions-grid">
                 {featuredChampions.map((champion) => (
                   <div className="champion-card" key={champion.name}>
-                    <a href={champion.href}>
+                    <Link to={champion.href}>
                       <img src={champion.image} alt={champion.name} className="champion-image" />
                       <div className="champion-info">
                         <div className="champion-name">{champion.name}</div>
                         <div className="champion-role">{champion.role}</div>
                         <div className="champion-link">View Details</div>
                       </div>
-                    </a>
+                    </Link>
                   </div>
                 ))}
               </div>
@@ -263,7 +264,7 @@ function Home() {
               <div className="champions-list">
                 {exploreChampions.map((champion) => (
                   <div className="champion-avatar-item" key={champion.name}>
-                    <a href={champion.href}>
+                    <Link to={champion.href}>
                       <div className="champion-avatar">
                         <img
                           src={champion.image}
@@ -272,7 +273,7 @@ function Home() {
                         />
                       </div>
                       <div className="champion-avatar-name">{champion.name}</div>
-                    </a>
+                    </Link>
                   </div>
                 ))}
               </div>
@@ -283,13 +284,13 @@ function Home() {
             <h3 className="updates-title">LATEST UPDATES & NEWS</h3>
             {updates.map((update) => (
               <div className="update-item" key={update.title}>
-                <a href={update.href} className="update-link">
+                <Link to={update.href} className="update-link">
                   <div className="update-icon" style={{ backgroundImage: `url(${update.image})` }} />
                   <div className="update-content">
                     <div className="update-label">{update.label}</div>
                     <div className="update-heading">{update.title}</div>
                   </div>
-                </a>
+                </Link>
               </div>
             ))}
           </aside>

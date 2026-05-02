@@ -95,6 +95,15 @@ button {
   transition: color 0.25s ease;
 }
 
+.nav-disabled {
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 1.3px;
+  white-space: nowrap;
+  color: rgba(240, 230, 210, 0.42);
+  cursor: not-allowed;
+}
+
 .main-nav a:hover,
 .main-nav a.active {
   color: var(--gold);
@@ -115,6 +124,10 @@ button {
   background: rgba(200, 155, 60, 0.07);
   clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
   color: var(--text-primary);
+}
+
+.guest-button {
+  cursor: default;
 }
 
 .logged-trigger {
@@ -316,6 +329,8 @@ button {
 .cta-link {
   display: inline-flex;
   margin-top: 26px;
+  border: none;
+  cursor: default;
 }
 
 .cta-button {

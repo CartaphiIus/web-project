@@ -1,0 +1,87 @@
+.placeholder-page {
+  min-height: 100vh;
+  background: #0a1428;
+  color: #f0e6d2;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.placeholder-header {
+  border-bottom: 1px solid rgba(200, 170, 110, 0.2);
+  background: rgba(9, 20, 40, 0.96);
+}
+
+.placeholder-header-inner {
+  width: min(1200px, calc(100% - 40px));
+  margin: 0 auto;
+  min-height: 78px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.placeholder-logo {
+  display: grid;
+  gap: 2px;
+  color: #c8aa6e;
+  text-transform: uppercase;
+}
+
+.placeholder-logo span {
+  font-size: 0.72rem;
+  letter-spacing: 3px;
+}
+
+.placeholder-logo strong {
+  font-size: 1rem;
+  letter-spacing: 4px;
+}
+
+.placeholder-nav {
+  display: flex;
+  gap: 16px;
+}
+
+.placeholder-nav a {
+  color: rgba(240, 230, 210, 0.72);
+  text-decoration: none;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+}
+
+.placeholder-nav a.active {
+  color: #c8aa6e;
+}
+
+.placeholder-main {
+  width: min(1200px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 56px 0;
+}
+
+.placeholder-card {
+  max-width: 720px;
+  padding: 32px;
+  border: 1px solid rgba(200, 170, 110, 0.16);
+  background: rgba(9, 20, 40, 0.72);
+}
+
+.placeholder-kicker {
+  margin: 0 0 10px;
+  color: #c8aa6e;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  font-size: 0.74rem;
+}
+
+.placeholder-card h1 {
+  margin: 0 0 14px;
+  color: #f0e6d2;
+  font-size: 2rem;
+}
+
+.placeholder-card p {
+  margin: 0;
+  color: #a09b8c;
+  line-height: 1.7;
+}
