@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
-import { Link, NavLink } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import './home.css'
+import SiteHeader from '../components/SiteHeader.jsx'
+import SiteFooter from '../components/SiteFooter.jsx'
 
 import carouselOne from '../assets/images/carousel1.avif'
 import carouselTwo from '../assets/images/carousel-2.jpg'
@@ -68,9 +70,6 @@ const updates = [
 
 function Home() {
   const [currentSlide, setCurrentSlide] = useState(0)
-  const [dropdownOpen, setDropdownOpen] = useState(false)
-  const [currentUser, setCurrentUser] = useState(null)
-  const [profile, setProfile] = useState({})
 
   useEffect(() => {
     const intervalId = window.setInterval(() => {
@@ -80,34 +79,6 @@ function Home() {
     return () => window.clearInterval(intervalId)
   }, [])
 
-  useEffect(() => {
-    const storedUser = JSON.parse(localStorage.getItem('lol_current') || 'null')
-    setCurrentUser(storedUser)
-
-    if (storedUser?.email) {
-      const storedProfile = JSON.parse(localStorage.getItem(`lol_profile_${storedUser.email}`) || '{}')
-      setProfile(storedProfile)
-    } else {
-      setProfile({})
-    }
-  }, [])
-
-  useEffect(() => {
-    function handleOutsideClick(event) {
-      const widget = document.getElementById('profileWidget')
-      if (widget && !widget.contains(event.target)) {
-        setDropdownOpen(false)
-      }
-    }
-
-    document.addEventListener('click', handleOutsideClick)
-    return () => document.removeEventListener('click', handleOutsideClick)
-  }, [])
-
-  const displayName = profile.username || currentUser?.username || 'Summoner'
-  const avatar = profile.avatar || ''
-  const rank = profile.rank ? `Rank: ${profile.rank}` : 'Rank not set'
-
   function goToPreviousSlide() {
     setCurrentSlide((previousSlide) => (previousSlide - 1 + carouselSlides.length) % carouselSlides.length)
   }
@@ -116,85 +87,9 @@ function Home() {
     setCurrentSlide((previousSlide) => (previousSlide + 1) % carouselSlides.length)
   }
 
-  function handleLogout() {
-    localStorage.removeItem('lol_current')
-    window.location.reload()
-  }
-
   return (
     <div className="home-page">
-      <header className="home-header">
-        <div className="header-content">
-          <Link to="/" className="logo">
-            <div className="logo-text">LOL</div>
-            <div className="logo-main">CHAMPIONS</div>
-            <div className="logo-sub">HUB</div>
-          </Link>
-
-          <nav className="main-nav">
-            <NavLink to="/" end>HOME</NavLink>
-            <NavLink to="/champions">CHAMPIONS</NavLink>
-            <span className="nav-disabled">LORE</span>
-            <NavLink to="/updates">UPDATES</NavLink>
-            <span className="nav-disabled">DRAFT BUILDER</span>
-            <span className="nav-disabled">COUNTER ANALYZER</span>
-            <span className="nav-disabled">QUIZ</span>
-            <span className="nav-disabled">ABOUT US</span>
-          </nav>
-
-          <div className={`profile-widget ${dropdownOpen ? 'open' : ''}`} id="profileWidget">
-            {!currentUser ? (
-              <button type="button" className="profile-trigger guest-trigger guest-button">
-                <div className="profile-avatar-sm guest-avatar">
-                  <span>👤</span>
-                </div>
-                <div className="guest-copy">
-                  <span className="profile-username-sm guest-name">Guest</span>
-                  <span className="guest-cta">Auth page soon</span>
-                </div>
-              </button>
-            ) : (
-              <>
-                <button
-                  type="button"
-                  className="profile-trigger logged-trigger"
-                  onClick={() => setDropdownOpen((isOpen) => !isOpen)}
-                >
-                  <div className="profile-avatar-sm nav-avatar-wrap">
-                    {avatar ? (
-                      <img src={avatar} alt={displayName} className="profile-inline-avatar" />
-                    ) : (
-                      <span className="fallback-avatar">⚔</span>
-                    )}
-                  </div>
-                  <span className="profile-username-sm">{displayName}</span>
-                  <span className="profile-caret">▼</span>
-                </button>
-
-                <div className="profile-dropdown">
-                  <div className="dropdown-header">
-                    <div className="dropdown-avatar-lg">
-                      {avatar ? (
-                        <img src={avatar} alt={displayName} className="profile-inline-avatar" />
-                      ) : (
-                        <span className="fallback-avatar large">⚔</span>
-                      )}
-                    </div>
-                    <div>
-                      <div className="dropdown-name">{displayName}</div>
-                      <div className="dropdown-rank">{rank}</div>
-                    </div>
-                  </div>
-                  <button type="button" className="dropdown-item">Edit Profile</button>
-                  <button type="button" className="dropdown-item red" onClick={handleLogout}>
-                    Sign Out
-                  </button>
-                </div>
-              </>
-            )}
-          </div>
-        </div>
-      </header>
+      <SiteHeader />
 
       <main>
         <section className="hero">
@@ -208,10 +103,10 @@ function Home() {
             ))}
 
             <button type="button" className="carousel-arrow prev" onClick={goToPreviousSlide}>
-              ❮
+              &lt;
             </button>
             <button type="button" className="carousel-arrow next" onClick={goToNextSlide}>
-              ❯
+              &gt;
             </button>
           </div>
 
@@ -266,11 +161,7 @@ function Home() {
                   <div className="champion-avatar-item" key={champion.name}>
                     <Link to={champion.href}>
                       <div className="champion-avatar">
-                        <img
-                          src={champion.image}
-                          alt={champion.name}
-                          style={champion.imageStyle}
-                        />
+                        <img src={champion.image} alt={champion.name} style={champion.imageStyle} />
                       </div>
                       <div className="champion-avatar-name">{champion.name}</div>
                     </Link>
@@ -297,21 +188,7 @@ function Home() {
         </div>
       </main>
 
-      <footer className="main-footer">
-        <div className="footer-content">
-          <div className="footer-links">
-            <a href="https://www.riotgames.com/tr/?utm_medium=card1%2Bsupport.riotgames.com&utm_source=riotbar" className="footer-link">
-              About
-            </a>
-            <a href="https://support.riotgames.com/hc/tr" className="footer-link">
-              Support
-            </a>
-          </div>
-          <div className="footer-bottom">
-            <div>Riot Games © 2024. All rights reserved.</div>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   )
 }

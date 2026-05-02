@@ -1,6 +1,8 @@
 import { useEffect, useMemo } from 'react'
-import { NavLink } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import './Champions.css'
+import SiteHeader from '../components/SiteHeader.jsx'
+import SiteFooter from '../components/SiteFooter.jsx'
 
 import ahriImage from '../assets/images/ahri.avif'
 import zedImage from '../assets/images/zed.avif'
@@ -39,39 +41,27 @@ const champions = [
 ]
 
 function Champions() {
+  const location = useLocation()
   const championMap = useMemo(
     () => Object.fromEntries(champions.map((champion) => [champion.id, champion])),
     [],
   )
 
   useEffect(() => {
-    const hashId = window.location.hash.replace('#', '')
+    const hashId = location.hash.replace('#', '')
     if (!hashId) return
 
     const target = document.getElementById(hashId)
     if (target) {
       target.scrollIntoView({ behavior: 'smooth', block: 'center' })
     }
-  }, [])
+  }, [location.hash])
 
-  const selectedChampion = championMap[window.location.hash.replace('#', '')] || null
+  const selectedChampion = championMap[location.hash.replace('#', '')] || null
 
   return (
     <div className="champions-page">
-      <header className="champions-header">
-        <div className="champions-header-inner">
-          <div className="champions-logo">
-            <span>LOL</span>
-            <strong>CHAMPIONS HUB</strong>
-          </div>
-
-          <nav className="champions-nav">
-            <NavLink to="/" end>HOME</NavLink>
-            <NavLink to="/champions">CHAMPIONS</NavLink>
-            <NavLink to="/updates">UPDATES</NavLink>
-          </nav>
-        </div>
-      </header>
+      <SiteHeader />
 
       <main className="champions-main">
         <section className="champions-hero">
@@ -111,10 +101,10 @@ function Champions() {
 
           <div className="champion-grid-react">
             {champions.map((champion) => (
-              <a
+              <Link
                 key={champion.id}
                 id={champion.id}
-                href={`/champions#${champion.id}`}
+                to={`/champions#${champion.id}`}
                 className={`champion-orb-card ${selectedChampion?.id === champion.id ? 'is-selected' : ''}`}
               >
                 <div className="champion-orb">
@@ -122,11 +112,13 @@ function Champions() {
                 </div>
                 <div className="champion-orb-name">{champion.name}</div>
                 <div className="champion-orb-title">{champion.title}</div>
-              </a>
+              </Link>
             ))}
           </div>
         </section>
       </main>
+
+      <SiteFooter />
     </div>
   )
 }
