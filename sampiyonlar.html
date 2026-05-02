@@ -1732,25 +1732,44 @@ function initializeChampionRoster() {
     renderChampionSections();
 }
 
-async function loadEnglishChampionData() {
-    try {
-        const response = await fetch(`https://ddragon.leagueoflegends.com/cdn/${ENGLISH_DDRAGON_VERSION}/data/en_US/championFull.json`);
-        if (!response.ok) {
-            throw new Error(`Failed to fetch champion data: ${response.status}`);
-        }
+ async function loadEnglishChampionData() {
+  // 1. LOADING GÖSTER
+  const loadingEl = document.getElementById('loading');
+  const errorEl = document.getElementById('error-message');
+  
+  if (loadingEl) loadingEl.style.display = 'block';
+  if (errorEl) errorEl.style.display = 'none';
 
-        const data = await response.json();
-        championDataBundle = data;
-        championDataMap = data.data || {};
-        DDragon_VERSION = data.version || ENGLISH_DDRAGON_VERSION;
-        DDragon_BASE = `https://ddragon.leagueoflegends.com/cdn/${DDragon_VERSION}`;
-    } catch (error) {
-        console.warn('English champion data could not be loaded. Falling back to local card data.', error);
-        championDataBundle = { version: ENGLISH_DDRAGON_VERSION, data: {} };
-        championDataMap = {};
-        DDragon_VERSION = ENGLISH_DDRAGON_VERSION;
-        DDragon_BASE = `https://ddragon.leagueoflegends.com/cdn/${DDragon_VERSION}`;
+  try {
+    const response = await fetch(`https://ddragon.leagueoflegends.com/cdn/${ENGLISH_DDRAGON_VERSION}/data/en_US/championFull.json`);
+    
+    if (!response.ok) {
+      throw new Error(`Failed to fetch champion data: ${response.status}`);
     }
+
+    const data = await response.json();
+    championDataBundle = data;
+    championDataMap = data.data || {};
+
+  
+    if (loadingEl) loadingEl.style.display = 'none';
+
+  } catch (error) {
+    console.warn('English champion data could not be loaded. Falling back to local card data.', error);
+    
+   
+    if (errorEl) {
+      errorEl.style.display = 'block';
+      errorEl.textContent = '⚠️ Could not load live data. Using offline data.';
+    }
+    
+    // Fallback
+    championDataBundle = { version: ENGLISH_DDRAGON_VERSION, data: {} };
+    championDataMap = {};
+  } finally {
+    
+    if (loadingEl) loadingEl.style.display = 'none';
+  }
 }
 
 async function initializeChampionsPage() {

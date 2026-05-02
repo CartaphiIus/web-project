@@ -132,11 +132,15 @@
         .avatar-panel { text-align: center; }
 
         .avatar-ring {
+            display: block;
             width: 150px; height: 150px;
             border-radius: 50%;
             margin: 0 auto 20px;
             position: relative;
             cursor: pointer;
+            border: none;
+            background: transparent;
+            padding: 0;
         }
         /* Animated gold ring */
         .avatar-ring::before {
@@ -632,13 +636,13 @@
             <div class="panel avatar-panel">
                 <div class="panel-title">SUMMONER AVATAR</div>
 
-                <div class="avatar-ring" onclick="document.getElementById('avatarFileInput').click()">
+                <label class="avatar-ring" for="avatarFileInput" aria-label="Upload avatar image">
                     <img class="avatar-img" id="mainAvatar" src="" alt="Avatar">
                     <div class="avatar-overlay">
                         <span>📷</span>
                         <small>DEĞİŞTİR</small>
                     </div>
-                </div>
+                </label>
                 <input type="file" id="avatarFileInput" accept="image/*" onchange="handleAvatarUpload(this)">
 
                 <div class="avatar-picker-title">PRESET AVATARS</div>

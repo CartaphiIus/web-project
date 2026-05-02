@@ -109,9 +109,15 @@ header{
 .mode-sub{font-size:.85rem;letter-spacing:2px;color:var(--text-dim);margin-bottom:48px;}
 .mode-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:720px;margin:0 auto 48px;}
 .mode-card{
+  appearance:none;
+  -webkit-appearance:none;
+  width:100%;
+  text-align:left;
   background:rgba(200,170,110,.04);border:1.5px solid var(--gold-border);
   border-radius:8px;padding:28px 20px;cursor:pointer;transition:all .3s;
   position:relative;overflow:hidden;
+  font:inherit;
+  color:inherit;
 }
 .mode-card::before{
   content:'';position:absolute;inset:0;
@@ -384,42 +390,42 @@ header{
     <div class="mode-sub">Test your League of Legends knowledge</div>
 
     <div class="mode-grid">
-      <div class="mode-card" data-mode="splash" onclick="selectMode(this)">
+      <button type="button" class="mode-card" data-mode="splash" onclick="selectMode(this)" aria-pressed="false">
         <div class="mode-icon">🎨</div>
         <div class="mode-name">Splash Art</div>
         <div class="mode-desc">Identify the champion from their splash artwork. How well do you know their look?</div>
         <span class="mode-diff diff-easy">Easy</span>
-      </div>
-      <div class="mode-card" data-mode="ability" onclick="selectMode(this)">
+      </button>
+      <button type="button" class="mode-card" data-mode="ability" onclick="selectMode(this)" aria-pressed="false">
         <div class="mode-icon">⚡</div>
         <div class="mode-name">Ability Icons</div>
         <div class="mode-desc">Identify which champion has this ability based on the icon and a hint.</div>
         <span class="mode-diff diff-med">Medium</span>
-      </div>
-      <div class="mode-card" data-mode="trivia" onclick="selectMode(this)">
+      </button>
+      <button type="button" class="mode-card" data-mode="trivia" onclick="selectMode(this)" aria-pressed="false">
         <div class="mode-icon">📜</div>
         <div class="mode-name">Trivia</div>
         <div class="mode-desc">Deep LoL knowledge — lore, stats, mechanics, history, and more.</div>
         <span class="mode-diff diff-hard">Hard</span>
-      </div>
-      <div class="mode-card" data-mode="quote" onclick="selectMode(this)">
+      </button>
+      <button type="button" class="mode-card" data-mode="quote" onclick="selectMode(this)" aria-pressed="false">
         <div class="mode-icon">💬</div>
         <div class="mode-name">Champion Quotes</div>
         <div class="mode-desc">Read the iconic quote and name the champion who said it.</div>
         <span class="mode-diff diff-med">Medium</span>
-      </div>
-      <div class="mode-card" data-mode="title" onclick="selectMode(this)">
+      </button>
+      <button type="button" class="mode-card" data-mode="title" onclick="selectMode(this)" aria-pressed="false">
         <div class="mode-icon">🏷️</div>
         <div class="mode-name">Champion Titles</div>
         <div class="mode-desc">Match the epithet to the champion. "The Nine-Tailed Fox" — who is it?</div>
         <span class="mode-diff diff-easy">Easy</span>
-      </div>
-      <div class="mode-card" data-mode="mixed" onclick="selectMode(this)">
+      </button>
+      <button type="button" class="mode-card" data-mode="mixed" onclick="selectMode(this)" aria-pressed="false">
         <div class="mode-icon">🎲</div>
         <div class="mode-name">Mixed Mode</div>
         <div class="mode-desc">All question types shuffled together. The ultimate LoL knowledge test.</div>
         <span class="mode-diff diff-hard">Hard</span>
-      </div>
+      </button>
     </div>
 
     <button class="start-btn" id="startBtn" onclick="startQuiz()" disabled>Select a Mode to Begin</button>
@@ -565,8 +571,12 @@ function rand(arr){return arr[Math.floor(Math.random()*arr.length)];}
 function pick(arr,n){return shuffle([...arr]).slice(0,n);}
 
 function selectMode(el){
-  document.querySelectorAll('.mode-card').forEach(c=>c.classList.remove('selected'));
+  document.querySelectorAll('.mode-card').forEach(c=>{
+    c.classList.remove('selected');
+    c.setAttribute('aria-pressed', 'false');
+  });
   el.classList.add('selected');
+  el.setAttribute('aria-pressed', 'true');
   mode = el.dataset.mode;
   const btn = document.getElementById('startBtn');
   btn.disabled = false;
@@ -881,7 +891,10 @@ function backToMenu(){
   document.getElementById('scoreBar').style.display='none';
   document.getElementById('quizScreen').classList.remove('active');
   document.getElementById('modeScreen').style.display='block';
-  document.querySelectorAll('.mode-card').forEach(c=>c.classList.remove('selected'));
+  document.querySelectorAll('.mode-card').forEach(c=>{
+    c.classList.remove('selected');
+    c.setAttribute('aria-pressed', 'false');
+  });
   const btn=document.getElementById('startBtn');
   btn.disabled=true;btn.textContent='Select a Mode to Begin';
 }

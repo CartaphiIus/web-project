@@ -944,8 +944,7 @@ function buildChampGrid() {
     const grid = document.getElementById('champGrid');
     grid.innerHTML = '';
     
-    // 1. Sürümü projenin genel sürümüne (DDVersion) eşitleyelim
-    // Eğer DDVersion çalışmıyorsa buraya direkt '14.8.1' yazabilirsin
+
     const currentVer = (typeof DDVersion !== 'undefined') ? DDVersion : '14.8.1';
 
     CHAMPIONS.forEach(ch => {
@@ -953,10 +952,10 @@ function buildChampGrid() {
         div.className = 'champ-thumb';
         div.dataset.id = ch.id;
 
-        // 2. Görsel için ID'yi hazırlayalım
+   
         let ddragonId = getDDragonChampionId(ch.id);
 
-        // 3. Cho'Gath ve Kai'Sa Düzeltmesi
+  
         if (ddragonId.toLowerCase().includes('cho')) {
             ddragonId = 'ChoGath'; 
         } else if (ddragonId.toLowerCase().includes('kaisa')) {
