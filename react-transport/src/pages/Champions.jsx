@@ -21,6 +21,8 @@ import mordekaiserImage from '../assets/images/Mordekaiser_0.jpg'
 import malzaharImage from '../assets/images/Malzahar_0.jpg'
 import kaisaImage from '../assets/images/Kaisa_0.jpg'
 import lissandraImage from '../assets/images/Lissandra_0.jpg'
+import luxImage from '../assets/images/Lux_0.jpg'
+import jinxImage from '../assets/images/Jinx_0.jpg'
 
 const champions = [
   { id: 'ahri', key: 'Ahri', name: 'Ahri', title: 'the Nine-Tailed Fox', image: ahriImage },
@@ -39,13 +41,15 @@ const champions = [
   { id: 'malzahar', key: 'Malzahar', name: 'Malzahar', title: 'the Prophet of the Void', image: malzaharImage },
   { id: 'kaisa', key: 'Kaisa', name: "Kai'Sa", title: 'Daughter of the Void', image: kaisaImage },
   { id: 'lissandra', key: 'Lissandra', name: 'Lissandra', title: 'the Ice Witch', image: lissandraImage },
+  { id: 'lux', key: 'Lux', name: 'Lux', title: 'the Lady of Luminosity', image: luxImage },
+  { id: 'jinx', key: 'Jinx', name: 'Jinx', title: 'the Loose Cannon', image: jinxImage },
 ]
 
 const laneSummaries = [
   { label: 'Top Lane', count: 4 },
   { label: 'Jungle', count: 2 },
-  { label: 'Mid Lane', count: 6 },
-  { label: 'ADC', count: 2 },
+  { label: 'Mid Lane', count: 7 },
+  { label: 'ADC', count: 3 },
   { label: 'Support', count: 2 },
 ]
 

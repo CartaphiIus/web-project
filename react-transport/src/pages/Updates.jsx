@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import './Updates.css'
 import { cardsPerPage, newsData } from '../data/newsData.js'
 import SiteHeader from '../components/SiteHeader.jsx'
@@ -42,8 +43,11 @@ function normalizeVideoUrl(rawUrl) {
 }
 
 function Updates() {
+  const location = useLocation()
+  const navigate = useNavigate()
   const [currentPage, setCurrentPage] = useState(1)
-  const [activeNewsId, setActiveNewsId] = useState(null)
+  const hashMatch = location.hash.match(/^#news-(\d+)$/)
+  const activeNewsId = hashMatch ? Number(hashMatch[1]) : null
 
   const totalPages = Math.max(1, Math.ceil(newsData.length / cardsPerPage))
   const featuredItems = useMemo(
@@ -64,13 +68,13 @@ function Updates() {
   useEffect(() => {
     function handleKeyDown(event) {
       if (event.key === 'Escape') {
-        setActiveNewsId(null)
+        navigate({ pathname: location.pathname, search: location.search, hash: '' }, { replace: true })
       }
     }
 
     document.addEventListener('keydown', handleKeyDown)
     return () => document.removeEventListener('keydown', handleKeyDown)
-  }, [])
+  }, [location.pathname, location.search, navigate])
 
   useEffect(() => {
     document.body.style.overflow = activeItem ? 'hidden' : ''
@@ -80,11 +84,11 @@ function Updates() {
   }, [activeItem])
 
   function openModal(newsId) {
-    setActiveNewsId(newsId)
+    navigate({ pathname: location.pathname, search: location.search, hash: `#news-${newsId}` }, { replace: true })
   }
 
   function closeModal() {
-    setActiveNewsId(null)
+    navigate({ pathname: location.pathname, search: location.search, hash: '' }, { replace: true })
   }
 
   return (

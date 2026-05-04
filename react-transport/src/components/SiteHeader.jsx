@@ -52,7 +52,7 @@ function SiteHeader() {
         <nav className="site-nav" aria-label="Primary">
           <NavLink to="/" end>HOME</NavLink>
           <NavLink to="/champions">CHAMPIONS</NavLink>
-          <span className="site-nav-disabled">LORE</span>
+          <NavLink to="/lore">LORE</NavLink>
           <NavLink to="/updates">UPDATES</NavLink>
           <span className="site-nav-disabled">DRAFT BUILDER</span>
           <span className="site-nav-disabled">COUNTER ANALYZER</span>

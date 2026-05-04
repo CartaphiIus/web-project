@@ -1,0 +1,379 @@
+.lore-page-react {
+  --lore-bg: #0a1428;
+  --lore-panel: rgba(10, 20, 40, 0.88);
+  --lore-border: #2a4a5f;
+  --lore-gold: #c89b3c;
+  --lore-gold-light: #d4af37;
+  --lore-text: #ffffff;
+  --lore-muted: #b8b8b8;
+  min-height: 100vh;
+  background:
+    linear-gradient(rgba(10, 20, 40, 0.78), rgba(10, 20, 40, 0.92)),
+    var(--runeterra-map) center top / cover fixed;
+  color: var(--lore-text);
+  font-family: Georgia, 'Times New Roman', serif;
+}
+
+.lore-hero-react {
+  position: relative;
+  min-height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(42, 74, 95, 0.8);
+}
+
+.lore-hero-react::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--runeterra-map) center / cover no-repeat;
+  opacity: 0.34;
+}
+
+.lore-hero-react::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(10, 20, 40, 0.35), rgba(10, 20, 40, 0.95));
+}
+
+.lore-hero-content-react {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  width: min(720px, calc(100% - 32px));
+}
+
+.lore-hero-label-react {
+  color: var(--lore-gold);
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  margin-bottom: 15px;
+}
+
+.lore-hero-content-react h1 {
+  margin: 0;
+  color: var(--lore-text);
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  font-size: clamp(3rem, 8vw, 4.8rem);
+  font-weight: 900;
+  letter-spacing: 8px;
+  text-shadow: 0 0 60px rgba(200, 155, 60, 0.4), 0 4px 20px rgba(0, 0, 0, 0.8);
+}
+
+.lore-hero-content-react p {
+  margin: 18px auto 0;
+  max-width: 560px;
+  color: var(--lore-muted);
+  font-size: 1.1rem;
+  font-style: italic;
+  line-height: 1.6;
+}
+
+.region-selector-react {
+  position: sticky;
+  top: 72px;
+  z-index: 20;
+  border-top: 1px solid rgba(42, 74, 95, 0.8);
+  border-bottom: 1px solid rgba(42, 74, 95, 0.8);
+  background: rgba(10, 20, 40, 0.95);
+  backdrop-filter: blur(6px);
+}
+
+.region-nav-list-react {
+  width: min(1400px, 100%);
+  margin: 0 auto;
+  display: flex;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(200, 155, 60, 0.45) transparent;
+}
+
+.region-btn-react {
+  flex: 0 0 20%;
+  min-width: 190px;
+  min-height: 86px;
+  border: 0;
+  border-right: 1px solid var(--lore-border);
+  border-bottom: 3px solid transparent;
+  background: transparent;
+  color: var(--lore-muted);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+}
+
+.region-btn-react:hover,
+.region-btn-react.active {
+  background: rgba(200, 155, 60, 0.1);
+  border-bottom-color: var(--lore-gold);
+}
+
+.region-btn-icon-react {
+  color: var(--lore-gold-light);
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 2px;
+}
+
+.region-btn-name-react {
+  color: var(--lore-gold);
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.region-btn-sub-react {
+  color: var(--lore-muted);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+}
+
+.lore-main-react {
+  position: relative;
+  z-index: 1;
+}
+
+.region-layout-react {
+  display: grid;
+  grid-template-columns: 180px minmax(0, 1fr) 180px;
+  gap: 0;
+  width: min(1400px, 100%);
+  margin: 0 auto;
+  padding: 60px 40px;
+  animation: loreFadeUpReact 0.45s ease both;
+}
+
+.region-side-images-react {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: sticky;
+  top: 178px;
+  align-self: start;
+}
+
+.side-img-react {
+  position: relative;
+  margin: 0;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border: 1px solid var(--lore-border);
+  border-radius: 4px;
+  background: rgba(26, 47, 63, 0.6);
+  transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+.side-img-react:hover {
+  border-color: var(--lore-gold);
+  transform: scale(1.03);
+}
+
+.side-img-react img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.side-img-react figcaption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 24px 8px 8px;
+  background: linear-gradient(to top, rgba(10, 20, 40, 0.95), transparent);
+  color: var(--lore-muted);
+  font-size: 0.68rem;
+  font-style: italic;
+  text-align: center;
+}
+
+.region-text-react {
+  min-width: 0;
+  padding: 0 40px;
+  border-left: 1px solid rgba(42, 74, 95, 0.5);
+  border-right: 1px solid rgba(42, 74, 95, 0.5);
+}
+
+.region-header-react {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.region-emblem-react {
+  width: 58px;
+  height: 58px;
+  margin: 0 auto 14px;
+  border: 1px solid rgba(200, 155, 60, 0.45);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--lore-gold-light);
+  background: rgba(200, 155, 60, 0.08);
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  font-weight: 900;
+  letter-spacing: 1px;
+  box-shadow: 0 0 24px rgba(200, 155, 60, 0.18);
+}
+
+.region-header-react h2 {
+  margin: 0;
+  color: var(--lore-text);
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  font-size: clamp(2.3rem, 5vw, 3.25rem);
+  font-weight: 900;
+  letter-spacing: 7px;
+  text-shadow: 0 0 40px rgba(200, 155, 60, 0.25);
+}
+
+.region-header-react p {
+  margin: 10px 0 20px;
+  color: var(--lore-gold);
+  font-size: 1rem;
+  font-style: italic;
+  letter-spacing: 1px;
+}
+
+.region-header-react span {
+  display: block;
+  width: 120px;
+  height: 2px;
+  margin: 0 auto;
+  background: linear-gradient(to right, transparent, var(--lore-gold), transparent);
+}
+
+.region-body-react p {
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 1.06rem;
+  line-height: 1.9;
+  margin: 0 0 20px;
+  text-align: justify;
+}
+
+.region-body-react blockquote {
+  margin: 30px 0;
+  padding: 15px 20px;
+  border-left: 3px solid var(--lore-gold);
+  border-radius: 0 4px 4px 0;
+  background: rgba(200, 155, 60, 0.06);
+  color: var(--lore-gold-light);
+  font-size: 1.1rem;
+  font-style: italic;
+  line-height: 1.6;
+}
+
+.region-champions-react {
+  border-top: 1px solid var(--lore-border);
+  padding-top: 30px;
+}
+
+.region-champions-title-react {
+  color: var(--lore-muted);
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 3px;
+  margin-bottom: 15px;
+}
+
+.champion-tags-react {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.champion-tag-react {
+  border: 1px solid rgba(200, 155, 60, 0.3);
+  border-radius: 2px;
+  background: rgba(200, 155, 60, 0.1);
+  color: var(--lore-gold-light);
+  padding: 7px 16px;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+}
+
+@keyframes loreFadeUpReact {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 1100px) {
+  .region-layout-react {
+    grid-template-columns: 140px minmax(0, 1fr) 140px;
+    padding: 44px 20px;
+  }
+
+  .region-text-react {
+    padding: 0 26px;
+  }
+}
+
+@media (max-width: 900px) {
+  .region-selector-react {
+    top: 64px;
+  }
+
+  .region-layout-react {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .region-side-images-react {
+    position: static;
+    flex-direction: row;
+    overflow-x: auto;
+  }
+
+  .side-img-react {
+    min-width: 132px;
+  }
+
+  .region-text-react {
+    order: -1;
+    padding: 0;
+    border: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .lore-hero-react {
+    min-height: 260px;
+  }
+
+  .lore-hero-content-react h1 {
+    letter-spacing: 4px;
+  }
+
+  .region-btn-react {
+    min-width: 145px;
+    min-height: 78px;
+  }
+
+  .region-layout-react {
+    padding: 32px 16px;
+  }
+
+  .region-body-react p {
+    text-align: left;
+  }
+}

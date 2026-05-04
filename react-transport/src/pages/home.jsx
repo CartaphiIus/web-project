@@ -63,9 +63,9 @@ const exploreChampions = [
 ]
 
 const updates = [
-  { label: 'New Costume', title: 'Special Costume for Faker!', image: updateAhri, href: '/updates' },
-  { label: 'New Costume', title: 'Breath taking Zoe prestige', image: updateZoe, href: '/updates' },
-  { label: 'New Costume', title: 'Good news for Master Yi players', image: updateMaster, href: '/updates' },
+  { label: 'New Costume', title: 'Special Costume for Faker!', image: updateAhri, href: '/updates#news-1' },
+  { label: 'New Costume', title: 'Breath taking Zoe prestige', image: updateZoe, href: '/updates#news-2' },
+  { label: 'New Costume', title: 'Good news for Master Yi players', image: updateMaster, href: '/updates#news-3' },
 ]
 
 function Home() {

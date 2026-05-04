@@ -15,4 +15,6 @@ export const championVideoIds = {
   Malzahar: 'GiwAMiNZY1I',
   "Kai'Sa": 'PqlTxVd6FPI',
   Lissandra: 'CYyuH1Bp2ZI',
+  Lux: 'khEBkz6A0oQ',
+  Jinx: 'xtiEJ1jJ1mA',
 }
