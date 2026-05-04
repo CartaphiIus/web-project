@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import './Champions.css'
 import SiteHeader from '../components/SiteHeader.jsx'
 import SiteFooter from '../components/SiteFooter.jsx'
@@ -41,14 +41,23 @@ const champions = [
   { id: 'lissandra', key: 'Lissandra', name: 'Lissandra', title: 'the Ice Witch', image: lissandraImage },
 ]
 
+const laneSummaries = [
+  { label: 'Top Lane', count: 4 },
+  { label: 'Jungle', count: 2 },
+  { label: 'Mid Lane', count: 6 },
+  { label: 'ADC', count: 2 },
+  { label: 'Support', count: 2 },
+]
+
 const ddragonVersion = '16.8.1'
 const ddragonBase = `https://ddragon.leagueoflegends.com/cdn/${ddragonVersion}`
+const abilityKeys = ['P', 'Q', 'W', 'E', 'R']
 
 function stripHtml(value) {
   return (value || '')
-    .replace(/<br\\s*\\/?>/gi, '\n')
-    .replace(/<li>/gi, '• ')
-    .replace(/<\\/li>/gi, '\n')
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<li>/gi, '- ')
+    .replace(/<\/li>/gi, '\n')
     .replace(/<[^>]+>/g, '')
     .replace(/&nbsp;/g, ' ')
     .replace(/\n{3,}/g, '\n\n')
@@ -106,22 +115,22 @@ function getResourcePresentation(champion, spell) {
   const resourceName = getReadableResourceName(champion, spell)
   const compactValue = resourceName.toLowerCase().replace(/\s+/g, '-')
   const presentationMap = {
-    mana: { icon: '💧', className: 'resource-mana' },
-    energy: { icon: '⚡', className: 'resource-energy' },
-    fury: { icon: '🔥', className: 'resource-fury' },
-    rage: { icon: '🔥', className: 'resource-rage' },
-    heat: { icon: '✦', className: 'resource-heat' },
-    grit: { icon: '🛡', className: 'resource-grit' },
-    courage: { icon: '🛡', className: 'resource-courage' },
-    health: { icon: '❤', className: 'resource-health' },
-    'blood-well': { icon: '🩸', className: 'resource-blood-well' },
-    flow: { icon: '🌪', className: 'resource-flow' },
-    shield: { icon: '🛡', className: 'resource-shield' },
-    ammo: { icon: '✦', className: 'resource-ammo' },
-    'no-cost': { icon: '✧', className: 'resource-no-cost' },
+    mana: { icon: 'MP', className: 'resource-mana' },
+    energy: { icon: 'EN', className: 'resource-energy' },
+    fury: { icon: 'FY', className: 'resource-fury' },
+    rage: { icon: 'RG', className: 'resource-rage' },
+    heat: { icon: 'HT', className: 'resource-heat' },
+    grit: { icon: 'GR', className: 'resource-grit' },
+    courage: { icon: 'CG', className: 'resource-courage' },
+    health: { icon: 'HP', className: 'resource-health' },
+    'blood-well': { icon: 'BW', className: 'resource-blood-well' },
+    flow: { icon: 'FL', className: 'resource-flow' },
+    shield: { icon: 'SH', className: 'resource-shield' },
+    ammo: { icon: 'AM', className: 'resource-ammo' },
+    'no-cost': { icon: 'NC', className: 'resource-no-cost' },
   }
 
-  const presentation = presentationMap[compactValue] || { icon: '✦', className: 'resource-generic' }
+  const presentation = presentationMap[compactValue] || { icon: 'RS', className: 'resource-generic' }
   return { ...presentation, name: resourceName }
 }
 
@@ -160,12 +169,14 @@ function buildLevelTips(spell) {
 
 function Champions() {
   const location = useLocation()
+  const navigate = useNavigate()
   const [championDataMap, setChampionDataMap] = useState({})
-  const [activeChampionId, setActiveChampionId] = useState(null)
   const championMap = useMemo(
     () => Object.fromEntries(champions.map((champion) => [champion.id, champion])),
     [],
   )
+  const selectedChampion = championMap[location.hash.replace('#', '')] || null
+  const selectedChampionData = selectedChampion ? championDataMap[selectedChampion.key] : null
 
   useEffect(() => {
     let isMounted = true
@@ -191,7 +202,6 @@ function Champions() {
 
   useEffect(() => {
     const hashId = location.hash.replace('#', '')
-    setActiveChampionId(hashId || null)
     if (!hashId) return
 
     const target = document.getElementById(hashId)
@@ -201,15 +211,27 @@ function Champions() {
   }, [location.hash])
 
   useEffect(() => {
-    document.body.style.overflow = activeChampionId ? 'hidden' : ''
+    document.body.style.overflow = selectedChampion ? 'hidden' : ''
     return () => {
       document.body.style.overflow = ''
     }
-  }, [activeChampionId])
+  }, [selectedChampion])
 
-  const selectedChampion = championMap[activeChampionId || location.hash.replace('#', '')] || null
-  const selectedChampionData = selectedChampion ? championDataMap[selectedChampion.key] : null
-  const abilityKeys = ['P', 'Q', 'W', 'E', 'R']
+  useEffect(() => {
+    function handleKeyDown(event) {
+      if (event.key !== 'Escape') return
+
+      navigate({ pathname: location.pathname, search: location.search, hash: '' }, { replace: true })
+    }
+
+    if (selectedChampion) {
+      document.addEventListener('keydown', handleKeyDown)
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [location.pathname, location.search, navigate, selectedChampion])
 
   const selectedAbilities = useMemo(() => {
     if (!selectedChampionData) return []
@@ -247,7 +269,7 @@ function Champions() {
       { label: 'Magic Resist', value: `${selectedChampionData.stats.spellblock}` },
       { label: 'Range', value: `${selectedChampionData.stats.attackrange}` },
       { label: 'Move Speed', value: `${selectedChampionData.stats.movespeed}` },
-      { label: 'Difficulty', value: `${selectedChampionData.info.difficulty}/10` },
+      { label: 'Difficulty', value: `${selectedChampionData.info?.difficulty ?? 'Unknown'}/10` },
     ]
   }, [selectedChampionData])
 
@@ -275,13 +297,11 @@ function Champions() {
     : ''
 
   function openChampionModal(championId) {
-    setActiveChampionId(championId)
-    window.history.replaceState(null, '', `#${championId}`)
+    navigate({ pathname: location.pathname, search: location.search, hash: `#${championId}` }, { replace: true })
   }
 
   function closeChampionModal() {
-    setActiveChampionId(null)
-    window.history.replaceState(null, '', window.location.pathname)
+    navigate({ pathname: location.pathname, search: location.search, hash: '' }, { replace: true })
   }
 
   return (
@@ -290,31 +310,28 @@ function Champions() {
 
       <main className="champions-main">
         <section className="champions-toolbar-react">
-          <div className="champions-toolbar-copy">
-            <h1>CHAMPIONS</h1>
-            <p className="champions-copy">
-              Explore the current champion showcase. The full search, filters and
-              live data layer will be expanded next.
-            </p>
-          </div>
           <div className="champions-filter-pills-react">
             <span className="champions-pill-react">All Champions {champions.length}</span>
-            <span className="champions-pill-react champions-pill-soft-react">React Set</span>
+            {laneSummaries.map((lane) => (
+              <span className="champions-pill-react" key={lane.label}>
+                {lane.label} <strong>{lane.count}</strong>
+              </span>
+            ))}
           </div>
           <div className="champions-toolbar-meta-react">
-            <span>{champions.length} champions currently visible</span>
-            <span className="champions-toolbar-note-react">Click a card to jump to that champion.</span>
+            <span>{champions.length} official Riot champions loaded. Version: {ddragonVersion}</span>
+            <span className="champions-toolbar-note-react">React migration showcase set.</span>
+          </div>
+          <div className="champions-api-status-react">
+            <span className="champions-api-dot-react" />
+            <span>Live champion data loaded successfully. Version: {ddragonVersion}</span>
           </div>
         </section>
 
         <section className="champion-grid-section">
           <div className="section-head">
-            <h2>{selectedChampion ? `${selectedChampion.name} highlighted` : 'Champion Showcase'}</h2>
-            <p>
-              {selectedChampion
-                ? `${selectedChampion.title} is currently selected from the link.`
-                : 'Champion cards open a full detail panel with lore, video, abilities and stats.'}
-            </p>
+            <h2>{selectedChampion ? selectedChampion.name : 'React Showcase'}</h2>
+            <span>{champions.length} champions</span>
           </div>
 
           <div className="champion-grid-react">
@@ -349,7 +366,7 @@ function Champions() {
             onClick={(event) => event.stopPropagation()}
           >
             <button className="panel-close-react" type="button" aria-label="Close" onClick={closeChampionModal}>
-              ×
+              X
             </button>
 
             <div className="panel-left-react">
@@ -377,7 +394,7 @@ function Champions() {
 
                 <div className="panel-divider-react">
                   <span className="divider-line-react" />
-                  <span className="divider-icon-react">⚔</span>
+                  <span className="divider-icon-react">ABILITIES</span>
                   <span className="divider-line-react" />
                 </div>
 

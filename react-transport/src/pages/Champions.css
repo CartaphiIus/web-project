@@ -10,26 +10,15 @@
 .champions-main {
   width: min(1240px, calc(100% - 40px));
   margin: 0 auto;
-  padding: 40px 0 64px;
+  padding: 34px 0 64px;
 }
 
 .champions-toolbar-react {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding: 26px 30px;
-  border: 1px solid rgba(200, 170, 110, 0.16);
-  background:
-    linear-gradient(180deg, rgba(9, 20, 40, 0.88), rgba(9, 20, 40, 0.72)),
-    rgba(9, 20, 40, 0.7);
-  backdrop-filter: blur(6px);
-}
-
-.champions-toolbar-copy h1 {
-  margin: 0;
-  font-size: clamp(1.9rem, 4vw, 2.9rem);
-  color: #f0e6d2;
-  letter-spacing: 2px;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 28px;
 }
 
 .champion-focus h2,
@@ -45,7 +34,7 @@
   gap: 12px;
   align-items: center;
   color: #f0e6d2;
-  font-size: 0.92rem;
+  font-size: 0.95rem;
 }
 
 .champions-toolbar-note-react {
@@ -66,92 +55,142 @@
   padding: 0 14px;
   border-radius: 999px;
   border: 1px solid rgba(200, 170, 110, 0.28);
-  background: rgba(9, 20, 40, 0.75);
+  background: rgba(9, 20, 40, 0.46);
   color: #f0e6d2;
+  backdrop-filter: blur(3px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  gap: 10px;
+}
+
+.champions-pill-react strong {
+  color: #c8aa6e;
+  font-size: 0.8rem;
 }
 
 .champions-pill-soft-react {
   color: #c8aa6e;
 }
 
-.champions-copy,
-.section-head p {
-  margin: 12px 0 0;
-  color: #a09b8c;
-  line-height: 1.7;
-  max-width: 720px;
+.champions-api-status-react {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 38px;
+  padding: 0 14px;
+  border: 1px solid rgba(83, 186, 118, 0.32);
+  border-radius: 999px;
+  background: rgba(24, 64, 37, 0.45);
+  color: #c6f3d4;
+  font-size: 0.8rem;
+  backdrop-filter: blur(3px);
+}
+
+.champions-api-dot-react {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #53ba76;
+  box-shadow: 0 0 0 6px rgba(83, 186, 118, 0.12);
 }
 
 .champion-grid-section {
-  margin-top: 34px;
+  margin-top: 0;
 }
 
 .section-head {
-  margin-bottom: 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 18px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(200, 170, 110, 0.18);
+}
+
+.section-head span {
+  color: #c8aa6e;
+  font-size: 0.85rem;
 }
 
 .champion-grid-react {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(178px, 1fr));
-  gap: 24px 16px;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 30px;
 }
 
 .champion-orb-card {
   display: flex;
   flex-direction: column;
   padding: 0;
-  border: 1px solid rgba(200, 170, 110, 0.3);
-  border-radius: 10px;
+  border: 1px solid #32281e;
+  border-radius: 8px;
   overflow: hidden;
-  background: rgba(9, 20, 40, 0.88);
+  background: #091428;
   text-decoration: none;
   color: inherit;
-  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.24);
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
-  text-align: left;
+  text-align: center;
+  position: relative;
 }
 
 .champion-orb-card:hover,
 .champion-orb-card.is-selected {
-  transform: translateY(-3px);
-  border-color: rgba(200, 170, 110, 0.48);
-  background: rgba(18, 35, 67, 0.94);
-  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.34);
+  transform: translateY(-20px);
+  border-color: #c8aa6e;
+  box-shadow: 0 10px 20px rgba(200, 170, 110, 0.2);
+}
+
+.champion-orb-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: #c8aa6e;
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.champion-orb-card:hover::after,
+.champion-orb-card.is-selected::after {
+  transform: scaleX(1);
 }
 
 .champion-orb {
   width: 100%;
-  height: 222px;
+  height: 250px;
   overflow: hidden;
-  border-bottom: 1px solid rgba(200, 170, 110, 0.28);
-  background: rgba(9, 20, 40, 0.88);
+  border-bottom: 2px solid #c8aa6e;
+  background: #091428;
 }
 
 .champion-orb img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
   display: block;
 }
 
 .champion-card-body-react {
-  padding: 14px 12px 16px;
+  padding: 20px;
   width: 100%;
 }
 
 .champion-orb-name {
   color: #f0e6d2;
-  font-size: 0.92rem;
+  font-size: 1.1rem;
   font-weight: 700;
   text-align: center;
   text-transform: uppercase;
-  letter-spacing: 0.6px;
+  letter-spacing: 1px;
 }
 
 .champion-orb-title {
   color: #a09b8c;
-  font-size: 0.74rem;
+  font-size: 0.8rem;
   line-height: 1.42;
   text-align: center;
   font-style: italic;
@@ -171,25 +210,30 @@
 .champion-modal-overlay-react {
   position: fixed;
   inset: 0;
-  background: rgba(6, 10, 19, 0.74);
-  backdrop-filter: blur(6px);
-  z-index: 60;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(4px);
+  z-index: 1999;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
+  align-items: stretch;
+  justify-content: flex-end;
+  padding: 0;
 }
 
 .champion-detail-panel-react {
   position: relative;
-  width: min(1280px, 100%);
-  max-height: min(92vh, 980px);
+  width: 85vw;
+  max-width: 1300px;
+  height: 100vh;
+  max-height: none;
   display: flex;
   overflow: hidden;
-  border: 1px solid rgba(200, 170, 110, 0.2);
-  border-radius: 18px;
-  background: #091428;
-  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.5);
+  border-left: 1px solid rgba(200, 170, 110, 0.3);
+  background: linear-gradient(160deg, #0d1b2e 0%, #091020 60%, #0a0e1a 100%);
+  box-shadow:
+    -20px 0 60px rgba(0, 0, 0, 0.8),
+    -1px 0 0 rgba(200, 170, 110, 0.5),
+    inset 1px 0 0 rgba(200, 170, 110, 0.08);
+  animation: championPanelSlideReact 0.42s cubic-bezier(0.4, 0, 0.2, 1) both;
 }
 
 .panel-close-react {
@@ -203,9 +247,17 @@
   border: 1px solid rgba(200, 170, 110, 0.35);
   background: rgba(9, 20, 40, 0.75);
   color: #c8aa6e;
-  font-size: 28px;
+  font-size: 18px;
+  font-weight: 800;
   line-height: 1;
   cursor: pointer;
+  transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+}
+
+.panel-close-react:hover {
+  background: rgba(200, 170, 110, 0.15);
+  border-color: #c8aa6e;
+  transform: rotate(90deg) scale(1.08);
 }
 
 .panel-left-react,
@@ -214,19 +266,23 @@
 }
 
 .panel-left-react {
-  flex: 1.2;
+  flex: 0 0 58%;
   border-right: 1px solid rgba(200, 170, 110, 0.15);
   overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #c8aa6e44 transparent;
 }
 
 .panel-right-react {
-  flex: 0.88;
+  flex: 0 0 42%;
   overflow-y: auto;
   background: linear-gradient(180deg, rgba(9, 20, 40, 0.95), rgba(5, 12, 26, 0.98));
+  scrollbar-width: thin;
+  scrollbar-color: #c8aa6e44 transparent;
 }
 
 .panel-left-inner-react {
-  padding: 34px 34px 42px;
+  padding: 32px 28px 48px 32px;
 }
 
 .panel-section-label-react,
@@ -326,6 +382,9 @@
 
 .divider-icon-react {
   color: rgba(200, 170, 110, 0.6);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 3px;
 }
 
 .abilities-grid-react {
@@ -340,6 +399,12 @@
   border: 1px solid rgba(200, 170, 110, 0.18);
   border-radius: 8px;
   padding: 14px;
+  transition: border-color 0.25s ease, background 0.25s ease;
+}
+
+.ability-card-react:hover {
+  border-color: rgba(200, 170, 110, 0.55);
+  background: rgba(200, 170, 110, 0.06);
 }
 
 .ability-header-react {
@@ -443,6 +508,10 @@
 }
 
 .resource-icon-react {
+  min-width: 20px;
+  font-size: 0.66rem;
+  font-weight: 800;
+  text-align: center;
   line-height: 1;
 }
 
@@ -508,30 +577,36 @@
 
 .panel-hero-react {
   position: relative;
-  min-height: 460px;
+  height: 480px;
+  min-height: 480px;
+  overflow: hidden;
+  flex-shrink: 0;
 }
 
 .panel-hero-react img {
   width: 100%;
   height: 100%;
-  min-height: 460px;
+  min-height: 480px;
   object-fit: cover;
   object-position: center top;
   display: block;
+  transform: scale(1);
 }
 
 .panel-hero-gradient-react {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(8, 15, 29, 0.05), rgba(8, 15, 29, 0.88));
+  background: linear-gradient(to bottom, transparent 30%, rgba(9, 14, 26, 0.6) 65%, #090e1a 100%);
 }
 
 .panel-hero-text-react {
   position: absolute;
-  left: 28px;
-  right: 28px;
-  bottom: 24px;
+  left: 0;
+  right: 0;
+  bottom: 0;
   z-index: 1;
+  padding: 24px 28px;
+  animation: slideUpFadeReact 0.6s ease 0.2s both;
 }
 
 .panel-tag-react {
@@ -545,6 +620,10 @@
   margin: 8px 0 6px;
   font-size: clamp(2.4rem, 4.5vw, 4rem);
   color: #f5ecd8;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  line-height: 1;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.8);
 }
 
 .panel-hero-text-react p {
@@ -562,6 +641,7 @@
   color: #b8b2a7;
   line-height: 1.9;
   margin: 10px 0 0;
+  animation: fadeInUpReact 0.7s ease 0.35s both;
 }
 
 .panel-detail-block-react {
@@ -577,9 +657,9 @@
 
 .panel-stat-card-react {
   border: 1px solid rgba(200, 170, 110, 0.16);
-  border-radius: 12px;
+  border-radius: 10px;
   background: rgba(9, 20, 40, 0.56);
-  padding: 14px 16px;
+  padding: 12px;
 }
 
 .panel-stat-card-react span {
@@ -633,6 +713,40 @@
   .panel-left-react {
     border-right: none;
     border-bottom: 1px solid rgba(200, 170, 110, 0.15);
+  }
+}
+
+@keyframes championPanelSlideReact {
+  from {
+    transform: translateX(100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideUpFadeReact {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUpReact {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
