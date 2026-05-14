@@ -3,6 +3,8 @@ import Home from './pages/Home.jsx'
 import Champions from './pages/Champions.jsx'
 import Updates from './pages/Updates.jsx'
 import Lore from './pages/Lore.jsx'
+import AboutUs from './pages/AboutUs.jsx'
+import Quiz from './pages/Quiz.jsx'
 
 function App() {
   return (
@@ -11,6 +13,8 @@ function App() {
       <Route path="/champions" element={<Champions />} />
       <Route path="/lore" element={<Lore />} />
       <Route path="/updates" element={<Updates />} />
+      <Route path="/quiz" element={<Quiz />} />
+      <Route path="/about-us" element={<AboutUs />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   )

@@ -2,22 +2,22 @@ import { useEffect, useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import './site-shell.css'
 
-function SiteHeader() {
+function readStoredUser() {
+  return JSON.parse(localStorage.getItem('lol_current') || 'null')
+}
+
+function readStoredProfile(user) {
+  if (!user?.email) {
+    return {}
+  }
+
+  return JSON.parse(localStorage.getItem(`lol_profile_${user.email}`) || '{}')
+}
+
+function SiteHeader({ compact = false, hideProfile = false }) {
   const [dropdownOpen, setDropdownOpen] = useState(false)
-  const [currentUser, setCurrentUser] = useState(null)
-  const [profile, setProfile] = useState({})
-
-  useEffect(() => {
-    const storedUser = JSON.parse(localStorage.getItem('lol_current') || 'null')
-    setCurrentUser(storedUser)
-
-    if (storedUser?.email) {
-      const storedProfile = JSON.parse(localStorage.getItem(`lol_profile_${storedUser.email}`) || '{}')
-      setProfile(storedProfile)
-    } else {
-      setProfile({})
-    }
-  }, [])
+  const [currentUser] = useState(readStoredUser)
+  const [profile] = useState(() => readStoredProfile(currentUser))
 
   useEffect(() => {
     function handleOutsideClick(event) {
@@ -41,7 +41,7 @@ function SiteHeader() {
   }
 
   return (
-    <header className="site-header">
+    <header className={`site-header ${compact ? 'site-header-compact' : ''}`}>
       <div className="site-header-inner">
         <Link to="/" className="site-logo">
           <span className="site-logo-kicker">LOL</span>
@@ -56,11 +56,11 @@ function SiteHeader() {
           <NavLink to="/updates">UPDATES</NavLink>
           <span className="site-nav-disabled">DRAFT BUILDER</span>
           <span className="site-nav-disabled">COUNTER ANALYZER</span>
-          <span className="site-nav-disabled">QUIZ</span>
-          <span className="site-nav-disabled">ABOUT US</span>
+          <NavLink to="/quiz">QUIZ</NavLink>
+          <NavLink to="/about-us">ABOUT US</NavLink>
         </nav>
 
-        <div className={`site-profile-widget ${dropdownOpen ? 'open' : ''}`} id="siteProfileWidget">
+        {!hideProfile && <div className={`site-profile-widget ${dropdownOpen ? 'open' : ''}`} id="siteProfileWidget">
           {!currentUser ? (
             <button type="button" className="site-profile-trigger site-guest-button">
               <div className="site-avatar-small site-guest-avatar">
@@ -110,7 +110,7 @@ function SiteHeader() {
               </div>
             </>
           )}
-        </div>
+        </div>}
       </div>
     </header>
   )

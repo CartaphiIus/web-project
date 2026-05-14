@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
+
 .lore-page-react {
   --lore-bg: #0a1428;
   --lore-panel: rgba(10, 20, 40, 0.88);
@@ -8,15 +10,16 @@
   --lore-muted: #b8b8b8;
   min-height: 100vh;
   background:
-    linear-gradient(rgba(10, 20, 40, 0.78), rgba(10, 20, 40, 0.92)),
+    linear-gradient(rgba(10, 20, 40, 0.72), rgba(10, 20, 40, 0.88)),
     var(--runeterra-map) center top / cover fixed;
   color: var(--lore-text);
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: 'Crimson Text', Georgia, serif;
 }
 
 .lore-hero-react {
   position: relative;
-  min-height: 320px;
+  height: 172px;
+  min-height: 172px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -28,15 +31,15 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: var(--runeterra-map) center / cover no-repeat;
-  opacity: 0.34;
+  background: var(--runeterra-map) center 42% / cover no-repeat;
+  opacity: 0.35;
 }
 
 .lore-hero-react::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, rgba(10, 20, 40, 0.35), rgba(10, 20, 40, 0.95));
+  background: linear-gradient(to bottom, rgba(10, 20, 40, 0.4) 0%, rgba(10, 20, 40, 0.2) 50%, rgba(10, 20, 40, 0.95) 100%);
 }
 
 .lore-hero-content-react {
@@ -48,7 +51,7 @@
 
 .lore-hero-label-react {
   color: var(--lore-gold);
-  font-family: 'Segoe UI', Tahoma, sans-serif;
+  font-family: 'Cinzel', serif;
   font-size: 0.72rem;
   letter-spacing: 6px;
   text-transform: uppercase;
@@ -58,25 +61,25 @@
 .lore-hero-content-react h1 {
   margin: 0;
   color: var(--lore-text);
-  font-family: 'Segoe UI', Tahoma, sans-serif;
-  font-size: clamp(3rem, 8vw, 4.8rem);
+  font-family: 'Cinzel', serif;
+  font-size: clamp(3.2rem, 5.1vw, 4.5rem);
   font-weight: 900;
-  letter-spacing: 8px;
+  letter-spacing: 10px;
   text-shadow: 0 0 60px rgba(200, 155, 60, 0.4), 0 4px 20px rgba(0, 0, 0, 0.8);
 }
 
 .lore-hero-content-react p {
   margin: 18px auto 0;
-  max-width: 560px;
+  max-width: 500px;
   color: var(--lore-muted);
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   font-style: italic;
   line-height: 1.6;
 }
 
 .region-selector-react {
   position: sticky;
-  top: 72px;
+  top: 56px;
   z-index: 20;
   border-top: 1px solid rgba(42, 74, 95, 0.8);
   border-bottom: 1px solid rgba(42, 74, 95, 0.8);
@@ -84,19 +87,55 @@
   backdrop-filter: blur(6px);
 }
 
-.region-nav-list-react {
+.region-selector-wrapper-react {
   width: min(1400px, 100%);
   margin: 0 auto;
   display: flex;
-  overflow-x: auto;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(200, 155, 60, 0.45) transparent;
+  align-items: stretch;
+  padding: 0 10px;
+}
+
+.region-nav-container-react {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.region-nav-list-react {
+  display: flex;
+  width: calc(var(--region-count) * 20%);
+  transition: transform 0.78s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+.region-scroll-btn-react {
+  width: 60px;
+  border: 0;
+  background: rgba(10, 20, 40, 0.9);
+  color: var(--lore-gold);
+  cursor: pointer;
+  font-family: Georgia, serif;
+  font-size: 1.9rem;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+  transition: background 0.25s ease, color 0.25s ease, opacity 0.25s ease;
+}
+
+.region-scroll-btn-react:hover {
+  background: rgba(200, 155, 60, 0.18);
+  color: #fff;
+}
+
+.region-scroll-btn-react:disabled {
+  opacity: 0.35;
+  cursor: default;
 }
 
 .region-btn-react {
-  flex: 0 0 20%;
-  min-width: 190px;
-  min-height: 86px;
+  flex: 0 0 calc(100% / var(--region-count));
+  min-width: calc(100% / var(--region-count));
+  min-height: 102px;
   border: 0;
   border-right: 1px solid var(--lore-border);
   border-bottom: 3px solid transparent;
@@ -118,24 +157,22 @@
 }
 
 .region-btn-icon-react {
-  color: var(--lore-gold-light);
-  font-family: 'Segoe UI', Tahoma, sans-serif;
-  font-size: 0.78rem;
-  font-weight: 900;
-  letter-spacing: 2px;
+  font-size: 1.35rem;
+  line-height: 1;
+  filter: drop-shadow(0 0 12px rgba(200, 155, 60, 0.45));
 }
 
 .region-btn-name-react {
   color: var(--lore-gold);
-  font-family: 'Segoe UI', Tahoma, sans-serif;
-  font-size: 0.85rem;
-  font-weight: 800;
+  font-family: 'Cinzel', serif;
+  font-size: 0.86rem;
+  font-weight: 700;
   letter-spacing: 1px;
 }
 
 .region-btn-sub-react {
   color: var(--lore-muted);
-  font-size: 0.68rem;
+  font-size: 0.64rem;
   text-transform: uppercase;
 }
 
@@ -150,7 +187,7 @@
   gap: 0;
   width: min(1400px, 100%);
   margin: 0 auto;
-  padding: 60px 40px;
+  padding: 46px 40px 60px;
   animation: loreFadeUpReact 0.45s ease both;
 }
 
@@ -161,6 +198,14 @@
   position: sticky;
   top: 178px;
   align-self: start;
+}
+
+.region-side-images-react:first-child {
+  padding-right: 20px;
+}
+
+.region-side-images-react:last-child {
+  padding-left: 20px;
 }
 
 .side-img-react {
@@ -208,31 +253,21 @@
 
 .region-header-react {
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 36px;
 }
 
 .region-emblem-react {
-  width: 58px;
-  height: 58px;
-  margin: 0 auto 14px;
-  border: 1px solid rgba(200, 155, 60, 0.45);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--lore-gold-light);
-  background: rgba(200, 155, 60, 0.08);
-  font-family: 'Segoe UI', Tahoma, sans-serif;
-  font-weight: 900;
-  letter-spacing: 1px;
-  box-shadow: 0 0 24px rgba(200, 155, 60, 0.18);
+  margin: 0 auto 12px;
+  font-size: 3rem;
+  line-height: 1;
+  filter: drop-shadow(0 0 20px rgba(200, 155, 60, 0.5));
 }
 
 .region-header-react h2 {
   margin: 0;
   color: var(--lore-text);
-  font-family: 'Segoe UI', Tahoma, sans-serif;
-  font-size: clamp(2.3rem, 5vw, 3.25rem);
+  font-family: 'Cinzel', serif;
+  font-size: clamp(2.4rem, 4vw, 3.25rem);
   font-weight: 900;
   letter-spacing: 7px;
   text-shadow: 0 0 40px rgba(200, 155, 60, 0.25);
@@ -281,7 +316,7 @@
 
 .region-champions-title-react {
   color: var(--lore-muted);
-  font-family: 'Segoe UI', Tahoma, sans-serif;
+  font-family: 'Cinzel', serif;
   font-size: 0.7rem;
   font-weight: 800;
   letter-spacing: 3px;
@@ -300,7 +335,7 @@
   background: rgba(200, 155, 60, 0.1);
   color: var(--lore-gold-light);
   padding: 7px 16px;
-  font-family: 'Segoe UI', Tahoma, sans-serif;
+  font-family: 'Cinzel', serif;
   font-size: 0.8rem;
   letter-spacing: 1px;
 }

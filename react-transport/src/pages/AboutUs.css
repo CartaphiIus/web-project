@@ -1,0 +1,157 @@
+.about-page-react {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle, rgba(10, 30, 60, 0.22) 0%, rgba(5, 10, 20, 0.96) 100%),
+    var(--about-bg) center / cover fixed no-repeat;
+  color: #f0e6d2;
+}
+
+.about-container-react {
+  width: min(1200px, calc(100% - 48px));
+  margin: 0 auto;
+  padding: 100px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 120px;
+}
+
+.about-profile-react {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 80px;
+  animation: aboutFadeInUpReact 0.8s ease both;
+}
+
+.about-profile-react.reverse {
+  flex-direction: row-reverse;
+}
+
+.about-profile-info-react {
+  flex: 1;
+  min-width: 0;
+}
+
+.about-profile-name-react {
+  margin: 0 0 15px;
+  color: #fff;
+  font-size: clamp(2rem, 4vw, 2.65rem);
+  font-weight: 800;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  text-shadow: 0 0 15px rgba(200, 155, 60, 0.3);
+}
+
+.about-profile-name-react span {
+  display: block;
+  margin-top: 8px;
+  color: #c89b3c;
+  font-size: 0.88rem;
+  font-weight: 400;
+  letter-spacing: 5px;
+}
+
+.about-profile-bio-react {
+  margin: 0 0 35px;
+  padding-left: 20px;
+  border-left: 2px solid #c89b3c;
+  color: #a09b8c;
+  font-size: 1.06rem;
+  line-height: 1.8;
+}
+
+.about-profile-links-react {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.about-profile-links-react a,
+.about-profile-links-react span {
+  border: 1px solid #c89b3c;
+  background: rgba(200, 155, 60, 0.05);
+  color: #c89b3c;
+  padding: 10px 25px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-decoration: none;
+  transition: background 0.25s ease, box-shadow 0.25s ease, color 0.25s ease;
+}
+
+.about-profile-links-react a:hover {
+  background: #c89b3c;
+  color: #0a1428;
+  box-shadow: 0 0 20px rgba(200, 155, 60, 0.4);
+}
+
+.about-profile-image-wrap-react {
+  flex: 0 0 auto;
+}
+
+.about-profile-circle-react {
+  position: relative;
+  width: clamp(260px, 31vw, 380px);
+  aspect-ratio: 1;
+  border: 2px solid #c89b3c;
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 0 40px rgba(0, 100, 150, 0.3);
+}
+
+.about-profile-circle-react::after {
+  content: '';
+  position: absolute;
+  inset: -15px;
+  border: 1px solid rgba(200, 155, 60, 0.2);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+@keyframes aboutFadeInUpReact {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 992px) {
+  .about-container-react {
+    padding: 72px 0;
+    gap: 90px;
+  }
+
+  .about-profile-react,
+  .about-profile-react.reverse {
+    flex-direction: column-reverse;
+    gap: 50px;
+    text-align: center;
+  }
+
+  .about-profile-bio-react {
+    padding-left: 0;
+    border-left: none;
+  }
+
+  .about-profile-links-react {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 560px) {
+  .about-container-react {
+    width: min(100% - 32px, 1200px);
+  }
+
+  .about-profile-links-react a,
+  .about-profile-links-react span {
+    width: 100%;
+    text-align: center;
+  }
+}
