@@ -1,23 +1,12 @@
 import { useEffect, useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import './site-shell.css'
-
-function readStoredUser() {
-  return JSON.parse(localStorage.getItem('lol_current') || 'null')
-}
-
-function readStoredProfile(user) {
-  if (!user?.email) {
-    return {}
-  }
-
-  return JSON.parse(localStorage.getItem(`lol_profile_${user.email}`) || '{}')
-}
+import { clearCurrentUser, getCurrentUser, getStoredProfile, subscribeToStoredAuth } from '../utils/authStorage.js'
 
 function SiteHeader({ compact = false, hideProfile = false }) {
   const [dropdownOpen, setDropdownOpen] = useState(false)
-  const [currentUser] = useState(readStoredUser)
-  const [profile] = useState(() => readStoredProfile(currentUser))
+  const [currentUser, setCurrentUser] = useState(getCurrentUser)
+  const [profile, setProfile] = useState(() => getStoredProfile(getCurrentUser()?.email))
 
   useEffect(() => {
     function handleOutsideClick(event) {
@@ -31,13 +20,19 @@ function SiteHeader({ compact = false, hideProfile = false }) {
     return () => document.removeEventListener('click', handleOutsideClick)
   }, [])
 
+  useEffect(() => subscribeToStoredAuth(() => {
+    const user = getCurrentUser()
+    setCurrentUser(user)
+    setProfile(getStoredProfile(user?.email))
+  }), [])
+
   const displayName = profile.username || currentUser?.username || 'Summoner'
   const avatar = profile.avatar || ''
   const rank = profile.rank ? `Rank: ${profile.rank}` : 'Rank not set'
 
   function handleLogout() {
-    localStorage.removeItem('lol_current')
-    window.location.reload()
+    clearCurrentUser()
+    setDropdownOpen(false)
   }
 
   return (
@@ -62,15 +57,15 @@ function SiteHeader({ compact = false, hideProfile = false }) {
 
         {!hideProfile && <div className={`site-profile-widget ${dropdownOpen ? 'open' : ''}`} id="siteProfileWidget">
           {!currentUser ? (
-            <button type="button" className="site-profile-trigger site-guest-button">
+            <Link to="/auth" className="site-profile-trigger site-guest-button">
               <div className="site-avatar-small site-guest-avatar">
                 <span>G</span>
               </div>
               <div className="site-guest-copy">
                 <span className="site-profile-name-small site-guest-name">Guest</span>
-                <span className="site-guest-cta">Auth page soon</span>
+                <span className="site-guest-cta">Sign in / Register</span>
               </div>
-            </button>
+            </Link>
           ) : (
             <>
               <button
@@ -103,7 +98,7 @@ function SiteHeader({ compact = false, hideProfile = false }) {
                     <div className="site-dropdown-rank">{rank}</div>
                   </div>
                 </div>
-                <button type="button" className="site-dropdown-item">Edit Profile</button>
+                <Link to="/profile" className="site-dropdown-item" onClick={() => setDropdownOpen(false)}>Edit Profile</Link>
                 <button type="button" className="site-dropdown-item site-dropdown-item-danger" onClick={handleLogout}>
                   Sign Out
                 </button>

@@ -5,6 +5,8 @@ import Updates from './pages/Updates.jsx'
 import Lore from './pages/Lore.jsx'
 import AboutUs from './pages/AboutUs.jsx'
 import Quiz from './pages/Quiz.jsx'
+import Auth from './pages/Auth.jsx'
+import Profile from './pages/Profile.jsx'
 
 function App() {
   return (
@@ -15,6 +17,8 @@ function App() {
       <Route path="/updates" element={<Updates />} />
       <Route path="/quiz" element={<Quiz />} />
       <Route path="/about-us" element={<AboutUs />} />
+      <Route path="/auth" element={<Auth />} />
+      <Route path="/profile" element={<Profile />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   )

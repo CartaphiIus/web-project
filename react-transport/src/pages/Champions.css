@@ -10,15 +10,26 @@
 .champions-main {
   width: min(1240px, calc(100% - 40px));
   margin: 0 auto;
-  padding: 34px 0 64px;
+  padding: 40px 0 64px;
 }
 
 .champions-toolbar-react {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 14px;
-  margin-bottom: 28px;
+  gap: 16px;
+  padding: 26px 30px;
+  border: 1px solid rgba(200, 170, 110, 0.16);
+  background:
+    linear-gradient(180deg, rgba(9, 20, 40, 0.88), rgba(9, 20, 40, 0.72)),
+    rgba(9, 20, 40, 0.7);
+  backdrop-filter: blur(6px);
+}
+
+.champions-toolbar-copy h1 {
+  margin: 0;
+  font-size: clamp(1.9rem, 4vw, 2.9rem);
+  color: #f0e6d2;
+  letter-spacing: 2px;
 }
 
 .champion-focus h2,
@@ -34,7 +45,7 @@
   gap: 12px;
   align-items: center;
   color: #f0e6d2;
-  font-size: 0.95rem;
+  font-size: 0.92rem;
 }
 
 .champions-toolbar-note-react {
@@ -55,61 +66,28 @@
   padding: 0 14px;
   border-radius: 999px;
   border: 1px solid rgba(200, 170, 110, 0.28);
-  background: rgba(9, 20, 40, 0.46);
+  background: rgba(9, 20, 40, 0.75);
   color: #f0e6d2;
-  backdrop-filter: blur(3px);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
-  gap: 10px;
-}
-
-.champions-pill-react strong {
-  color: #c8aa6e;
-  font-size: 0.8rem;
 }
 
 .champions-pill-soft-react {
   color: #c8aa6e;
 }
 
-.champions-api-status-react {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  min-height: 38px;
-  padding: 0 14px;
-  border: 1px solid rgba(83, 186, 118, 0.32);
-  border-radius: 999px;
-  background: rgba(24, 64, 37, 0.45);
-  color: #c6f3d4;
-  font-size: 0.8rem;
-  backdrop-filter: blur(3px);
-}
-
-.champions-api-dot-react {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: #53ba76;
-  box-shadow: 0 0 0 6px rgba(83, 186, 118, 0.12);
+.champions-copy,
+.section-head p {
+  margin: 12px 0 0;
+  color: #a09b8c;
+  line-height: 1.7;
+  max-width: 720px;
 }
 
 .champion-grid-section {
-  margin-top: 0;
+  margin-top: 34px;
 }
 
 .section-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 18px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid rgba(200, 170, 110, 0.18);
-}
-
-.section-head span {
-  color: #c8aa6e;
-  font-size: 0.85rem;
+  margin-bottom: 22px;
 }
 
 .champion-grid-react {
