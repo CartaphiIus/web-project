@@ -4,54 +4,7 @@ import './Champions.css'
 import SiteHeader from '../components/SiteHeader.jsx'
 import SiteFooter from '../components/SiteFooter.jsx'
 import { championVideoIds } from '../data/championVideoIds.js'
-
-import ahriImage from '../assets/images/ahri.avif'
-import zedImage from '../assets/images/zed.avif'
-import kindredImage from '../assets/images/kindred.webp'
-import akaliImage from '../assets/images/akali.avif'
-import auroraImage from '../assets/images/aurora.avif'
-import ambessaImage from '../assets/images/Ambessa.png'
-import briarImage from '../assets/images/briar.avif'
-import yasuoImage from '../assets/images/yasuo.avif'
-import akshanImage from '../assets/images/akshan.jpg'
-import aatroxImage from '../assets/images/aatrox.avif'
-import asheImage from '../assets/images/ASHE.avif'
-import dariusImage from '../assets/images/darius.avif'
-import mordekaiserImage from '../assets/images/Mordekaiser_0.jpg'
-import malzaharImage from '../assets/images/Malzahar_0.jpg'
-import kaisaImage from '../assets/images/Kaisa_0.jpg'
-import lissandraImage from '../assets/images/Lissandra_0.jpg'
-import luxImage from '../assets/images/Lux_0.jpg'
-import jinxImage from '../assets/images/Jinx_0.jpg'
-
-const champions = [
-  { id: 'ahri', key: 'Ahri', name: 'Ahri', title: 'the Nine-Tailed Fox', image: ahriImage },
-  { id: 'zed', key: 'Zed', name: 'Zed', title: 'the Master of Shadows', image: zedImage },
-  { id: 'kindred', key: 'Kindred', name: 'Kindred', title: 'the Eternal Hunters', image: kindredImage },
-  { id: 'akali', key: 'Akali', name: 'Akali', title: 'the Rogue Assassin', image: akaliImage },
-  { id: 'aurora', key: 'Aurora', name: 'Aurora', title: 'the Witch Between Worlds', image: auroraImage },
-  { id: 'ambessa', key: 'Ambessa', name: 'Ambessa', title: 'Matriarch of War', image: ambessaImage },
-  { id: 'briar', key: 'Briar', name: 'Briar', title: 'the Restrained Hunger', image: briarImage },
-  { id: 'yasuo', key: 'Yasuo', name: 'Yasuo', title: 'the Unforgiven', image: yasuoImage },
-  { id: 'akshan', key: 'Akshan', name: 'Akshan', title: 'the Rogue Sentinel', image: akshanImage },
-  { id: 'aatrox', key: 'Aatrox', name: 'Aatrox', title: 'the Darkin Blade', image: aatroxImage },
-  { id: 'ashe', key: 'Ashe', name: 'Ashe', title: 'the Frost Archer', image: asheImage },
-  { id: 'darius', key: 'Darius', name: 'Darius', title: 'the Hand of Noxus', image: dariusImage },
-  { id: 'mordekaiser', key: 'Mordekaiser', name: 'Mordekaiser', title: 'the Iron Revenant', image: mordekaiserImage },
-  { id: 'malzahar', key: 'Malzahar', name: 'Malzahar', title: 'the Prophet of the Void', image: malzaharImage },
-  { id: 'kaisa', key: 'Kaisa', name: "Kai'Sa", title: 'Daughter of the Void', image: kaisaImage },
-  { id: 'lissandra', key: 'Lissandra', name: 'Lissandra', title: 'the Ice Witch', image: lissandraImage },
-  { id: 'lux', key: 'Lux', name: 'Lux', title: 'the Lady of Luminosity', image: luxImage },
-  { id: 'jinx', key: 'Jinx', name: 'Jinx', title: 'the Loose Cannon', image: jinxImage },
-]
-
-const laneSummaries = [
-  { label: 'Top Lane', count: 4 },
-  { label: 'Jungle', count: 2 },
-  { label: 'Mid Lane', count: 7 },
-  { label: 'ADC', count: 3 },
-  { label: 'Support', count: 2 },
-]
+import { resolveChampionLane } from '../utils/championLane.js'
 
 const ddragonVersion = '16.8.1'
 const ddragonBase = `https://ddragon.leagueoflegends.com/cdn/${ddragonVersion}`
@@ -174,27 +127,71 @@ function buildLevelTips(spell) {
 function Champions() {
   const location = useLocation()
   const navigate = useNavigate()
+  const [champions, setChampions] = useState([])
   const [championDataMap, setChampionDataMap] = useState({})
+  const [activeLane, setActiveLane] = useState('All')
+  const [loading, setLoading] = useState(true)
+  const [loadError, setLoadError] = useState('')
   const championMap = useMemo(
     () => Object.fromEntries(champions.map((champion) => [champion.id, champion])),
-    [],
+    [champions],
   )
   const selectedChampion = championMap[location.hash.replace('#', '')] || null
   const selectedChampionData = selectedChampion ? championDataMap[selectedChampion.key] : null
+  const laneSummaries = useMemo(() => {
+    const laneOrder = [
+      ['Top', 'Top Lane'],
+      ['Jungle', 'Jungle'],
+      ['Middle', 'Mid Lane'],
+      ['Bottom', 'ADC'],
+      ['Support', 'Support'],
+    ]
+
+    return laneOrder.map(([laneKey, label]) => ({
+      label,
+      count: champions.filter((champion) => champion.lane === laneKey).length,
+      laneKey,
+    }))
+  }, [champions])
+  const filteredChampions = useMemo(() => {
+    if (activeLane === 'All') return champions
+    return champions.filter((champion) => champion.lane === activeLane)
+  }, [activeLane, champions])
 
   useEffect(() => {
     let isMounted = true
 
     async function loadChampionData() {
       try {
+        setLoading(true)
         const response = await fetch(`${ddragonBase}/data/en_US/championFull.json`)
         if (!response.ok) throw new Error(`Failed to fetch champion data: ${response.status}`)
         const data = await response.json()
         if (isMounted) {
           setChampionDataMap(data.data || {})
+          const nextChampions = Object.values(data.data || {})
+            .map((champion) => ({
+              id: champion.id.toLowerCase(),
+              key: champion.id,
+              name: champion.name,
+              title: champion.title,
+              lane: resolveChampionLane(champion.id, champion),
+              image: `https://ddragon.leagueoflegends.com/cdn/img/champion/loading/${champion.id}_0.jpg`,
+              fallbackImage: `${ddragonBase}/img/champion/${champion.image.full}`,
+            }))
+            .sort((left, right) => left.name.localeCompare(right.name))
+          setChampions(nextChampions)
+          setLoadError('')
         }
       } catch (error) {
         console.warn('Champion data could not be loaded for detail modal.', error)
+        if (isMounted) {
+          setLoadError('Champion roster could not be loaded right now.')
+        }
+      } finally {
+        if (isMounted) {
+          setLoading(false)
+        }
       }
     }
 
@@ -313,50 +310,77 @@ function Champions() {
       <SiteHeader />
 
       <main className="champions-main">
-        <section className="champions-toolbar-react">
+        <section className="champions-toolbar-react shared-panel">
           <div className="champions-filter-pills-react">
-            <span className="champions-pill-react">All Champions {champions.length}</span>
+            <button
+              type="button"
+              className={`champions-pill-react champions-pill-button-react shared-button-ghost ${activeLane === 'All' ? 'is-active' : ''}`}
+              onClick={() => setActiveLane('All')}
+            >
+              <span>All Champions</span>
+              <strong className="champions-pill-count-react">{champions.length}</strong>
+            </button>
             {laneSummaries.map((lane) => (
-              <span className="champions-pill-react" key={lane.label}>
-                {lane.label} <strong>{lane.count}</strong>
-              </span>
+              <button
+                type="button"
+                className={`champions-pill-react champions-pill-button-react shared-button-ghost ${activeLane === lane.laneKey ? 'is-active' : ''}`}
+                key={lane.label}
+                onClick={() => setActiveLane(lane.laneKey)}
+              >
+                <span>{lane.label}</span>
+                <strong className="champions-pill-count-react">{lane.count}</strong>
+              </button>
             ))}
           </div>
           <div className="champions-toolbar-meta-react">
             <span>{champions.length} official Riot champions loaded. Version: {ddragonVersion}</span>
-            <span className="champions-toolbar-note-react">React migration showcase set.</span>
+            <span className="champions-toolbar-note-react">Full live roster powered by Riot Data Dragon.</span>
           </div>
           <div className="champions-api-status-react">
             <span className="champions-api-dot-react" />
-            <span>Live champion data loaded successfully. Version: {ddragonVersion}</span>
+            <span>{loadError ? loadError : `Live champion data loaded successfully. Version: ${ddragonVersion}`}</span>
           </div>
         </section>
 
         <section className="champion-grid-section">
-          <div className="section-head">
-            <h2>{selectedChampion ? selectedChampion.name : 'React Showcase'}</h2>
-            <span>{champions.length} champions</span>
+          <div className="section-head shared-heading-split">
+            <h2>{selectedChampion ? selectedChampion.name : activeLane === 'All' ? 'Champion Roster' : `${activeLane} Champions`}</h2>
+            <span className="shared-count-badge">{filteredChampions.length} champions</span>
           </div>
 
-          <div className="champion-grid-react">
-            {champions.map((champion) => (
-              <button
-                key={champion.id}
-                id={champion.id}
-                type="button"
-                onClick={() => openChampionModal(champion.id)}
-                className={`champion-orb-card ${selectedChampion?.id === champion.id ? 'is-selected' : ''}`}
-              >
-                <div className="champion-orb">
-                  <img src={champion.image} alt={champion.name} />
-                </div>
-                <div className="champion-card-body-react">
-                  <div className="champion-orb-name">{champion.name}</div>
-                  <div className="champion-orb-title">{champion.title}</div>
-                </div>
-              </button>
-            ))}
-          </div>
+          {loading ? <div className="ability-loading-react">Loading champion roster...</div> : null}
+          {loadError && !loading ? <div className="panel-empty-text-react">{loadError}</div> : null}
+
+          {!loading && !loadError ? (
+            <div className="champion-grid-react">
+              {filteredChampions.map((champion) => (
+                <button
+                  key={champion.id}
+                  id={champion.id}
+                  type="button"
+                  onClick={() => openChampionModal(champion.id)}
+                  className={`champion-orb-card ${selectedChampion?.id === champion.id ? 'is-selected' : ''}`}
+                >
+                  <div className="champion-orb">
+                    <img
+                      src={champion.image}
+                      alt={champion.name}
+                      loading="lazy"
+                      onError={(event) => {
+                        if (event.currentTarget.src !== champion.fallbackImage) {
+                          event.currentTarget.src = champion.fallbackImage
+                        }
+                      }}
+                    />
+                  </div>
+                  <div className="champion-card-body-react">
+                    <div className="champion-orb-name">{champion.name}</div>
+                    <div className="champion-orb-title">{champion.title}</div>
+                  </div>
+                </button>
+              ))}
+            </div>
+          ) : null}
         </section>
       </main>
 

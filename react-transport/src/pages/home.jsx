@@ -113,9 +113,9 @@ function Home() {
           <div className="hero-content">
             <h1 className="hero-title">MASTER THE RIFT:</h1>
             <div className="hero-subtitle">EXPLORE THE ADVENTURE !</div>
-            <button type="button" className="cta-link cta-button">
+            <Link to="/auth" className="cta-link cta-button">
               JOIN THE STORY
-            </button>
+            </Link>
           </div>
 
           <div className="carousel-controls">

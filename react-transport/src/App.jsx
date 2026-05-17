@@ -7,6 +7,8 @@ import AboutUs from './pages/AboutUs.jsx'
 import Quiz from './pages/Quiz.jsx'
 import Auth from './pages/Auth.jsx'
 import Profile from './pages/Profile.jsx'
+import DraftBuilder from './pages/DraftBuilder.jsx'
+import CounterAnalyzer from './pages/CounterAnalyzer.jsx'
 
 function App() {
   return (
@@ -19,6 +21,8 @@ function App() {
       <Route path="/about-us" element={<AboutUs />} />
       <Route path="/auth" element={<Auth />} />
       <Route path="/profile" element={<Profile />} />
+      <Route path="/draft-builder" element={<DraftBuilder />} />
+      <Route path="/counter-analyzer" element={<CounterAnalyzer />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   )

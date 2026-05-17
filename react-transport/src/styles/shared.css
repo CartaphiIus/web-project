@@ -1,0 +1,112 @@
+:root {
+  --color-bg-primary: #0a1428;
+  --color-bg-secondary: #091220;
+  --color-bg-panel: rgba(8, 17, 34, 0.88);
+  --color-bg-panel-strong: rgba(9, 20, 40, 0.94);
+  --color-text-primary: #f0e6d2;
+  --color-text-soft: #d8d2c8;
+  --color-text-muted: #a09b8c;
+  --color-gold: #c8aa6e;
+  --color-gold-bright: #f0d98b;
+  --color-danger: #e05050;
+  --border-gold-soft: 1px solid rgba(200, 170, 110, 0.16);
+  --border-gold: 1px solid rgba(200, 170, 110, 0.28);
+  --border-gold-strong: 1px solid rgba(200, 170, 110, 0.35);
+  --shadow-panel: 0 20px 40px rgba(0, 0, 0, 0.22);
+  --shell-width: min(1280px, calc(100% - 40px));
+  --shell-width-wide: min(1400px, calc(100% - 40px));
+}
+
+.page-shell {
+  width: var(--shell-width);
+  margin: 0 auto;
+}
+
+.page-shell-wide {
+  width: var(--shell-width-wide);
+  margin: 0 auto;
+}
+
+.shared-panel {
+  background: var(--color-bg-panel);
+  border: var(--border-gold-soft);
+  box-shadow: var(--shadow-panel);
+}
+
+.shared-panel-title {
+  color: var(--color-gold);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.shared-kicker {
+  color: var(--color-gold);
+  letter-spacing: 4px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.shared-button-ghost {
+  border: var(--border-gold);
+  background: transparent;
+  color: var(--color-text-muted);
+  font: inherit;
+  cursor: pointer;
+  transition: border-color 0.22s ease, color 0.22s ease, background 0.22s ease, transform 0.22s ease;
+}
+
+.shared-button-ghost:hover:not(:disabled) {
+  border-color: var(--color-gold);
+  color: var(--color-text-primary);
+  background: rgba(200, 170, 110, 0.08);
+}
+
+.shared-heading-split {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.shared-count-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 28px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: var(--border-gold);
+  background: rgba(200, 170, 110, 0.08);
+  color: var(--color-gold);
+  font-size: 0.76rem;
+  line-height: 1;
+}
+
+.shared-scrollbar-gold {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(200, 170, 110, 0.28) transparent;
+}
+
+.shared-scrollbar-gold::-webkit-scrollbar {
+  width: 10px;
+}
+
+.shared-scrollbar-gold::-webkit-scrollbar-track {
+  background: rgba(9, 20, 40, 0.28);
+}
+
+.shared-scrollbar-gold::-webkit-scrollbar-thumb {
+  background: rgba(200, 170, 110, 0.34);
+  border-radius: 999px;
+  border: 2px solid rgba(9, 20, 40, 0.28);
+}
+
+@media (max-width: 900px) {
+  :root {
+    --shell-width: min(100% - 24px, 1280px);
+    --shell-width-wide: min(100% - 24px, 1400px);
+  }
+}

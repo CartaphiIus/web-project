@@ -49,8 +49,8 @@ function SiteHeader({ compact = false, hideProfile = false }) {
           <NavLink to="/champions">CHAMPIONS</NavLink>
           <NavLink to="/lore">LORE</NavLink>
           <NavLink to="/updates">UPDATES</NavLink>
-          <span className="site-nav-disabled">DRAFT BUILDER</span>
-          <span className="site-nav-disabled">COUNTER ANALYZER</span>
+          <NavLink to="/draft-builder">DRAFT BUILDER</NavLink>
+          <NavLink to="/counter-analyzer">COUNTER ANALYZER</NavLink>
           <NavLink to="/quiz">QUIZ</NavLink>
           <NavLink to="/about-us">ABOUT US</NavLink>
         </nav>

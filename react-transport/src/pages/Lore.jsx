@@ -85,7 +85,7 @@ const regions = [
     id: 'demacia',
     name: 'DEMACIA',
     code: 'DM',
-    icon: '⚔️',
+    icon: '⚔',
     subtitle: 'Kingdom of Justice',
     tagline: 'Kingdom of Justice & Honor',
     quote: '"Demacia stands not because of magic, but in spite of it. Our walls are built with courage, our laws with sacrifice."',
@@ -111,7 +111,7 @@ const regions = [
     id: 'shurima',
     name: 'SHURIMA',
     code: 'SH',
-    icon: '☀️',
+    icon: '☀',
     subtitle: 'Empire of the Sun',
     tagline: 'Empire of the Eternal Sun',
     quote: '"Shurima! Your emperor has returned!" - Azir',
@@ -137,7 +137,7 @@ const regions = [
     id: 'piltover',
     name: 'PILTOVER',
     code: 'PT',
-    icon: '⚙️',
+    icon: '⚙',
     subtitle: 'City of Progress',
     tagline: 'City of Progress & Innovation',
     quote: '"In Piltover, they say that hextech can solve any problem. In Zaun, we say they just have not met our problems."',
@@ -163,7 +163,7 @@ const regions = [
     id: 'noxus',
     name: 'NOXUS',
     code: 'NX',
-    icon: '🗡️',
+    icon: '🛡',
     subtitle: 'Empire of Strength',
     tagline: 'Empire of Strength & Conquest',
     quote: '"Noxus does not conquer to destroy. Noxus conquers to make stronger." - Darius',
@@ -215,7 +215,7 @@ const regions = [
     id: 'freljord',
     name: 'THE FRELJORD',
     code: 'FR',
-    icon: '❄️',
+    icon: '❄',
     subtitle: 'Land of Ice',
     tagline: 'Land of Ice, Fury & Ancient Powers',
     quote: '"The Freljord does not care about your past. Only your survival." - Sejuani',
@@ -267,7 +267,7 @@ const regions = [
     id: 'shadow-isles',
     name: 'SHADOW ISLES',
     code: 'SI',
-    icon: '☠️',
+    icon: '☠',
     subtitle: 'Land of the Dead',
     tagline: 'Land of the Undying Dead',
     quote: '"Death is not the end. On the Shadow Isles, it is only the beginning of suffering." - Thresh',
@@ -337,7 +337,7 @@ const regions = [
       'The Void is not truly a place - it is the absence of everything. An incomprehensible dimension beyond the physical universe, it exists in contrast to all of creation: where Runeterra has life, form, and meaning, the Void has only hunger. And that hunger is directed, always, at the world of the living.',
       'Long ago, ancient mages discovered the Void as a source of incredible power. They tore open rifts to harness it, not understanding that on the other side, incomprehensible entities were waiting. Those rifts allowed Void creatures to seep into Runeterra, corrupting the land of Icathia into a wasteland and beginning a war that nearly ended the world.',
       'Today, the Void bleeds into Runeterra through cracks in the fabric of reality - places where the barrier between dimensions has grown thin. Void creatures range from mindless, ravenous beasts to vast, ancient intelligences with agendas mortals cannot begin to comprehend. The largest and most dangerous of these are known as Watchers, colossal entities of immense power that have long sought to unmake all that exists.',
-      'Against this threat stand unlikely defenders - Kassadin, a man who sacrificed his humanity to fight the Void from within; his daughter KaiSa, who survived years inside a Void-consumed territory; and the strange, yearning entity known as KaiSa who has learned to love the world the Void seeks to devour.',
+      "Against this threat stand unlikely defenders - Kassadin, a man who sacrificed his humanity to fight the Void from within; his daughter Kai'Sa, who survived years inside a Void-consumed territory; and the ravenous creature Kog'Maw, one of the strangest horrors ever to emerge from the abyss.",
     ],
     champions: ['Kassadin', "Kai'Sa", "Kog'Maw", "Vel'Koz", "Cho'Gath", "Bel'Veth"],
   },
@@ -345,7 +345,7 @@ const regions = [
     id: 'zaun',
     name: 'ZAUN',
     code: 'ZN',
-    icon: '⚗️',
+    icon: '⚗',
     subtitle: 'The Undercity',
     tagline: 'The Gray - City Beneath the City',
     quote: '"They say we live in the gutter. They forget that gutters are what carry away the things that would drown the city above." - Ekko',
@@ -449,7 +449,7 @@ function Lore() {
 
   return (
     <div className="lore-page-react" style={{ '--runeterra-map': `url(${runeterraMap})` }}>
-      <SiteHeader compact hideProfile />
+      <SiteHeader hideProfile />
 
       <section className="lore-hero-react">
         <div className="lore-hero-content-react">

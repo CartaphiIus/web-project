@@ -1,6 +1,6 @@
 :root {
-  color: #f0e6d2;
-  background: #0a1428;
+  color: var(--color-text-primary);
+  background: var(--color-bg-primary);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -21,7 +21,7 @@ html {
 body {
   margin: 0;
   min-width: 320px;
-  background: #0a1428;
+  background: var(--color-bg-primary);
 }
 
 a {

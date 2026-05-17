@@ -1,13 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap');
 
 .quiz-page-react {
-  --quiz-gold: #c8aa6e;
-  --quiz-gold-light: #f0d98b;
-  --quiz-text: #f0e6d2;
-  --quiz-dim: #a09b8c;
+  --quiz-gold: var(--color-gold);
+  --quiz-gold-light: var(--color-gold-bright);
+  --quiz-text: var(--color-text-primary);
+  --quiz-dim: var(--color-text-muted);
   --quiz-border: rgba(200, 170, 110, 0.28);
   min-height: 100vh;
-  background: #070f1e;
+  background:
+    linear-gradient(180deg, rgba(7, 15, 30, 0.76), rgba(7, 15, 30, 0.94)),
+    radial-gradient(circle at top center, rgba(200, 170, 110, 0.12), transparent 32%),
+    url('../assets/images/background.jpg') center top / cover fixed,
+    var(--color-bg-primary);
   color: var(--quiz-text);
   font-family: 'Rajdhani', sans-serif;
   position: relative;
@@ -19,6 +23,17 @@
   position: fixed;
   inset: 0;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='100'%3E%3Cpath d='M28 66L0 50V16L28 0l28 16v34zm0 34L0 84V50l28-16 28 16v34z' fill='none' stroke='rgba(200,170,110,0.035)' stroke-width='1'/%3E%3C/svg%3E");
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+.quiz-page-react::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(56, 103, 174, 0.12), transparent 22%),
+    radial-gradient(circle at 85% 14%, rgba(200, 170, 110, 0.08), transparent 18%);
   pointer-events: none;
 }
 

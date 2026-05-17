@@ -98,7 +98,7 @@ function Updates() {
       <main>
         <section className="updates-hero-react">
           <div className="updates-hero-content-react">
-            <p className="hero-eyebrow-react">LIVE FROM RUNETERRA</p>
+            <p className="hero-eyebrow-react shared-kicker">LIVE FROM RUNETERRA</p>
             <h1>UPDATES & PATCH NOTES</h1>
             <p className="hero-copy-react">
               Stay ahead of the game with a focused breakdown of balance changes,
@@ -121,7 +121,7 @@ function Updates() {
         <section className="updates-section-react">
           <div className="section-shell-react">
             <div className="section-heading-react">
-              <p className="section-kicker-react">HOME CONNECTION</p>
+              <p className="section-kicker-react shared-kicker">HOME CONNECTION</p>
               <h2>Spotlight headlines featured on the home page</h2>
             </div>
 
@@ -151,10 +151,10 @@ function Updates() {
           <div className="section-shell-react">
             <div className="section-heading-react section-heading-wide-react">
               <div>
-                <p className="section-kicker-react">NEWS GRID</p>
+                <p className="section-kicker-react shared-kicker">NEWS GRID</p>
                 <h2>Runeterra headlines</h2>
               </div>
-              <div className="page-indicator-react">
+              <div className="page-indicator-react shared-count-badge">
                 {currentPage} / {totalPages}
               </div>
             </div>
@@ -197,7 +197,7 @@ function Updates() {
             <div className="pagination-bar-react">
               <button
                 type="button"
-                className="page-btn-react"
+                className="page-btn-react shared-button-ghost"
                 disabled={currentPage === 1}
                 onClick={() => setCurrentPage((page) => Math.max(1, page - 1))}
               >
@@ -211,7 +211,7 @@ function Updates() {
                     <button
                       key={page}
                       type="button"
-                      className={`page-number-react ${page === currentPage ? 'active' : ''}`}
+                      className={`page-number-react shared-button-ghost ${page === currentPage ? 'active' : ''}`}
                       onClick={() => setCurrentPage(page)}
                     >
                       {page}
@@ -222,7 +222,7 @@ function Updates() {
 
               <button
                 type="button"
-                className="page-btn-react"
+                className="page-btn-react shared-button-ghost"
                 disabled={currentPage === totalPages}
                 onClick={() => setCurrentPage((page) => Math.min(totalPages, page + 1))}
               >
