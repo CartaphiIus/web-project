@@ -96,6 +96,33 @@ function concatUint8Arrays(chunks) {
   return combined
 }
 
+function getInitialSavedDraftState() {
+  const fallback = {
+    snapshot: null,
+    status: 'Build a draft to generate a saved summary.',
+  }
+
+  if (typeof window === 'undefined') {
+    return fallback
+  }
+
+  try {
+    const raw = localStorage.getItem(getDraftStorageKey())
+    if (!raw) return fallback
+
+    const snapshot = JSON.parse(raw)
+    if (!snapshot?.champions?.length) return fallback
+
+    return {
+      snapshot,
+      status: 'Loaded your last saved draft summary.',
+    }
+  } catch (error) {
+    console.warn('Saved draft preview could not be restored.', error)
+    return fallback
+  }
+}
+
 function downloadBlob(blob, filename) {
   if (typeof window !== 'undefined' && typeof window.navigator?.msSaveOrOpenBlob === 'function') {
     window.navigator.msSaveOrOpenBlob(blob, filename)
@@ -344,8 +371,6 @@ async function buildDraftPdfBlob(snapshot) {
   const jpegBlob = await canvasToJpegBlob(canvas)
   const jpegBytes = await blobToUint8Array(jpegBlob)
 
-  const pageWidth = 595
-  const pageHeight = 842
   const imageHeight = 842
   const imageWidth = 595
   const encoder = new TextEncoder()
@@ -416,8 +441,7 @@ function DraftBuilder() {
   const [filterRole, setFilterRole] = useState('all')
   const [filterType, setFilterType] = useState('all')
   const [filterClass, setFilterClass] = useState('all')
-  const [shareStatus, setShareStatus] = useState('Build a draft to generate a saved summary.')
-  const [savedSnapshot, setSavedSnapshot] = useState(null)
+  const [savedDraftState, setSavedDraftState] = useState(getInitialSavedDraftState)
 
   useEffect(() => {
     let isMounted = true
@@ -442,19 +466,6 @@ function DraftBuilder() {
     loadChampions()
     return () => {
       isMounted = false
-    }
-  }, [])
-
-  useEffect(() => {
-    try {
-      const raw = localStorage.getItem(getDraftStorageKey())
-      if (!raw) return
-      const snapshot = JSON.parse(raw)
-      if (!snapshot?.champions?.length) return
-      setSavedSnapshot(snapshot)
-      setShareStatus('Loaded your last saved draft summary.')
-    } catch (error) {
-      console.warn('Saved draft preview could not be restored.', error)
     }
   }, [])
 
@@ -505,14 +516,19 @@ function DraftBuilder() {
   function resetDraft() {
     setDraft([null, null, null, null, null])
     setActiveSlot(null)
-    setShareStatus('Draft reset. Build a fresh composition to analyze.')
+    setSavedDraftState((current) => ({
+      ...current,
+      status: 'Draft reset. Build a fresh composition to analyze.',
+    }))
   }
 
   function saveDraft() {
     if (!analysis) return
     localStorage.setItem(getDraftStorageKey(), JSON.stringify(analysis))
-    setSavedSnapshot(analysis)
-    setShareStatus('Draft saved locally. You can come back and continue later.')
+    setSavedDraftState({
+      snapshot: analysis,
+      status: 'Draft saved locally. You can come back and continue later.',
+    })
   }
 
   async function shareDraft() {
@@ -522,11 +538,16 @@ function DraftBuilder() {
 
     try {
       await navigator.clipboard.writeText(text)
-      setSavedSnapshot(analysis)
-      setShareStatus('Draft summary copied to clipboard.')
+      setSavedDraftState({
+        snapshot: analysis,
+        status: 'Draft summary copied to clipboard.',
+      })
     } catch (error) {
       console.warn('Draft summary could not be copied.', error)
-      setShareStatus('Clipboard copy failed on this device.')
+      setSavedDraftState((current) => ({
+        ...current,
+        status: 'Clipboard copy failed on this device.',
+      }))
     }
   }
 
@@ -534,17 +555,26 @@ function DraftBuilder() {
     if (!analysis) return
 
     try {
-      setShareStatus('Preparing visual PDF export...')
+      setSavedDraftState((current) => ({
+        ...current,
+        status: 'Preparing visual PDF export...',
+      }))
       const pdfBlob = await buildDraftPdfBlob(analysis)
       const safeNames = analysis.champions
         .map((champion) => champion.name.toLowerCase().replace(/[^a-z0-9]+/g, '-'))
         .join('_') || 'draft'
 
       downloadBlob(pdfBlob, `draft-report-${safeNames}.pdf`)
-      setShareStatus('PDF export started and download request was sent.')
+      setSavedDraftState((current) => ({
+        ...current,
+        status: 'PDF export started and download request was sent.',
+      }))
     } catch (error) {
       console.warn('Visual PDF export failed.', error)
-      setShareStatus('PDF export failed on this device.')
+      setSavedDraftState((current) => ({
+        ...current,
+        status: 'PDF export failed on this device.',
+      }))
     }
   }
 
@@ -552,7 +582,7 @@ function DraftBuilder() {
     <div className="draft-builder-page">
       <SiteHeader compact />
 
-      <main className="draft-main">
+      <main className="draft-main page-shell-wide">
         <DraftHero onReset={resetDraft} />
 
         <div className="draft-layout">
@@ -587,8 +617,8 @@ function DraftBuilder() {
             analysis={analysis}
             valleyImage={valleyImage}
             runeterraMapImage={runeterraMapImage}
-            shareStatus={shareStatus}
-            savedSnapshot={savedSnapshot}
+            shareStatus={savedDraftState.status}
+            savedSnapshot={savedDraftState.snapshot}
             onSaveDraft={saveDraft}
             onShareDraft={shareDraft}
             onExportPdf={exportDraftPdf}

@@ -1,11 +1,10 @@
 # League of Legends Champions Hub
 
-League of Legends temalı, React ve Vite ile geliştirilmiş çok sayfalı bir web uygulamasıdır.  
-Proje; klasik HTML/CSS yapısından React tabanlı bileşen mimarisine taşınmış ve uygulama içinde farklı modüller tek bir istemci taraflı routing yapısı altında birleştirilmiştir.
+League of Legends Champions Hub is a React and Vite single-page application. The project was fully migrated from the earlier static HTML/CSS version, and the React app is now the only active version of the project.
 
-## Proje Kapsamı
+## Overview
 
-Uygulama şu ana sayfalardan oluşur:
+The application brings multiple League of Legends themed modules together under a single client-side routed experience:
 
 - Home
 - Champions
@@ -18,7 +17,7 @@ Uygulama şu ana sayfalardan oluşur:
 - Counter Analyzer
 - About Us
 
-## Kullanılan Teknolojiler
+## Tech Stack
 
 - React
 - Vite
@@ -26,20 +25,19 @@ Uygulama şu ana sayfalardan oluşur:
 - CSS
 - ESLint
 
-## Temel Özellikler
+## Features
 
-- Çok sayfalı React uygulama yapısı
-- İstemci taraflı routing
-- Riot Data Dragon üzerinden champion verisi çekme
-- Champion listeleme, arama ve filtreleme
-- Login / register arayüzü
-- LocalStorage tabanlı oturum ve profil saklama
-- Quiz sistemi
-- Draft Builder ile takım kompozisyonu oluşturma ve analiz
-- Counter Analyzer ile rakip takım tehdit analizi
-- Responsive tasarım
+- Multi-page SPA architecture with React Router
+- Shared layout structure with reusable styling utilities
+- Riot Data Dragon integration for champion data
+- Champion browsing, filtering, and detail modal flow
+- LocalStorage-based auth and profile persistence
+- Quiz flow
+- Draft Builder with live analysis and PDF export
+- Counter Analyzer with enemy team pressure analysis
+- Responsive layouts for mobile, tablet, and desktop
 
-## Sayfa Rotaları
+## Routes
 
 - `/`
 - `/champions`
@@ -52,7 +50,7 @@ Uygulama şu ana sayfalardan oluşur:
 - `/counter-analyzer`
 - `/about-us`
 
-## Proje Yapısı
+## Project Structure
 
 ```text
 react-transport/
@@ -66,38 +64,40 @@ react-transport/
     utils/
     App.jsx
     main.jsx
+  package.json
+  vite.config.js
 ```
 
-## API Kullanımı
+## API Usage
 
-Projede ağırlıklı olarak Riot Data Dragon verileri kullanılmaktadır.
+The project mainly uses Riot Data Dragon data.
 
-Örnek endpoint:
+Example endpoint:
 
 ```text
 https://ddragon.leagueoflegends.com/cdn/16.8.1/data/en_US/championFull.json
 ```
 
-Bu veri şu alanlarda kullanılmaktadır:
+This data is used in:
 
-- Champions sayfası
-- Profile sayfasındaki favori kompozisyon alanı
-- Draft Builder analiz akışı
-- Counter Analyzer analiz akışı
+- Champions page
+- Profile favorite composition picker
+- Draft Builder analysis flow
+- Counter Analyzer analysis flow
 
-## Kurulum
+## Installation
 
 ```bash
 npm install
 ```
 
-## Geliştirme Ortamında Çalıştırma
+## Development
 
 ```bash
 npm run dev
 ```
 
-Varsayılan geliştirme adresi:
+Default local address:
 
 ```text
 http://localhost:5173
@@ -115,23 +115,24 @@ npm run build
 npm run lint
 ```
 
-## Notlar
+## Notes
 
-- `node_modules` ve `dist` klasörleri Git deposuna dahil edilmemelidir.
-- Kullanıcı oturumu ve profil bilgileri şu anda `localStorage` üzerinden tutulmaktadır.
-- Bu proje eğitim / ders projesi odaklıdır.
+- The legacy static HTML/CSS version has been removed from the active project structure.
+- User session and profile data are currently stored in `localStorage`.
+- `node_modules` and `dist` should not be included in final submission archives.
+- This project is intended for course and final project use.
 
-## Bilinen Sınırlamalar
+## Known Limitations
 
-- PDF export akışı tarayıcıya ve cihaza göre farklı davranabilir.
-- Kimlik doğrulama sistemi gerçek bir backend tabanlı auth sistemi değildir.
-- Bazı büyük görsel dosyalar optimize edilerek proje boyutu daha da küçültülebilir.
+- PDF export behavior may vary depending on browser and device support.
+- Authentication is frontend-only and does not use a real backend.
+- Some large image assets can still be optimized further.
 
-## Gelecekte Yapılabilecek İyileştirmeler
+## Future Improvements
 
-- Backend ve veritabanı entegrasyonu
-- Gerçek kullanıcı doğrulama sistemi
-- Otomatik test ekleme
-- Daha güçlü form doğrulama
-- Deploy alma
-- Performans ve görsel optimizasyon
+- Backend and database integration
+- Real authentication flow
+- Automated tests
+- Stronger form validation
+- Public deployment
+- Further performance and asset optimization

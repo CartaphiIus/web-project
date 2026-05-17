@@ -136,7 +136,7 @@ function CounterAnalyzer() {
     ? analysis.damage.phys >= analysis.damage.magic
       ? `${analysis.damage.phys}% Physical`
       : `${analysis.damage.magic}% Magic`
-    : '—'
+    : '--'
 
   return (
     <div className="counter-analyzer-page">

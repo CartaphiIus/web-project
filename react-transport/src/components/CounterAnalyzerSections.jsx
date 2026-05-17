@@ -209,7 +209,7 @@ function CounterItemsTab({ analysis, selectedCount, dominantDamageLabel, renderD
                 <div className="counter-dmg-row">
                   <div className="counter-dmg-dot-label" style={{ background: color }} />
                   <span className="counter-dmg-label">{label}</span>
-                  <span className="counter-dmg-pct" style={{ color }}>{selectedCount ? `${value}%` : '—%'}</span>
+                  <span className="counter-dmg-pct" style={{ color }}>{selectedCount ? `${value}%` : '--%'}</span>
                 </div>
                 <div className="counter-dmg-bar-wrap">
                   <div className="counter-dmg-bar" style={{ width: `${selectedCount ? value : 0}%`, background: color }} />
@@ -473,7 +473,7 @@ export function CounterAnalysisSidebar({
           </svg>
 
           <div className="counter-score-num">
-            <span className="counter-score-value">{selectedCount ? threatScore : '—'}</span>
+            <span className="counter-score-value">{selectedCount ? threatScore : '--'}</span>
             <span className="counter-score-label">Threat</span>
           </div>
         </div>

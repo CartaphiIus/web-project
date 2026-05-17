@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { Navigate, Link, useNavigate } from 'react-router-dom'
+import { Link, Navigate, useNavigate } from 'react-router-dom'
 import './Profile.css'
 import SiteHeader from '../components/SiteHeader.jsx'
 import SiteFooter from '../components/SiteFooter.jsx'
@@ -13,36 +13,36 @@ import {
 import { resolveChampionLane } from '../utils/championLane.js'
 
 const ranks = [
-  { icon: '🪵', name: 'Iron' },
-  { icon: '🥉', name: 'Bronze' },
-  { icon: '🥈', name: 'Silver' },
-  { icon: '🥇', name: 'Gold' },
-  { icon: '💠', name: 'Platinum' },
-  { icon: '💎', name: 'Emerald' },
-  { icon: '💙', name: 'Diamond' },
-  { icon: '🔮', name: 'Master' },
-  { icon: '🌟', name: 'Grand M.' },
-  { icon: '👑', name: 'Chall.' },
-  { icon: '❓', name: 'Unranked' },
+  { icon: 'IR', name: 'Iron' },
+  { icon: 'BR', name: 'Bronze' },
+  { icon: 'SV', name: 'Silver' },
+  { icon: 'GD', name: 'Gold' },
+  { icon: 'PL', name: 'Platinum' },
+  { icon: 'EM', name: 'Emerald' },
+  { icon: 'DM', name: 'Diamond' },
+  { icon: 'MS', name: 'Master' },
+  { icon: 'GM', name: 'Grand M.' },
+  { icon: 'CH', name: 'Chall.' },
+  { icon: '--', name: 'Unranked' },
 ]
 
 const lanes = [
-  { icon: '🗡', name: 'Top' },
-  { icon: '🌲', name: 'Jungle' },
-  { icon: '⚡', name: 'Middle' },
-  { icon: '🏹', name: 'Bottom' },
-  { icon: '🛡', name: 'Support' },
+  { icon: 'TOP', name: 'Top' },
+  { icon: 'JNG', name: 'Jungle' },
+  { icon: 'MID', name: 'Middle' },
+  { icon: 'BOT', name: 'Bottom' },
+  { icon: 'SUP', name: 'Support' },
 ]
 
 const avatars = [
-  { emoji: '🦊', label: 'Ahri' },
-  { emoji: '⚔️', label: 'Yasuo' },
-  { emoji: '💥', label: 'Jinx' },
-  { emoji: '🌸', label: 'Lux' },
-  { emoji: '🐉', label: 'Shyvana' },
-  { emoji: '🌑', label: 'Zed' },
-  { emoji: '🌀', label: 'Akali' },
-  { emoji: '🔥', label: 'Brand' },
+  { token: 'AH', label: 'Ahri' },
+  { token: 'YS', label: 'Yasuo' },
+  { token: 'JN', label: 'Jinx' },
+  { token: 'LX', label: 'Lux' },
+  { token: 'SV', label: 'Shyvana' },
+  { token: 'ZD', label: 'Zed' },
+  { token: 'AK', label: 'Akali' },
+  { token: 'BR', label: 'Brand' },
 ]
 
 const teamCompLanes = [
@@ -68,37 +68,62 @@ function buildDefaultForm(user) {
   }
 }
 
-function createAvatarDataUrl(emoji) {
+function createAvatarDataUrl(token) {
   const canvas = document.createElement('canvas')
   canvas.width = 160
   canvas.height = 160
   const context = canvas.getContext('2d')
   context.fillStyle = '#1a2f3f'
   context.fillRect(0, 0, 160, 160)
-  context.font = '90px serif'
+  context.fillStyle = '#f0e6d2'
+  context.font = '700 54px Arial'
   context.textAlign = 'center'
   context.textBaseline = 'middle'
-  context.fillText(emoji, 80, 85)
+  context.fillText(token, 80, 86)
   return canvas.toDataURL()
+}
+
+function buildProfileEditorState(user) {
+  const profile = user ? getStoredProfile(user.email) : {}
+
+  return {
+    form: {
+      ...buildDefaultForm(user),
+      username: profile.username || user?.username || '',
+      firstName: profile.firstName || '',
+      lastName: profile.lastName || '',
+      age: profile.age || '',
+      country: profile.country || '',
+      email: profile.email || user?.email || '',
+      bio: profile.bio || '',
+      champion: profile.champion || '',
+    },
+    selectedRank: profile.rank || '',
+    selectedLane: profile.lane || '',
+    selectedGender: profile.gender || '',
+    favoriteTeamComp: {
+      Top: profile.teamComp?.Top || '',
+      Jungle: profile.teamComp?.Jungle || '',
+      Middle: profile.teamComp?.Middle || '',
+      Bottom: profile.teamComp?.Bottom || '',
+      Support: profile.teamComp?.Support || '',
+    },
+    currentAvatarSrc: profile.avatar || createAvatarDataUrl(avatars[0].token),
+    selectedAvatarIndex: profile.avatar ? -1 : 0,
+  }
 }
 
 function Profile() {
   const navigate = useNavigate()
   const fileInputRef = useRef(null)
   const [currentUser, setCurrentUser] = useState(getCurrentUser)
-  const [form, setForm] = useState(() => buildDefaultForm(currentUser))
-  const [selectedRank, setSelectedRank] = useState('')
-  const [selectedLane, setSelectedLane] = useState('')
-  const [selectedGender, setSelectedGender] = useState('')
-  const [currentAvatarSrc, setCurrentAvatarSrc] = useState('')
-  const [selectedAvatarIndex, setSelectedAvatarIndex] = useState(0)
-  const [favoriteTeamComp, setFavoriteTeamComp] = useState({
-    Top: '',
-    Jungle: '',
-    Middle: '',
-    Bottom: '',
-    Support: '',
-  })
+  const [form, setForm] = useState(() => buildProfileEditorState(getCurrentUser()).form)
+  const [selectedRank, setSelectedRank] = useState(() => buildProfileEditorState(getCurrentUser()).selectedRank)
+  const [selectedLane, setSelectedLane] = useState(() => buildProfileEditorState(getCurrentUser()).selectedLane)
+  const [selectedGender, setSelectedGender] = useState(() => buildProfileEditorState(getCurrentUser()).selectedGender)
+  const [currentAvatarSrc, setCurrentAvatarSrc] = useState(() => buildProfileEditorState(getCurrentUser()).currentAvatarSrc)
+  const [selectedAvatarIndex, setSelectedAvatarIndex] = useState(() => buildProfileEditorState(getCurrentUser()).selectedAvatarIndex)
+  const [favoriteTeamComp, setFavoriteTeamComp] = useState(() => buildProfileEditorState(getCurrentUser()).favoriteTeamComp)
   const [activeCompLane, setActiveCompLane] = useState('Top')
   const [championPool, setChampionPool] = useState([])
   const [toast, setToast] = useState('')
@@ -109,48 +134,25 @@ function Profile() {
     return () => window.clearTimeout(timeoutId)
   }, [toast])
 
-  useEffect(() => {
-    return subscribeToStoredAuth(() => {
-      setCurrentUser(getCurrentUser())
+  useEffect(() => (
+    subscribeToStoredAuth(() => {
+      const nextUser = getCurrentUser()
+      setCurrentUser(nextUser)
+
+      if (!nextUser) {
+        return
+      }
+
+      const nextState = buildProfileEditorState(nextUser)
+      setForm(nextState.form)
+      setSelectedRank(nextState.selectedRank)
+      setSelectedLane(nextState.selectedLane)
+      setSelectedGender(nextState.selectedGender)
+      setFavoriteTeamComp(nextState.favoriteTeamComp)
+      setCurrentAvatarSrc(nextState.currentAvatarSrc)
+      setSelectedAvatarIndex(nextState.selectedAvatarIndex)
     })
-  }, [])
-
-  useEffect(() => {
-    if (!currentUser) return
-
-    const profile = getStoredProfile(currentUser.email)
-    const nextForm = {
-      ...buildDefaultForm(currentUser),
-      username: profile.username || currentUser.username || '',
-      firstName: profile.firstName || '',
-      lastName: profile.lastName || '',
-      age: profile.age || '',
-      country: profile.country || '',
-      email: profile.email || currentUser.email || '',
-      bio: profile.bio || '',
-      champion: profile.champion || '',
-    }
-
-    setForm(nextForm)
-    setSelectedRank(profile.rank || '')
-    setSelectedLane(profile.lane || '')
-    setSelectedGender(profile.gender || '')
-    setFavoriteTeamComp({
-      Top: profile.teamComp?.Top || '',
-      Jungle: profile.teamComp?.Jungle || '',
-      Middle: profile.teamComp?.Middle || '',
-      Bottom: profile.teamComp?.Bottom || '',
-      Support: profile.teamComp?.Support || '',
-    })
-
-    if (profile.avatar) {
-      setCurrentAvatarSrc(profile.avatar)
-      setSelectedAvatarIndex(-1)
-    } else {
-      setCurrentAvatarSrc(createAvatarDataUrl(avatars[0].emoji))
-      setSelectedAvatarIndex(0)
-    }
-  }, [currentUser])
+  ), [])
 
   useEffect(() => {
     let isMounted = true
@@ -189,7 +191,9 @@ function Profile() {
   )
 
   const favoriteCompByLane = useMemo(
-    () => Object.fromEntries(teamCompLanes.map(({ key }) => [key, championPool.find((champion) => champion.id === favoriteTeamComp[key]) || null])),
+    () => Object.fromEntries(
+      teamCompLanes.map(({ key }) => [key, championPool.find((champion) => champion.id === favoriteTeamComp[key]) || null]),
+    ),
     [championPool, favoriteTeamComp],
   )
 
@@ -206,7 +210,7 @@ function Profile() {
 
   function selectPresetAvatar(index) {
     setSelectedAvatarIndex(index)
-    setCurrentAvatarSrc(createAvatarDataUrl(avatars[index].emoji))
+    setCurrentAvatarSrc(createAvatarDataUrl(avatars[index].token))
   }
 
   function handleAvatarUpload(event) {
@@ -271,7 +275,7 @@ function Profile() {
               <button type="button" className="profile-avatar-ring-react" onClick={() => fileInputRef.current?.click()} aria-label="Upload avatar image">
                 <img className="profile-avatar-img-react" src={currentAvatarSrc} alt="Avatar" />
                 <div className="profile-avatar-overlay-react">
-                  <span>📷</span>
+                  <span>IMG</span>
                   <small>CHANGE</small>
                 </div>
               </button>
@@ -287,13 +291,13 @@ function Profile() {
                     title={avatar.label}
                     onClick={() => selectPresetAvatar(index)}
                   >
-                    {avatar.emoji}
+                    {avatar.token}
                   </button>
                 ))}
               </div>
 
               <button type="button" className="profile-upload-btn-react" onClick={() => fileInputRef.current?.click()}>
-                📁 UPLOAD YOUR OWN IMAGE
+                UPLOAD YOUR OWN IMAGE
               </button>
             </section>
 

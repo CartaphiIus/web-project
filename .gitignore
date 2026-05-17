@@ -29,3 +29,7 @@ lerna-debug.log*
 .env
 .env.*
 !.env.example
+
+# Local virtual environments
+.venv/
+.venv-1/

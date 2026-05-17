@@ -1,7 +1,7 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import './Auth.css'
-import { getUsers, setCurrentUser, saveUsers } from '../utils/authStorage.js'
+import { getUsers, saveUsers, setCurrentUser } from '../utils/authStorage.js'
 
 const emptyLoginErrors = {
   loginEmail: '',
@@ -27,6 +27,18 @@ function getPasswordStrengthScore(value) {
   if (/[A-Z]/.test(value) && /[0-9]/.test(value)) score += 1
   if (/[^A-Za-z0-9]/.test(value)) score += 1
   return score
+}
+
+function createRuneParticles() {
+  const runeSymbols = ['<>', '[]', '{}', '()', '**', '##', '++', '//', '==', '!!', '||', '--']
+  return Array.from({ length: 18 }, (_, index) => ({
+    id: index,
+    symbol: runeSymbols[index % runeSymbols.length],
+    left: `${Math.random() * 100}%`,
+    fontSize: `${16 + Math.random() * 24}px`,
+    animationDuration: `${12 + Math.random() * 18}s`,
+    animationDelay: `${Math.random() * 6}s`,
+  }))
 }
 
 function Auth() {
@@ -55,18 +67,7 @@ function Auth() {
   })
   const [loginErrors, setLoginErrors] = useState(emptyLoginErrors)
   const [registerErrors, setRegisterErrors] = useState(emptyRegisterErrors)
-
-  const runeParticles = useMemo(
-    () => Array.from({ length: 18 }, (_, index) => ({
-      id: index,
-      symbol: ['᚛', '᚜', 'ᚐ', 'ᚓ', '⚔', '🗡', '⚡', '✦', '◆', '❋', '✸', '⬡'][index % 12],
-      left: `${Math.random() * 100}%`,
-      fontSize: `${16 + Math.random() * 24}px`,
-      animationDuration: `${12 + Math.random() * 18}s`,
-      animationDelay: `${Math.random() * 6}s`,
-    })),
-    [],
-  )
+  const [runeParticles] = useState(createRuneParticles)
 
   useEffect(() => {
     if (!toast) return undefined
@@ -257,7 +258,7 @@ function Auth() {
               <div className="auth-field-react">
                 <label htmlFor="loginEmail">EMAIL / USERNAME</label>
                 <div className="auth-field-wrap-react">
-                  <span className="auth-icon-react">⚔</span>
+                  <span className="auth-icon-react">*</span>
                   <input
                     id="loginEmail"
                     type="text"
@@ -273,11 +274,11 @@ function Auth() {
               <div className="auth-field-react">
                 <label htmlFor="loginPass">PASSWORD</label>
                 <div className="auth-field-wrap-react">
-                  <span className="auth-icon-react">🛡</span>
+                  <span className="auth-icon-react">#</span>
                   <input
                     id="loginPass"
                     type={visiblePasswords.loginPass ? 'text' : 'password'}
-                    placeholder="••••••••"
+                    placeholder="********"
                     className={getInputState(loginForm.loginPass, loginErrors.loginPass)}
                     value={loginForm.loginPass}
                     onChange={(event) => updateLoginField('loginPass', event.target.value)}
@@ -337,7 +338,7 @@ function Auth() {
           <div className={`auth-panel-react ${activeTab === 'register' ? 'active' : ''}`}>
             {registerSuccess ? (
               <div className="auth-success-screen-react show">
-                <div className="auth-success-icon-react">⚔</div>
+                <div className="auth-success-icon-react">*</div>
                 <div className="auth-success-title-react">WELCOME, SUMMONER!</div>
                 <div className="auth-success-sub-react">
                   Your account has been created successfully.
@@ -354,7 +355,7 @@ function Auth() {
                   <div className="auth-field-react">
                     <label htmlFor="regUsername">SUMMONER NAME</label>
                     <div className="auth-field-wrap-react">
-                      <span className="auth-icon-react">⚡</span>
+                      <span className="auth-icon-react">+</span>
                       <input
                         id="regUsername"
                         type="text"
@@ -371,7 +372,7 @@ function Auth() {
                   <div className="auth-field-react">
                     <label htmlFor="regEmail">EMAIL</label>
                     <div className="auth-field-wrap-react">
-                      <span className="auth-icon-react">✉</span>
+                      <span className="auth-icon-react">@</span>
                       <input
                         id="regEmail"
                         type="email"
@@ -387,11 +388,11 @@ function Auth() {
                   <div className="auth-field-react">
                     <label htmlFor="regPass">PASSWORD</label>
                     <div className="auth-field-wrap-react">
-                      <span className="auth-icon-react">🛡</span>
+                      <span className="auth-icon-react">#</span>
                       <input
                         id="regPass"
                         type={visiblePasswords.regPass ? 'text' : 'password'}
-                        placeholder="••••••••"
+                        placeholder="********"
                         className={getInputState(registerForm.regPass, registerErrors.regPass)}
                         value={registerForm.regPass}
                         onChange={(event) => updateRegisterField('regPass', event.target.value)}
@@ -417,11 +418,11 @@ function Auth() {
                   <div className="auth-field-react">
                     <label htmlFor="regPass2">CONFIRM PASSWORD</label>
                     <div className="auth-field-wrap-react">
-                      <span className="auth-icon-react">🔑</span>
+                      <span className="auth-icon-react">=</span>
                       <input
                         id="regPass2"
                         type={visiblePasswords.regPass2 ? 'text' : 'password'}
-                        placeholder="••••••••"
+                        placeholder="********"
                         className={getInputState(registerForm.regPass2, registerErrors.regPass2)}
                         value={registerForm.regPass2}
                         onChange={(event) => updateRegisterField('regPass2', event.target.value)}

@@ -9,8 +9,6 @@
 }
 
 .draft-main {
-  width: min(1400px, calc(100% - 32px));
-  margin: 0 auto;
   padding: 28px 0 40px;
 }
 
@@ -20,14 +18,6 @@
   gap: 24px;
   align-items: end;
   margin-bottom: 24px;
-}
-
-.draft-kicker {
-  color: var(--color-gold);
-  letter-spacing: 4px;
-  font-size: 0.72rem;
-  font-weight: 700;
-  text-transform: uppercase;
 }
 
 .draft-hero h1 {
@@ -41,12 +31,6 @@
   max-width: 720px;
   color: rgba(240, 230, 210, 0.72);
   font-size: 1rem;
-}
-
-.draft-reset-btn,
-.draft-filter-btn,
-.draft-share-btn {
-  transition: 0.22s ease;
 }
 
 .draft-reset-btn {
@@ -635,10 +619,6 @@
 }
 
 @media (max-width: 620px) {
-  .draft-main {
-    width: min(100% - 20px, 1400px);
-  }
-
   .draft-champion-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }

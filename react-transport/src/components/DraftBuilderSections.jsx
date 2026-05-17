@@ -57,7 +57,7 @@ export function DraftCompositionPanel({ slotRoles, draft, championMap, activeSlo
                       onClearSlot(index)
                     }}
                   >
-                    ×
+                    X
                   </button>
                 </>
               ) : (
